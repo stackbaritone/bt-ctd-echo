@@ -437,9 +437,10 @@ export default function HelpCenter({ language = 'fr', onClose, supportEmail = 'e
 
   // Endpoint resolution chain:
   // 1. Explicit prop (contactEndpoint)
-  // 2. Env variable VITE_SUPPORT_FORM_ENDPOINT (e.g. Formspree or custom API)
-  // 3. Fallback to FormSubmit (still works once email verified)
+  // 2. Env variable VITE_SUPPORT_FORM_ENDPOINT
+  // 3. Web3Forms with hardcoded access key (free, 250/month)
   // If all fail we will offer a manual mailto fallback on error.
+  const web3FormsKey = 'c5790200-4cc6-43eb-a098-3780f12496f4'
   const envEndpoint = (() => {
     try {
       const v = import.meta?.env?.VITE_SUPPORT_FORM_ENDPOINT
@@ -447,8 +448,7 @@ export default function HelpCenter({ language = 'fr', onClose, supportEmail = 'e
     } catch {}
     return null
   })()
-  const fallbackEndpoint = `https://formsubmit.co/ajax/${encodeURIComponent(supportEmail)}`
-  const activeEndpoint = contactEndpoint || envEndpoint || fallbackEndpoint
+  const activeEndpoint = contactEndpoint || envEndpoint || 'https://api.web3forms.com/submit'
   const submissionUrl = activeEndpoint
   const selectedCategory = contactOptions.find((option) => option.value === formData.category) || contactOptions[0] || null
   const isSubmitting = status === 'submitting'
@@ -591,15 +591,19 @@ export default function HelpCenter({ language = 'fr', onClose, supportEmail = 'e
         }
       }
 
-      // Try to submit via fetch (works if custom endpoint is configured or formsubmit.co is verified)
+      // Try to submit via fetch (Web3Forms API)
       const response = await fetch(submissionUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json'
         },
-        // Formspree expects either form-encoded or JSON; JSON is accepted when header is set
-        body: JSON.stringify(payload)
+        body: JSON.stringify({
+          access_key: web3FormsKey,
+          ...payload,
+          from_name: payload.name,
+          subject: `ECHO Support: ${payload.category}`
+        })
       })
 
       if (!response.ok) {
