@@ -390,7 +390,7 @@ function SectionHeader({ icon: Icon, title, description }) {
   )
 }
 
-export default function HelpCenter({ language = 'fr', onClose, supportEmail = 'echo-support@jskennedy.net', contactEndpoint }) {
+export default function HelpCenter({ language = 'fr', onClose, supportEmail = 'echo-info@bt-tb.ca', contactEndpoint }) {
   const strings = useMemo(() => translations[language] || translations.fr, [language])
   const contactOptions = strings.contact?.options || []
   const closeBtnRef = useRef(null)
