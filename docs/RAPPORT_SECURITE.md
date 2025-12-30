@@ -1,4 +1,5 @@
 # ECHO - Rapport de sécurité
+
 ## Analyse détaillée des mesures de sécurité
 
 **Version:** 1.0.0  
@@ -25,7 +26,7 @@ ECHO est conçu avec une architecture **"Privacy by Design"** (confidentialité 
 
 ### 2.1 Modèle de données
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │                    FLUX DE DONNÉES                          │
 ├─────────────────────────────────────────────────────────────┤
@@ -65,12 +66,12 @@ ECHO est conçu avec une architecture **"Privacy by Design"** (confidentialité 
 
 ### 2.2 Données traitées
 
-| Type de donnée | Stockage | Transmission | Sensibilité |
-|----------------|----------|--------------|-------------|
-| Modèles de courriels | Serveur (JSON public) | HTTPS (lecture) | Publique |
-| Préférences utilisateur | LocalStorage (navigateur) | Aucune | Très faible |
-| Variables saisies | Mémoire (RAM) seulement | Aucune | N/A |
-| Courriels générés | Presse-papiers | Outlook (local) | N/A |
+| Type de donnée          | Stockage                      | Transmission      | Sensibilité  |
+| ----------------------- | ----------------------------- | ----------------- | ------------ |
+| Modèles de courriels    | Serveur (JSON public)         | HTTPS (lecture)   | Publique     |
+| Préférences utilisateur | LocalStorage (navigateur)     | Aucune            | Très faible  |
+| Variables saisies       | Mémoire (RAM) seulement       | Aucune            | N/A          |
+| Courriels générés       | Presse-papiers                | Outlook (local)   | N/A          |
 
 ---
 
@@ -79,6 +80,7 @@ ECHO est conçu avec une architecture **"Privacy by Design"** (confidentialité 
 ### 3.1 Sécurité des données
 
 #### ✅ Aucune collecte de données personnelles
+
 ```javascript
 // Seules les préférences d'interface sont stockées
 const STORAGE_KEY = 'ea_state_v1';
@@ -95,11 +97,13 @@ export const getDefaultState = () => ({
 ```
 
 #### ✅ Pas de transmission réseau des données utilisateur
+
 - Les variables saisies restent **exclusivement dans le navigateur**
 - Le courriel généré est copié dans le **presse-papiers local**
 - **Aucun appel API** ne transmet les données saisies
 
 #### ✅ Isolation du stockage
+
 - `LocalStorage` est **isolé par domaine** (Same-Origin Policy)
 - Inaccessible depuis d'autres sites web
 - Effaçable par l'utilisateur à tout moment
@@ -107,11 +111,13 @@ export const getDefaultState = () => ({
 ### 3.2 Sécurité du transport
 
 #### ✅ HTTPS obligatoire
+
 - Hébergement sur GitHub Pages avec **certificat SSL/TLS**
 - **HSTS** (HTTP Strict Transport Security) activé
 - Toutes les ressources chargées en HTTPS
 
 #### ✅ Intégrité des ressources
+
 ```html
 <!-- Exemple de chargement sécurisé -->
 <script type="module" crossorigin src="/assets/index-xxx.js"></script>
@@ -120,6 +126,7 @@ export const getDefaultState = () => ({
 ### 3.3 Sécurité du code
 
 #### ✅ Protection contre les injections XSS
+
 ```javascript
 // Les variables sont échappées avant affichage
 const escapeRegExp = (value = '') => 
@@ -127,6 +134,7 @@ const escapeRegExp = (value = '') =>
 ```
 
 #### ✅ Content Security Policy (CSP) recommandée
+
 ```http
 Content-Security-Policy: 
   default-src 'self';
@@ -137,6 +145,7 @@ Content-Security-Policy:
 ```
 
 #### ✅ Pas de dépendances vulnérables
+
 ```bash
 # Audit des dépendances (npm audit)
 # Toutes les dépendances sont à jour et sans vulnérabilités connues
@@ -145,12 +154,14 @@ Content-Security-Policy:
 ### 3.4 Sécurité de l'infrastructure
 
 #### ✅ Hébergement statique (GitHub Pages)
+
 - **Aucun code serveur** à exploiter
 - **Aucune base de données** à compromettre
 - **Aucun endpoint API** exposé
 - Infrastructure gérée par **Microsoft/GitHub**
 
 #### ✅ Contrôle de version
+
 - Code source versionné avec **Git**
 - Historique complet des modifications
 - Déploiement via **CI/CD contrôlé**
@@ -161,18 +172,18 @@ Content-Security-Policy:
 
 ### 4.1 Matrice des risques
 
-| Menace | Probabilité | Impact | Risque | Mitigation |
-|--------|-------------|--------|--------|------------|
-| Vol de données utilisateur | ❌ Impossible | N/A | **Nul** | Aucune donnée collectée |
-| Injection SQL | ❌ Impossible | N/A | **Nul** | Aucune base de données |
-| XSS (Cross-Site Scripting) | Très faible | Faible | **Très faible** | Échappement des entrées |
-| Interception réseau (MITM) | Très faible | Faible | **Très faible** | HTTPS obligatoire |
-| Déni de service (DoS) | Faible | Faible | **Faible** | CDN GitHub Pages |
-| Compromission des modèles | Faible | Moyen | **Faible** | Contrôle Git + review |
+| Menace                     | Probabilité    | Impact | Risque          | Mitigation                |
+| -------------------------- | -------------- | ------ | --------------- | ------------------------- |
+| Vol de données utilisateur | ❌ Impossible  | N/A    | **Nul**         | Aucune donnée collectée   |
+| Injection SQL              | ❌ Impossible  | N/A    | **Nul**         | Aucune base de données    |
+| XSS (Cross-Site Scripting) | Très faible    | Faible | **Très faible** | Échappement des entrées   |
+| Interception réseau (MITM) | Très faible    | Faible | **Très faible** | HTTPS obligatoire         |
+| Déni de service (DoS)      | Faible         | Faible | **Faible**      | CDN GitHub Pages          |
+| Compromission des modèles  | Faible         | Moyen  | **Faible**      | Contrôle Git + review     |
 
 ### 4.2 Surface d'attaque
 
-```
+```text
 Surface d'attaque: MINIMALE
 
 ┌─────────────────────────────────────────────────────────┐
@@ -217,7 +228,7 @@ export const hasOpenAIKey = () => {
 ### 5.2 Mesures de sécurité IA
 
 | Aspect | Mesure |
-|--------|--------|
+| --- | --- |
 | **Clé API** | Stockée dans LocalStorage du navigateur uniquement |
 | **Transmission** | Direct navigateur → OpenAI (pas de proxy) |
 | **Données envoyées** | Uniquement le texte soumis explicitement par l'utilisateur |
@@ -227,7 +238,7 @@ export const hasOpenAIKey = () => {
 
 Pour un déploiement au sein de la fonction publique:
 
-```
+```text
 OPTION A: Désactiver complètement l'IA
 ├── Supprimer le fichier src/utils/openai.js
 ├── Retirer les références IA de l'interface
@@ -247,7 +258,7 @@ OPTION B: IA via proxy interne (recommandé si IA requise)
 ### 6.1 Conformité réglementaire
 
 | Réglementation | Statut | Justification |
-|----------------|--------|---------------|
+| --- | --- | --- |
 | **LPRPDE** (Canada) | ✅ Conforme | Aucune collecte de données personnelles |
 | **Directive sur la gestion de la sécurité** (SCT) | ✅ Conforme | Application non classifiée |
 | **ITSG-33** (CCCS) | ✅ Applicable | Contrôles de sécurité minimaux requis |
@@ -255,14 +266,14 @@ OPTION B: IA via proxy interne (recommandé si IA requise)
 
 ### 6.2 Évaluation ITSG-33
 
-| Contrôle | Applicabilité | Statut |
-|----------|---------------|--------|
-| AC - Contrôle d'accès | Faible | N/A (pas d'authentification) |
-| AU - Audit et responsabilité | Faible | Logs navigateur disponibles |
-| CM - Gestion de la configuration | Moyen | ✅ Git versionné |
-| IA - Identification et authentification | N/A | Pas requis |
-| SC - Protection des systèmes et communications | Moyen | ✅ HTTPS |
-| SI - Intégrité du système et de l'information | Moyen | ✅ Code statique |
+| Contrôle                                        | Applicabilité | Statut                       |
+| ----------------------------------------------- | ------------- | ---------------------------- |
+| AC - Contrôle d'accès                           | Faible        | N/A (pas d'authentification) |
+| AU - Audit et responsabilité                    | Faible        | Logs navigateur disponibles  |
+| CM - Gestion de la configuration                | Moyen         | ✅ Git versionné             |
+| IA - Identification et authentification         | N/A           | Pas requis                   |
+| SC - Protection des systèmes et communications  | Moyen         | ✅ HTTPS                     |
+| SI - Intégrité du système et de l'information   | Moyen         | ✅ Code statique             |
 
 ---
 
@@ -271,6 +282,7 @@ OPTION B: IA via proxy interne (recommandé si IA requise)
 ### 7.1 Pour déploiement immédiat (GitHub Pages)
 
 ✅ **Approuvé pour utilisation** avec les conditions suivantes:
+
 - Sensibiliser les utilisateurs à ne pas saisir d'informations classifiées
 - Désactiver ou documenter la fonctionnalité IA optionnelle
 - Réviser périodiquement les dépendances
@@ -295,11 +307,11 @@ Je certifie que l'application ECHO, dans sa configuration actuelle:
 
 ### Points de contact sécurité
 
-| Rôle | Contact |
-|------|---------|
-| Responsable application | [À définir] |
-| Équipe sécurité TI | [À définir] |
-| Signalement d'incident | [À définir] |
+| Rôle                     | Contact      |
+| ------------------------ | ------------ |
+| Responsable application  | [À définir]  |
+| Équipe sécurité TI       | [À définir]  |
+| Signalement d'incident   | [À définir]  |
 
 ---
 

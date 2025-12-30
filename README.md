@@ -93,6 +93,60 @@ bt-ctd-echo/
 - **Tailwind CSS 4** - Styles
 - **Radix UI** - Composants accessibles
 - **Fuse.js** - Recherche floue
+- **BroadcastChannel API** - Synchronisation temps réel entre fenêtres
+
+---
+
+## Architecture technique
+
+### Synchronisation bidirectionnelle Main ↔ Popout
+
+L'application permet d'éditer les variables soit dans la fenêtre principale (via les pills), soit dans une fenêtre popout détachée. Les deux restent synchronisées en temps réel.
+
+#### Défis résolus
+
+1. **Cursor jumping** : Les inputs React `controlled` causent un saut du curseur lors de mises à jour fréquentes
+2. **Double-binding** : Les changements dans une fenêtre doivent mettre à jour l'autre sans créer de boucle infinie
+
+#### Solution implémentée
+
+```text
+┌─────────────────┐    BroadcastChannel     ┌─────────────────┐
+│  Main Window    │ ◄──────────────────────►│  Popout Window  │
+│  (SimplePill    │   variablesUpdated      │  (Uncontrolled  │
+│   Editor)       │   variableChanged       │   inputs)       │
+└─────────────────┘                         └─────────────────┘
+```
+
+**Fichiers clés :**
+
+- `src/App.jsx` - Gère la fenêtre principale et envoie `variablesUpdated`
+- `src/VariablesPopout.jsx` - Gère le popout et envoie `variableChanged`
+
+**Techniques critiques :**
+
+1. **Inputs non-contrôlés** : Utilisation de `defaultValue` au lieu de `value` dans le popout pour éviter le cursor jumping
+
+2. **Mise à jour impérative du DOM** : La fonction `applyVariablesToInputs()` met à jour les valeurs directement via `el.value = newValue`
+
+3. **Détection du focus actif** : Avant de mettre à jour un champ, on vérifie :
+
+   ```js
+   const windowHasFocus = document.hasFocus()
+   if (el === document.activeElement && windowHasFocus) continue
+   ```
+
+   Cela permet de ne pas interrompre la saisie de l'utilisateur, tout en appliquant les mises à jour quand la fenêtre n'a pas le focus.
+
+4. **Sender ID** : Chaque fenêtre a un ID unique pour ignorer ses propres messages
+
+#### Messages BroadcastChannel
+
+| Message            | Direction      | Description                                    |
+| ------------------ | -------------- | ---------------------------------------------- |
+| `variablesUpdated` | Main → Popout  | État complet des variables après modification  |
+| `variableChanged`  | Popout → Main  | Modification d'une variable spécifique         |
+| `variableDeleted`  | Both           | Suppression d'une variable                     |
 
 ---
 

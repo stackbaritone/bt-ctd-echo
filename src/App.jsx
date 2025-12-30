@@ -423,9 +423,57 @@ function App() {
   const pendingPopoutSnapshotRef = useRef(null)
   const varsRemoteUpdateRef = useRef(false)
   const skipPopoutBroadcastRef = useRef({ pending: false, templateId: null, templateLanguage: null })
+  const popoutWindowRef = useRef(null)
+  const lastPopoutOpenedTimestampRef = useRef(0)
   const manualEditRef = useRef({ subject: false, body: false })
   const pendingTemplateIdRef = useRef(null)
   const canUseBC = typeof window !== 'undefined' && 'BroadcastChannel' in window
+
+  // Ask existing popout (if any) to focus itself instead of opening a new one
+  const requestExistingPopoutFocus = useCallback(() => {
+    if (!canUseBC) return Promise.resolve(false)
+    
+    // Create a temporary channel if the main one isn't ready yet
+    const channel = popoutChannelRef.current || (() => {
+      try {
+        return new BroadcastChannel('email-assistant-sync')
+      } catch { return null }
+    })()
+    if (!channel) return Promise.resolve(false)
+
+    return new Promise((resolve) => {
+      let done = false
+      const cleanup = (handler, timer) => {
+        try { channel.removeEventListener('message', handler) } catch {}
+        clearTimeout(timer)
+        // Close temporary channel if we created one
+        if (!popoutChannelRef.current) {
+          try { channel.close() } catch {}
+        }
+      }
+
+      const handler = (event) => {
+        const msg = event.data
+        if (!msg || msg.sender === popoutSenderIdRef.current) return
+        if (msg.type === 'popoutFocusAck') {
+          if (done) return
+          done = true
+          cleanup(handler, timer)
+          resolve(true)
+        }
+      }
+
+      const timer = setTimeout(() => {
+        if (done) return
+        done = true
+        cleanup(handler, timer)
+        resolve(false)
+      }, 400) // Slightly longer timeout for slower systems
+
+      try { channel.addEventListener('message', handler) } catch {}
+      try { channel.postMessage({ type: 'popoutFocusRequest', sender: popoutSenderIdRef.current }) } catch {}
+    })
+  }, [canUseBC])
 
   const updateFocusHighlight = useCallback((varName) => {
     try {
@@ -633,6 +681,31 @@ function App() {
     if (varsOnlyMode) setShowVariablePopup(true)
   }, [varsOnlyMode])
 
+  // In varsOnly mode, mark popout as open and clean up on close
+  useEffect(() => {
+    if (!varsOnlyMode) return
+    
+    // Mark popout as open
+    try { localStorage.setItem('ea_popout_opened', String(Date.now())) } catch {}
+    
+    // Keep the timestamp fresh while popout is open
+    const refreshInterval = setInterval(() => {
+      try { localStorage.setItem('ea_popout_opened', String(Date.now())) } catch {}
+    }, 10000) // Refresh every 10 seconds
+    
+    // Clean up on close
+    const onUnload = () => {
+      try { localStorage.removeItem('ea_popout_opened') } catch {}
+    }
+    window.addEventListener('beforeunload', onUnload)
+    
+    return () => {
+      clearInterval(refreshInterval)
+      window.removeEventListener('beforeunload', onUnload)
+      try { localStorage.removeItem('ea_popout_opened') } catch {}
+    }
+  }, [varsOnlyMode])
+
   // In varsOnly mode, make the popup fill the window and follow resize
   useEffect(() => {
     if (!varsOnlyMode) return
@@ -723,8 +796,41 @@ function App() {
   }, [selectedTemplateId, templateLanguage])
 
   // Smart function to open variables (popup or popout based on preference)
-  const openVariables = useCallback(() => {
+  const openVariables = useCallback(async () => {
     if (preferPopout && selectedTemplate?.variables?.length > 0) {
+      // If another popout already exists, focus it instead of opening a new one
+      const focusedExisting = await requestExistingPopoutFocus()
+      if (focusedExisting) {
+        setVarsMinimized(false)
+        setVarsPinned(false)
+        setShowVariablePopup(false)
+        return
+      }
+
+      // Check if a popout window is already open
+      if (popoutWindowRef.current && !popoutWindowRef.current.closed) {
+        try {
+          // Focus the existing window instead of opening a new one
+          popoutWindowRef.current.focus()
+          return
+        } catch (e) {
+          // Window reference is stale, clear it
+          popoutWindowRef.current = null
+        }
+      }
+
+      // Fallback: check localStorage timestamp to prevent multiple popouts
+      // This handles cases where we lose window reference (e.g., page refresh)
+      try {
+        const lastPopoutTs = parseInt(localStorage.getItem('ea_popout_opened') || '0', 10)
+        const isStale = isNaN(lastPopoutTs) || (Date.now() - lastPopoutTs > 30000) // 30s timeout
+        if (!isStale) {
+          // A popout was opened recently - try to find it via BroadcastChannel
+          const found = await requestExistingPopoutFocus()
+          if (found) return
+        }
+      } catch {}
+      
       // Auto-open popout (single-column, approx 470x700)
       const url = new URL(window.location.href)
       url.searchParams.set('varsOnly', '1')
@@ -758,6 +864,11 @@ function App() {
       // Note: alwaysRaised is a Firefox-specific feature that helps keep window on top
       const features = `popup=yes,width=${Math.round(w)},height=${Math.round(h)},left=${left},top=${top},toolbar=0,location=0,menubar=0,status=0,scrollbars=1,resizable=1,alwaysRaised=yes`
       const win = window.open('', '_blank', features)
+      
+      // Store reference to the new window
+      popoutWindowRef.current = win
+      // Mark popout as opened in localStorage
+      try { localStorage.setItem('ea_popout_opened', String(Date.now())) } catch {}
       if (win) {
         try {
           // Minimal loading state to avoid white flash
@@ -788,6 +899,10 @@ function App() {
         const checkClosed = setInterval(() => {
           if (win.closed) {
             clearInterval(checkClosed)
+            // Clear the window reference
+            if (popoutWindowRef.current === win) {
+              popoutWindowRef.current = null
+            }
             // Notify that popout closed
             if (canUseBC) {
               try {
@@ -816,7 +931,7 @@ function App() {
         }
       }
     }
-  }, [preferPopout, selectedTemplate, templateLanguage])
+  }, [preferPopout, selectedTemplate, templateLanguage, requestExistingPopoutFocus, canUseBC])
 
   // Admin authentication - same hash as admin-simple.js
   const ADMIN_PASSWORD_HASH = 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3' // "123" - CHANGE THIS!
@@ -937,6 +1052,18 @@ function App() {
           return
         }
         
+        // Focus request from another window wanting to reuse existing popout
+        // Only the popout (varsOnlyMode) should respond, NOT the main window
+        if (msg.type === 'popoutFocusRequest') {
+          if (varsOnlyMode) {
+            try { window.focus() } catch {}
+            try {
+              channel.postMessage({ type: 'popoutFocusAck', sender: popoutSenderIdRef.current })
+            } catch {}
+          }
+          return
+        }
+
         // Handle variable changes from popout
         if (msg.type === 'variableChanged' && msg.allVariables) {
           varsRemoteUpdateRef.current = true
@@ -944,6 +1071,31 @@ function App() {
           const next = { ...msg.allVariables }
           variablesRef.current = next
           setVariables(next)
+          
+          // Force update pill display values in the DOM
+          // This is needed because React may not re-render pills immediately
+          try {
+            const lang = templateLanguageRef.current || 'fr'
+            document.querySelectorAll('.var-pill').forEach(pill => {
+              const varName = pill.getAttribute('data-var')
+              if (!varName) return
+              const varValue = resolveVariableValue(next, varName, lang)
+              if (varValue === '__DELETED__') {
+                pill.remove()
+                return
+              }
+              const isFilled = varValue.trim().length > 0
+              const displayValue = isFilled ? varValue : `<<${varName}>>`
+              const currentText = (pill.textContent || '').trim()
+              if (currentText !== displayValue.trim()) {
+                pill.textContent = displayValue
+                pill.classList.toggle('filled', isFilled)
+                pill.classList.toggle('empty', !isFilled)
+                pill.setAttribute('data-display', isFilled ? varValue : '')
+              }
+            })
+          } catch {}
+          
           // Purge any pills whose variables are now marked deleted
           try {
             Object.entries(next).forEach(([k,v]) => {
@@ -1052,7 +1204,12 @@ function App() {
         }
 
         if (msg.type === 'popoutOpened' || msg.type === 'popoutReady') {
-          console.log(`🔄 ${msg.type === 'popoutReady' ? 'Popout ready' : 'Popout opened'}, extracting current values from editors...`)
+          // Ignore all popoutOpened/popoutReady messages after the first one within 5 seconds
+          const now = Date.now()
+          if (lastPopoutOpenedTimestampRef.current && (now - lastPopoutOpenedTimestampRef.current) < 5000) {
+            return
+          }
+          lastPopoutOpenedTimestampRef.current = now
 
           setTimeout(() => {
             // ALWAYS extract from editors when popout opens to get latest values
@@ -1064,7 +1221,6 @@ function App() {
               const syncResult = typeof runSync === 'function' ? runSync() : null
               if (syncResult?.variables) {
                 latestVariables = { ...syncResult.variables }
-                console.log('🔄 Extracted variables from editors:', latestVariables)
               }
             } catch (syncError) {
               console.error('Failed to extract variables while preparing popout snapshot:', syncError)
@@ -1073,17 +1229,13 @@ function App() {
             // Fallback to snapshot or current variables if extraction failed
             if (!latestVariables && pendingPopoutSnapshotRef.current) {
               latestVariables = { ...pendingPopoutSnapshotRef.current }
-              console.log('🔄 Using pending snapshot:', latestVariables)
             }
 
             if (!latestVariables) {
               latestVariables = { ...variablesRef.current }
-              console.log('🔄 Using current variables ref:', latestVariables)
             }
 
             pendingPopoutSnapshotRef.current = null
-
-            console.log('🔄 Sending variables to popout:', latestVariables)
 
             try {
               channel.postMessage({
@@ -1093,7 +1245,6 @@ function App() {
                 templateLanguage: templateLanguageRef.current || templateLanguage,
                 sender: popoutSenderIdRef.current
               })
-              console.log('🔄 Sent variables to popout successfully')
             } catch (e) {
               console.error('Failed to send variables snapshot to popout:', e)
             }
@@ -1103,18 +1254,13 @@ function App() {
         
         // Handle sync request from popout
         if (msg.type === 'syncFromText') {
-          console.log('🔄 Received syncFromText request from popout')
-          
           // Extract current values from editors
           setTimeout(() => {
             const runSync = syncFromTextRef.current
             const result = typeof runSync === 'function' ? runSync() : { success: false, updated: false, variables: { ...variablesRef.current } }
             
-            console.log('🔄 Sync result:', result)
-            
             // Send back the extracted variables
             try {
-              console.log('🔄 Sending sync result back to popout:', result.variables)
               channel.postMessage({
                 type: 'syncComplete',
                 success: result.success,
@@ -1173,10 +1319,17 @@ function App() {
     }
   }, [selectedTemplateId, templateLanguage])
 
+  // Sync variables to popout in real-time when edited in main window
   useEffect(() => {
     if (!canUseBC) return
     const channel = popoutChannelRef.current
     if (!channel) return
+
+    // Skip if this update came from the popout itself
+    if (varsRemoteUpdateRef.current) {
+      varsRemoteUpdateRef.current = false
+      return
+    }
 
     const activeTemplateId = selectedTemplateRef.current?.id || selectedTemplateId || null
     const skipMeta = skipPopoutBroadcastRef.current
@@ -1197,6 +1350,18 @@ function App() {
     } catch (e) {
       console.error('Failed to broadcast variables to popout:', e)
     }
+
+    // Fallback sync via localStorage events
+    try {
+      localStorage.setItem('ea_vars_sync_payload', JSON.stringify({
+        type: 'variablesUpdated',
+        variables: { ...variables },
+        templateId: activeTemplateId,
+        templateLanguage,
+        timestamp: Date.now(),
+        sender: popoutSenderIdRef.current
+      }))
+    } catch {}
   }, [variables, selectedTemplateId, templateLanguage])
 
   // Emit focused variable changes immediately for real-time visual feedback
@@ -1282,6 +1447,21 @@ function App() {
           // Only update if it's from a different sender and recent
           if (data.sender !== varsSenderIdRef.current && (Date.now() - data.timestamp) < 5000) {
             setShowHighlights(data.showHighlights)
+          }
+        } catch {}
+      } else if (e.key === 'ea_vars_sync_payload' && e.newValue) {
+        try {
+          const data = JSON.parse(e.newValue)
+          if (!data || !data.timestamp || (Date.now() - data.timestamp) >= 5000) return
+          // Ignore our own broadcasts
+          if (data.sender === varsSenderIdRef.current || data.sender === popoutSenderIdRef.current) return
+
+          // Apply variableChanged payloads coming from popout/other windows
+          if (data.type === 'variableChanged' && data.allVariables && typeof data.allVariables === 'object') {
+            varsRemoteUpdateRef.current = true
+            const next = { ...data.allVariables }
+            variablesRef.current = next
+            setVariables(next)
           }
         } catch {}
       }
@@ -2264,17 +2444,7 @@ function App() {
 
   // Sync from text: Extract variable values from text areas back to Variables Editor
   const syncFromText = useCallback(() => {
-    console.log('🔄 Sync from text: Starting reverse synchronization...')
-    console.log('🔄 Current state:', {
-      selectedTemplate: selectedTemplate?.id,
-      templateLanguage,
-      finalSubject: finalSubject?.substring(0, 100) + '...',
-      finalBody: finalBody?.substring(0, 100) + '...',
-      currentVariables: variables
-    })
-    
     if (!selectedTemplate || !templatesData) {
-      console.log('🔄 No template selected or templates data unavailable')
       return { success: false, updated: false, variables: { ...variables } }
     }
 
@@ -2284,21 +2454,11 @@ function App() {
   const pillValuesFromSubject = extractVariablesFromPills(finalSubject)
   const pillValuesFromBody = extractVariablesFromPills(finalBody)
   
-  console.log('🔄 Values extracted from pills:', {
-    subject: pillValuesFromSubject,
-    body: pillValuesFromBody
-  })
-  
   // Merge pill values (subject takes priority)
   Object.assign(extracted, pillValuesFromBody, pillValuesFromSubject)
 
   const subjectTemplate = selectedTemplate.subject[templateLanguage] || ''
   const bodyTemplate = selectedTemplate.body[templateLanguage] || ''
-
-    console.log('🔄 Templates:', {
-      subjectTemplate: subjectTemplate?.substring(0, 100) + '...',
-      bodyTemplate: bodyTemplate?.substring(0, 100) + '...'
-    })
 
     // For any variables not found in pills, try template-based extraction using actual placeholders
     const collectPlaceholders = (tpl = '') => {
@@ -2328,8 +2488,6 @@ function App() {
       }
     }
 
-    console.log('🔄 Final extracted values:', extracted)
-    
     // Normalize extracted values using assignment helper to ensure suffix/base parity
     const normalizedExtracted = {}
     const preferredLang = (templateLanguage || templateLanguageRef.current || 'fr').toUpperCase()
@@ -2345,11 +2503,9 @@ function App() {
     const hasUpdates = nextVariables !== variables
 
     if (hasUpdates) {
-      console.log('🔄 Variables updated successfully, returning:', nextVariables)
       variablesRef.current = nextVariables
       setVariables(nextVariables)
     } else {
-      console.log('🔄 No new values extracted; sending current variables snapshot')
       variablesRef.current = nextVariables
     }
 
@@ -2365,8 +2521,6 @@ function App() {
     if (selectedTemplate) {
       const initialVars = buildInitialVariables(selectedTemplate, templatesData, templateLanguage)
 
-      console.log('🔄 Template loaded, initializing variables (with samples if empty):', initialVars)
-
       const subjectTemplate = selectedTemplate.subject[templateLanguage] || ''
       const bodyTemplate = selectedTemplate.body[templateLanguage] || ''
 
@@ -2377,7 +2531,6 @@ function App() {
       setFinalSubject(subjectTemplate)
       setFinalBody(bodyTemplate)
       manualEditRef.current = { subject: false, body: false }
-      console.log('🔄 Variables state and ref updated with initial/sample values')
     } else {
       variablesRef.current = {}
       finalSubjectRef.current = ''
@@ -2429,16 +2582,7 @@ function App() {
     if (!manualEditRef.current.subject && !manualEditRef.current.body) return
 
     const debounce = setTimeout(() => {
-      console.log('🔄 Detected manual text edits, attempting automatic reverse sync...')
       const result = syncFromText()
-
-      if (result.success && result.updated) {
-        console.log('🔄 Auto reverse sync extracted new values; manual edit flags reset')
-      } else if (result.success) {
-        console.log('🔄 Auto reverse sync completed without new values; manual edit flags reset')
-      } else {
-        console.log('🔄 Auto reverse sync skipped (template unavailable); manual edit flags reset')
-      }
 
       manualEditRef.current = { subject: false, body: false }
     }, 220)
@@ -2450,7 +2594,6 @@ function App() {
    * ENHANCED COPY FUNCTION - Supports both HTML and plain text
    */
   const copyToClipboard = async (type = 'all') => {
-    console.log('📋 copyToClipboard called with type:', type)
     let htmlContent = ''
     let textContent = ''
     
@@ -4307,6 +4450,16 @@ ${cleanBodyHtml}
 
             {/* Popup Content - Scrollable Area */}
             <div className="flex-1 overflow-y-auto" style={{ padding: varsOnlyMode ? '12px' : '16px' }}>
+              {/* DEBUG: Simple test input */}
+              <div className="mb-4 p-2 bg-yellow-100 border border-yellow-400 rounded">
+                <label className="block text-sm font-bold mb-1">TEST INPUT (tape ici):</label>
+                <input 
+                  type="text"
+                  className="w-full p-2 border border-gray-400 rounded"
+                  placeholder="Test - tape quelque chose..."
+                  onChange={(e) => console.log('TEST INPUT onChange:', e.target.value)}
+                />
+              </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {(() => {
                   // Extract variables in the order they appear in template text
@@ -4416,6 +4569,23 @@ ${cleanBodyHtml}
                           value={currentValue}
                           onChange={(e) => {
                             const newValue = e.target.value
+                            // Only update if value actually changed
+                            if (newValue !== currentValue) {
+                              const preferredLang = (templateLanguage || templateLanguageRef.current || 'fr').toUpperCase()
+                              setVariables(prev => {
+                                const assignments = expandVariableAssignment(varName, newValue, {
+                                  preferredLanguage: preferredLang,
+                                  variables: prev
+                                })
+                                return applyAssignments(prev, assignments)
+                              })
+                            }
+                            // Auto-resize (max 2 lines)
+                            const lines = (newValue.match(/\n/g) || []).length + 1
+                            e.target.style.height = lines <= 2 ? (lines === 1 ? '32px' : '52px') : '52px'
+                          }}
+                          onInput={(e) => {
+                            const newValue = e.target.value
                             const preferredLang = (templateLanguage || templateLanguageRef.current || 'fr').toUpperCase()
                             setVariables(prev => {
                               const assignments = expandVariableAssignment(varName, newValue, {
@@ -4424,9 +4594,6 @@ ${cleanBodyHtml}
                               })
                               return applyAssignments(prev, assignments)
                             })
-                            // Auto-resize (max 2 lines)
-                            const lines = (newValue.match(/\n/g) || []).length + 1
-                            e.target.style.height = lines <= 2 ? (lines === 1 ? '32px' : '52px') : '52px'
                           }}
                           onFocus={() => setFocusedVar(varName)}
                           onKeyDown={(e) => {

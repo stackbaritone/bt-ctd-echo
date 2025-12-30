@@ -278,9 +278,9 @@ export default function VariablesPage() {
           }
         }
         
-        // Send ready signal to main window immediately and with retries
+        // Send ready signal to main window once
         const sendReady = () => {
-          if (channel) {
+          if (channel && !cancelled) {
             try {
               channel.postMessage({ type: 'popoutReady', timestamp: Date.now() })
               debugLog('sent popoutReady')
@@ -290,11 +290,8 @@ export default function VariablesPage() {
           }
         }
         
-        // Send immediately
-        setTimeout(sendReady, 50)
-        // Send again after a delay in case first was missed
-        setTimeout(sendReady, 300)
-        setTimeout(sendReady, 600)
+        // Send once after a short delay to ensure everything is initialized
+        setTimeout(sendReady, 200)
         
       } catch (e) {
         console.error('BroadcastChannel not available:', e)
@@ -318,12 +315,12 @@ export default function VariablesPage() {
       hydrateVariables: true
     })
     if (!resolved) {
-      console.warn('📋 Unable to locate template for popout:', pendingTemplateId, 'available templates:', (templatesData?.templates||[]).map(t=>t.id).join(', '))
+      console.warn('[VariablesPage] Unable to locate template for popout:', pendingTemplateId)
       // Template not found - could be a new template not yet in this window's cache
       // Try to reload templates once before giving up
       const allIds = (templatesData?.templates||[]).map(t => t.id)
       if (!allIds.includes(pendingTemplateId)) {
-        console.log('📋 Template not in current catalog, attempting fresh reload...')
+        // Template not in current catalog, attempting fresh reload
         // Try to fetch fresh data once
         const retryFetch = async () => {
           try {
@@ -335,18 +332,17 @@ export default function VariablesPage() {
             const response = await fetch(url, { cache: 'no-store', headers: { 'Cache-Control': 'no-cache' } })
             if (response.ok) {
               const freshData = await response.json()
-              console.log('📋 Fresh data loaded, checking for template:', pendingTemplateId)
               setTemplatesData(freshData)
               // The effect will re-run with fresh data and try again
             } else {
-              console.error('❌ Fresh fetch failed with status:', response.status)
+              console.error('[VariablesPage] Fresh fetch failed with status:', response.status)
               // Give up after failed retry
               hydratedTemplateIdRef.current = null
               setSelectedTemplate(null)
               setPendingTemplateId(null)
             }
           } catch (e) {
-            console.error('❌ Exception during fresh fetch:', e)
+            console.error('[VariablesPage] Exception during fresh fetch:', e)
             // Give up after exception
             hydratedTemplateIdRef.current = null
             setSelectedTemplate(null)
@@ -405,12 +401,6 @@ export default function VariablesPage() {
       </div>
     )
   }
-
-  console.log('🔍 VariablesPage rendering with:', {
-    selectedTemplate: selectedTemplate?.id,
-    variables,
-    interfaceLanguage
-  })
 
   return (
     <VariablesPopout

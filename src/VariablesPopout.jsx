@@ -7,7 +7,7 @@ import {
   resolveVariableValue,
   varKeysMatch
 } from './utils/variables'
-import { resolveVariableInfo, guessSampleValue } from './utils/template'
+import { resolveVariableInfo, guessSampleValue, applyAssignments } from './utils/template'
 
 /**
  * Standalone Variables Editor Popout Window
@@ -16,6 +16,18 @@ import { resolveVariableInfo, guessSampleValue } from './utils/template'
  * editing of template variables. Changes are synced back to the main window
  * via BroadcastChannel.
  */
+const shallowEqual = (a, b) => {
+  if (a === b) return true
+  if (!a || !b || typeof a !== 'object' || typeof b !== 'object') return false
+  const aKeys = Object.keys(a)
+  const bKeys = Object.keys(b)
+  if (aKeys.length !== bKeys.length) return false
+  for (const k of aKeys) {
+    if (a[k] !== b[k]) return false
+  }
+  return true
+}
+
 export default function VariablesPopout({ 
   selectedTemplate, 
   templatesData, 
@@ -23,16 +35,9 @@ export default function VariablesPopout({
   interfaceLanguage,
   templateLanguage = 'fr'
 }) {
-  console.log('🔍 VariablesPopout props:', {
-    selectedTemplate: selectedTemplate?.id,
-    templatesData: !!templatesData,
-    initialVariables,
-    interfaceLanguage,
-    templateLanguage
-  })
-  
   const [variables, setVariables] = useState(initialVariables || {})
   const varInputRefs = useRef({})
+  const variablesRef = useRef(variables)
 
   // Auto-resize helper for textareas
   const autoResize = useCallback((el) => {
@@ -45,16 +50,54 @@ export default function VariablesPopout({
   }, [])
   const lastInitialVarsRef = useRef(initialVariables)
   // Keep local variables in sync with prop changes from parent page
+  // but never override while the user is typing (focused field)
   useEffect(() => {
-    if (lastInitialVarsRef.current !== initialVariables) {
-      lastInitialVarsRef.current = initialVariables
-      if (initialVariables && typeof initialVariables === 'object') {
-        setVariables({ ...initialVariables })
-      } else {
-        setVariables({})
-      }
+    if (lastInitialVarsRef.current === initialVariables) return
+
+    // If a field is focused, skip applying incoming props to avoid cursor jump
+    if (focusedVarRef.current) {
+      return
+    }
+
+    lastInitialVarsRef.current = initialVariables
+    if (initialVariables && typeof initialVariables === 'object') {
+      setVariables((prev) => shallowEqual(prev, initialVariables) ? prev : { ...initialVariables })
+    } else {
+      setVariables({})
     }
   }, [initialVariables])
+
+  useEffect(() => {
+    variablesRef.current = variables
+  }, [variables])
+
+  const applyVariablesToInputs = useCallback((nextVars) => {
+    const focused = focusedVarRef.current
+    const list = Array.isArray(selectedTemplate?.variables) ? selectedTemplate.variables : []
+    
+    // Check if the popout window actually has focus
+    // This is critical: when user edits in main window, popout window doesn't have focus
+    // so we should update ALL fields. Only skip focused field when user is actively
+    // typing in the popout window itself.
+    const windowHasFocus = document.hasFocus()
+    
+    for (const baseName of list) {
+      const el = varInputRefs.current?.[baseName]
+      if (!el) continue
+      
+      // Only skip if the element is active AND the window has focus
+      // (user is actually typing in this popout)
+      if (el === document.activeElement && windowHasFocus) continue
+      if (focused && varKeysMatch(focused, baseName) && windowHasFocus) continue
+
+      const resolved = resolveVariableValue(nextVars || {}, baseName, templateLanguage)
+      const nextValue = resolved === '__DELETED__' ? '' : String(resolved ?? '')
+      if (el.value !== nextValue) {
+        el.value = nextValue
+        autoResize(el)
+      }
+    }
+  }, [autoResize, selectedTemplate, templateLanguage])
 
   // Resize all inputs whenever variables change (content update) or on mount
   useEffect(() => {
@@ -96,7 +139,6 @@ export default function VariablesPopout({
     return () => window.removeEventListener('resize', handleResize)
   }, [])
   
-  console.log('🔍 VariablesPopout initialized with variables:', variables)
   const [focusedVar, setFocusedVar] = useState(null)
   const channelRef = useRef(null)
   const senderIdRef = useRef(Math.random().toString(36).slice(2))
@@ -172,15 +214,12 @@ export default function VariablesPopout({
     try {
       const channel = new BroadcastChannel('email-assistant-sync')
       channelRef.current = channel
-      console.log('🔍 BroadcastChannel created successfully')
 
       // Listen for messages from main window
       channel.onmessage = (event) => {
         try {
           const message = event.data
           if (!message || message.sender === senderIdRef.current) return
-
-          console.log('🔍 Received message:', message.type, message)
 
           if (message.type === 'focusedVar') {
             const next = message.varName ?? null
@@ -230,16 +269,31 @@ export default function VariablesPopout({
           }
 
           if (message.type === 'variablesUpdated') {
-            console.log('🔍 Updating variables from variablesUpdated:', message.variables)
-            setVariables(message.variables || {})
+            // Ignore updates that originated from this popout to avoid cursor reset
+            if (message.sender === senderIdRef.current) return
+
+            const incoming = message.variables || {}
+            // Update state (for helpers) and imperatively update inputs (uncontrolled) except focused
+            setVariables((prev) => shallowEqual(prev, incoming) ? prev : incoming)
+            try { applyVariablesToInputs(incoming) } catch {}
+            return
+          }
+
+          if (message.type === 'popoutFocusRequest') {
+            try { window.focus() } catch {}
+            if (channelRef.current) {
+              try {
+                channelRef.current.postMessage({ type: 'popoutFocusAck', sender: senderIdRef.current })
+              } catch (e) {
+                console.error('Failed to send popoutFocusAck:', e)
+              }
+            }
             return
           }
           
           // Handle sync completion (from explicit syncFromText requests)
           if (message.type === 'syncComplete') {
-            console.log('🔄 Received sync completion:', message)
             const nextVariables = message.variables || {}
-            console.log('🔄 Applying sync result variables:', nextVariables)
             setVariables(nextVariables)
             return
           }
@@ -265,8 +319,6 @@ export default function VariablesPopout({
   useEffect(() => {
     if (!channelRef.current) return
     
-    console.log('🔄 Popout ready - waiting for initial variables from main window')
-    
     // The main window will send variablesUpdated when it detects popoutOpened
     // We just need to wait for it
     
@@ -278,9 +330,31 @@ export default function VariablesPopout({
     }
   }, [])
 
+  // Fallback: listen for variable sync via localStorage
+  useEffect(() => {
+    const onStorage = (e) => {
+      if (e.key !== 'ea_vars_sync_payload' || !e.newValue) return
+      try {
+        const payload = JSON.parse(e.newValue)
+        if (!payload || payload.sender === senderIdRef.current) return
+        if (!payload.timestamp || (Date.now() - payload.timestamp) > 5000) return
+
+        if (payload.type === 'variablesUpdated' && payload.variables && typeof payload.variables === 'object') {
+          const incoming = payload.variables
+          setVariables((prev) => shallowEqual(prev, incoming) ? prev : incoming)
+          try { applyVariablesToInputs(incoming) } catch {}
+        }
+      } catch {}
+    }
+
+    window.addEventListener('storage', onStorage)
+    return () => window.removeEventListener('storage', onStorage)
+  }, [applyVariablesToInputs])
+
   // Sync variable changes to main window
   const enqueueVariableUpdate = (varName, value, allVariables) => {
     if (!channelRef.current) return
+
     try {
       channelRef.current.postMessage({
         type: 'variableChanged',
@@ -293,26 +367,40 @@ export default function VariablesPopout({
     } catch (e) {
       console.error('Failed to send variable update:', e)
     }
+
+    // Fallback sync via localStorage events (more reliable across windows)
+    try {
+      localStorage.setItem('ea_vars_sync_payload', JSON.stringify({
+        type: 'variableChanged',
+        varName,
+        value,
+        allVariables,
+        timestamp: Date.now(),
+        sender: senderIdRef.current
+      }))
+    } catch {}
   }
 
   const updateVariable = (varName, value) => {
+    const current = variablesRef.current || {}
     const assignments = expandVariableAssignment(varName, value, {
       preferredLanguage: activeLanguageCode,
-      variables
+      variables: current
     })
     // Compute the next snapshot synchronously to avoid race conditions
-    const snapshot = applyAssignments(variables || {}, assignments)
+    const snapshot = applyAssignments(current, assignments)
     setVariables(snapshot)
     enqueueVariableUpdate(varName, value, snapshot)
   }
 
   const removeVariable = (varName) => {
     // Mark variable as deleted by setting to special marker
+    const current = variablesRef.current || {}
     const assignments = expandVariableAssignment(varName, '__DELETED__', {
       preferredLanguage: activeLanguageCode,
-      variables
+      variables: current
     })
-    const snapshot = applyAssignments(variables || {}, assignments)
+    const snapshot = applyAssignments(current, assignments)
     setVariables(snapshot)
     enqueueVariableUpdate(varName, '__DELETED__', snapshot)
 
@@ -334,11 +422,12 @@ export default function VariablesPopout({
     const targetName = targetVarForLanguage(varName)
     const exampleValue = guessSampleValue(templatesData, targetName)
     // Compute next snapshot synchronously to avoid race conditions
+    const current = variablesRef.current || {}
     const assignments = expandVariableAssignment(varName, exampleValue, {
       preferredLanguage: activeLanguageCode,
-      variables
+      variables: current
     })
-    const snapshot = applyAssignments(variables || {}, assignments)
+    const snapshot = applyAssignments(current, assignments)
     setVariables(snapshot)
     enqueueVariableUpdate(varName, exampleValue, snapshot)
 
@@ -536,9 +625,8 @@ export default function VariablesPopout({
                     data-gramm="false"
                     data-enable-grammarly="false"
                     data-ms-editor="false"
-                    value={currentValue}
+                    defaultValue={currentValue}
                     onChange={(e) => { updateVariable(varName, e.target.value); autoResize(e.target) }}
-                    onInput={(e) => { updateVariable(varName, e.target.value); }}
                     onFocus={(e) => {
                       notifyFocusChange(varName)
                       requestAnimationFrame(() => {
