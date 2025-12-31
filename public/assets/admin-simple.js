@@ -76,6 +76,7 @@
   function initAuth() {
     const btnLogin = document.getElementById('btn-login');
     const passwordInput = document.getElementById('admin-password');
+    const togglePassword = document.getElementById('toggle-password');
     
     if (btnLogin) {
       btnLogin.addEventListener('click', handleLogin);
@@ -87,6 +88,16 @@
           e.preventDefault();
           handleLogin();
         }
+      });
+    }
+    
+    // Password visibility toggle
+    if (togglePassword && passwordInput) {
+      togglePassword.addEventListener('click', () => {
+        const isPassword = passwordInput.type === 'password';
+        passwordInput.type = isPassword ? 'text' : 'password';
+        togglePassword.textContent = isPassword ? '🙈' : '👁️';
+        togglePassword.title = isPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe';
       });
     }
     

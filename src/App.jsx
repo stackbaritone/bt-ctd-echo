@@ -364,6 +364,7 @@ function App() {
   const [showAdminModal, setShowAdminModal] = useState(false)
   const [adminPassword, setAdminPassword] = useState('')
   const [adminError, setAdminError] = useState('')
+  const [showAdminPassword, setShowAdminPassword] = useState(false)
   const [preferPopout, setPreferPopout] = useState(() => {
     try { return localStorage.getItem('ea_prefer_popout') === 'true' } catch { return false }
   })
@@ -3458,6 +3459,7 @@ ${cleanBodyHtml}
           setShowAdminModal(false)
           setAdminPassword('')
           setAdminError('')
+          setShowAdminPassword(false)
         }
       }}
     >
@@ -3476,20 +3478,33 @@ ${cleanBodyHtml}
           <label className="block text-sm font-medium text-gray-700 mb-2">
             {interfaceLanguage === 'fr' ? 'Mot de passe' : 'Password'}
           </label>
-          <input
-            type="password"
-            value={adminPassword}
-            onChange={(e) => setAdminPassword(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                e.preventDefault()
-                handleAdminLogin()
+          <div className="relative">
+            <input
+              type={showAdminPassword ? 'text' : 'password'}
+              value={adminPassword}
+              onChange={(e) => setAdminPassword(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault()
+                  handleAdminLogin()
+                }
+              }}
+              className="w-full px-4 py-3 pr-12 text-base border-2 border-gray-200 rounded-xl focus:outline-none focus:border-teal-500 transition-colors"
+              placeholder={interfaceLanguage === 'fr' ? 'Entrez le mot de passe' : 'Enter password'}
+              autoFocus
+            />
+            <button
+              type="button"
+              onClick={() => setShowAdminPassword(!showAdminPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-xl hover:opacity-70 transition-opacity"
+              title={showAdminPassword 
+                ? (interfaceLanguage === 'fr' ? 'Masquer le mot de passe' : 'Hide password')
+                : (interfaceLanguage === 'fr' ? 'Afficher le mot de passe' : 'Show password')
               }
-            }}
-            className="w-full px-4 py-3 text-base border-2 border-gray-200 rounded-xl focus:outline-none focus:border-teal-500 transition-colors"
-            placeholder={interfaceLanguage === 'fr' ? 'Entrez le mot de passe' : 'Enter password'}
-            autoFocus
-          />
+            >
+              {showAdminPassword ? '🙈' : '👁️'}
+            </button>
+          </div>
           {adminError && (
             <p className="mt-2 text-sm text-red-600">{adminError}</p>
           )}
@@ -3502,6 +3517,7 @@ ${cleanBodyHtml}
                 setShowAdminModal(false)
                 setAdminPassword('')
                 setAdminError('')
+                setShowAdminPassword(false)
               }}
             >
               {interfaceLanguage === 'fr' ? 'Annuler' : 'Cancel'}

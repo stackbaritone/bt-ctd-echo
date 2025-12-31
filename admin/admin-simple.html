@@ -230,6 +230,28 @@
         font-size: 48px;
         margin-bottom: 16px;
       }
+      .password-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+      }
+      .password-wrapper input {
+        padding-right: 44px;
+      }
+      .password-toggle {
+        position: absolute;
+        right: 12px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 4px;
+        color: #64748b;
+        font-size: 18px;
+        transition: color 0.2s;
+      }
+      .password-toggle:hover {
+        color: #0f172a;
+      }
       #admin-content {
         display: none;
       }
@@ -248,7 +270,12 @@
         <form id="login-form" onsubmit="return false;">
           <div class="field">
             <label for="admin-password">Mot de passe</label>
-            <input type="password" id="admin-password" placeholder="Entrez le mot de passe" autocomplete="current-password" />
+            <div class="password-wrapper">
+              <input type="password" id="admin-password" placeholder="Entrez le mot de passe" autocomplete="current-password" />
+              <button type="button" class="password-toggle" id="toggle-password" title="Afficher/masquer le mot de passe">
+                👁️
+              </button>
+            </div>
             <p class="error" id="login-error">Mot de passe incorrect</p>
           </div>
           <button type="submit" class="btn-login" id="btn-login">Se connecter</button>
