@@ -59,7 +59,7 @@
     <main>
       <div class="card mb12">
         <div class="chip">Info</div>
-        <div class="para">Tout reste en <strong>brouillon local</strong> (stocké dans votre navigateur) jusqu’à ce que vous exportiez. « Réinitialiser » recharge le fichier officiel.</div>
+        <div class="para">Vos modifications sont sauvegardées en <strong>brouillon local</strong> (dans votre navigateur). Elles apparaissent automatiquement dans l'app principale en quelques secondes. Cliquez « 🚀 Publier » pour les partager avec tous les utilisateurs.</div>
       </div>
 
       <section class="card mb12">
@@ -73,7 +73,7 @@
           <li><strong>Variables (placeholders)</strong> — Insérez des variables avec <code>&lt;&lt;NomVariable&gt;&gt;</code> dans l'Objet/Corps. Exemples: <code>&lt;&lt;ClientName&gt;&gt;</code>, <code>&lt;&lt;ProjectNumber&gt;&gt;</code>, <code>&lt;&lt;NewDeadline&gt;&gt;</code>. N'ajoutez PAS de suffixe _FR ou _EN dans le modèle (le système gère ça automatiquement).</li>
           <li><strong>Sync variables</strong> — Après avoir modifié le texte, cliquez « Sync variables » pour mettre à jour la liste détectée. <button type="button" class="focus-btn" data-target="btn-sync-vars">Sync</button></li>
           <li><strong>Descriptions des variables</strong> — En bas de l'éditeur, complétez les descriptions FR/EN et valeurs par défaut pour chaque variable détectée. Cela aide les utilisateurs à comprendre quoi remplir.</li>
-          <li><strong>Sauvegarde</strong> — Les changements sont enregistrés automatiquement en brouillon local (localStorage). Pour publier définitivement, cliquez <strong>« Publier sur GitHub »</strong> (nécessite token configuré) ou <strong>« Télécharger JSON »</strong> pour sauvegarder localement. <button type="button" class="focus-btn" data-target="btn-gimme-github">Publier sur GitHub</button></li>
+          <li><strong>Sauvegarde</strong> — Les changements sont enregistrés automatiquement en brouillon local. Pour publier définitivement, cliquez <strong>« 🚀 Publier »</strong> ou <strong>« Télécharger JSON »</strong> pour sauvegarder localement. <button type="button" class="focus-btn" data-target="btn-gimme-github">Publier</button></li>
         </ol>
       </section>
 
@@ -156,26 +156,17 @@
         </ul>
 
         <h4>🚀 Publier sur GitHub</h4>
-        <p>Cliquez « <strong>Publier sur GitHub</strong> » pour envoyer vos changements directement dans le dépôt GitHub et mettre à jour l'application principale. <button type="button" class="focus-btn" data-target="btn-gimme-github">Publier sur GitHub</button></p>
+        <p>Cliquez « <strong>🚀 Publier</strong> » pour envoyer vos changements directement dans le dépôt GitHub et mettre à jour l'application principale. <button type="button" class="focus-btn" data-target="btn-gimme-github">Publier</button></p>
         
-        <p><strong>Configuration initiale (une seule fois):</strong></p>
-        <ol>
-          <li>Au premier clic, le système demande un <strong>token GitHub</strong></li>
-          <li>Créez un token sur <a href="https://github.com/settings/tokens" target="_blank">github.com/settings/tokens</a> avec permissions <code>repo</code></li>
-          <li>Collez le token dans la boîte de dialogue</li>
-          <li>Le token est enregistré dans localStorage (sécurisé localement, jamais partagé)</li>
-          <li>Optionnel: vous pouvez aussi spécifier le dépôt (format: <code>owner/repo</code>) ou laisser l'auto-détection</li>
-        </ol>
-
-        <p><strong>Après configuration:</strong></p>
+        <p><strong>Ce qui se passe lors de la publication :</strong></p>
         <ul>
-          <li>Un clic publie directement sur la branche <code>main</code> du dépôt GitHub</li>
-          <li>Le fichier <code>complete_email_templates.json</code> est mis à jour</li>
+          <li>Le fichier <code>complete_email_templates.json</code> est mis à jour sur GitHub</li>
           <li>L'application principale se synchronise automatiquement avec la nouvelle version</li>
-          <li>Les autres utilisateurs voient les changements immédiatement</li>
+          <li>Tous les utilisateurs voient les changements immédiatement après rechargement</li>
+          <li>L'indicateur de statut passe à « À jour »</li>
         </ul>
 
-        <p class="note"><strong>Bonne pratique:</strong> Testez vos modèles localement avant de publier sur GitHub. Une fois publié, tous les utilisateurs auront accès aux nouveaux modèles!</p>
+        <p class="note"><strong>Bonne pratique :</strong> Vos modifications apparaissent dans l'app principale en quelques secondes (synchronisation locale). Publiez sur GitHub quand vous êtes satisfait pour les partager avec tous les utilisateurs.</p>
       </section>
 
       <section class="card mb12">
@@ -222,10 +213,10 @@
         <p>R: Il efface votre brouillon local (localStorage) et recharge la version officielle depuis le fichier JSON. <strong>Attention:</strong> Tous vos changements non publiés seront perdus! Utilisez-le seulement si vous voulez recommencer à zéro.</p>
 
         <p><strong>Q: Puis-je travailler à plusieurs sur les modèles?</strong></p>
-        <p>R: Oui, mais attention aux conflits! Chaque personne travaille sur son propre brouillon local. Lorsque quelqu'un publie sur GitHub, les autres doivent cliquer « Réinitialiser » pour récupérer la dernière version. Coordonnez-vous pour éviter d'écraser les changements des autres!</p>
+        <p>R: Oui, mais attention aux conflits! Chaque personne travaille sur son propre brouillon local. Lorsque quelqu'un publie sur GitHub, les autres doivent cliquer « ⟳ Recharger » pour récupérer la dernière version. Coordonnez-vous pour éviter d'écraser les changements des autres!</p>
 
-        <p><strong>Q: Mon token GitHub ne fonctionne pas.</strong></p>
-        <p>R: Vérifiez que votre token a bien les permissions <code>repo</code> (accès complet au dépôt). Les tokens expirent aussi après un certain temps - créez-en un nouveau si nécessaire sur <a href="https://github.com/settings/tokens" target="_blank">github.com/settings/tokens</a>.</p>
+        <p><strong>Q: Comment savoir si mes changements sont publiés?</strong></p>
+        <p>R: L'indicateur de statut en haut de la page affiche « À jour » (vert) si votre brouillon correspond à la version publiée, ou « Non publié » (orange) si vous avez des modifications locales non publiées.</p>
 
         <p><strong>Q: Combien de temps sont conservés les changements en brouillon local?</strong></p>
         <p>R: Indéfiniment, tant que vous ne videz pas le cache du navigateur. Mais pour la sécurité, exportez régulièrement un JSON de backup ou publiez sur GitHub.</p>

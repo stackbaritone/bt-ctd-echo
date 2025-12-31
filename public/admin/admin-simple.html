@@ -440,10 +440,9 @@
                 </p>
               </div>
               <div style="border:1px solid var(--border);border-radius:8px;padding:12px;background:#e0f2fe">
-                <strong style="color:#0369a1">Publier sur GitHub</strong>
+                <strong style="color:#0369a1">🚀 Publier sur GitHub</strong>
                 <p style="margin:6px 0 0;color:#0c4a6e;font-size:14px;line-height:1.6">
                   • Déploie les modifications sur GitHub et met à jour l'app web<br>
-                  • Demande un token GitHub au premier usage (généré automatiquement)<br>
                   • Met à jour automatiquement le timestamp de publication<br>
                   • Les utilisateurs de l'app web voient les changements immédiatement après rechargement
                 </p>
@@ -470,19 +469,13 @@
           <section style="margin-bottom:24px">
             <h3 style="color:#0f172a;font-size:16px;font-weight:700;margin:0 0 12px">🔐 Sécurité et accès</h3>
             <ul style="margin:0;padding-left:20px;color:#334155;line-height:1.7">
-              <li><strong>Authentification requise</strong> : mot de passe demandé à chaque session (hash SHA-256)</li>
-              <li><strong>Session temporaire</strong> : l'authentification expire à la fermeture du navigateur (sessionStorage)</li>
+              <li><strong>Authentification requise</strong> : mot de passe demandé à l'ouverture de la console</li>
+              <li><strong>Session persistante</strong> : restez connecté tant que vous ne vous déconnectez pas manuellement</li>
               <li><strong>Accès depuis l'app principale</strong> : bouton Admin discret en bas à gauche (visible pour tous, protégé par mot de passe)</li>
               <li><strong>Brouillon local</strong> : toutes les modifications sont sauvegardées dans le navigateur (localStorage)</li>
-              <li><strong>Pas de synchronisation automatique</strong> : les changements ne sont visibles publiquement qu'après publication GitHub</li>
-              <li><strong>Token GitHub</strong> : 
-                <ul style="margin-top:4px">
-                  <li>Stocké localement dans votre navigateur (jamais envoyé ailleurs que GitHub)</li>
-                  <li>Nécessaire uniquement pour la publication</li>
-                  <li>Configuré automatiquement au premier clic sur "Publier sur GitHub"</li>
-                </ul>
-              </li>
-              <li><strong>Indicateur de sauvegarde</strong> : badge visuel en bas à droite confirme chaque enregistrement local</li>
+              <li><strong>Synchronisation locale</strong> : vos changements apparaissent dans l'app principale en quelques secondes (sans publier)</li>
+              <li><strong>Publication GitHub</strong> : pour partager vos modifications avec tous les utilisateurs</li>
+              <li><strong>Indicateur de statut</strong> : badge "À jour" ou "Non publié" indique si vos changements sont publiés</li>
             </ul>
           </section>
 
@@ -521,9 +514,9 @@
               <details style="border:1px solid var(--border);border-radius:8px;padding:12px;background:#fff">
                 <summary style="cursor:pointer;font-weight:700;color:#334155">Erreur lors de la publication GitHub</summary>
                 <p style="margin:8px 0 0;color:#64748b;font-size:14px;line-height:1.6">
-                  • Vérifier que le token GitHub est valide (peut expirer)<br>
-                  • Si demandé, autoriser la création automatique du token<br>
-                  • En cas d'échec répété, utiliser "Télécharger JSON" puis publier manuellement via GitHub web
+                  • Vérifier votre connexion internet<br>
+                  • Réessayer après quelques instants<br>
+                  • En cas d'échec répété, utiliser "Télécharger JSON" pour sauvegarder vos modifications localement
                 </p>
               </details>
               <details style="border:1px solid var(--border);border-radius:8px;padding:12px;background:#fff">
