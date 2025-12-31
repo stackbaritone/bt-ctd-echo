@@ -452,6 +452,73 @@ const toolbarStyles = `
     border-top-left-radius: 0 !important;
     border-top-right-radius: 0 !important;
   }
+  
+  /* Dark mode support */
+  .dark .rich-text-toolbar,
+  html.dark .rich-text-toolbar {
+    background: #1e293b;
+    border-color: #334155;
+  }
+  
+  .dark .toolbar-btn,
+  html.dark .toolbar-btn {
+    background: #334155;
+    border-color: #475569;
+    color: #e2e8f0;
+  }
+  
+  .dark .toolbar-btn:hover,
+  html.dark .toolbar-btn:hover {
+    background: #475569;
+    border-color: #64748b;
+  }
+  
+  .dark .toolbar-btn.active,
+  html.dark .toolbar-btn.active {
+    background: #059669;
+    color: white;
+    border-color: #059669;
+  }
+  
+  .dark .toolbar-select,
+  html.dark .toolbar-select {
+    background: #334155;
+    border-color: #475569;
+    color: #e2e8f0;
+  }
+  
+  .dark .toolbar-select option,
+  html.dark .toolbar-select option {
+    background: #1e293b;
+    color: #e2e8f0;
+  }
+  
+  .dark .toolbar-separator,
+  html.dark .toolbar-separator {
+    background: #475569;
+  }
+  
+  .dark .color-picker-dropdown,
+  html.dark .color-picker-dropdown {
+    background: #1e293b;
+    border-color: #334155;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  }
+  
+  .dark .color-custom,
+  html.dark .color-custom {
+    border-top-color: #334155;
+  }
+  
+  .dark .color-custom-label,
+  html.dark .color-custom-label {
+    color: #94a3b8;
+  }
+  
+  .dark .color-preview,
+  html.dark .color-preview {
+    border-color: #475569;
+  }
 `;
 
 // Auto-inject styles
