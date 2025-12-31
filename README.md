@@ -32,9 +32,9 @@
 
 ### Export et intégration
 
-- Copie directe vers Outlook (classique/web)
-- Export PDF, Word, HTML, EML
-- Préservation du formatage riche
+- Copier le courriel formaté dans le presse-papier
+- Coller directement dans Outlook (classique/web) ou tout client courriel
+- Préservation complète du formatage riche
 
 ---
 
@@ -160,11 +160,13 @@ L'application permet d'éditer les variables soit dans la fenêtre principale (v
 
 ## Administration
 
-L'interface d'administration (`admin/admin-simple.html`) permet de :
+L'interface d'administration (`/admin/admin-simple.html`) permet de :
 
-- Éditer les modèles et variables
+- Éditer les modèles et variables avec formatage riche
 - Importer/exporter en JSON ou Excel
-- Gérer les catégories
+- Exporter un catalogue Word complet pour usage hors-ligne
+- Gérer les catégories et leurs couleurs
+- Publier les changements sur GitHub en un clic
 
 ---
 
