@@ -144,7 +144,6 @@
       .rich-text-editor p:last-child {
         margin-bottom: 0;
       }
-    </style>
       /* Login screen */
       #login-screen {
         position: fixed;
@@ -224,7 +223,7 @@
       #admin-content.authenticated {
         display: block;
       }
-  </style>
+    </style>
   </head>
   <body>
     <!-- Login Screen -->
@@ -233,12 +232,14 @@
         <div class="lock-icon">🔐</div>
         <h1>Console Admin</h1>
         <p class="subtitle">Accès réservé aux administrateurs</p>
-        <div class="field">
-          <label for="admin-password">Mot de passe</label>
-          <input type="password" id="admin-password" placeholder="Entrez le mot de passe" autocomplete="current-password" />
-          <p class="error" id="login-error">Mot de passe incorrect</p>
-        </div>
-        <button class="btn-login" id="btn-login">Se connecter</button>
+        <form id="login-form" onsubmit="return false;">
+          <div class="field">
+            <label for="admin-password">Mot de passe</label>
+            <input type="password" id="admin-password" placeholder="Entrez le mot de passe" autocomplete="current-password" />
+            <p class="error" id="login-error">Mot de passe incorrect</p>
+          </div>
+          <button type="submit" class="btn-login" id="btn-login">Se connecter</button>
+        </form>
       </div>
     </div>
 

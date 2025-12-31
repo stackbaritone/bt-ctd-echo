@@ -18,14 +18,14 @@
   }
   
   function isAuthenticated() {
-    return sessionStorage.getItem(AUTH_KEY) === 'true';
+    return localStorage.getItem(AUTH_KEY) === 'true';
   }
   
   function setAuthenticated(value) {
     if (value) {
-      sessionStorage.setItem(AUTH_KEY, 'true');
+      localStorage.setItem(AUTH_KEY, 'true');
     } else {
-      sessionStorage.removeItem(AUTH_KEY);
+      localStorage.removeItem(AUTH_KEY);
     }
   }
   

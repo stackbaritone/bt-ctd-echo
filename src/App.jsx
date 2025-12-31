@@ -2648,7 +2648,7 @@ ${bodyResult.html}
 </head>
 <body style="margin: 0; padding: 0;">
 <div style="font-family: Arial, sans-serif; font-size: 14px; line-height: 1.6; color: #000000;">
-<div><strong>Subject:</strong> ${subjectResult.html || toSimpleHtml(resolvedSubject)}</div>
+<div><strong>${subjectResult.html || toSimpleHtml(resolvedSubject)}</strong></div>
 <br>
 <div>${bodyResult.html}</div>
 </div>
