@@ -24,7 +24,7 @@ import { loadState, saveState, getDefaultState, clearState } from './utils/stora
 import { NAVY_TEXT, CATEGORY_BADGE_STYLES, getCategoryBadgeStyle, customEditorStyles } from './constants/styles.js'
 import { SYNONYMS, normalize, expandQuery } from './constants/synonyms.js'
 import { interfaceTexts } from './constants/interfaceTexts.js'
-import { Search, FileText, Copy, RotateCcw, Languages, Filter, Globe, Sparkles, Mail, Edit3, Link, Settings, X, Move, Send, Star, ClipboardPaste, Eraser, Pin, PinOff, Minimize2, ExternalLink, Expand, Shrink, MoveRight, LifeBuoy } from 'lucide-react'
+import { Search, FileText, Copy, RotateCcw, Languages, Filter, Globe, Sparkles, Mail, Edit3, Link, Settings, X, Move, Send, Star, ClipboardPaste, Eraser, Pin, PinOff, Minimize2, ExternalLink, Expand, Shrink, MoveRight, LifeBuoy, Moon, Sun } from 'lucide-react'
 import echoLogo from './assets/echo-logo.svg'
 import { Button } from './components/ui/button.jsx'
 import { Input } from './components/ui/input.jsx'
@@ -365,6 +365,32 @@ function App() {
   const [adminPassword, setAdminPassword] = useState('')
   const [adminError, setAdminError] = useState('')
   const [showAdminPassword, setShowAdminPassword] = useState(false)
+  
+  // Dark mode state
+  const [darkMode, setDarkMode] = useState(() => {
+    // Check saved preference first, then system preference
+    const saved = savedState.darkMode
+    if (typeof saved === 'boolean') return saved
+    try {
+      const localSaved = localStorage.getItem('ea_dark_mode')
+      if (localSaved !== null) return localSaved === 'true'
+      // Check system preference
+      return window.matchMedia?.('(prefers-color-scheme: dark)')?.matches ?? false
+    } catch { return false }
+  })
+  
+  // Apply dark mode class to HTML element
+  useEffect(() => {
+    const html = document.documentElement
+    if (darkMode) {
+      html.classList.add('dark')
+    } else {
+      html.classList.remove('dark')
+    }
+    // Save preference
+    try { localStorage.setItem('ea_dark_mode', darkMode ? 'true' : 'false') } catch {}
+  }, [darkMode])
+  
   const [preferPopout, setPreferPopout] = useState(() => {
     try { return localStorage.getItem('ea_prefer_popout') === 'true' } catch { return false }
   })
@@ -757,12 +783,13 @@ function App() {
         selectedTemplateId,
         variables,
         favorites,
-        favoritesOnly
+        favoritesOnly,
+        darkMode
       })
     }, 300) // 300ms debounce
     
     return () => clearTimeout(timeoutId)
-  }, [interfaceLanguage, templateLanguage, searchQuery, selectedCategory, selectedTemplateId, variables, favorites, favoritesOnly])
+  }, [interfaceLanguage, templateLanguage, searchQuery, selectedCategory, selectedTemplateId, variables, favorites, favoritesOnly, darkMode])
 
   // Persist pane sizes
   useEffect(() => {
@@ -3317,7 +3344,21 @@ ${cleanBodyHtml}
                 <Globe className="h-8 w-8 text-white" />
                 <span className="font-bold text-base text-white mr-[5px]">{t.interfaceLanguage}</span>
               </div>
-              <div className="flex bg-white p-1 shadow-lg" style={{ borderRadius: '14px' }}>
+              <div className="flex items-center gap-2">
+                {/* Dark mode toggle */}
+                <button
+                  onClick={() => setDarkMode(prev => !prev)}
+                  className="dark-mode-toggle"
+                  title={darkMode 
+                    ? (interfaceLanguage === 'fr' ? 'Mode clair' : 'Light mode')
+                    : (interfaceLanguage === 'fr' ? 'Mode sombre' : 'Dark mode')
+                  }
+                >
+                  {darkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+                </button>
+                
+                {/* Language selector */}
+                <div className="flex bg-white p-1 shadow-lg" style={{ borderRadius: '14px' }}>
                 <button
                   onClick={() => setInterfaceLanguage('fr')}
                   className={`px-3 py-1.5 text-sm font-bold transition-all duration-300 transform ${
@@ -3344,6 +3385,7 @@ ${cleanBodyHtml}
                 >
                   EN
                 </button>
+              </div>
               </div>
             </div>
             </div>

@@ -34,7 +34,8 @@ export const getDefaultState = () => ({
   selectedCategory: 'all',
   variables: {},
   favorites: [],
-  favoritesOnly: false
+  favoritesOnly: false,
+  darkMode: false
 });
 
 export const clearState = () => {

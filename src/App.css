@@ -25,6 +25,461 @@
   --radius: 12px;                   /* slightly tighter rounding */
   /* v6 custom tokens for convenience */
   --tb-navy:#8a7530; --tb-steel:#2c3d50; --tb-teal:#aca868; --tb-sage:#aca868; --tb-sage-muted:#a69235; --tb-light-blue:#fefbe8; --tb-gray:#6b7280;
+  /* Dark mode specific */
+  --dark-bg: #0f1419;
+  --dark-surface: #1a2332;
+  --dark-surface-elevated: #243042;
+  --dark-border: #3d4f5f;
+  --dark-text: #e7e9ea;
+  --dark-text-muted: #8b98a5;
+  --dark-accent: #c9b973;
+  --dark-accent-hover: #d9cc8a;
+}
+
+/* ============================================
+   DARK MODE STYLES
+   ============================================ */
+html.dark {
+  color-scheme: dark;
+}
+
+html.dark body {
+  background-color: var(--dark-bg);
+  color: var(--dark-text);
+}
+
+/* Header / Banner in dark mode */
+html.dark .pattern-banner {
+  background: linear-gradient(135deg, #1a2332 0%, #243042 100%);
+}
+
+html.dark .pattern-banner .shape {
+  opacity: 0.08;
+}
+
+html.dark .pattern-banner .hpill-line {
+  background: var(--dark-accent) !important;
+  opacity: 0.4;
+}
+
+html.dark .pattern-banner .hpill-dot {
+  background: var(--dark-surface) !important;
+  box-shadow: 0 0 0 4px var(--dark-accent) !important;
+}
+
+/* Cards in dark mode */
+html.dark .bg-card,
+html.dark [class*="Card"],
+html.dark .card-soft {
+  background-color: var(--dark-surface) !important;
+  border-color: var(--dark-border) !important;
+  color: var(--dark-text);
+}
+
+html.dark .card-soft {
+  box-shadow: 0 6px 24px -10px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+}
+
+/* Buttons in dark mode */
+html.dark .btn-teal {
+  background: var(--dark-accent);
+  color: #1a2332;
+}
+
+html.dark .btn-teal:hover {
+  background: var(--dark-accent-hover);
+}
+
+html.dark .btn-pill {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+html.dark button[style*="background: #fff"],
+html.dark button[style*="background:#fff"],
+html.dark [style*="background: #fff"],
+html.dark [style*="background:#fff"] {
+  background: var(--dark-surface-elevated) !important;
+  color: var(--dark-text) !important;
+  border-color: var(--dark-border) !important;
+}
+
+html.dark button[style*="background: white"],
+html.dark button[style*="background:white"] {
+  background: var(--dark-surface-elevated) !important;
+  color: var(--dark-text) !important;
+}
+
+/* Input fields in dark mode */
+html.dark input,
+html.dark textarea,
+html.dark select,
+html.dark .input-rounded {
+  background-color: var(--dark-surface-elevated) !important;
+  border-color: var(--dark-border) !important;
+  color: var(--dark-text) !important;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: var(--dark-text-muted) !important;
+}
+
+html.dark input:focus,
+html.dark textarea:focus {
+  border-color: var(--dark-accent) !important;
+  box-shadow: 0 0 0 3px rgba(201, 185, 115, 0.25) !important;
+}
+
+/* Lexical editor in dark mode */
+html.dark .lexical-content-editable {
+  background-color: var(--dark-surface-elevated) !important;
+  border-color: var(--dark-border) !important;
+  color: var(--dark-text) !important;
+}
+
+html.dark .lexical-content-editable:focus {
+  border-color: var(--dark-accent) !important;
+  box-shadow: 0 0 0 1px rgba(201, 185, 115, 0.3) !important;
+}
+
+html.dark .lexical-placeholder {
+  color: var(--dark-text-muted) !important;
+}
+
+/* Variable pills in dark mode */
+html.dark .var-pill {
+  color: var(--dark-text) !important;
+}
+
+html.dark .var-pill.filled {
+  background-color: rgba(201, 185, 115, 0.25) !important;
+  border-color: var(--dark-accent) !important;
+}
+
+html.dark .var-pill.empty {
+  background-color: rgba(253, 224, 71, 0.15) !important;
+  border-color: rgba(253, 224, 71, 0.4) !important;
+}
+
+html.dark .var-pill.focused {
+  background-color: rgba(59, 130, 246, 0.3) !important;
+  border-color: #60a5fa !important;
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.3), 0 0 16px rgba(96, 165, 250, 0.2);
+  color: #93c5fd !important;
+}
+
+/* Badges and chips in dark mode */
+html.dark .chip {
+  background: var(--dark-surface-elevated);
+  border-color: var(--dark-border);
+  color: var(--dark-text);
+}
+
+html.dark .chip-outline {
+  background: var(--dark-surface);
+  border-color: var(--dark-border);
+  color: var(--dark-text);
+}
+
+/* Dropdown/Select in dark mode */
+html.dark [data-radix-popper-content-wrapper] > div,
+html.dark [role="listbox"],
+html.dark .capsule-select {
+  background-color: var(--dark-surface-elevated) !important;
+  border-color: var(--dark-border) !important;
+  color: var(--dark-text) !important;
+}
+
+html.dark [role="option"]:hover,
+html.dark [data-highlighted] {
+  background-color: rgba(201, 185, 115, 0.15) !important;
+}
+
+/* ScrollArea in dark mode */
+html.dark [data-slot="scroll-area-thumb"] {
+  background-color: var(--dark-border) !important;
+}
+
+html.dark [data-slot="scroll-area-scrollbar"]:hover [data-slot="scroll-area-thumb"] {
+  background-color: var(--dark-text-muted) !important;
+}
+
+/* Text colors in dark mode */
+html.dark .text-slate-800,
+html.dark .text-gray-800,
+html.dark .text-slate-900,
+html.dark .text-gray-900 {
+  color: var(--dark-text) !important;
+}
+
+html.dark .text-slate-600,
+html.dark .text-gray-600,
+html.dark .text-slate-500,
+html.dark .text-gray-500 {
+  color: var(--dark-text-muted) !important;
+}
+
+html.dark .text-card-foreground {
+  color: var(--dark-text) !important;
+}
+
+/* Specific overrides for backgrounds */
+html.dark [style*="background: #f6fbfb"],
+html.dark [style*="background:#f6fbfb"],
+html.dark [style*="backgroundColor: '#f6fbfb'"],
+html.dark [style*="background: rgb(246, 251, 251)"] {
+  background-color: var(--dark-surface) !important;
+}
+
+/* Modal backgrounds in dark mode */
+html.dark .bg-white {
+  background-color: var(--dark-surface) !important;
+}
+
+html.dark [class*="modal"] .bg-white,
+html.dark .fixed .bg-white {
+  background-color: var(--dark-surface) !important;
+}
+
+/* Help center and popups in dark mode */
+html.dark .ea-popout-card {
+  background: rgba(36, 48, 66, 0.8);
+  border-color: var(--dark-border);
+}
+
+html.dark .ea-popout-card-inner {
+  background: var(--dark-surface);
+  border-color: var(--dark-border);
+}
+
+html.dark .ea-popout-card.ea-popout-focused .ea-popout-card-inner {
+  border-color: #60a5fa;
+  background: rgba(59, 130, 246, 0.15);
+  box-shadow: 0 0 0 1px rgba(96, 165, 250, 0.4), 0 0 0 4px rgba(96, 165, 250, 0.15);
+}
+
+/* Highlight variables in dark mode */
+html.dark mark.var-highlight {
+  background-color: rgba(59, 130, 246, 0.25) !important;
+  color: #93c5fd !important;
+  border-color: rgba(96, 165, 250, 0.5);
+}
+
+html.dark mark.var-highlight.filled {
+  background-color: rgba(96, 165, 250, 0.35) !important;
+}
+
+html.dark mark.var-highlight.empty {
+  background-color: rgba(56, 189, 248, 0.2) !important;
+  color: #7dd3fc !important;
+}
+
+/* Admin button in dark mode */
+html.dark .fixed.bottom-4.left-4 {
+  color: var(--dark-text-muted) !important;
+}
+
+/* Template list items in dark mode */
+html.dark [data-template-item] {
+  background-color: var(--dark-surface);
+  border-color: var(--dark-border);
+}
+
+html.dark [data-template-item]:hover {
+  background-color: var(--dark-surface-elevated);
+}
+
+/* Autofill override for dark mode */
+html.dark input:-webkit-autofill,
+html.dark input:-webkit-autofill:hover,
+html.dark input:-webkit-autofill:focus,
+html.dark input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px var(--dark-surface-elevated) inset !important;
+  box-shadow: 0 0 0 1000px var(--dark-surface-elevated) inset !important;
+  -webkit-text-fill-color: var(--dark-text) !important;
+  background-color: var(--dark-surface-elevated) !important;
+}
+
+/* Dark mode toggle button styling */
+.dark-mode-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dark-mode-toggle:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
+}
+
+html.dark .dark-mode-toggle {
+  background: rgba(201, 185, 115, 0.2);
+  border-color: var(--dark-accent);
+  color: var(--dark-accent);
+}
+
+html.dark .dark-mode-toggle:hover {
+  background: rgba(201, 185, 115, 0.3);
+}
+
+/* Additional dark mode improvements for better contrast */
+html.dark .rounded-2xl,
+html.dark .rounded-xl {
+  border-color: var(--dark-border);
+}
+
+/* Language selector in dark mode */
+html.dark .flex.bg-white.p-1 {
+  background: var(--dark-surface-elevated) !important;
+}
+
+html.dark .flex.bg-white.p-1 button {
+  color: var(--dark-text-muted);
+}
+
+html.dark .flex.bg-white.p-1 button[style*="backgroundColor: '#2c3d50'"],
+html.dark .flex.bg-white.p-1 button[style*="background-color: rgb(44, 61, 80)"] {
+  background-color: var(--dark-accent) !important;
+  color: #1a2332 !important;
+}
+
+/* Categories badges in dark mode */
+html.dark [class*="badge"],
+html.dark .badge {
+  background-color: var(--dark-surface-elevated);
+  border-color: var(--dark-border);
+  color: var(--dark-text);
+}
+
+/* Loading spinner area in dark mode */
+html.dark .animate-pulse {
+  background-color: var(--dark-surface);
+}
+
+/* Dividers and borders in dark mode */
+html.dark hr,
+html.dark .border-t,
+html.dark .border-b {
+  border-color: var(--dark-border);
+}
+
+/* Rich text toolbar in dark mode */
+html.dark [class*="toolbar"],
+html.dark .rich-text-toolbar {
+  background-color: var(--dark-surface-elevated) !important;
+  border-color: var(--dark-border) !important;
+}
+
+html.dark [class*="toolbar"] button {
+  color: var(--dark-text) !important;
+}
+
+html.dark [class*="toolbar"] button:hover {
+  background-color: rgba(201, 185, 115, 0.2) !important;
+}
+
+/* Toast notifications in dark mode */
+html.dark [data-sonner-toast],
+html.dark .toast {
+  background-color: var(--dark-surface-elevated) !important;
+  border-color: var(--dark-border) !important;
+  color: var(--dark-text) !important;
+}
+
+/* AI Sidebar in dark mode */
+html.dark .ai-sidebar,
+html.dark [class*="AISidebar"] {
+  background-color: var(--dark-surface) !important;
+  border-color: var(--dark-border) !important;
+}
+
+/* Star/favorite icon in dark mode */
+html.dark .text-yellow-400,
+html.dark .text-yellow-500 {
+  color: #fbbf24 !important;
+}
+
+/* Fix for inline styles with specific colors */
+html.dark [style*="color: '#8a7530'"],
+html.dark [style*="color: #8a7530"],
+html.dark [style*="color: rgb(138, 117, 48)"] {
+  color: var(--dark-text) !important;
+}
+
+html.dark [style*="color: '#2c3d50'"],
+html.dark [style*="color: #2c3d50"],
+html.dark [style*="color: rgb(44, 61, 80)"] {
+  color: var(--dark-text) !important;
+}
+
+html.dark [style*="color: '#64748b'"],
+html.dark [style*="color: #64748b"] {
+  color: var(--dark-text-muted) !important;
+}
+
+/* Ensure proper contrast for paragraphs and spans */
+html.dark p,
+html.dark span:not([class*="icon"]):not([class*="dot"]),
+html.dark div:not([class*="banner"]):not([style*="background"]) {
+  color: inherit;
+}
+
+/* Template cards in dark mode */
+html.dark .template-card,
+html.dark [data-template-card] {
+  background-color: var(--dark-surface);
+  border-color: var(--dark-border);
+}
+
+html.dark .template-card:hover,
+html.dark [data-template-card]:hover {
+  background-color: var(--dark-surface-elevated);
+  border-color: var(--dark-accent);
+}
+
+/* Search results highlighting */
+html.dark .search-highlight {
+  background-color: rgba(201, 185, 115, 0.3);
+}
+
+/* Help Center in dark mode */
+html.dark .help-center,
+html.dark [class*="HelpCenter"] {
+  background-color: var(--dark-surface) !important;
+}
+
+/* Collapsible sections in dark mode */
+html.dark details {
+  background-color: var(--dark-surface);
+  border-color: var(--dark-border);
+}
+
+html.dark details summary {
+  color: var(--dark-text);
+}
+
+/* Code blocks in dark mode */
+html.dark code,
+html.dark pre {
+  background-color: var(--dark-surface-elevated);
+  color: var(--dark-accent);
+}
+
+/* Links in dark mode */
+html.dark a:not([class*="btn"]) {
+  color: var(--dark-accent);
+}
+
+html.dark a:not([class*="btn"]):hover {
+  color: var(--dark-accent-hover);
 }
 
 html, body { background: var(--background); color: var(--foreground); }
