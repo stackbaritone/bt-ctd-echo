@@ -40,6 +40,8 @@
     "@tailwindcss/vite": "^4.1.7",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "docx": "^9.5.1",
+    "file-saver": "^2.0.5",
     "fuse.js": "^7.0.0",
     "lexical": "^0.38.1",
     "lucide-react": "^0.510.0",

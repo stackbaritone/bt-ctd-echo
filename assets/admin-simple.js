@@ -1195,6 +1195,55 @@
     }
   }
   if (btnExportXlsx) btnExportXlsx.onclick = exportCurrentToXlsx;
+
+  // Word Export
+  const btnExportWord = $('#btn-export-word');
+  const modalWordExport = $('#modal-word-export');
+  const btnGenerateWord = $('#btn-generate-word');
+  
+  if (btnExportWord && modalWordExport) {
+    btnExportWord.onclick = () => {
+      menuIO?.classList.remove('open');
+      modalWordExport.style.display = 'flex';
+    };
+  }
+  
+  if (btnGenerateWord) {
+    btnGenerateWord.onclick = async () => {
+      const lang = document.querySelector('input[name="word-lang"]:checked')?.value || 'both';
+      const includeVariables = document.getElementById('word-include-vars')?.checked ?? true;
+      const includeAppendix = document.getElementById('word-include-appendix')?.checked ?? true;
+      
+      // Show loading state
+      const originalText = btnGenerateWord.innerHTML;
+      btnGenerateWord.innerHTML = '<span>⏳ Génération en cours...</span>';
+      btnGenerateWord.disabled = true;
+      
+      try {
+        // Ensure we have the WordExport module
+        if (typeof WordExport === 'undefined') {
+          throw new Error('Module WordExport non chargé');
+        }
+        
+        // Generate the document
+        const result = await WordExport.generate(data, { lang, includeVariables, includeAppendix });
+        
+        if (result.success) {
+          notify(`Document Word généré : ${result.filename}`);
+          modalWordExport.style.display = 'none';
+        } else {
+          throw new Error('Échec de la génération');
+        }
+      } catch(e) {
+        console.error('[Word Export]', e);
+        notify('Erreur lors de la génération du document Word : ' + e.message);
+      } finally {
+        btnGenerateWord.innerHTML = originalText;
+        btnGenerateWord.disabled = false;
+      }
+    };
+  }
+
   // Help popout
   let helpWin = null;
   function openHelpModal(){

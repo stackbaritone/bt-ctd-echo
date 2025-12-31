@@ -307,6 +307,7 @@
           <input id="file" type="file" class="hidden" accept=".json,application/json,.xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
           <div class="divider"></div>
           <button class="btn item" id="btn-export-xlsx"><span class="item-icon">📊</span> Exporter Excel</button>
+          <button class="btn item" id="btn-export-word"><span class="item-icon">📄</span> Exporter Word</button>
           <button class="btn item" id="btn-export-download"><span class="item-icon">💾</span> Télécharger JSON</button>
           <button class="btn item" id="btn-dl-template-xlsx"><span class="item-icon">📋</span> Modèle Excel vide</button>
         </div>
@@ -343,6 +344,71 @@
         <div class="modal-footer">
           <button class="btn" onclick="document.getElementById('modal-category-colors').style.display='none'">Fermer</button>
           <button class="btn primary" id="btn-save-category-colors">Enregistrer</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Word Export Modal -->
+    <div id="modal-word-export" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1001;align-items:center;justify-content:center;overflow:auto;padding:20px">
+      <div class="modal-panel" style="max-width:500px;margin:auto">
+        <div class="modal-header">
+          <strong>📄 Exporter en Word</strong>
+          <button onclick="document.getElementById('modal-word-export').style.display='none'" class="modal-close">×</button>
+        </div>
+        <div class="modal-body" style="padding:20px">
+          <p style="margin:0 0 20px;color:#64748b;font-size:14px;line-height:1.6">
+            Générer un document Word professionnel contenant tous vos gabarits de courriels. 
+            Idéal pour les utilisateurs qui préfèrent copier-coller manuellement.
+          </p>
+          
+          <div style="margin-bottom:20px">
+            <label style="display:block;font-weight:600;margin-bottom:8px;color:#334155">
+              🌐 Langue du document
+            </label>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;transition:all 0.2s">
+                <input type="radio" name="word-lang" value="both" checked style="accent-color:#059669;width:18px;height:18px">
+                <span style="font-size:14px"><strong>🇫🇷 + 🇬🇧 Bilingue</strong> – Français et anglais côte à côte</span>
+              </label>
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;transition:all 0.2s">
+                <input type="radio" name="word-lang" value="fr" style="accent-color:#059669;width:18px;height:18px">
+                <span style="font-size:14px"><strong>🇫🇷 Français</strong> uniquement</span>
+              </label>
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;transition:all 0.2s">
+                <input type="radio" name="word-lang" value="en" style="accent-color:#059669;width:18px;height:18px">
+                <span style="font-size:14px"><strong>🇬🇧 English</strong> only</span>
+              </label>
+            </div>
+          </div>
+
+          <div style="margin-bottom:20px">
+            <label style="display:block;font-weight:600;margin-bottom:8px;color:#334155">
+              ⚙️ Options
+            </label>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px">
+                <input type="checkbox" id="word-include-vars" checked style="accent-color:#059669;width:18px;height:18px">
+                <span style="font-size:14px">📋 Inclure le tableau des variables par gabarit</span>
+              </label>
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px">
+                <input type="checkbox" id="word-include-appendix" checked style="accent-color:#059669;width:18px;height:18px">
+                <span style="font-size:14px">📚 Inclure l'annexe avec la bibliothèque des variables</span>
+              </label>
+            </div>
+          </div>
+
+          <div style="padding:12px;background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;margin-bottom:8px">
+            <p style="margin:0;color:#0369a1;font-size:13px;line-height:1.6">
+              <strong>💡 Astuce :</strong> Le document généré contient une page de garde, 
+              tous les gabarits organisés par catégorie avec leurs contenus prêts à copier-coller.
+            </p>
+          </div>
+        </div>
+        <div class="modal-footer" style="border-top:1px solid #e2e8f0;padding:16px 20px;display:flex;gap:12px;justify-content:flex-end">
+          <button class="btn" onclick="document.getElementById('modal-word-export').style.display='none'">Annuler</button>
+          <button class="btn primary" id="btn-generate-word" style="display:flex;align-items:center;gap:8px">
+            <span>📄 Générer le document</span>
+          </button>
         </div>
       </div>
     </div>
@@ -625,6 +691,10 @@
       </main>
     </div>
 
+    <!-- Word Export dependencies -->
+    <script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
+    <script src="https://unpkg.com/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+    <script src="../assets/word-export.js"></script>
     <script src="../assets/rich-text-toolbar.js"></script>
     <script src="../assets/admin-simple.js"></script>
     <script>
