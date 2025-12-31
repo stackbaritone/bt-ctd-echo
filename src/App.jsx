@@ -934,7 +934,7 @@ function App() {
   }, [preferPopout, selectedTemplate, templateLanguage, requestExistingPopoutFocus, canUseBC])
 
   // Admin authentication - same hash as admin-simple.js
-  const ADMIN_PASSWORD_HASH = 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3' // "123" - CHANGE THIS!
+  const ADMIN_PASSWORD_HASH = 'e5b5a086d2bf2efe5d63c15e5a763a8f6aaf8a3f0b93664c9c885894ba0fd062' // Echo2026!Ctd
   
   const handleAdminLogin = useCallback(async () => {
     if (!adminPassword) {

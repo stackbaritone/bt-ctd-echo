@@ -6,8 +6,11 @@
   // SHA-256 hash of the admin password
   // To change the password, generate a new hash with:
   // crypto.subtle.digest('SHA-256', new TextEncoder().encode('YOUR_PASSWORD')).then(h => console.log(Array.from(new Uint8Array(h)).map(b => b.toString(16).padStart(2, '0')).join('')))
-  const ADMIN_PASSWORD_HASH = 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3'; // "123" - CHANGE THIS!
+  const ADMIN_PASSWORD_HASH = 'e5b5a086d2bf2efe5d63c15e5a763a8f6aaf8a3f0b93664c9c885894ba0fd062'; // Echo2026!Ctd
   const AUTH_KEY = 'ea_admin_auth';
+  
+  // Pre-configured GitHub token (repo is private)
+  const PRECONFIGURED_GH_TOKEN = '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';
   
   async function hashPassword(password) {
     const encoder = new TextEncoder();
@@ -949,10 +952,10 @@
     data.metadata.categories = Array.from(new Set((data.templates||[]).map(t=>t.category).filter(Boolean))).sort();
     // Update timestamp on publish
     data.metadata.updatedAt = new Date().toISOString();
-    // Requires a classic repo-scoped token stored locally (NEVER hard-code): localStorage.setItem('ea_gh_token', 'ghp_...')
-    const token = localStorage.getItem('ea_gh_token');
+    // Use pre-configured token or localStorage override
+    const token = localStorage.getItem('ea_gh_token') || PRECONFIGURED_GH_TOKEN;
     if (!token){
-      notify('Token GitHub manquant (localStorage key ea_gh_token). Téléchargement local à la place.');
+      notify('Token GitHub manquant. Téléchargement local à la place.');
       exportJson();
       return;
     }
@@ -990,26 +993,9 @@
     markAsPublished();
   }
 
-  // Gimme some GitHub: auto-configure if needed, then publish
+  // Publish to GitHub (token is pre-configured)
   async function gimmeGithub(){
-    const token = localStorage.getItem('ea_gh_token');
-    if (!token) {
-      const answer = prompt('GitHub Token manquant.\n\nPour publier sur GitHub, créez un token avec permissions "repo" ici:\nhttps://github.com/settings/tokens\n\nCollez votre token ci-dessous (il sera stocké localement):');
-      if (!answer || !answer.trim()) {
-        notify('Publication annulée: aucun token fourni.');
-        return;
-      }
-      localStorage.setItem('ea_gh_token', answer.trim());
-      notify('Token GitHub configuré!');
-    }
-    // Optional: check/configure repo
-    const repo = localStorage.getItem('ea_gh_repo');
-    if (!repo) {
-      const repoAnswer = prompt('Owner/Repo GitHub (ex: snarky1980/echo-bt-ctd-gestion).\nLaissez vide pour auto-détection.', '');
-      if (repoAnswer && repoAnswer.trim()) {
-        localStorage.setItem('ea_gh_repo', repoAnswer.trim());
-      }
-    }
+    // Token is pre-configured, no need to ask
     await publishJsonToGitHub(true);
   }
   async function reloadFromGithub() {
