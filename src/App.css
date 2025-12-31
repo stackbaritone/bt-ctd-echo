@@ -482,6 +482,189 @@ html.dark a:not([class*="btn"]):hover {
   color: var(--dark-accent-hover);
 }
 
+/* ============================================
+   CRITICAL DARK MODE FIXES FOR LIGHT BACKGROUNDS
+   ============================================ */
+
+/* Template cards in the list - fix white/light backgrounds */
+html.dark div[class*="bg-white"],
+html.dark .bg-white {
+  background-color: var(--dark-surface) !important;
+}
+
+html.dark div[style*="background: #e6f0ff"],
+html.dark div[style*="background:#e6f0ff"],
+html.dark [style*="background: rgb(230, 240, 255)"] {
+  background-color: rgba(59, 130, 246, 0.15) !important;
+}
+
+/* Fix template cards text colors */
+html.dark .text-gray-900,
+html.dark h3.text-gray-900,
+html.dark [class*="text-gray-900"] {
+  color: var(--dark-text) !important;
+}
+
+html.dark .text-gray-600,
+html.dark p.text-gray-600,
+html.dark [class*="text-gray-600"] {
+  color: var(--dark-text-muted) !important;
+}
+
+html.dark .text-gray-200 {
+  color: var(--dark-border) !important;
+}
+
+/* Fix border colors for cards */
+html.dark div[class*="border-[#e1eaf2]"],
+html.dark [style*="borderColor: '#e1eaf2'"],
+html.dark .border-\[\#e1eaf2\] {
+  border-color: var(--dark-border) !important;
+}
+
+html.dark div[style*="borderColor: '#2c3d50'"] {
+  border-color: var(--dark-accent) !important;
+}
+
+/* Buttons with outline variant in dark mode */
+html.dark button[class*="variant-outline"],
+html.dark [data-variant="outline"],
+html.dark button.border {
+  background-color: var(--dark-surface-elevated) !important;
+  border-color: var(--dark-border) !important;
+  color: var(--dark-text) !important;
+}
+
+html.dark button.border:hover {
+  background-color: rgba(201, 185, 115, 0.15) !important;
+  border-color: var(--dark-accent) !important;
+}
+
+/* Fix inline color styles */
+html.dark [style*="color: '#2c3d50'"],
+html.dark [style*="color:#2c3d50"] {
+  color: var(--dark-text) !important;
+}
+
+html.dark [style*="borderColor: '#2c3d50'"],
+html.dark [style*="border-color: #2c3d50"] {
+  border-color: var(--dark-accent) !important;
+}
+
+/* CardContent with light background */
+html.dark [style*="background: '#f6fbfb'"],
+html.dark [style*="background: #f6fbfb"],
+html.dark [style*="background: rgb(246, 251, 251)"] {
+  background-color: var(--dark-surface) !important;
+}
+
+/* Fix gradients in dark mode */
+html.dark .bg-gradient-to-br,
+html.dark [class*="bg-gradient"] {
+  background: var(--dark-surface) !important;
+}
+
+html.dark .from-white,
+html.dark .to-emerald-50,
+html.dark .from-gray-50,
+html.dark .to-blue-50 {
+  --tw-gradient-from: var(--dark-surface) !important;
+  --tw-gradient-to: var(--dark-surface-elevated) !important;
+}
+
+/* Badge styling in dark mode - preserve category colors but ensure readability */
+html.dark .Badge,
+html.dark [class*="Badge"] {
+  opacity: 0.9;
+}
+
+/* Hover states for cards */
+html.dark div[class*="hover:border-[#2c3d50]"]:hover {
+  border-color: var(--dark-accent) !important;
+}
+
+html.dark div[class*="hover:shadow-md"]:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Fix specific button styles */
+html.dark button[style*="borderColor: '#dc2626'"],
+html.dark button[style*="border-color: #dc2626"] {
+  border-color: #f87171 !important;
+  color: #fca5a5 !important;
+}
+
+html.dark button[style*="borderColor: '#dc2626'"]:hover {
+  background-color: rgba(248, 113, 113, 0.15) !important;
+}
+
+/* Shadow fixes */
+html.dark .shadow-lg {
+  box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -4px rgba(0, 0, 0, 0.3) !important;
+}
+
+html.dark .shadow-md {
+  box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.35), 0 2px 4px -2px rgba(0, 0, 0, 0.25) !important;
+}
+
+html.dark .shadow-soft {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25), 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Fix star/favorite colors */
+html.dark .text-\[\#8a8535\] {
+  color: var(--dark-accent) !important;
+}
+
+html.dark button.text-gray-200:not(:hover) {
+  color: var(--dark-border) !important;
+}
+
+html.dark button.text-gray-200:hover {
+  color: var(--dark-accent) !important;
+}
+
+/* Fix any remaining inline white backgrounds */
+html.dark [style*="background: white"],
+html.dark [style*="background:white"],
+html.dark [style*="backgroundColor: 'white'"],
+html.dark [style*="background-color: white"] {
+  background-color: var(--dark-surface) !important;
+}
+
+html.dark [style*="background: #fff"],
+html.dark [style*="background:#fff"],
+html.dark [style*="backgroundColor: '#ffffff'"],
+html.dark [style*="background-color: #ffffff"] {
+  background-color: var(--dark-surface) !important;
+}
+
+/* Ensure scrollarea and containers have dark bg */
+html.dark [data-slot="scroll-area-viewport"],
+html.dark [data-radix-scroll-area-viewport] {
+  background-color: transparent !important;
+}
+
+/* Pill editor containers */
+html.dark .SimplePillEditor,
+html.dark .RichTextPillEditor,
+html.dark [class*="PillEditor"] {
+  background-color: var(--dark-surface-elevated) !important;
+  border-color: var(--dark-border) !important;
+  color: var(--dark-text) !important;
+}
+
+/* Fix any outline buttons */
+html.dark [class*="outline"]:not(.var-pill) {
+  border-color: var(--dark-border) !important;
+}
+
+/* Selected template card special styling */
+html.dark div[class*="shadow-lg"][class*="transform"] {
+  background-color: rgba(59, 130, 246, 0.12) !important;
+  border-color: var(--dark-accent) !important;
+}
+
 html, body { background: var(--background); color: var(--foreground); }
 .bg-card { background: var(--card); }
 .text-card-foreground { color: var(--card-foreground); }
