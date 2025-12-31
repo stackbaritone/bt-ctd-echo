@@ -120,6 +120,43 @@
   const btnGimmeGithub = $('#btn-gimme-github');
   const btnCleanCategories = $('#btn-clean-categories');
   const hdr = $('#hdr');
+  const btnDuplicate = $('#btn-duplicate');
+  
+  // Sync status tracking
+  let lastPublishedHash = null;
+  const syncStatus = $('#sync-status');
+  const syncStatusText = $('#sync-status-text');
+  
+  // Dropdown menus
+  const menuIO = $('#menu-io');
+  const menuSettings = $('#menu-settings');
+  const btnIODropdown = $('#btn-io-dropdown');
+  const btnSettingsDropdown = $('#btn-settings-dropdown');
+  
+  // Setup dropdown toggles
+  function setupDropdowns() {
+    if (btnIODropdown && menuIO) {
+      btnIODropdown.onclick = (e) => {
+        e.stopPropagation();
+        menuIO.classList.toggle('open');
+        menuSettings?.classList.remove('open');
+      };
+    }
+    if (btnSettingsDropdown && menuSettings) {
+      btnSettingsDropdown.onclick = (e) => {
+        e.stopPropagation();
+        menuSettings.classList.toggle('open');
+        menuIO?.classList.remove('open');
+      };
+    }
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', () => {
+      menuIO?.classList.remove('open');
+      menuSettings?.classList.remove('open');
+    });
+  }
+  setupDropdowns();
+  
   // editor fields
   const idEl = $('#tpl-id');
   const catFrEl = $('#tpl-cat-fr');
@@ -273,6 +310,42 @@
     }
   }
   
+  // Sync status indicator functions
+  function computeDataHash(d) {
+    // Simple hash of templates + variables for change detection
+    const str = JSON.stringify({ templates: d?.templates || [], variables: d?.variables || {} });
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      const char = str.charCodeAt(i);
+      hash = ((hash << 5) - hash) + char;
+      hash = hash & hash;
+    }
+    return hash.toString();
+  }
+  
+  function updateSyncStatus() {
+    if (!syncStatus || !syncStatusText) return;
+    const currentHash = computeDataHash(data);
+    if (lastPublishedHash === null) {
+      // First load - assume synced
+      lastPublishedHash = currentHash;
+    }
+    if (currentHash === lastPublishedHash) {
+      syncStatus.className = 'synced';
+      syncStatusText.textContent = 'À jour';
+      syncStatus.title = 'Toutes les modifications sont publiées';
+    } else {
+      syncStatus.className = 'pending';
+      syncStatusText.textContent = 'Non publié';
+      syncStatus.title = 'Des modifications n\'ont pas été publiées sur GitHub';
+    }
+  }
+  
+  function markAsPublished() {
+    lastPublishedHash = computeDataHash(data);
+    updateSyncStatus();
+  }
+  
   function ensureSchema(obj){
     obj = obj && typeof obj==='object' ? obj : {};
     obj.metadata = obj.metadata || { version:'1.0', totalTemplates:0, languages:['fr','en'], categories:[] };
@@ -290,6 +363,7 @@
       // Publish for main app consumption
       localStorage.setItem('ea_admin_templates_data', serialized);
       showSaveIndicator('saved');
+      updateSyncStatus();
     } catch {
       showSaveIndicator('saved'); // Still show saved to avoid stuck state
     }
@@ -369,6 +443,8 @@
     data.metadata.totalTemplates = data.templates.length;
     if (!selected && data.templates.length) selected = data.templates[0].id;
     renderList(); renderEditor();
+    // Initialize sync status after load (assume synced at load time)
+    markAsPublished();
   }
   function syncLangButtons(){ /* no-op: both languages are shown */ }
   function escapeHtml(s){ return String(s??'').replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c])); }
@@ -911,6 +987,7 @@
 
     // No mirror to gh-pages: main is the only source of truth
     if (showToast) notify('JSON mis à jour sur main.');
+    markAsPublished();
   }
 
   // Gimme some GitHub: auto-configure if needed, then publish
@@ -952,6 +1029,7 @@
       data = ensureSchema(json);
       selected = data.templates[0]?.id || null;
       saveDraft();
+      markAsPublished(); // Reset sync status after reload
       loadInitialUI();
       notify('Rechargé depuis GitHub avec succès.');
     } catch (err) {
@@ -1098,6 +1176,23 @@
   if (btnHelp) btnHelp.onclick = openHelpModal;
   $('#btn-reset').onclick = () => { if (!confirm('Effacer le brouillon local et recharger le fichier d\'origine ?')) return; localStorage.removeItem(DRAFT_KEY); location.reload(); };
   $('#btn-new').onclick = () => { const id = uniqueId('modele'); const t={ id, category:'', title:{fr:'',en:''}, description:{fr:'',en:''}, subject:{fr:'',en:''}, body:{fr:'',en:''}, variables:[] }; data.templates.push(t); selected=id; saveDraft(); renderList(); renderEditor(); };
+  
+  // Duplicate template
+  function duplicateTemplate() {
+    const t = data.templates.find(x => x.id === selected);
+    if (!t) { notify('Sélectionnez un modèle à dupliquer.'); return; }
+    const newId = uniqueId(t.id + '_copie');
+    const copy = JSON.parse(JSON.stringify(t));
+    copy.id = newId;
+    copy.title = { fr: (t.title?.fr || '') + ' (copie)', en: (t.title?.en || '') + ' (copy)' };
+    data.templates.push(copy);
+    selected = newId;
+    saveDraft();
+    renderList();
+    renderEditor();
+    notify('Modèle dupliqué : ' + newId);
+  }
+  if (btnDuplicate) btnDuplicate.onclick = duplicateTemplate;
   
   // Delete with modal confirmation
   const modalDelete = $('#modal-delete');

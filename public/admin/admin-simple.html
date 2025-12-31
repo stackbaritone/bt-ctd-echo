@@ -27,9 +27,22 @@
         .btn.neutral{background:#fff;color:#0f172a}
         .topbar .group{display:flex;gap:8px;padding:4px;border:1px solid var(--border);border-radius:12px;background:#f1f5f9}
         .dropdown{position:relative}
+        .dropdown-toggle{display:flex;align-items:center;gap:4px}
+        .dropdown-toggle::after{content:'\25BC';font-size:8px;opacity:0.7}
         .menu{display:none;position:absolute;right:0;top:44px;background:#fff;border:1px solid var(--border);border-radius:10px;box-shadow:0 8px 30px rgba(2,6,23,.12);min-width:220px;z-index:20}
-        .menu .item{display:block;width:100%;text-align:left;border:0;background:transparent;padding:8px 12px}
+        .menu.open{display:block}
+        .menu .item{display:flex;align-items:center;gap:8px;width:100%;text-align:left;border:0;background:transparent;padding:10px 14px;cursor:pointer;font-weight:600;color:#334155}
+        .menu .item:hover{background:#f8fafc}
         .menu .item + .item{border-top:1px solid var(--border)}
+        .menu .item-icon{font-size:16px}
+        .menu .divider{height:1px;background:var(--border);margin:4px 0}
+        /* Sync status indicator */
+        #sync-status{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:8px;font-size:12px;font-weight:700;margin-left:8px}
+        #sync-status.synced{background:#dcfce7;border:1px solid #bbf7d0;color:#166534}
+        #sync-status.pending{background:#fef3c7;border:1px solid #fde68a;color:#92400e}
+        #sync-status .status-dot{width:8px;height:8px;border-radius:50%}
+        #sync-status.synced .status-dot{background:#22c55e}
+        #sync-status.pending .status-dot{background:#f59e0b;animation:pulse 1.5s infinite}
         /* Badge + import mode */
         #updated-badge{display:none;margin-left:6px;padding:4px 8px;font-size:11px;font-weight:700;border:1px solid #bae6fd;background:#ecfeff;color:#0e7490;border-radius:8px}
         #import-mode{margin-left:8px;border:1px solid var(--border);background:#fff;padding:4px 8px;border-radius:8px;font-weight:700;font-size:12px}
@@ -246,28 +259,45 @@
     <!-- Admin Content (hidden until authenticated) -->
     <div id="admin-content">
     <div class="topbar">
-      <div class="brand">Admin (simple) <span id="updated-badge" title="Dernière mise à jour distante du JSON">–</span>
+      <div class="brand">ECHO Admin <span id="updated-badge" title="Dernière mise à jour distante du JSON">–</span>
+        <span id="sync-status" class="synced" title="Statut de synchronisation">
+          <span class="status-dot"></span>
+          <span id="sync-status-text">À jour</span>
+        </span>
       </div>
       <div class="spacer"></div>
-      <div class="group">
-        <button class="btn info" id="btn-import">Importer</button>
-        <input id="file" type="file" class="hidden" accept=".json,application/json,.xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
-        <button class="btn neutral" id="btn-dl-template-xlsx" title="Télécharger un modèle Excel (.xlsx) avec les colonnes requises">Modèle XLSX</button>
+      
+      <!-- Primary action: Publish -->
+      <button class="btn primary" id="btn-gimme-github" title="Publier sur GitHub" style="padding:10px 20px;font-size:14px">
+        🚀 Publier
+      </button>
+      
+      <!-- Import/Export dropdown -->
+      <div class="dropdown">
+        <button class="btn neutral dropdown-toggle" id="btn-io-dropdown">📁 Import / Export</button>
+        <div class="menu" id="menu-io">
+          <button class="btn item" id="btn-import"><span class="item-icon">📥</span> Importer (JSON/Excel)</button>
+          <input id="file" type="file" class="hidden" accept=".json,application/json,.xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+          <div class="divider"></div>
+          <button class="btn item" id="btn-export-xlsx"><span class="item-icon">📊</span> Exporter Excel</button>
+          <button class="btn item" id="btn-export-download"><span class="item-icon">💾</span> Télécharger JSON</button>
+          <button class="btn item" id="btn-dl-template-xlsx"><span class="item-icon">📋</span> Modèle Excel vide</button>
+        </div>
       </div>
-      <div class="group">
-        <button class="btn indigo" id="btn-export-xlsx" title="Exporter toutes les données courantes en Excel (.xlsx)">Exporter Excel</button>
-        <button class="btn neutral" id="btn-export-download" title="Télécharger le JSON localement">Télécharger JSON</button>
-        <button class="btn neutral" id="btn-reload-github" title="Recharger depuis GitHub (écrase le brouillon local)">⟳ Recharger</button>
-        <button class="btn primary" id="btn-gimme-github" title="Publier sur GitHub (configure automatiquement si nécessaire)">Publier sur GitHub</button>
+      
+      <!-- Settings dropdown -->
+      <div class="dropdown">
+        <button class="btn neutral dropdown-toggle" id="btn-settings-dropdown">⚙️ Paramètres</button>
+        <div class="menu" id="menu-settings">
+          <button class="btn item" id="btn-category-colors"><span class="item-icon">🎨</span> Couleurs catégories</button>
+          <button class="btn item" id="btn-clean-categories"><span class="item-icon">🧹</span> Nettoyer catégories</button>
+          <div class="divider"></div>
+          <button class="btn item" id="btn-reload-github"><span class="item-icon">🔄</span> Recharger depuis GitHub</button>
+          <button class="btn item" id="btn-reset" style="color:#dc2626"><span class="item-icon">🗑️</span> Réinitialiser</button>
+        </div>
       </div>
-      <div class="group">
-        <button class="btn warning" id="btn-category-colors" title="Gérer les couleurs des catégories">Catégories</button>
-        <button class="btn neutral" id="btn-clean-categories" title="Supprimer les catégories non utilisées">Nettoyer catégories</button>
-      </div>
-      <div class="group">
-        <button class="btn danger" id="btn-reset">Réinitialiser</button>
-        <button class="btn neutral" id="btn-help">Aide</button>
-      </div>
+      
+      <button class="btn neutral" id="btn-help" title="Aide">❓ Aide</button>
     </div>
 
     <div id="notice" class="notice"></div>
@@ -519,7 +549,8 @@
       <main class="panel">
         <div class="head"><strong id="hdr">Éditeur</strong>
           <div class="toolbar">
-            <button class="btn" id="btn-delete">Supprimer</button>
+            <button class="btn info" id="btn-duplicate" title="Dupliquer ce modèle">📋 Dupliquer</button>
+            <button class="btn danger" id="btn-delete">🗑️ Supprimer</button>
           </div>
         </div>
         <div class="body" id="editor">
