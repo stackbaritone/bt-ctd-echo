@@ -950,8 +950,8 @@ function App() {
       const hash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('')
       
       if (hash === ADMIN_PASSWORD_HASH) {
-        // Store auth in sessionStorage (expires on browser close)
-        sessionStorage.setItem('ea_admin_auth', 'true')
+        // Store auth in localStorage (persists across sessions - synced with admin-simple.js)
+        localStorage.setItem('ea_admin_auth', 'true')
         setShowAdminModal(false)
         setAdminPassword('')
         setAdminError('')
@@ -3390,8 +3390,8 @@ ${cleanBodyHtml}
   {/* Fixed Admin button - bottom-left corner (discreet) */}
   <Button
     onClick={() => {
-      // Check if already authenticated
-      if (sessionStorage.getItem('ea_admin_auth') === 'true') {
+      // Check if already authenticated (uses localStorage - synced with admin-simple.js)
+      if (localStorage.getItem('ea_admin_auth') === 'true') {
         const adminUrl = new URL('./admin/admin-simple.html', window.location.href).href
         window.open(adminUrl, '_blank', 'noopener')
       } else {
