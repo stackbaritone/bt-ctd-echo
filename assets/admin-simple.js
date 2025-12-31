@@ -135,6 +135,7 @@
   const btnCleanCategories = $('#btn-clean-categories');
   const hdr = $('#hdr');
   const btnDuplicate = $('#btn-duplicate');
+  const updatedBadge = $('#updated-badge');
   
   // Sync status tracking
   let lastPublishedHash = null;
@@ -337,6 +338,35 @@
     return hash.toString();
   }
   
+  // Format and display the last update timestamp
+  function updateTimestampBadge() {
+    if (!updatedBadge) return;
+    const ts = data?.metadata?.updatedAt;
+    if (!ts) {
+      updatedBadge.textContent = '–';
+      updatedBadge.title = 'Aucune date de mise à jour';
+      return;
+    }
+    try {
+      const d = new Date(ts);
+      // Format: DD/MM/YYYY HH:MM:SS
+      const formatted = d.toLocaleDateString('fr-CA', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+      }) + ' ' + d.toLocaleTimeString('fr-CA', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+      });
+      updatedBadge.textContent = formatted;
+      updatedBadge.title = `Dernière mise à jour: ${d.toLocaleString('fr-CA')}`;
+    } catch {
+      updatedBadge.textContent = '–';
+    }
+  }
+  
   function updateSyncStatus() {
     if (!syncStatus || !syncStatusText) return;
     const currentHash = computeDataHash(data);
@@ -358,6 +388,7 @@
   function markAsPublished() {
     lastPublishedHash = computeDataHash(data);
     updateSyncStatus();
+    updateTimestampBadge();
   }
   
   function ensureSchema(obj){
