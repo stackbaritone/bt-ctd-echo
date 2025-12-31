@@ -1684,9 +1684,10 @@ function App() {
 
   /**
    * AUTO-REFRESH: Poll for template updates from admin console
-   * Checks metadata.updatedAt timestamp every 30 seconds and reloads if changed
+   * Checks localStorage admin data and remote file every 10 seconds
    */
   const lastKnownUpdatedAt = useRef(null)
+  const lastLocalStorageCheck = useRef(null)
   useEffect(() => {
     if (!templatesData) return
     
@@ -1697,6 +1698,34 @@ function App() {
     
     const checkForUpdates = async () => {
       try {
+        // First, check localStorage for admin draft (instant sync)
+        const adminLocal = localStorage.getItem('ea_admin_templates_data')
+        if (adminLocal && adminLocal !== lastLocalStorageCheck.current) {
+          lastLocalStorageCheck.current = adminLocal
+          const parsed = JSON.parse(adminLocal)
+          const localUpdatedAt = parsed?.metadata?.updatedAt || JSON.stringify(parsed?.templates?.length)
+          
+          if (localUpdatedAt && localUpdatedAt !== lastKnownUpdatedAt.current) {
+            console.log('[EA] Local admin update detected, syncing...', { old: lastKnownUpdatedAt.current, new: localUpdatedAt })
+            lastKnownUpdatedAt.current = localUpdatedAt
+            
+            const currentTemplateId = selectedTemplate?.id || null
+            setTemplatesData(parsed)
+            
+            if (currentTemplateId) {
+              const stillExists = parsed.templates.find(t => t.id === currentTemplateId)
+              if (stillExists) {
+                setSelectedTemplate(stillExists)
+                lastRebuiltTemplateId.current = null
+              } else {
+                setSelectedTemplate(null)
+              }
+            }
+            return // Skip remote check if local was updated
+          }
+        }
+        
+        // Then check remote file
         const BASE_URL = (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.BASE_URL) ? import.meta.env.BASE_URL : '/'
         const url = (BASE_URL.endsWith('/') ? BASE_URL : BASE_URL + '/') + 'complete_email_templates.json?t=' + Date.now()
         
@@ -1737,10 +1766,21 @@ function App() {
       }
     }
     
-    // Poll every 30 seconds
-    const interval = setInterval(checkForUpdates, 30000)
+    // Poll every 5 seconds for fast local sync
+    const interval = setInterval(checkForUpdates, 5000)
     
-    return () => clearInterval(interval)
+    // Also check immediately on storage events (cross-tab sync)
+    const handleStorageChange = (e) => {
+      if (e.key === 'ea_admin_templates_data') {
+        checkForUpdates()
+      }
+    }
+    window.addEventListener('storage', handleStorageChange)
+    
+    return () => {
+      clearInterval(interval)
+      window.removeEventListener('storage', handleStorageChange)
+    }
   }, [templatesData, selectedTemplate, debug])
 
   // Auto-select first template after load to avoid "no template" UX if user hasn't picked one
