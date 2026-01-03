@@ -44,7 +44,7 @@ const WordExport = (function() {
   }
 
   /**
-   * Parse HTML and create formatted text runs
+   * Parse HTML and create formatted text runs (for inline use in a single paragraph)
    */
   function parseHtmlToRuns(html, defaultOptions = {}) {
     if (!html) return [new docx.TextRun({ text: '', ...defaultOptions })];
@@ -102,6 +102,110 @@ const WordExport = (function() {
     }
 
     return runs.length > 0 ? runs : [new docx.TextRun({ text: '', ...defaultOptions })];
+  }
+
+  /**
+   * Parse HTML and create multiple Word paragraphs (preserves block structure)
+   * This creates proper separate paragraphs for each <p>, <div>, or double <br>
+   */
+  function parseHtmlToParagraphs(html, defaultOptions = {}, paragraphOptions = {}) {
+    if (!html) return [new docx.Paragraph({ children: [new docx.TextRun({ text: '', ...defaultOptions })], ...paragraphOptions })];
+    
+    const paragraphs = [];
+    let currentRuns = [];
+    const temp = document.createElement('div');
+    temp.innerHTML = html;
+
+    // Flush current runs into a paragraph
+    function flushParagraph() {
+      // Remove trailing empty breaks from current runs
+      while (currentRuns.length > 0 && currentRuns[currentRuns.length - 1].text === '' && currentRuns[currentRuns.length - 1].break) {
+        currentRuns.pop();
+      }
+      
+      if (currentRuns.length > 0) {
+        paragraphs.push(new docx.Paragraph({
+          children: currentRuns,
+          spacing: { after: 120 },
+          ...paragraphOptions
+        }));
+        currentRuns = [];
+      }
+    }
+
+    function processNode(node, inherited = {}) {
+      if (node.nodeType === Node.TEXT_NODE) {
+        const text = node.textContent;
+        if (text) {
+          currentRuns.push(new docx.TextRun({
+            text: text,
+            ...defaultOptions,
+            ...inherited
+          }));
+        }
+        return;
+      }
+
+      if (node.nodeType !== Node.ELEMENT_NODE) return;
+
+      const tag = node.tagName.toLowerCase();
+      const newInherited = { ...inherited };
+
+      // Handle formatting tags
+      if (tag === 'strong' || tag === 'b') newInherited.bold = true;
+      if (tag === 'em' || tag === 'i') newInherited.italics = true;
+      if (tag === 'u') newInherited.underline = { type: docx.UnderlineType.SINGLE };
+      if (tag === 's' || tag === 'strike' || tag === 'del') newInherited.strike = true;
+      
+      // Handle line breaks
+      if (tag === 'br') {
+        currentRuns.push(new docx.TextRun({ text: '', break: 1, ...defaultOptions }));
+        return;
+      }
+
+      // Block elements create new paragraphs
+      if (tag === 'p' || tag === 'div') {
+        flushParagraph();
+        // Process children
+        node.childNodes.forEach(child => processNode(child, newInherited));
+        flushParagraph();
+        return;
+      }
+
+      // List items
+      if (tag === 'li') {
+        flushParagraph();
+        currentRuns.push(new docx.TextRun({ text: '• ', ...defaultOptions, ...newInherited }));
+        node.childNodes.forEach(child => processNode(child, newInherited));
+        flushParagraph();
+        return;
+      }
+
+      // Unordered/ordered lists - process children
+      if (tag === 'ul' || tag === 'ol') {
+        flushParagraph();
+        node.childNodes.forEach(child => processNode(child, newInherited));
+        return;
+      }
+
+      // Process children for other elements
+      node.childNodes.forEach(child => processNode(child, newInherited));
+    }
+
+    temp.childNodes.forEach(child => processNode(child));
+    
+    // Flush any remaining content
+    flushParagraph();
+
+    // Return at least one empty paragraph if nothing was generated
+    if (paragraphs.length === 0) {
+      paragraphs.push(new docx.Paragraph({ 
+        children: [new docx.TextRun({ text: '', ...defaultOptions })],
+        ...paragraphOptions 
+      }));
+    }
+
+    return paragraphs;
   }
 
   /**
@@ -428,11 +532,11 @@ const WordExport = (function() {
       }));
     }
 
-    // Description
+    // Description (optional - only if present)
     const descFr = template.description?.fr || '';
     const descEn = template.description?.en || '';
     
-    if (isBilingual) {
+    if (isBilingual && (descFr || descEn)) {
       elements.push(...createBilingualBox('Description', 'Description', descFr, descEn));
     } else {
       const desc = lang === 'en' ? descEn : descFr;
@@ -440,21 +544,6 @@ const WordExport = (function() {
         elements.push(...createLabeledSection('📝 Description', desc));
       }
     }
-
-    // Variables used
-    const detectPlaceholders = (t) => {
-      const parts = [];
-      if (t.subject?.fr) parts.push(t.subject.fr);
-      if (t.subject?.en) parts.push(t.subject.en);
-      if (t.body?.fr) parts.push(t.body.fr);
-      if (t.body?.en) parts.push(t.body.en);
-      const combined = parts.join('\n')
-        .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
-      const keys = [...combined.matchAll(/<<([^>]+)>>/g)]
-        .map(m => m[1].replace(/_(FR|EN)$/i, ''))
-        .filter(Boolean);
-      return [...new Set(keys)].sort();
-    };
 
     const vars = detectPlaceholders(template);
     if (vars.length > 0 && options.includeVariables) {
@@ -601,15 +690,14 @@ const WordExport = (function() {
         indent: { left: 200 }
       }));
       
-      const runsFr = parseHtmlToRuns(bodyFr, { size: 20, font: FONTS.body });
-      elements.push(new docx.Paragraph({
-        children: runsFr,
-        spacing: { after: 200 },
+      // Use parseHtmlToParagraphs for proper paragraph separation with formatting
+      const paragraphsFr = parseHtmlToParagraphs(bodyFr, { size: 20, font: FONTS.body }, {
         indent: { left: 400 },
         border: {
           left: { style: docx.BorderStyle.SINGLE, size: 6, color: COLORS.accent }
         }
-      }));
+      });
+      elements.push(...paragraphsFr);
 
       // English body with border
       elements.push(new docx.Paragraph({
@@ -624,60 +712,54 @@ const WordExport = (function() {
         indent: { left: 200 }
       }));
       
-      const runsEn = parseHtmlToRuns(bodyEn, { size: 20, font: FONTS.body });
-      elements.push(new docx.Paragraph({
-        children: runsEn,
-        spacing: { after: 200 },
+      // Use parseHtmlToParagraphs for proper paragraph separation with formatting
+      const paragraphsEn = parseHtmlToParagraphs(bodyEn, { size: 20, font: FONTS.body }, {
         indent: { left: 400 },
         border: {
           left: { style: docx.BorderStyle.SINGLE, size: 6, color: COLORS.teal }
         }
-      }));
+      });
+      elements.push(...paragraphsEn);
     } else {
       const body = lang === 'en' ? bodyEn : bodyFr;
-      const runs = parseHtmlToRuns(body, { size: 20, font: FONTS.body });
-      elements.push(new docx.Paragraph({
-        children: runs,
-        spacing: { after: 200 },
+      // Use parseHtmlToParagraphs for proper paragraph separation with formatting
+      const bodyParagraphs = parseHtmlToParagraphs(body, { size: 20, font: FONTS.body }, {
         indent: { left: 200 },
         border: {
           left: { style: docx.BorderStyle.SINGLE, size: 6, color: COLORS.accent }
         }
-      }));
+      });
+      elements.push(...bodyParagraphs);
     }
 
-    // Page break after each template (except last)
-    if (index < total - 1) {
-      elements.push(new docx.Paragraph({
-        children: [],
-        pageBreakBefore: true
-      }));
-    }
-
-    return elements;
-  }
-
-  /**
-   * Create the variables appendix
-   */
-  function createVariablesAppendix(data, options) {
-    const elements = [];
-    const lang = options.lang === 'en' ? 'en' : 'fr';
-    const varLib = data.variables || {};
-    const varKeys = Object.keys(varLib).sort();
-
-    if (varKeys.length === 0) return elements;
-
-    // Page break and title
+    // Page break after EVERY template (one template per page)
     elements.push(new docx.Paragraph({
       children: [],
       pageBreakBefore: true
     }));
 
+    return elements;
+  }
+
+  /**
+   * Create Table of Contents
+   */
+  function createTableOfContents(templates, categoryLabels, options) {
+    const elements = [];
+    const lang = options.lang === 'en' ? 'en' : 'fr';
+    const isBilingual = options.lang === 'both';
+
+    // Page break before TOC
+    elements.push(new docx.Paragraph({
+      children: [],
+      pageBreakBefore: true
+    }));
+
+    // TOC Title
     elements.push(new docx.Paragraph({
       children: [
         new docx.TextRun({
-          text: options.lang === 'en' ? 'APPENDIX: VARIABLES LIBRARY' : 'ANNEXE : BIBLIOTHÈQUE DES VARIABLES',
+          text: options.lang === 'en' ? 'TABLE OF CONTENTS' : 'TABLE DES MATIÈRES',
           bold: true,
           size: 32,
           font: FONTS.heading,
@@ -689,104 +771,75 @@ const WordExport = (function() {
 
     elements.push(createSeparator());
 
-    // Create table
-    const tableRows = [
-      new docx.TableRow({
-        children: [
-          new docx.TableCell({
-            children: [new docx.Paragraph({ 
-              children: [new docx.TextRun({ text: 'Variable', bold: true, size: 18 })]
-            })],
-            shading: { type: docx.ShadingType.SOLID, color: COLORS.primary },
-            width: { size: 2000, type: docx.WidthType.DXA }
-          }),
-          new docx.TableCell({
-            children: [new docx.Paragraph({ 
-              children: [new docx.TextRun({ text: 'Description', bold: true, size: 18, color: COLORS.white })]
-            })],
-            shading: { type: docx.ShadingType.SOLID, color: COLORS.primary },
-            width: { size: 4000, type: docx.WidthType.DXA }
-          }),
-          new docx.TableCell({
-            children: [new docx.Paragraph({ 
-              children: [new docx.TextRun({ text: 'Format', bold: true, size: 18, color: COLORS.white })]
-            })],
-            shading: { type: docx.ShadingType.SOLID, color: COLORS.primary },
-            width: { size: 1500, type: docx.WidthType.DXA }
-          }),
-          new docx.TableCell({
-            children: [new docx.Paragraph({ 
-              children: [new docx.TextRun({ text: options.lang === 'en' ? 'Example' : 'Exemple', bold: true, size: 18, color: COLORS.white })]
-            })],
-            shading: { type: docx.ShadingType.SOLID, color: COLORS.primary },
-            width: { size: 1500, type: docx.WidthType.DXA }
-          })
-        ],
-        tableHeader: true
-      })
-    ];
-
-    varKeys.forEach((key, i) => {
-      const v = varLib[key] || {};
-      const desc = v.description?.[lang] || v.description?.fr || '';
-      const format = v.format || 'text';
-      const example = v.example?.[lang] || v.example?.fr || '';
-      const bgColor = i % 2 === 0 ? COLORS.white : COLORS.lightBg;
-
-      tableRows.push(new docx.TableRow({
-        children: [
-          new docx.TableCell({
-            children: [new docx.Paragraph({ 
-              children: [new docx.TextRun({ text: key, size: 18, font: FONTS.mono, color: COLORS.teal })]
-            })],
-            shading: { type: docx.ShadingType.SOLID, color: bgColor }
-          }),
-          new docx.TableCell({
-            children: [new docx.Paragraph({ 
-              children: [new docx.TextRun({ text: desc, size: 18, font: FONTS.body })]
-            })],
-            shading: { type: docx.ShadingType.SOLID, color: bgColor }
-          }),
-          new docx.TableCell({
-            children: [new docx.Paragraph({ 
-              children: [new docx.TextRun({ text: format, size: 18, font: FONTS.body, italics: true })]
-            })],
-            shading: { type: docx.ShadingType.SOLID, color: bgColor }
-          }),
-          new docx.TableCell({
-            children: [new docx.Paragraph({ 
-              children: [new docx.TextRun({ text: example, size: 18, font: FONTS.body, color: COLORS.muted })]
-            })],
-            shading: { type: docx.ShadingType.SOLID, color: bgColor }
-          })
-        ]
-      }));
+    // Group templates by category
+    const byCategory = {};
+    templates.forEach((t, index) => {
+      const cat = t.category || 'other';
+      if (!byCategory[cat]) byCategory[cat] = [];
+      byCategory[cat].push({ template: t, index: index + 1 });
     });
 
-    elements.push(new docx.Table({
-      rows: tableRows,
-      width: { size: 100, type: docx.WidthType.PERCENTAGE },
-      borders: {
-        top: { style: docx.BorderStyle.SINGLE, size: 1, color: COLORS.border },
-        bottom: { style: docx.BorderStyle.SINGLE, size: 1, color: COLORS.border },
-        left: { style: docx.BorderStyle.SINGLE, size: 1, color: COLORS.border },
-        right: { style: docx.BorderStyle.SINGLE, size: 1, color: COLORS.border },
-        insideHorizontal: { style: docx.BorderStyle.SINGLE, size: 1, color: COLORS.border },
-        insideVertical: { style: docx.BorderStyle.SINGLE, size: 1, color: COLORS.border }
-      }
-    }));
+    // Generate TOC entries by category
+    Object.keys(byCategory).sort().forEach(catKey => {
+      const catLabel = categoryLabels[catKey]?.[lang] || 
+                       categoryLabels[catKey]?.fr || 
+                       catKey;
 
+      // Category heading
+      elements.push(new docx.Paragraph({
+        children: [
+          new docx.TextRun({
+            text: catLabel.toUpperCase(),
+            bold: true,
+            size: 22,
+            font: FONTS.heading,
+            color: COLORS.primary
+          })
+        ],
+        spacing: { before: 250, after: 100 },
+        shading: { type: docx.ShadingType.SOLID, color: COLORS.lightBg }
+      }));
+
+      // Templates in this category
+      byCategory[catKey].forEach(({ template, index }) => {
+        const titleFr = template.title?.fr || template.title || '';
+        const titleEn = template.title?.en || template.title || '';
+        const title = isBilingual ? titleFr : (options.lang === 'en' ? titleEn : titleFr);
+        const titleSecondary = isBilingual ? ` / ${titleEn}` : '';
+
+        elements.push(new docx.Paragraph({
+          children: [
+            new docx.TextRun({
+              text: `${index}. `,
+              bold: true,
+              size: 20,
+              font: FONTS.body,
+              color: COLORS.muted
+            }),
+            new docx.TextRun({
+              text: title,
+              size: 20,
+              font: FONTS.body,
+              color: COLORS.text
+            }),
+            new docx.TextRun({
+              text: titleSecondary,
+              size: 18,
+              font: FONTS.body,
+              color: COLORS.muted,
+              italics: true
+            })
+          ],
+          spacing: { after: 60 },
+          indent: { left: 360 }
+        }));
+      });
+    });
+
+    // Page break after TOC
     elements.push(new docx.Paragraph({
-      children: [
-        new docx.TextRun({
-          text: `\n${options.lang === 'en' ? 'Total' : 'Total'}: ${varKeys.length} variables`,
-          size: 18,
-          font: FONTS.body,
-          color: COLORS.muted,
-          italics: true
-        })
-      ],
-      spacing: { before: 200 }
+      children: [],
+      pageBreakBefore: true
     }));
 
     return elements;
@@ -829,6 +882,9 @@ const WordExport = (function() {
     // Title page
     children.push(...createTitlePage(data, options));
 
+    // Table of contents (after title page, before templates)
+    children.push(...createTableOfContents(templates, categoryLabels, options));
+
     // Templates by category
     templates.forEach((template, index) => {
       const catKey = template.category || 'other';
@@ -837,11 +893,6 @@ const WordExport = (function() {
                        catKey;
       children.push(...createTemplateSection(template, index, templates.length, catLabel, data, options));
     });
-
-    // Variables appendix
-    if (options.includeAppendix) {
-      children.push(...createVariablesAppendix(data, options));
-    }
 
     // Create document
     const doc = new docx.Document({

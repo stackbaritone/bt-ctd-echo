@@ -1211,8 +1211,6 @@
   if (btnGenerateWord) {
     btnGenerateWord.onclick = async () => {
       const lang = document.querySelector('input[name="word-lang"]:checked')?.value || 'both';
-      const includeVariables = document.getElementById('word-include-vars')?.checked ?? true;
-      const includeAppendix = document.getElementById('word-include-appendix')?.checked ?? true;
       
       // Show loading state
       const originalText = btnGenerateWord.innerHTML;
@@ -1226,7 +1224,7 @@
         }
         
         // Generate the document
-        const result = await WordExport.generate(data, { lang, includeVariables, includeAppendix });
+        const result = await WordExport.generate(data, { lang });
         
         if (result.success) {
           notify(`Document Word généré : ${result.filename}`);
