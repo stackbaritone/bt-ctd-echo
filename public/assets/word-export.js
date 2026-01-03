@@ -209,6 +209,23 @@ const WordExport = (function() {
   }
 
   /**
+   * Detect placeholders in a template
+   */
+  function detectPlaceholders(t) {
+    const parts = [];
+    if (t.subject?.fr) parts.push(t.subject.fr);
+    if (t.subject?.en) parts.push(t.subject.en);
+    if (t.body?.fr) parts.push(t.body.fr);
+    if (t.body?.en) parts.push(t.body.en);
+    const combined = parts.join('\n')
+      .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
+    const keys = [...combined.matchAll(/<<([^>]+)>>/g)]
+      .map(m => m[1].replace(/_(FR|EN)$/i, ''))
+      .filter(Boolean);
+    return [...new Set(keys)].sort();
+  }
+
+  /**
    * Create a styled heading
    */
   function createHeading(text, level = 1) {
