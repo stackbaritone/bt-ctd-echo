@@ -174,6 +174,7 @@
   
   // editor fields
   const idEl = $('#tpl-id');
+  const utilisateurEl = $('#tpl-utilisateur');
   const catFrEl = $('#tpl-cat-fr');
   const catEnEl = $('#tpl-cat-en');
   const catFrSelectEl = $('#tpl-cat-fr-select');
@@ -758,7 +759,7 @@
     if (labels) return labels.fr || labels.en || '';
     return t.category_fr || t.category_en || t.category || '';
   }
-  function renderList(){ const arr = filtered(); list.innerHTML = arr.map(x=>{ const ttl = x.title?.fr || x.title?.en || x.id; return `<div class="tile ${x.id===selected?'active':''}" data-id="${escapeHtml(x.id)}"><div class="tile-title">${escapeHtml(ttl)}</div><div class="tile-sub">${escapeHtml(getCategoryDisplay(x))}</div></div>`; }).join(''); $$('.tile', list).forEach(el=>{ el.onclick=()=>{ selected = el.dataset.id; renderList(); renderEditor(); }; }); }
+  function renderList(){ const arr = filtered(); list.innerHTML = arr.map(x=>{ const ttl = x.title?.fr || x.title?.en || x.id; const isGestion = x.utilisateur === 'gestion'; const gestionBadge = isGestion ? '<span style="margin-left:4px;font-size:10px" title="Réservé à la gestion">🔐</span>' : ''; return `<div class="tile ${x.id===selected?'active':''}" data-id="${escapeHtml(x.id)}"><div class="tile-title">${escapeHtml(ttl)}${gestionBadge}</div><div class="tile-sub">${escapeHtml(getCategoryDisplay(x))}</div></div>`; }).join(''); $$('.tile', list).forEach(el=>{ el.onclick=()=>{ selected = el.dataset.id; renderList(); renderEditor(); }; }); }
 
   function populateCategorySelects(){
     // Only show categories that are actually used by templates
@@ -793,8 +794,9 @@
     }
   }
   
-  function renderEditor(){ const t = (data.templates||[]).find(x=>x.id===selected) || null; hdr.textContent = t ? `Éditeur – ${t.id}` : 'Éditeur'; if (!t) { idEl.value=''; if (catFrEl) catFrEl.value=''; if (catEnEl) catEnEl.value=''; titleFrEl.value=''; titleEnEl.value=''; descFrEl.value=''; descEnEl.value=''; subjFrEl.value=''; subjEnEl.value=''; setBodyValue(bodyFrEl, ''); setBodyValue(bodyEnEl, ''); if (varsBox) varsBox.innerHTML=''; if (varsValidationBox) varsValidationBox.style.display='none'; populateCategorySelects(); return; }
+  function renderEditor(){ const t = (data.templates||[]).find(x=>x.id===selected) || null; hdr.textContent = t ? `Éditeur – ${t.id}` : 'Éditeur'; if (!t) { idEl.value=''; if (utilisateurEl) utilisateurEl.value='tous'; if (catFrEl) catFrEl.value=''; if (catEnEl) catEnEl.value=''; titleFrEl.value=''; titleEnEl.value=''; descFrEl.value=''; descEnEl.value=''; subjFrEl.value=''; subjEnEl.value=''; setBodyValue(bodyFrEl, ''); setBodyValue(bodyEnEl, ''); if (varsBox) varsBox.innerHTML=''; if (varsValidationBox) varsValidationBox.style.display='none'; populateCategorySelects(); return; }
     idEl.value = t.id || '';
+    if (utilisateurEl) utilisateurEl.value = t.utilisateur || 'tous';
   if (catFrEl) catFrEl.value = t.category_fr || '';
   if (catEnEl) catEnEl.value = t.category_en || '';
     populateCategorySelects();
@@ -1212,6 +1214,7 @@
   if (btnGenerateWord) {
     btnGenerateWord.onclick = async () => {
       const lang = document.querySelector('input[name="word-lang"]:checked')?.value || 'both';
+      const audience = document.querySelector('input[name="word-audience"]:checked')?.value || 'all';
       
       // Show loading state
       const originalText = btnGenerateWord.innerHTML;
@@ -1224,8 +1227,19 @@
           throw new Error('Module WordExport non chargé');
         }
         
+        // Filter templates based on audience selection
+        let filteredData = { ...data };
+        if (audience === 'users') {
+          // Only templates for all users (not gestion)
+          filteredData.templates = data.templates.filter(t => t.utilisateur !== 'gestion');
+        } else if (audience === 'management') {
+          // Only management templates
+          filteredData.templates = data.templates.filter(t => t.utilisateur === 'gestion');
+        }
+        // 'all' keeps all templates
+        
         // Generate the document
-        const result = await WordExport.generate(data, { lang });
+        const result = await WordExport.generate(filteredData, { lang, audience });
         
         if (result.success) {
           notify(`Document Word généré : ${result.filename}`);
@@ -1459,6 +1473,7 @@
   };
   titleFrEl.oninput = (e) => { const t=data.templates.find(x=>x.id===selected); if (!t) return; t.title=t.title||{}; t.title.fr=e.target.value; saveDraft(); renderList(); };
   titleEnEl.oninput = (e) => { const t=data.templates.find(x=>x.id===selected); if (!t) return; t.title=t.title||{}; t.title.en=e.target.value; saveDraft(); renderList(); };
+  if (utilisateurEl) utilisateurEl.onchange = (e) => { const t=data.templates.find(x=>x.id===selected); if (!t) return; t.utilisateur=e.target.value; saveDraft(); renderList(); };
   descFrEl.oninput = (e) => { const t=data.templates.find(x=>x.id===selected); if (!t) return; t.description=t.description||{}; t.description.fr=e.target.value; saveDraft(); };
   descEnEl.oninput = (e) => { const t=data.templates.find(x=>x.id===selected); if (!t) return; t.description=t.description||{}; t.description.en=e.target.value; saveDraft(); };
   subjFrEl.oninput = (e) => { const t=data.templates.find(x=>x.id===selected); if (!t) return; t.subject=t.subject||{}; t.subject.fr=e.target.value; saveDraft(); renderEditor(); scheduleAutoSync(); };

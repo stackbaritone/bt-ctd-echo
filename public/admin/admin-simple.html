@@ -381,6 +381,26 @@
             </div>
           </div>
 
+          <div style="margin-bottom:20px">
+            <label style="display:block;font-weight:600;margin-bottom:8px;color:#334155">
+              👥 Public cible
+            </label>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;transition:all 0.2s">
+                <input type="radio" name="word-audience" value="all" checked style="accent-color:#059669;width:18px;height:18px">
+                <span style="font-size:14px"><strong>📋 Tous les modèles</strong> – Gestion + Utilisateurs</span>
+              </label>
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;transition:all 0.2s">
+                <input type="radio" name="word-audience" value="users" style="accent-color:#059669;width:18px;height:18px">
+                <span style="font-size:14px"><strong>👥 Utilisateurs</strong> – Modèles pour tous les employés</span>
+              </label>
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;transition:all 0.2s">
+                <input type="radio" name="word-audience" value="management" style="accent-color:#059669;width:18px;height:18px">
+                <span style="font-size:14px"><strong>🔐 Gestion</strong> – Modèles réservés aux gestionnaires</span>
+              </label>
+            </div>
+          </div>
+
           <div style="padding:12px;background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;margin-bottom:8px">
             <p style="margin:0;color:#0369a1;font-size:13px;line-height:1.6">
               <strong>💡 Contenu :</strong> Le document inclut une page de garde, une table des matières, 
@@ -626,7 +646,14 @@
         </div>
         <div class="body" id="editor">
           <div class="row">
-            <div class="field span-2"><label>ID</label><input id="tpl-id" placeholder="ex: welcome_email" title="Identifiant unique (lettres, chiffres, underscore)" /></div>
+            <div class="field"><label>ID</label><input id="tpl-id" placeholder="ex: welcome_email" title="Identifiant unique (lettres, chiffres, underscore)" /></div>
+            <div class="field">
+              <label>Utilisateur</label>
+              <select id="tpl-utilisateur" title="Qui peut voir ce modèle">
+                <option value="tous">👥 Tous les utilisateurs</option>
+                <option value="gestion">🔐 Gestion seulement</option>
+              </select>
+            </div>
           </div>
           <div class="row">
             <div class="field">

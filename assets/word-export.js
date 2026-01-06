@@ -50,17 +50,20 @@ const WordExport = (function() {
   function createRunsWithHighlightedVariables(text, defaultOptions = {}) {
     if (!text) return [new docx.TextRun({ text: '', ...defaultOptions })];
     
+    // Decode HTML-encoded variables: &lt;&lt;var&gt;&gt; -> <<var>>
+    const decodedText = text.replace(/&lt;&lt;([^&]+)&gt;&gt;/g, '<<$1>>');
+    
     const runs = [];
     // Match <<variable_name>> patterns
     const regex = /<<([^>]+)>>/g;
     let lastIndex = 0;
     let match;
     
-    while ((match = regex.exec(text)) !== null) {
+    while ((match = regex.exec(decodedText)) !== null) {
       // Add text before the variable
       if (match.index > lastIndex) {
         runs.push(new docx.TextRun({
-          text: text.slice(lastIndex, match.index),
+          text: decodedText.slice(lastIndex, match.index),
           ...defaultOptions
         }));
       }
@@ -76,9 +79,9 @@ const WordExport = (function() {
     }
     
     // Add remaining text after last variable
-    if (lastIndex < text.length) {
+    if (lastIndex < decodedText.length) {
       runs.push(new docx.TextRun({
-        text: text.slice(lastIndex),
+        text: decodedText.slice(lastIndex),
         ...defaultOptions
       }));
     }
@@ -95,7 +98,22 @@ const WordExport = (function() {
     const paragraphs = [];
     let currentRuns = [];
     const temp = document.createElement('div');
-    temp.innerHTML = html;
+    
+    // Pre-process: decode HTML entities for variables and convert line breaks to HTML
+    let processed = html
+      // Decode HTML-encoded variables: &lt;&lt;var&gt;&gt; -> <<var>>
+      .replace(/&lt;&lt;([^&]+)&gt;&gt;/g, '<<$1>>')
+      // Convert \r\n or \n\n (double line breaks) to paragraph breaks
+      .replace(/\r\n\r\n|\n\n/g, '</p><p>')
+      // Convert remaining single line breaks to <br>
+      .replace(/\r\n|\n/g, '<br>');
+    
+    // Wrap in paragraph if we added </p><p> tags
+    if (processed.includes('</p><p>')) {
+      processed = '<p>' + processed + '</p>';
+    }
+    
+    temp.innerHTML = processed;
 
     function flushParagraph() {
       while (currentRuns.length > 0 && currentRuns[currentRuns.length - 1].text === '' && currentRuns[currentRuns.length - 1].break) {
@@ -340,8 +358,29 @@ const WordExport = (function() {
           })
         ],
         alignment: docx.AlignmentType.CENTER,
-        spacing: { after: 800 }
+        spacing: { after: 100 }
       }),
+      
+      // Audience indicator
+      ...(options.audience && options.audience !== 'all' ? [
+        new docx.Paragraph({
+          children: [
+            new docx.TextRun({
+              text: options.audience === 'management' 
+                ? (options.lang === 'en' ? '🔐 Management templates only' : '🔐 Modèles de gestion uniquement')
+                : (options.lang === 'en' ? '👥 User templates only' : '👥 Modèles utilisateurs uniquement'),
+              size: 22,
+              font: FONTS.body,
+              color: options.audience === 'management' ? 'D97706' : '059669',
+              italics: true
+            })
+          ],
+          alignment: docx.AlignmentType.CENTER,
+          spacing: { after: 600 }
+        })
+      ] : [
+        new docx.Paragraph({ spacing: { after: 600 } })
+      ]),
 
       new docx.Paragraph({
         children: [
@@ -1027,7 +1066,8 @@ const WordExport = (function() {
     // Download
     const dateStr = new Date().toISOString().slice(0, 10);
     const langSuffix = options.lang === 'both' ? 'bilingue' : options.lang;
-    const filename = `CTD_Catalogue_Modeles_${langSuffix}_${dateStr}.docx`;
+    const audienceSuffix = options.audience === 'management' ? '_gestion' : (options.audience === 'users' ? '_utilisateurs' : '');
+    const filename = `CTD_Catalogue_Modeles_${langSuffix}${audienceSuffix}_${dateStr}.docx`;
     
     if (typeof saveAs === 'function') {
       saveAs(blob, filename);

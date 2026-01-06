@@ -366,6 +366,17 @@ function App() {
   const [adminError, setAdminError] = useState('')
   const [showAdminPassword, setShowAdminPassword] = useState(false)
   
+  // Management mode state (for restricted templates)
+  const [isManagementMode, setIsManagementMode] = useState(() => {
+    try { return localStorage.getItem('ea_management_mode') === 'true' } catch { return false }
+  })
+  const [showManagementModal, setShowManagementModal] = useState(false)
+  const [managementPassword, setManagementPassword] = useState('')
+  const [managementError, setManagementError] = useState('')
+  // SHA-256 hash for management password: Gestion2026!Ctd
+  // To generate: echo -n "Gestion2026!Ctd" | sha256sum
+  const MANAGEMENT_PASSWORD_HASH_STATE = '43e088b26de409a0a8fac92c3c14eb5cd0e2b73ad59ed961f8b0c0c89d1c8c72'
+  
   // Dark mode state
   const [darkMode, setDarkMode] = useState(() => {
     // Check saved preference first, then system preference
@@ -996,6 +1007,43 @@ function App() {
       setAdminError(interfaceLanguage === 'fr' ? 'Erreur d\'authentification' : 'Authentication error')
     }
   }, [adminPassword, interfaceLanguage])
+
+  // Management mode authentication - SHA-256 hash for "Gestion2026!Ctd"
+  const MANAGEMENT_PASSWORD_HASH = '43e088b26de409a0a8fac92c3c14eb5cd0e2b73ad59ed961f8b0c0c89d1c8c72'
+  
+  const handleManagementLogin = useCallback(async () => {
+    if (!managementPassword) {
+      setManagementError(interfaceLanguage === 'fr' ? 'Veuillez entrer le code gestion' : 'Please enter management code')
+      return
+    }
+    
+    try {
+      const encoder = new TextEncoder()
+      const data = encoder.encode(managementPassword)
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data)
+      const hashArray = Array.from(new Uint8Array(hashBuffer))
+      const hash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('')
+      
+      if (hash === MANAGEMENT_PASSWORD_HASH) {
+        localStorage.setItem('ea_management_mode', 'true')
+        setIsManagementMode(true)
+        setShowManagementModal(false)
+        setManagementPassword('')
+        setManagementError('')
+      } else {
+        setManagementError(interfaceLanguage === 'fr' ? 'Code incorrect' : 'Incorrect code')
+        setManagementPassword('')
+      }
+    } catch (e) {
+      console.error('Management auth error:', e)
+      setManagementError(interfaceLanguage === 'fr' ? 'Erreur d\'authentification' : 'Authentication error')
+    }
+  }, [managementPassword, interfaceLanguage])
+  
+  const handleManagementLogout = useCallback(() => {
+    localStorage.removeItem('ea_management_mode')
+    setIsManagementMode(false)
+  }, [])
 
   // Setup BroadcastChannel for variables syncing
   useEffect(() => {
@@ -1973,6 +2021,12 @@ function App() {
     const empty = { filteredTemplates: [], searchMatchMap: {} }
     if (!templatesData) return empty
     let dataset = templatesData.templates
+    
+    // Filter by user access level (management mode)
+    // Templates with utilisateur='gestion' are only visible in management mode
+    if (!isManagementMode) {
+      dataset = dataset.filter(t => t.utilisateur !== 'gestion')
+    }
 
     const qRaw = (searchQuery || '').trim()
     const hasSearchQuery = qRaw.length > 0
@@ -2227,7 +2281,7 @@ function App() {
     }
 
     return { filteredTemplates: sortWithFavoritesFirst(items), searchMatchMap: matchMap }
-  }, [templatesData, searchQuery, selectedCategory, favoritesOnly, favorites])
+  }, [templatesData, searchQuery, selectedCategory, favoritesOnly, favorites, isManagementMode])
 
   // Helpers for rendering highlighted text
   const getMatchRanges = (id, key) => (searchMatchMap && searchMatchMap[id] && searchMatchMap[id][key]) || null
@@ -3492,6 +3546,31 @@ ${cleanBodyHtml}
     <span className="hidden sm:inline">Admin</span>
   </Button>
 
+  {/* Management Mode Button - next to Admin */}
+  <Button
+    onClick={() => {
+      if (isManagementMode) {
+        handleManagementLogout()
+      } else {
+        setShowManagementModal(true)
+        setManagementPassword('')
+        setManagementError('')
+      }
+    }}
+    variant="ghost"
+    className={`fixed bottom-4 left-24 z-40 inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-medium transition-opacity ${isManagementMode ? 'opacity-100' : 'opacity-40 hover:opacity-100'}`}
+    style={{ color: isManagementMode ? '#059669' : '#64748b' }}
+    title={interfaceLanguage === 'fr' 
+      ? (isManagementMode ? 'Mode Gestion actif - Cliquer pour désactiver' : 'Accès Gestion') 
+      : (isManagementMode ? 'Management Mode active - Click to deactivate' : 'Management Access')}
+  >
+    {isManagementMode ? '🔓' : '🔐'}
+    <span className="hidden sm:inline">{isManagementMode 
+      ? (interfaceLanguage === 'fr' ? 'Gestion ✓' : 'Mgmt ✓')
+      : (interfaceLanguage === 'fr' ? 'Gestion' : 'Mgmt')
+    }</span>
+  </Button>
+
   {/* Admin Login Modal */}
   {showAdminModal && (
     <div 
@@ -3572,6 +3651,52 @@ ${cleanBodyHtml}
               {interfaceLanguage === 'fr' ? 'Se connecter' : 'Login'}
             </Button>
           </div>
+        </div>
+      </div>
+    </div>
+  )}
+
+  {/* Management Login Modal */}
+  {showManagementModal && (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+      <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-xl p-6 w-full max-w-sm border border-zinc-200 dark:border-zinc-700">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
+            🔐 {interfaceLanguage === 'fr' ? 'Mode Gestion' : 'Management Mode'}
+          </h2>
+          <button
+            onClick={() => setShowManagementModal(false)}
+            className="text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+            </svg>
+          </button>
+        </div>
+        <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-4">
+          {interfaceLanguage === 'fr' 
+            ? 'Ce mode permet d\'accéder aux modèles réservés à la gestion.'
+            : 'This mode allows access to management-only templates.'}
+        </p>
+        <div className="space-y-3">
+          <input
+            type="password"
+            value={managementPassword}
+            onChange={(e) => setManagementPassword(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && handleManagementLogin()}
+            placeholder={interfaceLanguage === 'fr' ? 'Mot de passe gestion' : 'Management password'}
+            className="w-full px-3 py-2 border border-zinc-300 dark:border-zinc-600 rounded-lg bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+            autoFocus
+          />
+          {managementError && (
+            <p className="text-sm text-red-500">{managementError}</p>
+          )}
+          <Button
+            onClick={handleManagementLogin}
+            className="w-full bg-amber-600 hover:bg-amber-700 text-white"
+          >
+            {interfaceLanguage === 'fr' ? 'Activer le mode gestion' : 'Enable management mode'}
+          </Button>
         </div>
       </div>
     </div>
@@ -3787,6 +3912,14 @@ ${cleanBodyHtml}
                                     getMatchRanges(template.id, `title.${templateLanguage}`)
                                   )}
                                 </h3>
+                                {template.utilisateur === 'gestion' && (
+                                  <span 
+                                    className="text-[10px] px-1.5 py-0.5 bg-amber-100 text-amber-700 rounded-md font-medium"
+                                    title={interfaceLanguage === 'fr' ? 'Réservé à la gestion' : 'Management only'}
+                                  >
+                                    🔐
+                                  </span>
+                                )}
                               </div>
                               <p className="text-[12px] text-gray-600 mb-2 leading-relaxed line-clamp-2" title={template.description[templateLanguage]}>
                                 {renderHighlighted(
@@ -3902,12 +4035,22 @@ ${cleanBodyHtml}
                     <div key={template.id} onClick={() => { setSelectedTemplate(template); setShowMobileTemplates(false) }} className="w-full p-4 border border-[#e1eaf2] bg-white rounded-[14px]">
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
-                          <h3 className="font-bold text-gray-900 text-[13px] mb-1" title={template.title[templateLanguage]}>
-                            {renderHighlighted(
-                              template.title[templateLanguage],
-                              getMatchRanges(template.id, `title.${templateLanguage}`)
+                          <div className="flex items-center gap-2 mb-1">
+                            <h3 className="font-bold text-gray-900 text-[13px]" title={template.title[templateLanguage]}>
+                              {renderHighlighted(
+                                template.title[templateLanguage],
+                                getMatchRanges(template.id, `title.${templateLanguage}`)
+                              )}
+                            </h3>
+                            {template.utilisateur === 'gestion' && (
+                              <span 
+                                className="text-[10px] px-1.5 py-0.5 bg-amber-100 text-amber-700 rounded-md font-medium"
+                                title={interfaceLanguage === 'fr' ? 'Réservé à la gestion' : 'Management only'}
+                              >
+                                🔐
+                              </span>
                             )}
-                          </h3>
+                          </div>
                           <p className="text-[12px] text-gray-600 mb-2 leading-relaxed line-clamp-2" title={template.description[templateLanguage]}>
                             {renderHighlighted(
                               template.description[templateLanguage],
