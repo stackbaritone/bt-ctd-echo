@@ -1,11 +1,9 @@
-name: Deploy to GitHub Pages on JSON update
+name: Deploy to GitHub Pages
 
 on:
   push:
     branches:
       - main
-    paths:
-      - 'complete_email_templates.json'
 
 permissions:
   contents: write
