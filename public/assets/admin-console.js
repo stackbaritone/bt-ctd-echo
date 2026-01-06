@@ -1621,7 +1621,7 @@
   async function githubPublishFlow() {
     try {
       if (!data) { notify('Aucune donnée à publier.', 'warn'); return; }
-      const repo = 'snarky1980/echo-bt-ctd-gestion'; // adjust if forked
+      const repo = 'snarky1980/bt-ctd-echo'; // adjust if forked
       const rootPath = 'complete_email_templates.json';
       const publicPath = 'public/complete_email_templates.json';
       const owner = repo.split('/')[0];

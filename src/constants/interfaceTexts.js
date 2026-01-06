@@ -1,4 +1,4 @@
-// Interface texts by language - kept in sync with echo-bt-ctd-gestion
+// Interface texts by language - kept in sync with bt-ctd-echo
 export const interfaceTexts = {
   fr: {
     title: 'echo',

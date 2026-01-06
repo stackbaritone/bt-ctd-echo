@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ECHO - CTD gestion (Admin)</title>
   <!-- meta used for GitHub repo autodetection for JSON publish -->
-  <meta name="gh-repo" content="snarky1980/echo-bt-ctd-gestion" />
+  <meta name="gh-repo" content="snarky1980/bt-ctd-echo" />
     <meta property="og:title" content="ECHO - CTD gestion (Admin)" />
     <meta property="og:description" content="Console d'administration pour la gestion des modèles de courriels" />
     <meta name="description" content="Console d'administration pour la gestion des modèles de courriels" />
@@ -713,14 +713,14 @@
       // Lightweight badge population: fetch raw main JSON headers quickly
       (async function(){
         try {
-          const repo = document.querySelector('meta[name="gh-repo"]')?.content || 'snarky1980/echo-bt-ctd-gestion';
+          const repo = document.querySelector('meta[name="gh-repo"]')?.content || 'snarky1980/bt-ctd-echo';
           const origin = window.location.origin && window.location.origin !== 'null' ? window.location.origin.replace(/\/$/, '') : '';
           const basePath = (window.location.pathname || '').replace(/\/[^\/]*$/, '');
           const urls = [];
           const addUrl = (candidate) => { if (!candidate || urls.includes(candidate)) return; urls.push(candidate); };
           // Try published gh-pages first for latest timestamp
           if (window.location.hostname === 'snarky1980.github.io') {
-            addUrl(`https://snarky1980.github.io/echo-bt-ctd-gestion/complete_email_templates.json?t=${Date.now()}`);
+            addUrl(`https://snarky1980.github.io/bt-ctd-echo/complete_email_templates.json?t=${Date.now()}`);
           }
           addUrl(`../complete_email_templates.json?t=${Date.now()}`);
           if (origin) {
