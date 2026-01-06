@@ -1050,15 +1050,27 @@
     const homepage = (data.metadata && data.metadata.homepage) || document.querySelector('meta[name="gh-repo"]')?.content || '';
     let owner='snarky1980', repo='bt-ctd-echo';
     try {
-      const m = homepage.match(/github\.io\/([^/]+)\/?/); if (m) repo = m[1];
-      const m2 = (document.location.href).match(/https:\/\/([^.]+)\.github\.io\//); if (m2) owner = m2[1];
-      // Project pages path: /<repo>/...
-      const pathSeg = (location.pathname||'').split('/').filter(Boolean)[0];
-      if (pathSeg) repo = pathSeg;
+      // Try to get repo from meta tag first (most reliable)
+      const metaRepo = document.querySelector('meta[name="gh-repo"]')?.content;
+      if (metaRepo && metaRepo.includes('/')) {
+        const parts = metaRepo.split('/');
+        owner = parts[0];
+        repo = parts[1];
+      } else {
+        // Fallback to URL detection only on github.io
+        const m = homepage.match(/github\.io\/([^/]+)\/?/); if (m) repo = m[1];
+        const m2 = (document.location.href).match(/https:\/\/([^.]+)\.github\.io\//); if (m2) owner = m2[1];
+        // Only use pathname on github.io pages, not in dev
+        if (location.hostname.endsWith('.github.io')) {
+          const pathSeg = (location.pathname||'').split('/').filter(Boolean)[0];
+          if (pathSeg) repo = pathSeg;
+        }
+      }
     } catch{}
     // For safety allow override
     const override = localStorage.getItem('ea_gh_repo');
     if (override){ const parts = override.split('/'); if (parts.length===2){ owner = parts[0]; repo = parts[1]; } }
+    console.log('[publish] Using owner/repo:', owner, repo);
   if (showToast) notify('Publication GitHub (main)…');
     const path = 'complete_email_templates.json';
     const baseUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
