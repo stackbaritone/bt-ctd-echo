@@ -45,7 +45,7 @@ const WordExport = (function() {
 
   /**
    * Create text runs with highlighted variables from text content
-   * Variables like <<variable_name>> will be displayed as «variable_name» and highlighted in yellow
+   * Variables like <<variable_name>> will be highlighted in yellow with double chevrons
    */
   function createRunsWithHighlightedVariables(text, defaultOptions = {}) {
     if (!text) return [new docx.TextRun({ text: '', ...defaultOptions })];
@@ -68,9 +68,9 @@ const WordExport = (function() {
         }));
       }
       
-      // Add the variable with French guillemets and yellow highlight
+      // Add the variable with double chevrons and yellow highlight
       runs.push(new docx.TextRun({
-        text: `«${match[1]}»`, // Convert <<var>> to «var»
+        text: `<<${match[1]}>>`, // Keep <<var>> format
         ...defaultOptions,
         highlight: 'yellow'
       }));
@@ -103,6 +103,8 @@ const WordExport = (function() {
     let processed = html
       // Decode HTML-encoded variables: &lt;&lt;var&gt;&gt; -> <<var>>
       .replace(/&lt;&lt;([^&]+)&gt;&gt;/g, '<<$1>>')
+      // Protect variables from being interpreted as HTML tags by using a placeholder
+      .replace(/<<([^>]+)>>/g, '\u00AB\u00AB$1\u00BB\u00BB')
       // Convert \r\n or \n\n (double line breaks) to paragraph breaks
       .replace(/\r\n\r\n|\n\n/g, '</p><p>')
       // Convert remaining single line breaks to <br>
@@ -132,7 +134,8 @@ const WordExport = (function() {
 
     function addTextWithHighlight(text, inherited = {}) {
       if (!text) return;
-      const regex = /<<([^>]+)>>/g;
+      // Match both <<var>> and ««var»» (placeholder used to protect from HTML parsing)
+      const regex = /(?:<<|\u00AB\u00AB|««)([^>\u00BB]+)(?:>>|\u00BB\u00BB|»»)/g;
       let lastIndex = 0;
       let match;
       
@@ -144,9 +147,9 @@ const WordExport = (function() {
             ...inherited
           }));
         }
-        // Convert <<var>> to «var» with yellow highlight
+        // Output as <<var>> with yellow highlight
         currentRuns.push(new docx.TextRun({
-          text: `«${match[1]}»`,
+          text: `<<${match[1]}>>`,
           ...defaultOptions,
           ...inherited,
           highlight: 'yellow'
@@ -458,8 +461,6 @@ const WordExport = (function() {
     const title = isBilingual ? titleFr : (lang === 'en' ? titleEn : titleFr);
     const titleSecondary = isBilingual ? titleEn : null;
 
-    elements.push(createSeparator());
-
     // Title with bookmark and highlighted variables
     const titleRuns = createRunsWithHighlightedVariables(title, {
       bold: true,
@@ -680,8 +681,6 @@ const WordExport = (function() {
       spacing: { after: 300 }
     }));
 
-    elements.push(createSeparator());
-
     // Group templates by category
     const byCategory = {};
     templates.forEach((t, index) => {
@@ -798,8 +797,6 @@ const WordExport = (function() {
       ],
       spacing: { after: 300 }
     }));
-
-    elements.push(createSeparator());
 
     // Build keyword index from template titles, descriptions, subjects
     const keywordMap = new Map();
