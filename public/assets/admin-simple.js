@@ -435,6 +435,31 @@
   }
   function loadDraft(){ try{ const t = localStorage.getItem(DRAFT_KEY); return t ? ensureSchema(JSON.parse(t)) : null; }catch{ return null; } }
   async function fetchJson(url){ const r = await fetch(url, { cache:'no-cache' }); if (!r.ok) throw new Error('HTTP '+r.status); return r.json(); }
+  // Fetch JSON from GitHub API with authentication (for private repos)
+  async function fetchJsonFromGitHubAPI() {
+    const token = localStorage.getItem('ea_gh_token') || PRECONFIGURED_GH_TOKEN;
+    if (!token) return null;
+    const repoMeta = document.querySelector('meta[name="gh-repo"]')?.content || 'snarky1980/bt-ctd-echo';
+    const [owner, repo] = repoMeta.split('/');
+    const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/complete_email_templates.json?ref=main`;
+    try {
+      const resp = await fetch(apiUrl, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/vnd.github+json'
+        }
+      });
+      if (!resp.ok) return null;
+      const data = await resp.json();
+      // GitHub API returns base64 encoded content
+      const content = atob(data.content);
+      return JSON.parse(content);
+    } catch (e) {
+      console.warn('[fetchJsonFromGitHubAPI] Error:', e);
+      return null;
+    }
+  }
+
   function buildJsonUrlCandidates(options={}){
     const { includeRemote=true, preferRemote=false } = options;
     const repoMeta = document.querySelector('meta[name="gh-repo"]')?.content || 'snarky1980/bt-ctd-echo';
@@ -459,6 +484,22 @@
   }
   // Fetch remote timestamp in background (used when draft is loaded)
   async function fetchRemoteTimestamp() {
+    // Try GitHub API first (works for private repos)
+    try {
+      const json = await fetchJsonFromGitHubAPI();
+      if (json) {
+        const ts = json?.metadata?.updatedAt || json?.metadata?.generatedAt || null;
+        if (ts) {
+          remoteTimestamp = ts;
+          updateTimestampBadge();
+          console.log('[Badge] Remote timestamp loaded via API:', ts);
+          return;
+        }
+      }
+    } catch (e) {
+      console.warn('[fetchRemoteTimestamp] GitHub API failed, trying URLs:', e);
+    }
+    // Fallback to raw URLs
     const urls = buildJsonUrlCandidates({ preferRemote: true });
     for (const u of urls) {
       try {
@@ -1101,14 +1142,24 @@
     if (!confirm('Recharger depuis GitHub?\n\nCeci écrasera toutes les modifications non publiées du brouillon local.')) return;
     try {
       localStorage.removeItem(DRAFT_KEY);
-      const urls = buildJsonUrlCandidates({ preferRemote: true });
-      console.info('[admin] Reload depuis GitHub – tentatives', urls);
       let json = null;
-      for (const url of urls) {
-        try {
-          json = await fetchJson(url);
-          break;
-        } catch {}
+      // Try GitHub API first (works for private repos)
+      try {
+        json = await fetchJsonFromGitHubAPI();
+        if (json) console.info('[admin] Reload via GitHub API success');
+      } catch (e) {
+        console.warn('[admin] GitHub API failed, trying URLs:', e);
+      }
+      // Fallback to raw URLs
+      if (!json) {
+        const urls = buildJsonUrlCandidates({ preferRemote: true });
+        console.info('[admin] Reload depuis GitHub – tentatives', urls);
+        for (const url of urls) {
+          try {
+            json = await fetchJson(url);
+            break;
+          } catch {}
+        }
       }
       if (!json) throw new Error('Impossible de charger depuis GitHub');
       data = ensureSchema(json);
