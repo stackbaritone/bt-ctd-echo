@@ -45,7 +45,7 @@ const WordExport = (function() {
 
   /**
    * Create text runs with highlighted variables from text content
-   * Variables like <<variable_name>> will be highlighted in yellow
+   * Variables like <<variable_name>> will be displayed as «variable_name» and highlighted in yellow
    */
   function createRunsWithHighlightedVariables(text, defaultOptions = {}) {
     if (!text) return [new docx.TextRun({ text: '', ...defaultOptions })];
@@ -68,9 +68,9 @@ const WordExport = (function() {
         }));
       }
       
-      // Add the variable with yellow highlight
+      // Add the variable with French guillemets and yellow highlight
       runs.push(new docx.TextRun({
-        text: match[0], // Include << and >>
+        text: `«${match[1]}»`, // Convert <<var>> to «var»
         ...defaultOptions,
         highlight: 'yellow'
       }));
@@ -144,8 +144,9 @@ const WordExport = (function() {
             ...inherited
           }));
         }
+        // Convert <<var>> to «var» with yellow highlight
         currentRuns.push(new docx.TextRun({
-          text: match[0],
+          text: `«${match[1]}»`,
           ...defaultOptions,
           ...inherited,
           highlight: 'yellow'
