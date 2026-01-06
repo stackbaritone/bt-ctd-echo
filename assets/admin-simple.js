@@ -362,6 +362,7 @@
       });
       updatedBadge.textContent = formatted;
       updatedBadge.title = `Dernière mise à jour: ${d.toLocaleString('fr-CA')}`;
+      updatedBadge.style.display = 'inline-block';
     } catch {
       updatedBadge.textContent = '–';
     }
