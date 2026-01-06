@@ -372,7 +372,7 @@ const WordExport = (function() {
             new docx.TextRun({
               text: options.audience === 'management' 
                 ? (options.lang === 'en' ? '🔐 Management templates only' : '🔐 Modèles de gestion uniquement')
-                : (options.lang === 'en' ? '👥 User templates only' : '👥 Modèles utilisateurs uniquement'),
+                : (options.lang === 'en' ? '👥 User templates only' : '👥 Modèles conseillers uniquement'),
               size: 22,
               font: FONTS.body,
               color: options.audience === 'management' ? 'D97706' : '059669',
