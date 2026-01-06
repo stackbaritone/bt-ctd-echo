@@ -373,9 +373,10 @@ function App() {
   const [showManagementModal, setShowManagementModal] = useState(false)
   const [managementPassword, setManagementPassword] = useState('')
   const [managementError, setManagementError] = useState('')
+  const [showManagementPassword, setShowManagementPassword] = useState(false)
   // SHA-256 hash for management password: Gestion2026!Ctd
-  // To generate: echo -n "Gestion2026!Ctd" | sha256sum
-  const MANAGEMENT_PASSWORD_HASH_STATE = '43e088b26de409a0a8fac92c3c14eb5cd0e2b73ad59ed961f8b0c0c89d1c8c72'
+  // To generate: echo -n 'Gestion2026!Ctd' | sha256sum
+  const MANAGEMENT_PASSWORD_HASH_STATE = '3781099aa174d12bad1ee1fd0c916d99ece2221b757e165760ee160611560024'
   
   // Dark mode state
   const [darkMode, setDarkMode] = useState(() => {
@@ -1009,7 +1010,7 @@ function App() {
   }, [adminPassword, interfaceLanguage])
 
   // Management mode authentication - SHA-256 hash for "Gestion2026!Ctd"
-  const MANAGEMENT_PASSWORD_HASH = '43e088b26de409a0a8fac92c3c14eb5cd0e2b73ad59ed961f8b0c0c89d1c8c72'
+  const MANAGEMENT_PASSWORD_HASH = '3781099aa174d12bad1ee1fd0c916d99ece2221b757e165760ee160611560024'
   
   const handleManagementLogin = useCallback(async () => {
     if (!managementPassword) {
@@ -1030,6 +1031,7 @@ function App() {
         setShowManagementModal(false)
         setManagementPassword('')
         setManagementError('')
+        setShowManagementPassword(false)
       } else {
         setManagementError(interfaceLanguage === 'fr' ? 'Code incorrect' : 'Incorrect code')
         setManagementPassword('')
@@ -3665,7 +3667,10 @@ ${cleanBodyHtml}
             🔐 {interfaceLanguage === 'fr' ? 'Mode Gestion' : 'Management Mode'}
           </h2>
           <button
-            onClick={() => setShowManagementModal(false)}
+            onClick={() => {
+              setShowManagementModal(false)
+              setShowManagementPassword(false)
+            }}
             className="text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -3679,15 +3684,28 @@ ${cleanBodyHtml}
             : 'This mode allows access to management-only templates.'}
         </p>
         <div className="space-y-3">
-          <input
-            type="password"
-            value={managementPassword}
-            onChange={(e) => setManagementPassword(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleManagementLogin()}
-            placeholder={interfaceLanguage === 'fr' ? 'Mot de passe gestion' : 'Management password'}
-            className="w-full px-3 py-2 border border-zinc-300 dark:border-zinc-600 rounded-lg bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:ring-2 focus:ring-amber-500 focus:border-transparent"
-            autoFocus
-          />
+          <div className="relative">
+            <input
+              type={showManagementPassword ? 'text' : 'password'}
+              value={managementPassword}
+              onChange={(e) => setManagementPassword(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleManagementLogin()}
+              placeholder={interfaceLanguage === 'fr' ? 'Mot de passe gestion' : 'Management password'}
+              className="w-full px-3 py-2 pr-10 border border-zinc-300 dark:border-zinc-600 rounded-lg bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+              autoFocus
+            />
+            <button
+              type="button"
+              onClick={() => setShowManagementPassword(!showManagementPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-lg hover:opacity-70 transition-opacity"
+              title={showManagementPassword 
+                ? (interfaceLanguage === 'fr' ? 'Masquer le mot de passe' : 'Hide password')
+                : (interfaceLanguage === 'fr' ? 'Afficher le mot de passe' : 'Show password')
+              }
+            >
+              {showManagementPassword ? '🙈' : '👁️'}
+            </button>
+          </div>
           {managementError && (
             <p className="text-sm text-red-500">{managementError}</p>
           )}
