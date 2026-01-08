@@ -575,32 +575,25 @@ export default function VariablesPopout({
               <div
                 key={varName}
                 data-var={varName}
-                className={`ea-popout-card rounded-lg transition-all duration-200 ${isFocused ? 'ea-popout-focused' : ''} ${darkMode ? 'ea-popout-dark' : ''}`}
-                style={isFocused ? {
-                  background: darkMode ? 'rgba(96, 165, 250, 0.2)' : 'rgba(219, 234, 254, 0.35)',
-                  border: darkMode ? '2px solid #60a5fa' : '2px solid rgba(29, 78, 216, 0.6)',
-                  boxShadow: darkMode 
-                    ? '0 0 0 3px rgba(96, 165, 250, 0.3), 0 8px 24px rgba(96, 165, 250, 0.2)'
-                    : '0 0 0 3px rgba(29, 78, 216, 0.25), 0 8px 24px rgba(30, 64, 175, 0.25)',
-                  transform: 'scale(1.02)'
-                } : {
-                  background: darkMode ? '#1e293b' : undefined,
-                  border: darkMode ? '1px solid #475569' : '1px solid #e5e7eb'
-                }}
+                className={`ea-popout-card rounded-lg transition-all duration-200 ${isFocused ? 'ea-popout-focused' : ''} ${
+                  darkMode 
+                    ? 'bg-slate-800 border border-slate-600' 
+                    : 'bg-white border border-gray-200'
+                } ${isFocused && darkMode ? 'ring-2 ring-blue-400 border-blue-400 scale-[1.02]' : ''} ${isFocused && !darkMode ? 'ring-2 ring-blue-500 border-blue-500 scale-[1.02]' : ''}`}
                 onMouseEnter={() => notifyHoverChange(varName)}
                 onMouseLeave={() => notifyHoverChange(null)}
               >
-                <div className={`ea-popout-card-inner rounded-lg p-3 ${darkMode ? 'bg-[#1e293b]' : 'bg-white'}`}>
+                <div className={`rounded-lg p-3 ${darkMode ? 'bg-slate-800' : 'bg-white'}`}>
                   {/* Label and buttons */}
                   <div className="mb-2 flex items-start justify-between gap-3">
-                    <label htmlFor={sanitizedVarId} className={`text-sm font-semibold flex-1 leading-snug ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                    <label htmlFor={sanitizedVarId} className={`text-sm font-semibold flex-1 leading-snug ${darkMode ? 'text-slate-100' : 'text-gray-900'}`}>
                       {varInfo.description?.[langForDisplay] || varInfo.description?.fr || varInfo.description?.en || varName}
                     </label>
-                    <div className={`shrink-0 flex items-center gap-1 transition-opacity ${darkMode ? 'opacity-70 hover:opacity-100' : 'opacity-0 hover:opacity-100 focus-within:opacity-100'}`}>
+                    <div className={`shrink-0 flex items-center gap-1 transition-opacity ${darkMode ? 'opacity-80 hover:opacity-100' : 'opacity-0 hover:opacity-100 focus-within:opacity-100'}`}>
                       <button
                         className={`text-xs px-2 py-1 rounded border flex items-center gap-1 font-medium ${
                           darkMode 
-                            ? 'border-[#475569] text-[#fbbf24] hover:bg-[#334155] hover:border-[#fbbf24]/50' 
+                            ? 'border-slate-500 text-amber-400 hover:bg-slate-700 hover:border-amber-400/50' 
                             : 'border-gray-300 text-teal-700 hover:bg-teal-50'
                         }`}
                         title={t.reinitialize}
@@ -612,7 +605,7 @@ export default function VariablesPopout({
                       <button
                         className={`text-xs px-2 py-1 rounded border font-medium ${
                           darkMode 
-                            ? 'border-[#475569] text-[#f87171] hover:bg-red-900/40 hover:border-red-500/50' 
+                            ? 'border-slate-500 text-red-400 hover:bg-red-900/40 hover:border-red-400/50' 
                             : 'border-gray-300 text-red-700 hover:bg-red-50'
                         }`}
                         title={t.clear}
@@ -683,10 +676,10 @@ export default function VariablesPopout({
                       }
                       return ex || ''
                     })()}
-                    className={`w-full min-h-[36px] border-2 rounded-md resize-none overflow-hidden transition-all duration-200 text-sm px-2.5 py-1.5 leading-5 ${isFocused ? 'ea-popout-input-focused' : ''} ${
+                    className={`w-full min-h-[36px] border-2 rounded-md resize-none overflow-hidden transition-all duration-200 text-sm px-2.5 py-1.5 leading-5 ${
                       darkMode 
-                        ? 'bg-[#0f172a] border-[#475569] text-white placeholder-slate-400 focus:border-[#60a5fa] focus:ring-2 focus:ring-[#60a5fa]/40 focus:bg-[#1e293b]' 
-                        : 'bg-white border-gray-200 text-gray-900 focus:border-blue-600 focus:ring-2 focus:ring-blue-200'
+                        ? 'bg-slate-900 border-slate-500 text-white placeholder-slate-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/40' 
+                        : 'bg-white border-gray-300 text-gray-900 focus:border-blue-600 focus:ring-2 focus:ring-blue-200'
                     }`}
                   />
                 </div>
