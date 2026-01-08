@@ -386,10 +386,10 @@ export default function VariablesPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className={`min-h-screen flex items-center justify-center ${darkMode ? 'bg-slate-900' : 'bg-gray-50'}`}>
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">
+          <div className={`animate-spin rounded-full h-12 w-12 border-b-2 mx-auto mb-4 ${darkMode ? 'border-[#fbbf24]' : 'border-teal-600'}`}></div>
+          <p className={darkMode ? 'text-slate-300' : 'text-gray-600'}>
             {interfaceLanguage === 'fr' ? 'Chargement...' : 'Loading...'}
           </p>
         </div>
@@ -405,12 +405,12 @@ export default function VariablesPage() {
       ? (interfaceLanguage === 'fr' ? 'Chargement des données...' : 'Loading data...')
       : (interfaceLanguage === 'fr' ? 'Modèle introuvable. Fermez et rouvrez le panneau.' : 'Template not found. Close and reopen panel.')
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className={`min-h-screen flex items-center justify-center ${darkMode ? 'bg-slate-900' : 'bg-gray-50'}`}>
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600 mx-auto mb-4"></div>
-          <p className="text-gray-600 text-lg">{message}</p>
+          <div className={`animate-spin rounded-full h-12 w-12 border-b-2 mx-auto mb-4 ${darkMode ? 'border-[#fbbf24]' : 'border-teal-600'}`}></div>
+          <p className={`text-lg ${darkMode ? 'text-slate-300' : 'text-gray-600'}`}>{message}</p>
           {templatesData && pendingTemplateId && (
-            <p className="text-gray-500 text-sm mt-2">
+            <p className={`text-sm mt-2 ${darkMode ? 'text-slate-400' : 'text-gray-500'}`}>
               {interfaceLanguage === 'fr' ? `Modèle : ${pendingTemplateId}` : `Template: ${pendingTemplateId}`}
             </p>
           )}

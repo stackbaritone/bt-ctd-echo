@@ -478,8 +478,8 @@ export default function VariablesPopout({
 
   if (!selectedTemplate || !templatesData) {
     return (
-      <div className={`min-h-screen flex items-center justify-center ${darkMode ? 'bg-[#0f1419]' : 'bg-gray-50'}`}>
-        <p className={darkMode ? 'text-gray-400' : 'text-gray-500'}>Loading...</p>
+      <div className={`min-h-screen flex items-center justify-center ${darkMode ? 'bg-slate-900' : 'bg-gray-50'}`}>
+        <p className={darkMode ? 'text-slate-300' : 'text-gray-500'}>Loading...</p>
       </div>
     )
   }
@@ -497,18 +497,18 @@ export default function VariablesPopout({
   }
 
   return (
-    <div className={`min-h-screen ${darkMode ? 'bg-[#0f1419]' : 'bg-white'}`}>
+    <div className={`min-h-screen ${darkMode ? 'bg-slate-900' : 'bg-gray-50'}`}>
       {/* Header */}
       <div 
-        className="sticky top-0 z-10 px-5 py-2 flex items-center justify-between"
+        className="sticky top-0 z-10 px-5 py-3 flex items-center justify-between"
         style={{ 
-          background: darkMode ? '#1a2332' : '#2c3d50',
-          borderBottom: darkMode ? '3px solid rgba(201, 185, 115, 0.3)' : '3px solid rgba(163, 179, 84, 0.3)'
+          background: darkMode ? '#1e293b' : '#2c3d50',
+          borderBottom: darkMode ? '3px solid #fbbf24' : '3px solid rgba(163, 179, 84, 0.5)'
         }}
       >
         <div className="flex items-center gap-4">
           <div className="flex items-center">
-            <Edit3 className="h-5 w-5 mr-2 text-white" />
+            <Edit3 className={`h-5 w-5 mr-2 ${darkMode ? 'text-[#fbbf24]' : 'text-white'}`} />
             <h1 className="text-lg font-bold text-white">{t.title}</h1>
           </div>
         </div>
@@ -516,7 +516,7 @@ export default function VariablesPopout({
         <div className="flex items-center gap-2">
           <button
             onClick={() => window.close()}
-            className="text-white hover:bg-white/20 rounded-lg p-2 transition-colors"
+            className={`rounded-lg p-2 transition-colors ${darkMode ? 'text-slate-300 hover:text-white hover:bg-slate-700' : 'text-white hover:bg-white/20'}`}
             title={t.close}
           >
             <X className="h-5 w-5" />
@@ -577,30 +577,30 @@ export default function VariablesPopout({
                 data-var={varName}
                 className={`ea-popout-card rounded-lg transition-all duration-200 ${isFocused ? 'ea-popout-focused' : ''} ${darkMode ? 'ea-popout-dark' : ''}`}
                 style={isFocused ? {
-                  background: darkMode ? 'rgba(96, 165, 250, 0.15)' : 'rgba(219, 234, 254, 0.35)',
-                  border: darkMode ? '2px solid rgba(96, 165, 250, 0.6)' : '2px solid rgba(29, 78, 216, 0.6)',
+                  background: darkMode ? 'rgba(96, 165, 250, 0.2)' : 'rgba(219, 234, 254, 0.35)',
+                  border: darkMode ? '2px solid #60a5fa' : '2px solid rgba(29, 78, 216, 0.6)',
                   boxShadow: darkMode 
-                    ? '0 0 0 3px rgba(96, 165, 250, 0.25), 0 8px 24px rgba(96, 165, 250, 0.15)'
+                    ? '0 0 0 3px rgba(96, 165, 250, 0.3), 0 8px 24px rgba(96, 165, 250, 0.2)'
                     : '0 0 0 3px rgba(29, 78, 216, 0.25), 0 8px 24px rgba(30, 64, 175, 0.25)',
                   transform: 'scale(1.02)'
                 } : {
-                  background: darkMode ? '#1a2332' : undefined,
-                  border: darkMode ? '1px solid #3d4f5f' : undefined
+                  background: darkMode ? '#1e293b' : undefined,
+                  border: darkMode ? '1px solid #475569' : '1px solid #e5e7eb'
                 }}
                 onMouseEnter={() => notifyHoverChange(varName)}
                 onMouseLeave={() => notifyHoverChange(null)}
               >
-                <div className={`ea-popout-card-inner rounded-lg p-2 ${darkMode ? 'bg-[#1a2332]' : ''}`}>
+                <div className={`ea-popout-card-inner rounded-lg p-3 ${darkMode ? 'bg-[#1e293b]' : 'bg-white'}`}>
                   {/* Label and buttons */}
                   <div className="mb-2 flex items-start justify-between gap-3">
-                    <label htmlFor={sanitizedVarId} className={`text-sm font-semibold flex-1 leading-snug ${darkMode ? 'text-[#e7e9ea]' : 'text-gray-900'}`}>
+                    <label htmlFor={sanitizedVarId} className={`text-sm font-semibold flex-1 leading-snug ${darkMode ? 'text-white' : 'text-gray-900'}`}>
                       {varInfo.description?.[langForDisplay] || varInfo.description?.fr || varInfo.description?.en || varName}
                     </label>
-                    <div className="shrink-0 flex items-center gap-1 opacity-0 hover:opacity-100 focus-within:opacity-100 transition-opacity">
+                    <div className={`shrink-0 flex items-center gap-1 transition-opacity ${darkMode ? 'opacity-70 hover:opacity-100' : 'opacity-0 hover:opacity-100 focus-within:opacity-100'}`}>
                       <button
-                        className={`text-xs px-2 py-0.5 rounded border flex items-center gap-1 ${
+                        className={`text-xs px-2 py-1 rounded border flex items-center gap-1 font-medium ${
                           darkMode 
-                            ? 'border-[#3d4f5f] text-[#c9b973] hover:bg-[#243042]' 
+                            ? 'border-[#475569] text-[#fbbf24] hover:bg-[#334155] hover:border-[#fbbf24]/50' 
                             : 'border-gray-300 text-teal-700 hover:bg-teal-50'
                         }`}
                         title={t.reinitialize}
@@ -610,9 +610,9 @@ export default function VariablesPopout({
                         {t.reinitialize}
                       </button>
                       <button
-                        className={`text-xs px-2 py-0.5 rounded border ${
+                        className={`text-xs px-2 py-1 rounded border font-medium ${
                           darkMode 
-                            ? 'border-[#3d4f5f] text-red-400 hover:bg-red-900/30' 
+                            ? 'border-[#475569] text-[#f87171] hover:bg-red-900/40 hover:border-red-500/50' 
                             : 'border-gray-300 text-red-700 hover:bg-red-50'
                         }`}
                         title={t.clear}
@@ -683,10 +683,10 @@ export default function VariablesPopout({
                       }
                       return ex || ''
                     })()}
-                    className={`w-full min-h-[32px] border-2 rounded-md resize-none overflow-hidden transition-all duration-200 text-sm px-2 py-1 leading-5 ${isFocused ? 'ea-popout-input-focused' : ''} ${
+                    className={`w-full min-h-[36px] border-2 rounded-md resize-none overflow-hidden transition-all duration-200 text-sm px-2.5 py-1.5 leading-5 ${isFocused ? 'ea-popout-input-focused' : ''} ${
                       darkMode 
-                        ? 'bg-[#243042] border-[#3d4f5f] text-[#e7e9ea] placeholder-gray-500 focus:border-[#60a5fa] focus:ring-2 focus:ring-[#60a5fa]/30' 
-                        : 'border-gray-200 focus:border-blue-600 focus:ring-2 focus:ring-blue-200'
+                        ? 'bg-[#0f172a] border-[#475569] text-white placeholder-slate-400 focus:border-[#60a5fa] focus:ring-2 focus:ring-[#60a5fa]/40 focus:bg-[#1e293b]' 
+                        : 'bg-white border-gray-200 text-gray-900 focus:border-blue-600 focus:ring-2 focus:ring-blue-200'
                     }`}
                   />
                 </div>
