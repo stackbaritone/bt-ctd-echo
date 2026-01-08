@@ -1081,8 +1081,25 @@
     const putMain = await fetch(baseUrl, { method:'PUT', headers:{ Authorization:`Bearer ${token}`, Accept:'application/vnd.github+json', 'Content-Type':'application/json' }, body: JSON.stringify(bodyMain) });
     if (!putMain.ok){ const txt = await putMain.text(); throw new Error('GitHub API (main) error: '+txt); }
 
-    // No mirror to gh-pages: main is the only source of truth
-    if (showToast) notify('JSON mis à jour sur main.');
+    // 2. Trigger the deploy workflow (commits via API don't trigger workflows automatically)
+    if (showToast) notify('Déclenchement du déploiement…');
+    try {
+      const dispatchUrl = `https://api.github.com/repos/${owner}/${repo}/actions/workflows/auto-deploy-templates.yml/dispatches`;
+      const dispatchResp = await fetch(dispatchUrl, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json', 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ref: 'main' })
+      });
+      if (!dispatchResp.ok && dispatchResp.status !== 204) {
+        console.warn('[publish] Workflow dispatch failed:', dispatchResp.status, await dispatchResp.text());
+      } else {
+        console.log('[publish] Deploy workflow triggered successfully');
+      }
+    } catch (e) {
+      console.warn('[publish] Could not trigger deploy workflow:', e);
+    }
+
+    if (showToast) notify('✅ Publié! Déploiement en cours (~30s)…');
     // Save to localStorage to sync with main app
     saveDraft();
     markAsPublished();
@@ -1091,7 +1108,12 @@
   // Publish to GitHub (token is pre-configured)
   async function gimmeGithub(){
     // Token is pre-configured, no need to ask
-    await publishJsonToGitHub(true);
+    try {
+      await publishJsonToGitHub(true);
+    } catch (err) {
+      console.error('[publish] Error:', err);
+      notify('Erreur de publication: ' + (err.message || 'Erreur inconnue'), 'error');
+    }
   }
   async function reloadFromGithub() {
     if (!confirm('Recharger depuis GitHub?\n\nCeci écrasera toutes les modifications non publiées du brouillon local.')) return;

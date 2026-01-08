@@ -6,6 +6,8 @@ on:
       - main
     paths:
       - 'complete_email_templates.json'
+  # Allow manual trigger and API trigger from admin console
+  workflow_dispatch:
 
 # Prevent concurrent deployments
 concurrency:
