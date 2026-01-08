@@ -502,12 +502,12 @@ const RichTextToolbar = ({ onCommand, className = '', disabled = false }) => {
             <Highlighter className="h-5 w-5" />
           </Button>
           {showHighlightPicker && (
-            <div className="absolute top-full left-0 mt-1 p-2 bg-white border border-slate-300 rounded-lg shadow-lg z-50 flex gap-1">
+            <div className="absolute top-full left-0 mt-1 p-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg shadow-lg z-50 flex gap-1">
               {HIGHLIGHT_COLORS.map(color => (
                 <button
                   key={color.value}
                   type="button"
-                  className="w-7 h-7 rounded border-2 border-slate-300 hover:border-slate-500 transition-colors"
+                  className="color-swatch w-7 h-7 rounded border-2 border-slate-300 dark:border-slate-500 hover:border-slate-500 dark:hover:border-slate-300 transition-colors"
                   style={{ backgroundColor: color.value }}
                   onMouseDown={(e) => e.preventDefault()}
                   onClick={() => {
@@ -538,12 +538,12 @@ const RichTextToolbar = ({ onCommand, className = '', disabled = false }) => {
             <Palette className="h-5 w-5" />
           </Button>
           {showColorPicker && (
-            <div className="absolute top-full left-0 mt-1 p-2 bg-white border border-slate-300 rounded-lg shadow-lg z-50 flex gap-1">
+            <div className="absolute top-full left-0 mt-1 p-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg shadow-lg z-50 flex gap-1">
               {TEXT_COLORS.map(color => (
                 <button
                   key={color.value}
                   type="button"
-                  className="w-7 h-7 rounded border-2 border-slate-300 hover:border-slate-500 transition-colors"
+                  className="color-swatch w-7 h-7 rounded border-2 border-slate-300 dark:border-slate-500 hover:border-slate-500 dark:hover:border-slate-300 transition-colors"
                   style={{ backgroundColor: color.value }}
                   onMouseDown={(e) => e.preventDefault()}
                   onClick={() => {

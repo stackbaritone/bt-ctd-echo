@@ -4423,14 +4423,14 @@ ${cleanBodyHtml}
                 </div>
               </>
             ) : (
-              <Card className="card-soft border-0 bg-gradient-to-br from-white to-emerald-50 rounded-[18px]">
+              <Card className="empty-state-card card-soft border-0 bg-gradient-to-br from-white to-emerald-50 rounded-[18px]">
                 <CardContent className="flex items-center justify-center h-80">
                   <div className="text-center">
                     <div className="relative mb-6">
-                      <FileText className="h-16 w-16 text-gray-300 mx-auto animate-bounce" />
-                      <Sparkles className="h-6 w-6 text-[#2c3d50] absolute -top-2 -right-2 animate-pulse" />
+                      <FileText className="empty-state-icon h-16 w-16 text-gray-300 mx-auto animate-bounce" />
+                      <Sparkles className="empty-state-sparkle h-6 w-6 text-[#2c3d50] absolute -top-2 -right-2 animate-pulse" />
                     </div>
-                    <p className="text-gray-500 text-lg font-medium">{t.noTemplate}</p>
+                    <p className="empty-state-text text-gray-500 text-lg font-medium">{t.noTemplate}</p>
                   </div>
                 </CardContent>
               </Card>

@@ -537,7 +537,7 @@ html.dark .flex.bg-white.rounded-lg.p-1.shadow-sm button {
   color: var(--dark-text-muted) !important;
 }
 
-html.dark .flex.bg-white.rounded-lg.p-1.shadow-sm button[style*="background"] {
+html.dark .flex.bg-white.rounded-lg.p-1.shadow-sm button[style*="background"]:not(.color-swatch) {
   background-color: var(--dark-accent) !important;
   color: #1a2332 !important;
 }
@@ -640,18 +640,18 @@ html.dark div[class*="bg-slate-50"] {
   border-color: var(--dark-border) !important;
 }
 
-/* All toolbar buttons - base state */
-html.dark [class*="toolbar"] button,
-html.dark .bg-slate-50 button,
-html.dark div[class*="bg-slate-50"] button {
+/* All toolbar buttons - base state (exclude color swatches) */
+html.dark [class*="toolbar"] button:not(.color-swatch),
+html.dark .bg-slate-50 button:not(.color-swatch),
+html.dark div[class*="bg-slate-50"] button:not(.color-swatch) {
   color: var(--dark-text) !important;
   background-color: transparent !important;
 }
 
-/* Toolbar buttons - hover state */
-html.dark [class*="toolbar"] button:hover,
-html.dark .bg-slate-50 button:hover,
-html.dark div[class*="bg-slate-50"] button:hover {
+/* Toolbar buttons - hover state (exclude color swatches) */
+html.dark [class*="toolbar"] button:not(.color-swatch):hover,
+html.dark .bg-slate-50 button:not(.color-swatch):hover,
+html.dark div[class*="bg-slate-50"] button:not(.color-swatch):hover {
   background-color: rgba(201, 185, 115, 0.25) !important;
   color: var(--dark-accent) !important;
 }
@@ -688,6 +688,39 @@ html.dark .bg-slate-50 select {
   background-color: var(--dark-surface) !important;
   border-color: var(--dark-border) !important;
   color: var(--dark-text) !important;
+}
+
+/* ============================================
+   COLOR PICKER POPUPS - DARK MODE
+   ============================================ */
+
+/* Color picker popup containers */
+html.dark [class*="toolbar"] .absolute.bg-white,
+html.dark .bg-slate-50 .absolute.bg-white,
+html.dark div[class*="bg-slate-50"] .absolute.bg-white,
+html.dark .absolute.dark\:bg-slate-800 {
+  background-color: var(--dark-surface-elevated) !important;
+  border-color: var(--dark-border) !important;
+}
+
+/* More specific selector for color picker popups */
+html.dark .absolute.bg-white.border.border-slate-300.rounded-lg.shadow-lg {
+  background-color: var(--dark-surface-elevated) !important;
+  border-color: var(--dark-border) !important;
+}
+
+/* Color swatch buttons - MUST preserve inline backgroundColor */
+.color-swatch {
+  /* Inline style takes precedence - don't add background-color here */
+}
+
+html.dark .color-swatch {
+  border-color: var(--dark-border) !important;
+}
+
+html.dark .color-swatch:hover {
+  border-color: var(--dark-accent) !important;
+  transform: scale(1.1);
 }
 
 /* Slate color overrides for dark mode */
@@ -1347,32 +1380,103 @@ input:-webkit-autofill:active {
 }
 
 /* ============================================
+   EMPTY STATE CARD - DARK MODE
+   ============================================ */
+
+html.dark .empty-state-card {
+  background: #1a1a1a !important;
+  border: 1px solid #444 !important;
+}
+
+html.dark .empty-state-icon {
+  color: #888 !important;
+}
+
+html.dark .empty-state-sparkle {
+  color: #f59e0b !important;
+}
+
+html.dark .empty-state-text {
+  color: #ffffff !important;
+}
+
+/* ============================================
+   HIGHLIGHTED TEXT - DARK MODE
+   Keep text dark on light highlight backgrounds
+   ============================================ */
+
+/* Yellow highlight - ensure dark text */
+html.dark [contenteditable] span[style*="background-color: rgb(255, 235, 59)"],
+html.dark [contenteditable] span[style*="background-color:#ffeb3b"],
+html.dark [contenteditable] span[style*="background: rgb(255, 235, 59)"] {
+  color: #000000 !important;
+}
+
+/* Green highlight */
+html.dark [contenteditable] span[style*="background-color: rgb(198, 246, 141)"],
+html.dark [contenteditable] span[style*="background-color:#c6f68d"] {
+  color: #000000 !important;
+}
+
+/* Blue highlight */
+html.dark [contenteditable] span[style*="background-color: rgb(144, 202, 249)"],
+html.dark [contenteditable] span[style*="background-color:#90caf9"] {
+  color: #000000 !important;
+}
+
+/* Pink highlight */
+html.dark [contenteditable] span[style*="background-color: rgb(244, 143, 177)"],
+html.dark [contenteditable] span[style*="background-color:#f48fb1"] {
+  color: #000000 !important;
+}
+
+/* Orange highlight */
+html.dark [contenteditable] span[style*="background-color: rgb(255, 204, 128)"],
+html.dark [contenteditable] span[style*="background-color:#ffcc80"] {
+  color: #000000 !important;
+}
+
+/* General rule for any light background highlight */
+html.dark [contenteditable] span[style*="background-color"] {
+  color: #000000 !important;
+}
+
+/* ============================================
    TEXT SELECTION STYLES (Dark Mode)
    ============================================ */
 
+/* Dark mode selection - use black text for visibility on light backgrounds */
+html.dark .rich-text-content::selection,
+html.dark .rich-text-content *::selection,
+html.dark [contenteditable]::selection,
+html.dark [contenteditable] *::selection {
+  background-color: #60a5fa !important;
+  color: #000000 !important;
+}
+
 html.dark .lexical-content-editable::selection,
 html.dark .lexical-content-editable *::selection {
-  background-color: #c9b973 !important;
-  color: #0f1419 !important;
+  background-color: #60a5fa !important;
+  color: #000000 !important;
 }
 
 html.dark .var-pill::selection,
 html.dark .var-pill *::selection {
-  background-color: #c9b973 !important;
-  color: #0f1419 !important;
+  background-color: #3b82f6 !important;
+  color: #000000 !important;
 }
 
 /* Firefox dark mode support */
 html.dark .lexical-content-editable::-moz-selection,
 html.dark .lexical-content-editable *::-moz-selection {
-  background-color: #c9b973 !important;
-  color: #0f1419 !important;
+  background-color: #60a5fa !important;
+  color: #000000 !important;
 }
 
 html.dark .var-pill::-moz-selection,
 html.dark .var-pill *::-moz-selection {
-  background-color: #c9b973 !important;
-  color: #0f1419 !important;
+  background-color: #3b82f6 !important;
+  color: #000000 !important;
 }
 
 .ea-popout-card {
