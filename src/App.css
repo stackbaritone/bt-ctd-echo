@@ -616,19 +616,102 @@ html.dark .border-b {
   border-color: var(--dark-border);
 }
 
-/* Rich text toolbar in dark mode */
+/* ============================================
+   RICH TEXT TOOLBAR - DARK MODE (COMPREHENSIVE)
+   ============================================ */
+
+/* Main toolbar container */
 html.dark [class*="toolbar"],
-html.dark .rich-text-toolbar {
+html.dark .rich-text-toolbar,
+html.dark .bg-slate-50.border.border-slate-200,
+html.dark div[class*="bg-slate-50"] {
   background-color: var(--dark-surface-elevated) !important;
   border-color: var(--dark-border) !important;
 }
 
-html.dark [class*="toolbar"] button {
+/* All toolbar buttons - base state */
+html.dark [class*="toolbar"] button,
+html.dark .bg-slate-50 button,
+html.dark div[class*="bg-slate-50"] button {
+  color: var(--dark-text) !important;
+  background-color: transparent !important;
+}
+
+/* Toolbar buttons - hover state */
+html.dark [class*="toolbar"] button:hover,
+html.dark .bg-slate-50 button:hover,
+html.dark div[class*="bg-slate-50"] button:hover {
+  background-color: rgba(201, 185, 115, 0.25) !important;
+  color: var(--dark-accent) !important;
+}
+
+/* Toolbar buttons - active/pressed state */
+html.dark [class*="toolbar"] button.bg-slate-200,
+html.dark [class*="toolbar"] button[class*="bg-slate-200"],
+html.dark .bg-slate-50 button.bg-slate-200,
+html.dark div[class*="bg-slate-50"] button[class*="bg-slate-200"] {
+  background-color: var(--dark-accent) !important;
+  color: #1a2332 !important;
+}
+
+/* Toolbar SVG icons */
+html.dark [class*="toolbar"] button svg,
+html.dark .bg-slate-50 button svg,
+html.dark div[class*="bg-slate-50"] button svg {
+  color: inherit !important;
+  stroke: currentColor !important;
+}
+
+/* Toolbar dividers/separators */
+html.dark [class*="toolbar"] .border-r,
+html.dark [class*="toolbar"] .border-l,
+html.dark .bg-slate-50 .border-r,
+html.dark .bg-slate-50 .border-l,
+html.dark .border-slate-300 {
+  border-color: var(--dark-border) !important;
+}
+
+/* Toolbar select/dropdown */
+html.dark [class*="toolbar"] select,
+html.dark .bg-slate-50 select {
+  background-color: var(--dark-surface) !important;
+  border-color: var(--dark-border) !important;
   color: var(--dark-text) !important;
 }
 
-html.dark [class*="toolbar"] button:hover {
+/* Slate color overrides for dark mode */
+html.dark .text-slate-600,
+html.dark .text-slate-500,
+html.dark .text-slate-400 {
+  color: var(--dark-text-muted) !important;
+}
+
+html.dark .text-slate-900,
+html.dark .text-slate-800,
+html.dark .text-slate-700 {
+  color: var(--dark-text) !important;
+}
+
+html.dark .bg-slate-100,
+html.dark .bg-slate-50 {
+  background-color: var(--dark-surface-elevated) !important;
+}
+
+html.dark .bg-slate-200 {
+  background-color: var(--dark-accent) !important;
+}
+
+html.dark .border-slate-200,
+html.dark .border-slate-300 {
+  border-color: var(--dark-border) !important;
+}
+
+html.dark .hover\:bg-slate-100:hover {
   background-color: rgba(201, 185, 115, 0.2) !important;
+}
+
+html.dark .hover\:text-slate-900:hover {
+  color: var(--dark-text) !important;
 }
 
 /* Toast notifications in dark mode */
