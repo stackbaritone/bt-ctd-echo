@@ -733,13 +733,22 @@ export default function HelpCenter({ language = 'fr', onClose, supportEmail = 'e
                     <a href="#privacy" className="font-semibold text-[#145a64] hover:underline px-2 py-1">{strings.sections.privacy.heading}</a>
                   ) : null}
                 </div>
-                <div className="md:w-60">
+                <div className="md:w-60 flex items-center gap-2">
                   <Input
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     placeholder={language === 'fr' ? "Rechercher dans l'aide…" : 'Search the help…'}
                     className="h-7 text-xs px-2"
                   />
+                  {query && (
+                    <button
+                      onClick={() => setQuery('')}
+                      className="text-xs text-slate-500 hover:text-slate-700 whitespace-nowrap"
+                      aria-label={language === 'fr' ? 'Effacer' : 'Clear'}
+                    >
+                      ×
+                    </button>
+                  )}
                 </div>
               </div>
               <section id="quickstart">
@@ -749,7 +758,9 @@ export default function HelpCenter({ language = 'fr', onClose, supportEmail = 'e
                   description={strings.quickStart.description}
                 />
                 <ul className="mt-4 space-y-2 text-sm text-slate-700">
-                  {strings.quickStart.bullets.map((item, index) => (
+                  {strings.quickStart.bullets
+                    .filter((item) => !query || item.toLowerCase().includes(query.toLowerCase()))
+                    .map((item, index) => (
                     <li key={index} className="flex gap-3">
                       <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[#1f8a99]" aria-hidden="true" />
                       <span>{item}</span>
