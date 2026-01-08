@@ -45,7 +45,7 @@
         "en": "External Providers - unsatisfactory quality"
       }
     },
-    "updatedAt": "2026-01-08T13:37:37.240Z",
+    "updatedAt": "2026-01-08T13:42:01.658Z",
     "categoryColors": {
       "s": "#c7ffd2"
     }
@@ -451,8 +451,8 @@
       "category_fr": "Délais et livraisons",
       "category_en": "Deadlines and delivery",
       "title": {
-        "fr": "Projet <<ProjectNumber_FR>> – Ajustement de la date de livraison",
-        "en": "Project <<ProjectNumber_EN>> – delivery date adjustment"
+        "fr": "Projet <<ProjectNumber_FR>> – Ajustement de la date de livraison (congé férié)",
+        "en": "Project <<ProjectNumber_EN>> – delivery date adjustment (statutory holiday)"
       },
       "description": {
         "fr": "Report de délai ou nouvelle date de livraison en raison d'un congé férié",
