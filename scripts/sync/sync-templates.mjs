@@ -99,6 +99,12 @@ async function fetchFromRawURL(url) {
 }
 
 async function main() {
+  // Skip in CI when templates are already up-to-date
+  if (process.env.SKIP_TEMPLATE_SYNC === 'true' || process.env.SKIP_TEMPLATE_SYNC === '1') {
+    log('SKIP_TEMPLATE_SYNC is set, skipping sync.')
+    return
+  }
+  
   const slug = getRepoSlug()
   if (!slug) {
     log('Repo slug not found; aborting sync.')

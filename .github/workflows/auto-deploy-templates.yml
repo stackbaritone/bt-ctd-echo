@@ -1,0 +1,52 @@
+name: Auto Deploy on Template Changes
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'complete_email_templates.json'
+
+# Prevent concurrent deployments
+concurrency:
+  group: deploy-templates
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+      pages: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+        env:
+          # Skip sync-templates in CI since we already have the latest file
+          SKIP_TEMPLATE_SYNC: true
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: gh-pages
+          enable_jekyll: false
+          cname: bt-ctd-echo.bt-tb.ca
+          commit_message: 'chore: auto-deploy after template update'
