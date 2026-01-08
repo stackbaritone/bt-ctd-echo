@@ -52,3 +52,4 @@ jobs:
           enable_jekyll: false
           cname: bt-ctd-echo.bt-tb.ca
           commit_message: 'chore: auto-deploy after template update'
+          force_orphan: true
