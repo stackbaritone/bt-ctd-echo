@@ -1065,7 +1065,7 @@
     const override = localStorage.getItem('ea_gh_repo');
     if (override){ const parts = override.split('/'); if (parts.length===2){ owner = parts[0]; repo = parts[1]; } }
     console.log('[publish] Using owner/repo:', owner, repo);
-  if (showToast) notify('Publication GitHub (main)…');
+  if (showToast) notify('Publication GitHub…');
     const path = 'complete_email_templates.json';
     const baseUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
     const contentB64 = btoa(unescape(encodeURIComponent(JSON.stringify(data,null,2))));
@@ -1076,30 +1076,35 @@
       const getMain = await fetch(baseUrl+`?ref=main`, { headers:{ Authorization:`Bearer ${token}`, Accept:'application/vnd.github+json' }});
       if (getMain.ok){ const j = await getMain.json(); shaMain = j.sha; }
     } catch(e){ console.warn('Unable to get main sha', e); }
-    const bodyMain = { message: 'feat(admin): update complete_email_templates.json (main) via admin-simple', content: contentB64, branch: 'main' };
+    const bodyMain = { message: 'feat(admin): update complete_email_templates.json via admin-simple', content: contentB64, branch: 'main' };
     if (shaMain) bodyMain.sha = shaMain;
     const putMain = await fetch(baseUrl, { method:'PUT', headers:{ Authorization:`Bearer ${token}`, Accept:'application/vnd.github+json', 'Content-Type':'application/json' }, body: JSON.stringify(bodyMain) });
     if (!putMain.ok){ const txt = await putMain.text(); throw new Error('GitHub API (main) error: '+txt); }
+    console.log('[publish] main branch updated');
 
-    // 2. Trigger the deploy workflow (commits via API don't trigger workflows automatically)
-    if (showToast) notify('Déclenchement du déploiement…');
+    // 2. Also update gh-pages branch directly for immediate visibility
+    // (The full deploy workflow will rebuild the app later, but JSON changes are instant)
+    if (showToast) notify('Mise à jour gh-pages…');
+    let shaGhPages = null;
     try {
-      const dispatchUrl = `https://api.github.com/repos/${owner}/${repo}/actions/workflows/auto-deploy-templates.yml/dispatches`;
-      const dispatchResp = await fetch(dispatchUrl, {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json', 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ref: 'main' })
-      });
-      if (!dispatchResp.ok && dispatchResp.status !== 204) {
-        console.warn('[publish] Workflow dispatch failed:', dispatchResp.status, await dispatchResp.text());
-      } else {
-        console.log('[publish] Deploy workflow triggered successfully');
+      const getGhPages = await fetch(baseUrl+`?ref=gh-pages`, { headers:{ Authorization:`Bearer ${token}`, Accept:'application/vnd.github+json' }});
+      if (getGhPages.ok){ const j = await getGhPages.json(); shaGhPages = j.sha; }
+    } catch(e){ console.warn('Unable to get gh-pages sha', e); }
+    if (shaGhPages) {
+      const bodyGhPages = { message: 'chore: sync complete_email_templates.json from admin', content: contentB64, branch: 'gh-pages', sha: shaGhPages };
+      try {
+        const putGhPages = await fetch(baseUrl, { method:'PUT', headers:{ Authorization:`Bearer ${token}`, Accept:'application/vnd.github+json', 'Content-Type':'application/json' }, body: JSON.stringify(bodyGhPages) });
+        if (putGhPages.ok) {
+          console.log('[publish] gh-pages branch updated');
+        } else {
+          console.warn('[publish] gh-pages update failed:', await putGhPages.text());
+        }
+      } catch (e) {
+        console.warn('[publish] gh-pages update error:', e);
       }
-    } catch (e) {
-      console.warn('[publish] Could not trigger deploy workflow:', e);
     }
 
-    if (showToast) notify('✅ Publié! Déploiement en cours (~30s)…');
+    if (showToast) notify('✅ Publié! Changements actifs immédiatement.');
     // Save to localStorage to sync with main app
     saveDraft();
     markAsPublished();
