@@ -18,6 +18,11 @@ const SimplePillEditor = React.forwardRef(({
   const autoSelectTrackerRef = useRef({ varName: null, timestamp: 0 });
   const autoSelectSuppressedUntilRef = useRef(0);
   const clickSelectTimerRef = useRef(null);
+  
+  // Track deleted pills for undo functionality
+  const [deletedPill, setDeletedPill] = useState(null);
+  const deletedPillTimeoutRef = useRef(null);
+  const previousPillsRef = useRef(new Set());
 
   const getVarValue = useCallback((name = '') => {
     return resolveVariableValue(variables, name, templateLanguage);
@@ -177,12 +182,69 @@ const SimplePillEditor = React.forwardRef(({
     return normalized;
   };
 
+  // Detect deleted pills by comparing current pills with previous state
+  const detectDeletedPills = useCallback(() => {
+    if (!editorRef.current) return null;
+    const currentPills = new Set();
+    editorRef.current.querySelectorAll('.var-pill').forEach(pill => {
+      const varName = pill.getAttribute('data-var');
+      if (varName) currentPills.add(varName);
+    });
+    
+    // Find pills that were in previous state but not in current
+    for (const varName of previousPillsRef.current) {
+      if (!currentPills.has(varName)) {
+        return varName;
+      }
+    }
+    return null;
+  }, []);
+
+  // Restore a deleted pill
+  const restoreDeletedPill = useCallback((varName) => {
+    if (!varName || !value) return;
+    
+    // Insert the placeholder at the end of the current value
+    const placeholder = `<<${varName}>>`;
+    const newValue = value.trim() + ' ' + placeholder;
+    onChange?.({ target: { value: newValue } });
+    setDeletedPill(null);
+    
+    // Clear timeout
+    if (deletedPillTimeoutRef.current) {
+      clearTimeout(deletedPillTimeoutRef.current);
+      deletedPillTimeoutRef.current = null;
+    }
+  }, [value, onChange]);
+
   const handleInput = () => {
     const text = extractText();
     const pillElements = editorRef.current?.querySelectorAll('.var-pill');
     const updates = {};
     const seenVars = new Set();
     let hasChanges = false;
+    
+    // Detect if a pill was deleted
+    const deleted = detectDeletedPills();
+    if (deleted) {
+      setDeletedPill(deleted);
+      // Clear previous timeout
+      if (deletedPillTimeoutRef.current) {
+        clearTimeout(deletedPillTimeoutRef.current);
+      }
+      // Auto-hide after 5 seconds
+      deletedPillTimeoutRef.current = setTimeout(() => {
+        setDeletedPill(null);
+      }, 5000);
+    }
+    
+    // Update previous pills reference
+    const currentPillNames = new Set();
+    pillElements?.forEach(pill => {
+      const varName = pill.getAttribute('data-var');
+      if (varName) currentPillNames.add(varName);
+    });
+    previousPillsRef.current = currentPillNames;
     
     // Get the currently active/focused pill to prioritize its value
     const selection = document.getSelection?.();
@@ -387,6 +449,26 @@ const SimplePillEditor = React.forwardRef(({
     return () => document.removeEventListener('selectionchange', handleSelectionChange);
   }, [isFocused, queueAutoSelectForPill]);
 
+  // Initialize previous pills reference when value changes
+  useEffect(() => {
+    if (!editorRef.current) return;
+    const pillNames = new Set();
+    editorRef.current.querySelectorAll('.var-pill').forEach(pill => {
+      const varName = pill.getAttribute('data-var');
+      if (varName) pillNames.add(varName);
+    });
+    previousPillsRef.current = pillNames;
+  }, [value]);
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (deletedPillTimeoutRef.current) {
+        clearTimeout(deletedPillTimeoutRef.current);
+      }
+    };
+  }, []);
+
   const handleKeyDown = (event) => {
     if (event.key !== 'Enter') return;
     const selection = document.getSelection?.(); if (!selection) return;
@@ -406,34 +488,159 @@ const SimplePillEditor = React.forwardRef(({
     clearActivePillPlaceholder();
   }, [clearActivePillPlaceholder]);
 
+  // Handle copy event - clean up pill styles and resolve variables
+  const handleCopy = useCallback((event) => {
+    const selection = document.getSelection?.();
+    if (!selection || selection.isCollapsed) return; // Let default handle if no selection
+    
+    event.preventDefault();
+    
+    // Get the selected range
+    const range = selection.getRangeAt(0);
+    const fragment = range.cloneContents();
+    
+    // Create a temporary container to process the content
+    const tempDiv = document.createElement('div');
+    tempDiv.appendChild(fragment);
+    
+    // Colors to strip (pill backgrounds that should not appear in pasted content)
+    const pillBackgroundColors = new Set([
+      'rgb(245, 243, 232)', 'rgb(245,243,232)', '#f5f3e8',  // filled pill
+      'rgb(254, 249, 195)', 'rgb(254,249,195)', '#fef9c3',  // empty pill (yellow)
+      'rgb(219, 234, 254)', 'rgb(219,234,254)', '#dbeafe',  // focused pill (blue)
+      'rgba(245, 243, 232, 1)', 'rgba(245,243,232,1)',
+      'rgba(254, 249, 195, 1)', 'rgba(254,249,195,1)',
+      'rgba(219, 234, 254, 1)', 'rgba(219,234,254,1)',
+    ]);
+    
+    // Helper to check if a color is a pill background
+    const isPillBackground = (color) => {
+      if (!color) return false;
+      const normalized = color.replace(/\s+/g, '').toLowerCase();
+      return pillBackgroundColors.has(normalized) || 
+             normalized.includes('245,243,232') || 
+             normalized.includes('254,249,195') ||
+             normalized.includes('219,234,254');
+    };
+    
+    // Process all pills - replace with resolved values (plain text)
+    const pills = tempDiv.querySelectorAll('.var-pill');
+    pills.forEach(pill => {
+      const varName = pill.getAttribute('data-var');
+      const resolvedValue = varName ? getVarValue(varName) : '';
+      const displayText = resolvedValue.trim() || pill.textContent || '';
+      // Replace pill with plain text
+      const textNode = document.createTextNode(displayText);
+      pill.replaceWith(textNode);
+    });
+    
+    // Strip pill background colors from ALL elements (in case browser left remnants)
+    const allElements = tempDiv.querySelectorAll('*');
+    allElements.forEach(el => {
+      const style = el.getAttribute('style');
+      if (style) {
+        // Parse and filter out pill background colors
+        const bgMatch = style.match(/background(?:-color)?:\s*([^;]+)/i);
+        if (bgMatch && isPillBackground(bgMatch[1])) {
+          // Remove background-color from style
+          const newStyle = style
+            .replace(/background-color:\s*[^;]+;?\s*/gi, '')
+            .replace(/background:\s*[^;]+;?\s*/gi, '')
+            .trim();
+          if (newStyle) {
+            el.setAttribute('style', newStyle);
+          } else {
+            el.removeAttribute('style');
+          }
+        }
+      }
+      
+      // Also remove var-pill class if any remnants
+      el.classList.remove('var-pill', 'filled', 'empty', 'focused', 'hovered');
+      if (el.classList.length === 0) {
+        el.removeAttribute('class');
+      }
+      
+      // Remove data attributes from pills
+      el.removeAttribute('data-var');
+      el.removeAttribute('data-value');
+      el.removeAttribute('data-display');
+    });
+    
+    // Get clean text content
+    const textContent = tempDiv.textContent || '';
+    
+    // Build clean HTML (preserve basic formatting but remove pill styles)
+    const htmlContent = tempDiv.innerHTML
+      .replace(/<br\s*\/?>/gi, '<br>')
+      .trim();
+    
+    // Write to clipboard with both formats
+    try {
+      if (navigator.clipboard && window.ClipboardItem) {
+        const clipboardItem = new ClipboardItem({
+          'text/html': new Blob([htmlContent], { type: 'text/html' }),
+          'text/plain': new Blob([textContent], { type: 'text/plain' })
+        });
+        navigator.clipboard.write([clipboardItem]);
+      } else {
+        // Fallback for older browsers
+        event.clipboardData?.setData('text/plain', textContent);
+        event.clipboardData?.setData('text/html', htmlContent);
+      }
+    } catch (err) {
+      console.error('Copy failed:', err);
+      // Last resort fallback
+      event.clipboardData?.setData('text/plain', textContent);
+    }
+  }, [getVarValue]);
+
+  const undoLabel = templateLanguage === 'fr' ? 'Annuler' : 'Undo';
+
   return (
-    <div
-      ref={editorRef}
-      contentEditable
-      role="textbox"
-      aria-multiline="true"
-      aria-autocomplete="none"
-      autoComplete="off"
-      autoCapitalize="off"
-      autoCorrect="off"
-      inputMode="text"
-      data-gramm="false"
-      data-lpignore="true"
-      data-1p-ignore="true"
-      data-1password-blocklist="true"
-      className={`lexical-content-editable${variant === 'compact' ? ' lexical-content-editable--compact' : ''}`}
-      onInput={handleInput}
-      onFocus={handleFocus}
-      onBlur={handleBlur}
-      onBeforeInput={handleBeforeInput}
-      onCompositionStart={handleCompositionStart}
-      onMouseDown={handleMouseDown}
-      onDoubleClick={handleDoubleClick}
-      onKeyDown={handleKeyDown}
-      suppressContentEditableWarning
-      data-placeholder={placeholder}
-      dangerouslySetInnerHTML={{ __html: renderContent(value) }}
-    />
+    <div className="relative">
+      <div
+        ref={editorRef}
+        contentEditable
+        role="textbox"
+        aria-multiline="true"
+        aria-autocomplete="none"
+        autoComplete="off"
+        autoCapitalize="off"
+        autoCorrect="off"
+        inputMode="text"
+        data-gramm="false"
+        data-lpignore="true"
+        data-1p-ignore="true"
+        data-1password-blocklist="true"
+        className={`lexical-content-editable${variant === 'compact' ? ' lexical-content-editable--compact' : ''}`}
+        onInput={handleInput}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+        onBeforeInput={handleBeforeInput}
+        onCompositionStart={handleCompositionStart}
+        onMouseDown={handleMouseDown}
+        onDoubleClick={handleDoubleClick}
+        onKeyDown={handleKeyDown}
+        onCopy={handleCopy}
+        suppressContentEditableWarning
+        data-placeholder={placeholder}
+        dangerouslySetInnerHTML={{ __html: renderContent(value) }}
+      />
+      {deletedPill && (
+        <button
+          type="button"
+          onClick={() => restoreDeletedPill(deletedPill)}
+          className="absolute -top-1 right-0 transform -translate-y-full px-2 py-1 text-xs bg-amber-100 hover:bg-amber-200 text-amber-800 rounded-md shadow-sm border border-amber-300 transition-colors flex items-center gap-1 z-10"
+          title={`${undoLabel}: ${deletedPill}`}
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M7.707 3.293a1 1 0 010 1.414L5.414 7H11a7 7 0 017 7v2a1 1 0 11-2 0v-2a5 5 0 00-5-5H5.414l2.293 2.293a1 1 0 11-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
+          </svg>
+          {undoLabel}
+        </button>
+      )}
+    </div>
   );
 });
 

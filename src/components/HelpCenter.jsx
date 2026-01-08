@@ -23,11 +23,22 @@ const translations = {
     sections: {
       copilot: {
         heading: 'Assistant Copilot M365',
+        intro: 'L\'assistant Copilot vous aide à améliorer vos courriels avec 12 actions rapides : améliorer, formaliser, simplifier, corriger, traduire, etc.',
+        stepsHeading: 'Comment utiliser (4 étapes) :',
+        steps: [
+          'Rédigez votre courriel dans l\'éditeur ECHO avec vos variables remplies.',
+          'Dans le panneau Copilot (à droite), cliquez sur une action (ex. « Améliorer ») ou tapez une instruction personnalisée puis cliquez « Copier ».',
+          'Ouvrez Copilot dans Edge, Word ou Outlook (icône Copilot ou raccourci).',
+          'Collez avec Ctrl+V — Copilot génère une version améliorée que vous pouvez copier et utiliser.'
+        ],
+        customHeading: 'Instruction personnalisée :',
+        customSteps: [
+          'Tapez votre demande dans le champ texte (ex. « Réduis à 80 mots avec un ton inspirant »).',
+          'Cliquez le bouton « Copier » à côté du champ.',
+          'Collez dans Copilot pour obtenir exactement ce que vous avez demandé.'
+        ],
         points: [
-          'L\'assistant Copilot vous aide à améliorer vos courriels avec 12 actions rapides : améliorer, formaliser, simplifier, corriger, traduire, etc.',
-          'Cliquez sur une action pour copier le prompt avec le contenu de votre email, puis collez dans Copilot (Edge, Word ou Outlook).',
-          'Les variables sont préservées automatiquement : Copilot voit les valeurs réelles, pas les noms de variables.',
-          'Utilisez l\'instruction personnalisée pour des demandes spécifiques (ex.: "Réduis à 80 mots avec un ton inspirant").'
+          'Les variables sont préservées automatiquement : Copilot voit les valeurs réelles, pas les noms de variables.'
         ]
       },
       variables: {
@@ -59,7 +70,7 @@ const translations = {
       favorites: {
         heading: 'Favoris',
         points: [
-          'Cliquez l\'icône étoile pour marquer un modèle. L\'icône devient or quand favori et très claire sinon.',
+          'Cliquez l\'étoile ★ dans le coin supérieur droit de chaque carte de modèle (dans la liste à gauche) pour l\'ajouter aux favoris. L\'étoile devient dorée une fois ajouté.',
           'Activez « Afficher uniquement les favoris » pour filtrer la liste.',
           'Les favoris sont mémorisés localement dans le navigateur.'
         ]
@@ -206,11 +217,22 @@ const translations = {
     sections: {
       copilot: {
         heading: 'M365 Copilot Assistant',
+        intro: 'The Copilot Assistant helps enhance your emails with 12 quick actions: improve, formalize, simplify, fix grammar, translate, and more.',
+        stepsHeading: 'How to use (4 steps):',
+        steps: [
+          'Compose your email in the ECHO editor with your variables filled in.',
+          'In the Copilot panel (on the right), click an action (e.g., "Improve") or type a custom instruction and click "Copy".',
+          'Open Copilot in Edge, Word, or Outlook (Copilot icon or shortcut).',
+          'Paste with Ctrl+V — Copilot generates an improved version you can copy and use.'
+        ],
+        customHeading: 'Custom instruction:',
+        customSteps: [
+          'Type your request in the text field (e.g., "Rewrite in 80 words with a confident tone").',
+          'Click the "Copy" button next to the field.',
+          'Paste into Copilot to get exactly what you asked for.'
+        ],
         points: [
-          'The Copilot Assistant helps enhance your emails with 12 quick actions: improve, formalize, simplify, fix grammar, translate, and more.',
-          'Click an action to copy the prompt with your email content, then paste into Copilot (Edge, Word, or Outlook).',
-          'Variables are preserved automatically: Copilot sees the actual values, not variable names.',
-          'Use the custom instruction field for specific requests (e.g., "Rewrite in 80 words with a confident tone").'
+          'Variables are preserved automatically: Copilot sees the actual values, not variable names.'
         ]
       },
       variables: {
@@ -242,7 +264,7 @@ const translations = {
       favorites: {
         heading: 'Favorites',
         points: [
-          'Click the star to favorite a template. The icon turns gold when favorited and very light when not.',
+          'Click the ★ star in the top-right corner of each template card (in the list on the left) to add it to your favorites. The star turns gold once added.',
           'Turn on “Show only favorites” to filter the list.',
           'Favorites are stored locally in your browser.'
         ]
@@ -751,223 +773,320 @@ export default function HelpCenter({ language = 'fr', onClose, supportEmail = 'e
                   )}
                 </div>
               </div>
-              <section id="quickstart">
-                <SectionHeader
-                  icon={Lightbulb}
-                  title={strings.quickStart.heading}
-                  description={strings.quickStart.description}
-                />
-                <ul className="mt-4 space-y-2 text-sm text-slate-700">
-                  {strings.quickStart.bullets
-                    .filter((item) => !query || item.toLowerCase().includes(query.toLowerCase()))
-                    .map((item, index) => (
-                    <li key={index} className="flex gap-3">
-                      <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[#1f8a99]" aria-hidden="true" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </section>
-              {strings.sections?.copilot ? (
-                <section id="copilot">
-                  <SectionHeader icon={Sparkles} title={strings.sections.copilot.heading} />
-                  <ul className="mt-4 space-y-2 text-sm text-slate-700">
-                    {(strings.sections.copilot.points || [])
-                      .filter((p) => !query || p.toLowerCase().includes(query.toLowerCase()))
-                      .map((p, i) => (
-                        <li key={i} className="flex gap-3">
+              {(() => {
+                const filtered = strings.quickStart.bullets.filter((item) => !query || item.toLowerCase().includes(query.toLowerCase()))
+                if (filtered.length === 0) return null
+                return (
+                  <section id="quickstart">
+                    <SectionHeader
+                      icon={Lightbulb}
+                      title={strings.quickStart.heading}
+                      description={strings.quickStart.description}
+                    />
+                    <ul className="mt-4 space-y-2 text-sm text-slate-700">
+                      {filtered.map((item, index) => (
+                        <li key={index} className="flex gap-3">
                           <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[#1f8a99]" aria-hidden="true" />
-                          <span>{p}</span>
+                          <span>{item}</span>
                         </li>
                       ))}
-                  </ul>
-                </section>
-              ) : null}
-              {strings.sections?.variables ? (
-                <section id="variables">
-                  <SectionHeader icon={BookOpen} title={strings.sections.variables.heading} />
-                  <ul className="mt-4 space-y-2 text-sm text-slate-700">
-                    {(strings.sections.variables.points || [])
-                      .filter((p) => !query || p.toLowerCase().includes(query.toLowerCase()))
-                      .map((p, i) => (
-                        <li key={i} className="flex gap-3">
-                          <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[#1f8a99]" aria-hidden="true" />
-                          <span>{p}</span>
-                        </li>
-                      ))}
-                  </ul>
-                </section>
-              ) : null}
-
-              {strings.sections?.popout ? (
-                <section id="popout">
-                  <SectionHeader icon={ExternalLink} title={strings.sections.popout.heading} />
-                  <ul className="mt-4 space-y-2 text-sm text-slate-700">
-                    {(strings.sections.popout.points || [])
-                      .filter((p) => !query || p.toLowerCase().includes(query.toLowerCase()))
-                      .map((p, i) => (
-                        <li key={i} className="flex gap-3">
-                          <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[#1f8a99]" aria-hidden="true" />
-                          <span>{p}</span>
-                        </li>
-                      ))}
-                  </ul>
-                </section>
-              ) : null}
-
-              {strings.sections?.copying ? (
-                <section id="copying">
-                  <SectionHeader icon={Copy} title={strings.sections.copying.heading} />
-                  <ul className="mt-4 space-y-2 text-sm text-slate-700">
-                    {(strings.sections.copying.points || [])
-                      .filter((p) => !query || p.toLowerCase().includes(query.toLowerCase()))
-                      .map((p, i) => (
-                        <li key={i} className="flex gap-3">
-                          <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[#1f8a99]" aria-hidden="true" />
-                          <span>{p}</span>
-                        </li>
-                      ))}
-                  </ul>
-                </section>
-              ) : null}
-
-              {strings.sections?.favorites ? (
-                <section id="favorites">
-                  <SectionHeader icon={Star} title={strings.sections.favorites.heading} />
-                  <ul className="mt-4 space-y-2 text-sm text-slate-700">
-                    {(strings.sections.favorites.points || [])
-                      .filter((p) => !query || p.toLowerCase().includes(query.toLowerCase()))
-                      .map((p, i) => (
-                        <li key={i} className="flex gap-3">
-                          <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[#1f8a99]" aria-hidden="true" />
-                          <span>{p}</span>
-                        </li>
-                      ))}
-                  </ul>
-                </section>
-              ) : null}
-
-              <Separator className="bg-[#e6eef5]" />
-
-              <section>
-                <SectionHeader icon={BookOpen} title={strings.faq.heading} />
-                <div className="mt-4 space-y-4">
-                  {strings.faq.items
-                    .filter((qa) => {
-                      if (!query) return true
-                      const q = query.toLowerCase()
-                      return qa.question.toLowerCase().includes(q) || qa.answer.toLowerCase().includes(q)
-                    })
-                    .map((item, index) => (
-                      <div key={index} className="rounded-lg border border-[#e1eff4] bg-[#f9feff] p-4 shadow-sm">
-                        <p className="font-semibold text-[#124a52]">{item.question}</p>
-                        <p className="mt-2 text-sm text-slate-700">{item.answer}</p>
-                      </div>
-                    ))}
-                </div>
-              </section>
-
-              <Separator className="bg-[#e6eef5]" />
-              <section>
-                <SectionHeader icon={AlertTriangle} title={strings.troubleshooting.heading} />
-                <div className="mt-4 space-y-5">
-                  {strings.troubleshooting.items
-                    .filter((blk) => {
-                      if (!query) return true
-                      const q = query.toLowerCase()
-                      return blk.title.toLowerCase().includes(q) || (blk.steps || []).some((s) => s.toLowerCase().includes(q))
-                    })
-                    .map((block, index) => (
-                      <div key={index} className="rounded-xl border border-[#fde68a] bg-[#fffbeb] p-4 shadow-sm">
-                        <h4 className="text-sm font-semibold text-[#92400e]">{block.title}</h4>
-                        <ul className="mt-3 space-y-1.5 text-sm text-[#78350f]">
-                          {block.steps.map((step, stepIndex) => (
-                            <li key={stepIndex} className="flex gap-2">
-                              <span className="mt-1 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-[#f59e0b]" aria-hidden="true" />
-                              <span>{step}</span>
-                            </li>
+                    </ul>
+                  </section>
+                )
+              })()}
+              {(() => {
+                if (!strings.sections?.copilot) return null
+                const copilot = strings.sections.copilot
+                // Check if any content matches the search query
+                const introMatches = !query || (copilot.intro && copilot.intro.toLowerCase().includes(query.toLowerCase()))
+                const stepsMatch = (copilot.steps || []).some(s => !query || s.toLowerCase().includes(query.toLowerCase()))
+                const customStepsMatch = (copilot.customSteps || []).some(s => !query || s.toLowerCase().includes(query.toLowerCase()))
+                const pointsMatch = (copilot.points || []).some(p => !query || p.toLowerCase().includes(query.toLowerCase()))
+                if (!introMatches && !stepsMatch && !customStepsMatch && !pointsMatch) return null
+                return (
+                  <section id="copilot">
+                    <SectionHeader icon={Sparkles} title={copilot.heading} />
+                    <div className="mt-4 space-y-4 text-sm text-slate-700">
+                      {/* Intro */}
+                      {copilot.intro && (!query || copilot.intro.toLowerCase().includes(query.toLowerCase())) && (
+                        <p className="text-slate-600">{copilot.intro}</p>
+                      )}
+                      
+                      {/* Main steps */}
+                      {copilot.stepsHeading && stepsMatch && (
+                        <div className="bg-gradient-to-r from-teal-50 to-cyan-50 rounded-lg p-4 border border-teal-100">
+                          <h4 className="font-semibold text-[#145a64] mb-3 flex items-center gap-2">
+                            <span className="bg-[#1f8a99] text-white text-xs px-2 py-0.5 rounded">ÉTAPES</span>
+                            {copilot.stepsHeading}
+                          </h4>
+                          <ol className="space-y-2 ml-1">
+                            {(copilot.steps || []).map((step, i) => (
+                              (!query || step.toLowerCase().includes(query.toLowerCase())) && (
+                                <li key={i} className="flex gap-3 items-start">
+                                  <span className="flex-shrink-0 w-6 h-6 rounded-full bg-[#1f8a99] text-white text-xs font-bold flex items-center justify-center">{i + 1}</span>
+                                  <span className="pt-0.5">{step}</span>
+                                </li>
+                              )
+                            ))}
+                          </ol>
+                        </div>
+                      )}
+                      
+                      {/* Custom instruction steps */}
+                      {copilot.customHeading && customStepsMatch && (
+                        <div className="bg-amber-50 rounded-lg p-4 border border-amber-200">
+                          <h4 className="font-semibold text-amber-800 mb-3 flex items-center gap-2">
+                            <Settings className="h-4 w-4" />
+                            {copilot.customHeading}
+                          </h4>
+                          <ol className="space-y-2 ml-1">
+                            {(copilot.customSteps || []).map((step, i) => (
+                              (!query || step.toLowerCase().includes(query.toLowerCase())) && (
+                                <li key={i} className="flex gap-3 items-start">
+                                  <span className="flex-shrink-0 w-5 h-5 rounded-full bg-amber-500 text-white text-xs font-bold flex items-center justify-center">{i + 1}</span>
+                                  <span className="pt-0.5 text-amber-900">{step}</span>
+                                </li>
+                              )
+                            ))}
+                          </ol>
+                        </div>
+                      )}
+                      
+                      {/* Additional points */}
+                      {pointsMatch && (
+                        <ul className="space-y-2">
+                          {(copilot.points || []).map((p, i) => (
+                            (!query || p.toLowerCase().includes(query.toLowerCase())) && (
+                              <li key={i} className="flex gap-3">
+                                <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[#1f8a99]" aria-hidden="true" />
+                                <span>{p}</span>
+                              </li>
+                            )
                           ))}
                         </ul>
-                      </div>
-                    ))}
-                </div>
-              </section>
-              <Separator className="bg-[#e6eef5]" />
-              {strings.sections?.shortcuts ? (
-                <section id="shortcuts">
-                  <SectionHeader icon={Lightbulb} title={strings.sections.shortcuts.heading} />
-                  <div className="mt-3 overflow-hidden rounded-lg border border-[#e6eef5]">
-                    <div className="grid grid-cols-1 divide-y divide-[#e6eef5] text-sm md:grid-cols-2 md:divide-x md:divide-y-0">
-                      {(strings.sections.shortcuts.items || [])
-                        .filter(([combo, desc]) => {
-                          if (!query) return true
-                          const q = query.toLowerCase()
-                          return combo.toLowerCase().includes(q) || desc.toLowerCase().includes(q)
-                        })
-                        .map(([combo, desc], i) => (
+                      )}
+                    </div>
+                  </section>
+                )
+              })()}
+              {(() => {
+                if (!strings.sections?.variables) return null
+                const filtered = (strings.sections.variables.points || []).filter((p) => !query || p.toLowerCase().includes(query.toLowerCase()))
+                if (filtered.length === 0) return null
+                return (
+                  <section id="variables">
+                    <SectionHeader icon={BookOpen} title={strings.sections.variables.heading} />
+                    <ul className="mt-4 space-y-2 text-sm text-slate-700">
+                      {filtered.map((p, i) => (
+                        <li key={i} className="flex gap-3">
+                          <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[#1f8a99]" aria-hidden="true" />
+                          <span>{p}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+                )
+              })()}
+
+              {(() => {
+                if (!strings.sections?.popout) return null
+                const filtered = (strings.sections.popout.points || []).filter((p) => !query || p.toLowerCase().includes(query.toLowerCase()))
+                if (filtered.length === 0) return null
+                return (
+                  <section id="popout">
+                    <SectionHeader icon={ExternalLink} title={strings.sections.popout.heading} />
+                    <ul className="mt-4 space-y-2 text-sm text-slate-700">
+                      {filtered.map((p, i) => (
+                        <li key={i} className="flex gap-3">
+                          <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[#1f8a99]" aria-hidden="true" />
+                          <span>{p}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+                )
+              })()}
+
+              {(() => {
+                if (!strings.sections?.copying) return null
+                const filtered = (strings.sections.copying.points || []).filter((p) => !query || p.toLowerCase().includes(query.toLowerCase()))
+                if (filtered.length === 0) return null
+                return (
+                  <section id="copying">
+                    <SectionHeader icon={Copy} title={strings.sections.copying.heading} />
+                    <ul className="mt-4 space-y-2 text-sm text-slate-700">
+                      {filtered.map((p, i) => (
+                        <li key={i} className="flex gap-3">
+                          <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[#1f8a99]" aria-hidden="true" />
+                          <span>{p}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+                )
+              })()}
+
+              {(() => {
+                if (!strings.sections?.favorites) return null
+                const filtered = (strings.sections.favorites.points || []).filter((p) => !query || p.toLowerCase().includes(query.toLowerCase()))
+                if (filtered.length === 0) return null
+                return (
+                  <section id="favorites">
+                    <SectionHeader icon={Star} title={strings.sections.favorites.heading} />
+                    <ul className="mt-4 space-y-2 text-sm text-slate-700">
+                      {filtered.map((p, i) => (
+                        <li key={i} className="flex gap-3">
+                          <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[#1f8a99]" aria-hidden="true" />
+                          <span>{p}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+                )
+              })()}
+
+              {!query && <Separator className="bg-[#e6eef5]" />}
+
+              {(() => {
+                const filtered = strings.faq.items.filter((qa) => {
+                  if (!query) return true
+                  const q = query.toLowerCase()
+                  return qa.question.toLowerCase().includes(q) || qa.answer.toLowerCase().includes(q)
+                })
+                if (filtered.length === 0) return null
+                return (
+                  <section>
+                    <SectionHeader icon={BookOpen} title={strings.faq.heading} />
+                    <div className="mt-4 space-y-4">
+                      {filtered.map((item, index) => (
+                        <div key={index} className="rounded-lg border border-[#e1eff4] bg-[#f9feff] p-4 shadow-sm">
+                          <p className="font-semibold text-[#124a52]">{item.question}</p>
+                          <p className="mt-2 text-sm text-slate-700">{item.answer}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </section>
+                )
+              })()}
+
+              {!query && <Separator className="bg-[#e6eef5]" />}
+              {(() => {
+                const filtered = strings.troubleshooting.items.filter((blk) => {
+                  if (!query) return true
+                  const q = query.toLowerCase()
+                  return blk.title.toLowerCase().includes(q) || (blk.steps || []).some((s) => s.toLowerCase().includes(q))
+                })
+                if (filtered.length === 0) return null
+                return (
+                  <section>
+                    <SectionHeader icon={AlertTriangle} title={strings.troubleshooting.heading} />
+                    <div className="mt-4 space-y-5">
+                      {filtered.map((block, index) => (
+                        <div key={index} className="rounded-xl border border-[#fde68a] bg-[#fffbeb] p-4 shadow-sm">
+                          <h4 className="text-sm font-semibold text-[#92400e]">{block.title}</h4>
+                          <ul className="mt-3 space-y-1.5 text-sm text-[#78350f]">
+                            {block.steps.map((step, stepIndex) => (
+                              <li key={stepIndex} className="flex gap-2">
+                                <span className="mt-1 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-[#f59e0b]" aria-hidden="true" />
+                                <span>{step}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
+                    </div>
+                  </section>
+                )
+              })()}
+              {!query && <Separator className="bg-[#e6eef5]" />}
+              {(() => {
+                if (!strings.sections?.shortcuts) return null
+                const filtered = (strings.sections.shortcuts.items || []).filter(([combo, desc]) => {
+                  if (!query) return true
+                  const q = query.toLowerCase()
+                  return combo.toLowerCase().includes(q) || desc.toLowerCase().includes(q)
+                })
+                if (filtered.length === 0) return null
+                return (
+                  <section id="shortcuts">
+                    <SectionHeader icon={Lightbulb} title={strings.sections.shortcuts.heading} />
+                    <div className="mt-3 overflow-hidden rounded-lg border border-[#e6eef5]">
+                      <div className="grid grid-cols-1 divide-y divide-[#e6eef5] text-sm md:grid-cols-2 md:divide-x md:divide-y-0">
+                        {filtered.map(([combo, desc], i) => (
                           <div key={i} className="flex items-center justify-between gap-3 p-3">
                             <span className="font-mono text-xs text-slate-700">{combo}</span>
                             <span className="text-slate-800">{desc}</span>
                           </div>
                         ))}
+                      </div>
                     </div>
-                  </div>
-                </section>
-              ) : null}
-              {strings.sections?.admin ? (
-                <section id="admin">
-                  <SectionHeader icon={Settings} title={strings.sections.admin.heading} />
-                  <ul className="mt-4 space-y-2 text-sm text-slate-700">
-                    {(strings.sections.admin.points || [])
-                      .filter((p) => !query || p.toLowerCase().includes(query.toLowerCase()))
-                      .map((p, i) => (
+                  </section>
+                )
+              })()}
+              {(() => {
+                if (!strings.sections?.admin) return null
+                const filtered = (strings.sections.admin.points || []).filter((p) => !query || p.toLowerCase().includes(query.toLowerCase()))
+                if (filtered.length === 0) return null
+                return (
+                  <section id="admin">
+                    <SectionHeader icon={Settings} title={strings.sections.admin.heading} />
+                    <ul className="mt-4 space-y-2 text-sm text-slate-700">
+                      {filtered.map((p, i) => (
                         <li key={i} className="flex gap-3">
                           <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[#1f8a99]" aria-hidden="true" />
                           <span>{p}</span>
-                        </li>
-                      ))}
-                  </ul>
-                </section>
-              ) : null}
-              {strings.sections?.privacy ? (
-                <section id="privacy">
-                  <SectionHeader icon={Shield} title={strings.sections.privacy.heading} />
-                  <ul className="mt-4 space-y-2 text-sm text-slate-700">
-                    {(strings.sections.privacy.points || [])
-                      .filter((p) => !query || p.toLowerCase().includes(query.toLowerCase()))
-                      .map((p, i) => (
-                        <li key={i} className="flex gap-3">
-                          <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[#1f8a99]" aria-hidden="true" />
-                          <span>{p}</span>
-                        </li>
-                      ))}
-                  </ul>
-                </section>
-              ) : null}
-              <Separator className="bg-[#e6eef5]" />
-              <section>
-                {Array.isArray(strings.resources?.links) && strings.resources.links.length > 0 ? (
-                  <>
-                    <SectionHeader icon={MessageCircle} title={strings.resources.heading} />
-                    <ul className="mt-4 grid gap-2 text-sm text-[#145a64] md:grid-cols-2">
-                      {strings.resources.links.map((link) => (
-                        <li key={link.href}>
-                          <a
-                            className="group inline-flex items-center gap-2 rounded-lg border border-transparent px-3 py-2 transition-colors duration-150 hover:border-[#bfe7e3] hover:bg-[#f0fbfb]"
-                            href={link.href}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            <ExternalLink className="h-3.5 w-3.5 text-[#1f8a99] transition-transform duration-150 group-hover:translate-x-0.5" aria-hidden="true" />
-                            <span>{link.label}</span>
-                          </a>
                         </li>
                       ))}
                     </ul>
-                  </>
-                ) : null}
-              </section>
-              {formOnly ? null : <Separator className="bg-[#e6eef5]" />}
+                  </section>
+                )
+              })()}
+              {(() => {
+                if (!strings.sections?.privacy) return null
+                const filtered = (strings.sections.privacy.points || []).filter((p) => !query || p.toLowerCase().includes(query.toLowerCase()))
+                if (filtered.length === 0) return null
+                return (
+                  <section id="privacy">
+                    <SectionHeader icon={Shield} title={strings.sections.privacy.heading} />
+                    <ul className="mt-4 space-y-2 text-sm text-slate-700">
+                      {filtered.map((p, i) => (
+                        <li key={i} className="flex gap-3">
+                          <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[#1f8a99]" aria-hidden="true" />
+                          <span>{p}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+                )
+              })()}
+              {!query && (
+                <>
+                  <Separator className="bg-[#e6eef5]" />
+                  <section>
+                    {Array.isArray(strings.resources?.links) && strings.resources.links.length > 0 ? (
+                      <>
+                        <SectionHeader icon={MessageCircle} title={strings.resources.heading} />
+                        <ul className="mt-4 grid gap-2 text-sm text-[#145a64] md:grid-cols-2">
+                          {strings.resources.links.map((link) => (
+                            <li key={link.href}>
+                              <a
+                                className="group inline-flex items-center gap-2 rounded-lg border border-transparent px-3 py-2 transition-colors duration-150 hover:border-[#bfe7e3] hover:bg-[#f0fbfb]"
+                                href={link.href}
+                                target="_blank"
+                                rel="noreferrer"
+                              >
+                                <ExternalLink className="h-3.5 w-3.5 text-[#1f8a99] transition-transform duration-150 group-hover:translate-x-0.5" aria-hidden="true" />
+                                <span>{link.label}</span>
+                              </a>
+                            </li>
+                          ))}
+                        </ul>
+                      </>
+                    ) : null}
+                  </section>
+                  {formOnly ? null : <Separator className="bg-[#e6eef5]" />}
+                </>
+              )}
               </>
               )}
               <section ref={contactFormRef} className={formOnly ? "bg-transparent pt-2" : "border-t border-[#bfe7e3] bg-transparent"}>

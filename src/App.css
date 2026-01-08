@@ -1315,6 +1315,66 @@ input:-webkit-autofill:active {
   transform: translateY(-1px);
 }
 
+/* ============================================
+   TEXT SELECTION STYLES (Light Mode)
+   ============================================ */
+
+/* Editor text selection */
+.lexical-content-editable::selection,
+.lexical-content-editable *::selection {
+  background-color: #3b82f6 !important;
+  color: #ffffff !important;
+}
+
+/* Variable pill text selection */
+.var-pill::selection,
+.var-pill *::selection {
+  background-color: #1d4ed8 !important;
+  color: #ffffff !important;
+}
+
+/* Firefox support */
+.lexical-content-editable::-moz-selection,
+.lexical-content-editable *::-moz-selection {
+  background-color: #3b82f6 !important;
+  color: #ffffff !important;
+}
+
+.var-pill::-moz-selection,
+.var-pill *::-moz-selection {
+  background-color: #1d4ed8 !important;
+  color: #ffffff !important;
+}
+
+/* ============================================
+   TEXT SELECTION STYLES (Dark Mode)
+   ============================================ */
+
+html.dark .lexical-content-editable::selection,
+html.dark .lexical-content-editable *::selection {
+  background-color: #c9b973 !important;
+  color: #0f1419 !important;
+}
+
+html.dark .var-pill::selection,
+html.dark .var-pill *::selection {
+  background-color: #c9b973 !important;
+  color: #0f1419 !important;
+}
+
+/* Firefox dark mode support */
+html.dark .lexical-content-editable::-moz-selection,
+html.dark .lexical-content-editable *::-moz-selection {
+  background-color: #c9b973 !important;
+  color: #0f1419 !important;
+}
+
+html.dark .var-pill::-moz-selection,
+html.dark .var-pill *::-moz-selection {
+  background-color: #c9b973 !important;
+  color: #0f1419 !important;
+}
+
 .ea-popout-card {
   background: rgba(181, 175, 112, 0.4);
   border: 1px solid rgba(181, 175, 112, 0.6);
