@@ -45,13 +45,10 @@ const WordExport = (function() {
 
   /**
    * Create text runs with highlighted variables from text content
-   * Variables like <<variable_name>> will be highlighted in yellow with double chevrons
+   * Variables like <<variable_name>> will be highlighted in yellow
    */
   function createRunsWithHighlightedVariables(text, defaultOptions = {}) {
     if (!text) return [new docx.TextRun({ text: '', ...defaultOptions })];
-    
-    // Decode HTML-encoded variables: &lt;&lt;var&gt;&gt; -> <<var>>
-    const decodedText = text.replace(/&lt;&lt;([^&]+)&gt;&gt;/g, '<<$1>>');
     
     const runs = [];
     // Match <<variable_name>> patterns
@@ -59,18 +56,18 @@ const WordExport = (function() {
     let lastIndex = 0;
     let match;
     
-    while ((match = regex.exec(decodedText)) !== null) {
+    while ((match = regex.exec(text)) !== null) {
       // Add text before the variable
       if (match.index > lastIndex) {
         runs.push(new docx.TextRun({
-          text: decodedText.slice(lastIndex, match.index),
+          text: text.slice(lastIndex, match.index),
           ...defaultOptions
         }));
       }
       
-      // Add the variable with double chevrons and yellow highlight
+      // Add the variable with yellow highlight
       runs.push(new docx.TextRun({
-        text: `<<${match[1]}>>`, // Keep <<var>> format
+        text: match[0], // Include << and >>
         ...defaultOptions,
         highlight: 'yellow'
       }));
@@ -79,9 +76,9 @@ const WordExport = (function() {
     }
     
     // Add remaining text after last variable
-    if (lastIndex < decodedText.length) {
+    if (lastIndex < text.length) {
       runs.push(new docx.TextRun({
-        text: decodedText.slice(lastIndex),
+        text: text.slice(lastIndex),
         ...defaultOptions
       }));
     }
@@ -98,24 +95,7 @@ const WordExport = (function() {
     const paragraphs = [];
     let currentRuns = [];
     const temp = document.createElement('div');
-    
-    // Pre-process: decode HTML entities for variables and convert line breaks to HTML
-    let processed = html
-      // Decode HTML-encoded variables: &lt;&lt;var&gt;&gt; -> <<var>>
-      .replace(/&lt;&lt;([^&]+)&gt;&gt;/g, '<<$1>>')
-      // Protect variables from being interpreted as HTML tags by using a placeholder
-      .replace(/<<([^>]+)>>/g, '\u00AB\u00AB$1\u00BB\u00BB')
-      // Convert \r\n or \n\n (double line breaks) to paragraph breaks
-      .replace(/\r\n\r\n|\n\n/g, '</p><p>')
-      // Convert remaining single line breaks to <br>
-      .replace(/\r\n|\n/g, '<br>');
-    
-    // Wrap in paragraph if we added </p><p> tags
-    if (processed.includes('</p><p>')) {
-      processed = '<p>' + processed + '</p>';
-    }
-    
-    temp.innerHTML = processed;
+    temp.innerHTML = html;
 
     function flushParagraph() {
       while (currentRuns.length > 0 && currentRuns[currentRuns.length - 1].text === '' && currentRuns[currentRuns.length - 1].break) {
@@ -134,8 +114,7 @@ const WordExport = (function() {
 
     function addTextWithHighlight(text, inherited = {}) {
       if (!text) return;
-      // Match both <<var>> and ««var»» (placeholder used to protect from HTML parsing)
-      const regex = /(?:<<|\u00AB\u00AB|««)([^>\u00BB]+)(?:>>|\u00BB\u00BB|»»)/g;
+      const regex = /<<([^>]+)>>/g;
       let lastIndex = 0;
       let match;
       
@@ -147,9 +126,8 @@ const WordExport = (function() {
             ...inherited
           }));
         }
-        // Output as <<var>> with yellow highlight
         currentRuns.push(new docx.TextRun({
-          text: `<<${match[1]}>>`,
+          text: match[0],
           ...defaultOptions,
           ...inherited,
           highlight: 'yellow'
@@ -362,29 +340,8 @@ const WordExport = (function() {
           })
         ],
         alignment: docx.AlignmentType.CENTER,
-        spacing: { after: 100 }
+        spacing: { after: 800 }
       }),
-      
-      // Audience indicator
-      ...(options.audience && options.audience !== 'all' ? [
-        new docx.Paragraph({
-          children: [
-            new docx.TextRun({
-              text: options.audience === 'management' 
-                ? (options.lang === 'en' ? '🔐 Management templates only' : '🔐 Modèles de gestion uniquement')
-                : (options.lang === 'en' ? '👥 User templates only' : '👥 Modèles conseillers uniquement'),
-              size: 22,
-              font: FONTS.body,
-              color: options.audience === 'management' ? 'D97706' : '059669',
-              italics: true
-            })
-          ],
-          alignment: docx.AlignmentType.CENTER,
-          spacing: { after: 600 }
-        })
-      ] : [
-        new docx.Paragraph({ spacing: { after: 600 } })
-      ]),
 
       new docx.Paragraph({
         children: [
@@ -460,6 +417,8 @@ const WordExport = (function() {
     const titleEn = template.title?.en || template.title || '';
     const title = isBilingual ? titleFr : (lang === 'en' ? titleEn : titleFr);
     const titleSecondary = isBilingual ? titleEn : null;
+
+    elements.push(createSeparator());
 
     // Title with bookmark and highlighted variables
     const titleRuns = createRunsWithHighlightedVariables(title, {
@@ -681,6 +640,8 @@ const WordExport = (function() {
       spacing: { after: 300 }
     }));
 
+    elements.push(createSeparator());
+
     // Group templates by category
     const byCategory = {};
     templates.forEach((t, index) => {
@@ -797,6 +758,8 @@ const WordExport = (function() {
       ],
       spacing: { after: 300 }
     }));
+
+    elements.push(createSeparator());
 
     // Build keyword index from template titles, descriptions, subjects
     const keywordMap = new Map();
@@ -1064,8 +1027,7 @@ const WordExport = (function() {
     // Download
     const dateStr = new Date().toISOString().slice(0, 10);
     const langSuffix = options.lang === 'both' ? 'bilingue' : options.lang;
-    const audienceSuffix = options.audience === 'management' ? '_gestion' : (options.audience === 'users' ? '_utilisateurs' : '');
-    const filename = `CTD_Catalogue_Modeles_${langSuffix}${audienceSuffix}_${dateStr}.docx`;
+    const filename = `CTD_Catalogue_Modeles_${langSuffix}_${dateStr}.docx`;
     
     if (typeof saveAs === 'function') {
       saveAs(blob, filename);
