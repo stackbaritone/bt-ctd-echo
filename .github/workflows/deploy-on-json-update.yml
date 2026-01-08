@@ -32,6 +32,6 @@ jobs:
       - name: Build and deploy
         run: |
           npm run build
-          npx gh-pages -d dist --dotfiles --repo https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+          npx gh-pages -d dist --dotfiles --no-history --repo https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
