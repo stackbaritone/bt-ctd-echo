@@ -1,7 +1,7 @@
 {
   "metadata": {
     "version": "1.0",
-    "totalTemplates": 30,
+    "totalTemplates": 31,
     "languages": [
       "fr",
       "en"
@@ -45,7 +45,7 @@
         "en": "External Providers - unsatisfactory quality"
       }
     },
-    "updatedAt": "2025-11-20T23:20:58.405Z",
+    "updatedAt": "2026-01-08T13:37:37.240Z",
     "categoryColors": {
       "s": "#c7ffd2"
     }
@@ -70,14 +70,15 @@
       },
       "body": {
         "fr": "Bonjour,\r\n\r\nNous accusons réception du projet <<ProjectNumber_FR>>. \r\n\r\nSa réalisation est évaluée à environ <<NbDays_FR>> jour(s) de travail. L’estimation des coûts s’élève à <<Cost_FR>>$. Le montant estimé pourrait varier de plus ou moins 10 %, selon l’évaluation finale du volume et de la complexité des documents.\r\n \r\nDes frais d’urgence de 50 % s’appliqueront si le projet doit être livré dans un délai de moins de <<NbDays_FR>> jour(s) ouvrable(s) ou de moins de 24 heures. Le coût révisé serait alors de <<UrgentCost_FR>> $.\r\n\r\nNous vous confirmons que ce projet sera traité uniquement après réception de votre approbation. Afin d’assurer un résultat fidèle et professionnel, et compte tenu de la disponibilité des ressources, la date de livraison pourrait être ajustée une fois l’approbation reçue.\r\n\r\nPour toute question ou tout renseignement complémentaire, n’hésitez pas à communiquer avec nous.\r\n\r\nBien cordialement,",
-        "en": "Hello,\r\n\r\nWe have received Project <<ProjectNumber_EN>>. \r\n\r\nBased on our assessment, it will take approximately <<NbDays_EN>> working day(s) to complete. The estimated cost is $<<Cost_EN>>. The amount may vary by up to 10%, depending on our final assessment of the size and complexity of the documents.\r\n\r\nA 50% rush premium will apply if the project needs to be delivered in under <<NbDays_EN>> working day(s) or within 24 hours, and the revised cost would be $<<UrgentCost_EN>>.\r\n\r\nPlease note that we will begin work on this project only after receiving your approval. To ensure accurate and professional results, and depending on the availability of resources, the delivery date may be adjusted once we receive your approval.\r\n\r\nPlease feel free to contact us if you have any questions or need more information.\r\n\r\nBest regards,"
+        "en": "<p>Hello,</p><p>We have received Project &lt;&lt;ProjectNumber_EN&gt;&gt;.</p><p>Based on our assessment, it will take approximately &lt;&lt;NbDays_EN&gt;&gt; working day(s) to complete. The estimated cost is $&lt;&lt;Cost_EN&gt;&gt;. The amount may vary by up to 10%, depending on our final assessment of the size and complexity of the documents.</p><p>A 50% rush premium will apply if the project needs to be delivered in under &lt;&lt;NbDays_EN&gt;&gt; working day(s) or within 24 hours, and the revised cost would be $&lt;&lt;UrgentCost_EN&gt;&gt;.</p><p>Please note that we will begin work on this project only after receiving your approval. To ensure accurate and professional results, and depending on the availability of resources, the delivery date may be adjusted once we receive your approval.</p><p>Please feel free to contact us if you have any questions or need more information.</p><p>Best regards,</p>"
       },
       "variables": [
-        "project_number",
-        "nb_days",
         "cost",
+        "nb_days",
+        "project_number",
         "urgent_cost"
-      ]
+      ],
+      "utilisateur": "tous"
     },
     {
       "id": "ctd002",
@@ -179,13 +180,13 @@
         "en": "Request <<ProjectNumber_EN>> – requesting an editable version of a PDF document"
       },
       "body": {
-        "fr": "Bonjour,\r\n\r\nNous accusons réception du projet « ProjectNumber_FR ».\r\n \r\nLe document transmis est en format PDF, qui ne peut être utilisé tel quel par nos traducteurs. Afin d’assurer un traitement adéquat, nous aurions besoin du document source modifiable original (Word, Excel, etc.). La transformation automatique d’un fichier PDF ne suffit pas; il est nécessaire de procéder à un nettoyage et à une préparation technique pour préserver sa mise en forme et éviter les éventuels problèmes pendant la traduction.\r\n\r\nVoici les options possibles :\r\n1.\tVous pouvez nous transmettre le document original modifiable;\r\n2.\tNous pouvons traduire le contenu du PDF, mais la mise en page pourrait ne pas être fidèle à celle du document original;\r\n3.\tNotre équipe d’éditique peut convertir et préparer le document avant la traduction. Ce service administratif est facturé à <<DPRate_FR>> $/heure. Le temps estimé pour ce travail est d’environ <<DPHours_FR>> heures.\r\n \r\nNous vous serions reconnaissants de bien vouloir nous indiquer l’option retenue afin que nous puissions procéder au traitement de votre projet.\r\n\r\nBien cordialement,",
+        "fr": "<p>Bonjour,</p><p>Nous accusons réception du projet &lt;&lt;ProjectNumber_FR&gt;&gt;.<br> <br>Le document transmis est en format PDF, qui ne peut être utilisé tel quel par nos traducteurs. Afin d’assurer un traitement adéquat, nous aurions besoin du document source modifiable original (Word, Excel, etc.). La transformation automatique d’un fichier PDF ne suffit pas; il est nécessaire de procéder à un nettoyage et à une préparation technique pour préserver sa mise en forme et éviter les éventuels problèmes pendant la traduction.</p><p>Voici les options possibles :<br>1.\tVous pouvez nous transmettre le document original modifiable;<br>2.\tNous pouvons traduire le contenu du PDF, mais la mise en page pourrait ne pas être fidèle à celle du document original;<br>3.\tNotre équipe d’éditique peut convertir et préparer le document avant la traduction. Ce service administratif est facturé à &lt;&lt;DPRate_FR&gt;&gt; $/heure. Le temps estimé pour ce travail est d’environ &lt;&lt;DPHours_FR&gt;&gt; heures.<br> <br>Nous vous serions reconnaissants de bien vouloir nous indiquer l’option retenue afin que nous puissions procéder au traitement de votre projet.</p><p>Bien cordialement,</p>",
         "en": "Hello,\r\n\r\nWe have received Project <<ProjectNumber_EN>>.\r\n \r\nThe document you provided is a PDF, which cannot be used as is by our translators. To ensure that it is translated properly, we need the original editable source file (in Word, Excel, etc.). It is not enough to automatically convert a PDF, as the file must be cleaned and technically prepared to preserve its formatting and avoid potential issues during translation.\r\n\r\nPlease consider the following options:\r\n1.\tYou may send us the original editable document.\r\n2.\tWe can translate the content from the PDF, but the formatting may not match that of the original.\r\n3.\tOur desktop publishing team can convert and prepare the document before translation. This administrative service is billed at $<<DPRate_EN>> per hour, with an estimated time of approximately <<DPHours_EN>> hours.\r\n \r\nPlease let us know which option you would prefer so we can process your project.\r\n\r\nBest regards,"
       },
       "variables": [
-        "project_number",
+        "dphours",
         "dprate",
-        "dphours"
+        "project_number"
       ]
     },
     {
@@ -206,14 +207,14 @@
         "en": "Project <<ProjectNumber_EN>> – rush premium"
       },
       "body": {
-        "fr": "Bonjour,\r\n\r\nNous accusons réception du projet « ProjectNumber_FR ».\r\n\r\nComme le délai prévu pour traiter ce projet est de moins de <<NbDays_FR>> jour(s) ouvrable(s) (ou de moins de 24 heures), des frais d’urgence de 50 % s’appliqueront.\r\n\r\nPour éviter l’application de ces frais, nous vous suggérons de reporter si possible la date de livraison à <<NewDate_FR>>.\r\n\r\nNous vous serions reconnaissants de bien vouloir nous confirmer votre préférence d’ici <<DeadlineTime_FR>> aujourd’hui.\r\n\r\nPour toute question ou tout renseignement complémentaire, n’hésitez pas à communiquer avec nous.\r\n\r\nBien cordialement,",
+        "fr": "<p>Bonjour,</p><p>Nous accusons réception du projet &lt;&lt;ProjectNumber_FR&gt;&gt;.</p><p>Comme le délai prévu pour traiter ce projet est de moins de &lt;&lt;NbDays_FR&gt;&gt; jour(s) ouvrable(s) (ou de moins de 24 heures), des frais d’urgence de 50 % s’appliqueront.</p><p>Pour éviter l’application de ces frais, nous vous suggérons de reporter si possible la date de livraison à &lt;&lt;NewDate_FR&gt;&gt;.</p><p>Nous vous serions reconnaissants de bien vouloir nous confirmer votre préférence d’ici &lt;&lt;DeadlineTime_FR&gt;&gt; aujourd’hui.</p><p>Pour toute question ou tout renseignement complémentaire, n’hésitez pas à communiquer avec nous.</p><p>Bien cordialement,</p>",
         "en": "Hello,\r\n\r\nWe have received Project <<ProjectNumber_EN>>.\r\n\r\nSince the expected deadline to process this project is under <<NbDays_EN>> working day(s) (or within 24 hours), a 50% rush premium will apply.\r\n\r\nTo avoid these fees, we suggest postponing the delivery date to <<NewDate_EN>>, if possible.\r\n\r\nCould you please confirm your preference by <<DeadlineTime_EN>> today?\r\n\r\nPlease feel free to contact us if you have any questions or need more information.\r\n\r\nBest regards,"
       },
       "variables": [
-        "project_number",
+        "deadline_time",
         "nb_days",
         "new_date",
-        "deadline_time"
+        "project_number"
       ]
     },
     {
@@ -234,12 +235,12 @@
         "en": "Project <<ProjectNumber_EN>> - delivery date extension"
       },
       "body": {
-        "fr": "Bonjour,\r\n\r\nNous accusons réception du projet « ProjectNumber_FR ».\r\n\r\nCertaines circonstances nous amènent à devoir ajuster le délai initial de livraison.\r\n\r\n[Choisir une variante à conserver au besoin]\r\n\r\nVARIANTE A – Volume\r\nLe document est particulièrement volumineux et son traitement demande plus de temps que prévu.\r\n\r\nVARIANTE B – Complexité\r\nLe niveau de complexité linguistique ou technique est plus élevé que prévu, ce qui demande un travail particulièrement approfondi.\r\n\r\nVARIANTE C – Contenu\r\nLa nature du contenu requiert une révision minutieuse afin de garantir la qualité du résultat.\r\n\r\nVARIANTE D – Ressources\r\nLe traducteur assigné au projet est temporairement indisponible, ce qui nécessite un réajustement du calendrier.\r\n\r\nVARIANTE E – Technique\r\nDes problèmes techniques ralentissent le traitement, ce qui exige un délai supplémentaire.\r\n\r\nConséquemment, un délai supplémentaire serait nécessaire. Nous vous proposons de reporter la date de livraison au <<NewDeadline_FR>> pour assurer un résultat répondant à nos normes en matière d’uniformité et de qualité. Pourriez-vous nous confirmer si ce nouveau délai vous convient?\r\n\r\nPour toute question ou tout renseignement complémentaire, n’hésitez pas à communiquer avec nous.\r\n\r\nBien cordialement,",
+        "fr": "<p>Bonjour,</p><p>Nous accusons réception du projet &lt;&lt;ProjectNumber_FR&gt;&gt;.</p><p>Certaines circonstances nous amènent à devoir ajuster le délai initial de livraison.</p><p>[Choisir une variante à conserver au besoin]</p><p>VARIANTE A – Volume<br>Le document est particulièrement volumineux et son traitement demande plus de temps que prévu.</p><p>VARIANTE B – Complexité<br>Le niveau de complexité linguistique ou technique est plus élevé que prévu, ce qui demande un travail particulièrement approfondi.</p><p>VARIANTE C – Contenu<br>La nature du contenu requiert une révision minutieuse afin de garantir la qualité du résultat.</p><p>VARIANTE D – Ressources<br>Le traducteur assigné au projet est temporairement indisponible, ce qui nécessite un réajustement du calendrier.</p><p>VARIANTE E – Technique<br>Des problèmes techniques ralentissent le traitement, ce qui exige un délai supplémentaire.</p><p>Conséquemment, un délai supplémentaire serait nécessaire. Nous vous proposons de reporter la date de livraison au &lt;&lt;NewDeadline_FR&gt;&gt; pour assurer un résultat répondant à nos normes en matière d’uniformité et de qualité. Pourriez-vous nous confirmer si ce nouveau délai vous convient?</p><p>Pour toute question ou tout renseignement complémentaire, n’hésitez pas à communiquer avec nous.</p><p>Bien cordialement,</p>",
         "en": "Hello,\r\n\r\nWe have received Project <<ProjectNumber_EN>>.\r\n\r\nDue to various circumstances, we need to adjust the original delivery date.\r\n[Please select the appropriate version as needed.]\r\n\r\nVERSION A – Size\r\nThe document is particularly large and requires more time to process than expected.\r\n\r\nVERSION B – Complexity\r\nThe linguistic or technical complexity is higher than anticipated and requires a significant amount of in-depth work.\r\n\r\nVERSION C – Content\r\nBecause of the nature of the content, it needs to be thoroughly revised to ensure the quality of the result.\r\n\r\nVARIANTE D – Resources\r\nThe translator assigned to the project is temporarily unavailable, and we need to adjust the time frame.\r\n\r\nVARIANTE E – Technical\r\nThere are delays in the processing due to technical issues, and more time is needed.\r\n\r\nAs a result, we need to extend the deadline and suggest postponing the delivery date to <<NewDeadline_EN>> to ensure that the final product meets our standards for consistency and quality. Could you please confirm if the new deadline works for you?\r\n\r\nPlease feel free to contact us if you have any questions or need more information.\r\n\r\nBest regards,"
       },
       "variables": [
-        "project_number",
-        "new_deadline"
+        "new_deadline",
+        "project_number"
       ]
     },
     {
@@ -336,7 +337,7 @@
         "en": "Project <<ProjectNumber_EN>> – request for screenshots"
       },
       "body": {
-        "fr": "Bonjour,\r\n\r\nNous accusons réception du projet <<ProjectNumber_FR>> .\r\n\r\nAfin de garantir une terminologie exacte, notamment en ce qui a trait aux éléments d’interface (menus, commandes, messages, etc.), nous vous serions reconnaissants de nous transmettre les captures d’écran du logiciel en <<TargetLanguage_FR>>.\r\nÀ défaut de nous fournir ces éléments, vous avez deux options : \r\n\r\n1) nous proposerons une traduction libre, ce qui pourrait entraîner certains écarts avec les libellés réellement utilisés dans l’interface visé; \r\n2) nous ne traduirons pas ces éléments.\r\n\r\nNous suspendrons le traitement du projet en attendant de recevoir vos instructions ou les documents requis.\r\n\r\nNous vous remercions de votre collaboration et demeurons à votre disposition pour toute question ou tout renseignement complémentaire.\r\n\r\nBien cordialement,",
+        "fr": "<p>Bonjour,</p><p>Nous accusons réception du projet &lt;&lt;ProjectNumber_FR&gt;&gt;.</p><p>Afin de garantir une terminologie exacte, notamment en ce qui a trait aux éléments d’interface (menus, commandes, messages, etc.), nous vous serions reconnaissants de nous transmettre les captures d’écran du logiciel en &lt;&lt;TargetLanguage_FR&gt;&gt;.<br>À défaut de nous fournir ces éléments, vous avez deux options :</p><p>1) nous proposerons une traduction libre, ce qui pourrait entraîner certains écarts avec les libellés réellement utilisés dans l’interface visé; <br>2) nous ne traduirons pas ces éléments.</p><p>Nous suspendrons le traitement du projet en attendant de recevoir vos instructions ou les documents requis.</p><p>Nous vous remercions de votre collaboration et demeurons à votre disposition pour toute question ou tout renseignement complémentaire.</p><p>Bien cordialement,</p>",
         "en": "Hello,\r\n\r\nWe have received Project <<ProjectNumber_EN>>.\r\n\r\nTo ensure that we use the correct terminology, especially for interface elements such as menus, commands and messages, could you please send us screenshots of the software in <<TargetLanguage_EN>>?\r\nTwo options are available if you cannot provide screenshots. \r\n\r\n1. We will provide an unofficial translation, which may differ from the actual wording used in the interface for the target language.\r\n2. We will not provide a translation of these elements.\r\n\r\nWe will pause work on the project until we receive your instructions or the required materials.\r\n\r\nWe thank you for your cooperation. Please contact us if you have any questions or need more information.\r\n\r\nBest regards,"
       },
       "variables": [
@@ -458,17 +459,17 @@
         "en": "Adjusting the delivery date – statutory holiday"
       },
       "subject": {
-        "fr": "Projet <<ProjectNumber_FR>> – Ajustement de la date de livraison",
-        "en": "Project <<ProjectNumber_EN>> – delivery date adjustment"
+        "fr": "Projet <<ProjectNumber_FR>> – Ajustement de la date de livraison (congé férié)",
+        "en": "Project <<ProjectNumber_EN>> – delivery date adjustment (statutory holiday)"
       },
       "body": {
-        "fr": "Bonjour,\r\n\r\nNous accusons réception du projet « ProjectNumber_FR ».\r\n\r\nLa date de livraison demandée, soit le <<OriginalDate_FR>>, coïncide avec un jour férié. Celle-ci a donc été reportée au jour ouvrable suivant, soit le <<NewDate_FR>>.\r\n\r\nNous vous serions reconnaissants de bien vouloir nous confirmer que cet ajustement vous convient.\r\n\r\nPour toute question ou tout renseignement complémentaire, n’hésitez pas à communiquer avec nous.\r\n\r\nBien cordialement,",
+        "fr": "<p>Bonjour,</p><p>Nous accusons réception du projet &lt;&lt;ProjectNumber_FR&gt;&gt;.</p><p>La date de livraison demandée, soit le &lt;&lt;OriginalDate_FR&gt;&gt;, coïncide avec un jour férié. Celle-ci a donc été reportée au jour ouvrable suivant, soit le &lt;&lt;NewDate_FR&gt;&gt;.</p><p>Nous vous serions reconnaissants de bien vouloir nous confirmer que cet ajustement vous convient.</p><p>Pour toute question ou tout renseignement complémentaire, n’hésitez pas à communiquer avec nous.</p><p>Bien cordialement,</p>",
         "en": "Hello,\r\n\r\nWe have received Project <<ProjectNumber_EN>>.\r\n\r\nThe requested delivery date, <<OriginalDate_EN>>, falls on a statutory holiday and has been moved to the next working day, <<NewDate_EN>>.\r\n\r\nCould you please confirm whether this adjustment works for you?\r\n\r\nPlease feel free to contact us if you have any questions or need more information.\r\n\r\nBest regards,"
       },
       "variables": [
-        "project_number",
+        "new_date",
         "original_date",
-        "new_date"
+        "project_number"
       ]
     },
     {
@@ -581,7 +582,7 @@
       "category_fr": "Précisions et instructions client",
       "category_en": "Clarifications and client instructions",
       "title": {
-        "fr": "Projet <<ProjectNumber_FR>> – Confirmation du documFRt ou de la combinaison de langues",
+        "fr": "Projet <<ProjectNumber_FR>> – Confirmation du document ou de la combinaison de langues",
         "en": "Project <<ProjectNumber_EN>> – document or language combination confirmation"
       },
       "description": {
@@ -829,7 +830,36 @@
         "project_number"
       ],
       "category_fr": "Fournisseurs externes - Qualité insatisfaisante",
-      "category_en": "External Providers - unsatisfactory quality"
+      "category_en": "External Providers - unsatisfactory quality",
+      "utilisateur": "gestion"
+    },
+    {
+      "id": "ctd001_copie",
+      "category": "quotes_and_approvals",
+      "category_fr": "Devis et approbations",
+      "category_en": "Quotes and approvals",
+      "title": {
+        "fr": "Projet <<ProjectNumber_FR>> – Devis à approbation requise (copie)",
+        "en": "Project <<ProjectNumber_EN>>- requesting approval on quote (copy)"
+      },
+      "description": {
+        "fr": "Devis avant le lancement d'un projet - approbation requise",
+        "en": "Devis avant le lancement d'un projet - approbation requise"
+      },
+      "subject": {
+        "fr": "Projet <<ProjectNumber_FR>> – Devis à approbation requise",
+        "en": "Project <<ProjectNumber_EN>>- requesting approval on quote"
+      },
+      "body": {
+        "fr": "Bonjour,\r\n\r\nNous accusons réception du projet <<ProjectNumber_FR>>. \r\n\r\nSa réalisation est évaluée à environ <<NbDays_FR>> jour(s) de travail. L’estimation des coûts s’élève à <<Cost_FR>>$. Le montant estimé pourrait varier de plus ou moins 10 %, selon l’évaluation finale du volume et de la complexité des documents.\r\n \r\nDes frais d’urgence de 50 % s’appliqueront si le projet doit être livré dans un délai de moins de <<NbDays_FR>> jour(s) ouvrable(s) ou de moins de 24 heures. Le coût révisé serait alors de <<UrgentCost_FR>> $.\r\n\r\nNous vous confirmons que ce projet sera traité uniquement après réception de votre approbation. Afin d’assurer un résultat fidèle et professionnel, et compte tenu de la disponibilité des ressources, la date de livraison pourrait être ajustée une fois l’approbation reçue.\r\n\r\nPour toute question ou tout renseignement complémentaire, n’hésitez pas à communiquer avec nous.\r\n\r\nBien cordialement,",
+        "en": "<p>Hello,</p><p>We have received Project &lt;&lt;ProjectNumber_EN&gt;&gt;.</p><p>Based on our assessment, it will take approximately &lt;&lt;NbDays_EN&gt;&gt; working day(s) to complete. The estimated cost is $&lt;&lt;Cost_EN&gt;&gt;. The amount may vary by up to 10%, depending on our final assessment of the size and complexity of the documents.</p><p>A 50% rush premium will apply if the project needs to be delivered in under &lt;&lt;NbDays_EN&gt;&gt; working day(s) or within 24 hours, and the revised cost would be $&lt;&lt;UrgentCost_EN&gt;&gt;.</p><p>Please note that we will begin work on this project only after receiving your approval. To ensure accurate and professional results, and depending on the availability of resources, the delivery date may be adjusted once we receive your approval.</p><p>Please feel free to contact us if you have any questions or need more information.</p><p>Best regards,</p>"
+      },
+      "variables": [
+        "cost",
+        "nb_days",
+        "project_number",
+        "urgent_cost"
+      ]
     }
   ],
   "variables": {
