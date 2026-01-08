@@ -168,12 +168,13 @@ export default function VariablesPage() {
         const normalizedBase = base.endsWith('/') ? base : `${base}/`
         const primaryBase = new URL(normalizedBase, window.location.origin)
         const bust = `?t=${Date.now()}`
+        // Try local URLs first (works for private repos), then remote fallbacks
         const candidates = [
-          RAW_MAIN + bust,
-          RAW_GHPAGES + bust,
           new URL('complete_email_templates.json', primaryBase).href + bust,
           new URL('complete_email_templates.json', window.location.href).href + bust,
-          new URL('complete_email_templates.json', window.location.origin).href + bust
+          new URL('complete_email_templates.json', window.location.origin).href + bust,
+          RAW_MAIN + bust,
+          RAW_GHPAGES + bust
         ]
 
         let data = null

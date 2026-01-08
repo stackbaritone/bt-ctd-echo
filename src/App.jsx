@@ -1696,7 +1696,7 @@ function App() {
     }
 
     const fetchTemplatesFromSources = async () => {
-      if (debug) console.log('[EA][Debug] Fetching templates (prefer raw main data)...')
+      if (debug) console.log('[EA][Debug] Fetching templates (prefer local data)...')
       const RAW_MAIN = (import.meta?.env?.VITE_TEMPLATES_URL) || 'https://raw.githubusercontent.com/snarky1980/bt-ctd-echo/main/complete_email_templates.json'
       const RAW_GHPAGES = 'https://raw.githubusercontent.com/snarky1980/bt-ctd-echo/gh-pages/complete_email_templates.json'
       const LOCAL_URL = './complete_email_templates.json'
@@ -1704,7 +1704,8 @@ function App() {
       const ABSOLUTE_URL = (BASE_URL.endsWith('/') ? BASE_URL : BASE_URL + '/') + 'complete_email_templates.json'
       const ts = Date.now()
       const withBust = (u) => u + (u.includes('?') ? '&' : '?') + 'cb=' + ts
-      const candidates = [withBust(RAW_MAIN), withBust(RAW_GHPAGES), withBust(ABSOLUTE_URL), withBust(LOCAL_URL)]
+      // Try local URLs first (works for private repos), then remote fallbacks
+      const candidates = [withBust(ABSOLUTE_URL), withBust(LOCAL_URL), withBust(RAW_MAIN), withBust(RAW_GHPAGES)]
 
       let loaded = null
       let lastErr = null

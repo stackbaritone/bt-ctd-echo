@@ -47,7 +47,8 @@ export function useTemplateState() {
       const ABSOLUTE_URL = (BASE_URL.endsWith('/') ? BASE_URL : BASE_URL + '/') + 'complete_email_templates.json'
       const ts = Date.now()
       const withBust = (u) => u + (u.includes('?') ? '&' : '?') + 'cb=' + ts
-      const candidates = [withBust(RAW_MAIN), withBust(RAW_GHPAGES), withBust(ABSOLUTE_URL), withBust(LOCAL_URL)]
+      // Try local URLs first (works for private repos), then remote fallbacks
+      const candidates = [withBust(ABSOLUTE_URL), withBust(LOCAL_URL), withBust(RAW_MAIN), withBust(RAW_GHPAGES)]
 
       let loaded = null
       let lastErr = null
