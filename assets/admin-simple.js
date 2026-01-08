@@ -137,9 +137,6 @@
   const btnDuplicate = $('#btn-duplicate');
   const updatedBadge = $('#updated-badge');
   
-  // Track remote timestamp (from GitHub) to avoid overwriting it with local draft timestamp
-  let remoteTimestamp = null;
-  
   // Sync status tracking
   let lastPublishedHash = null;
   const syncStatus = $('#sync-status');
@@ -343,23 +340,13 @@
   }
   
   // Format and display the last update timestamp
+  // Shows the timestamp of currently loaded data (source of truth for what user sees)
   function updateTimestampBadge() {
     if (!updatedBadge) return;
     
-    // Use remote timestamp if available and more recent, otherwise use local
-    const localTs = data?.metadata?.updatedAt;
-    let ts = localTs;
-    
-    // If we have a remote timestamp, use the most recent one
-    if (remoteTimestamp) {
-      if (!localTs) {
-        ts = remoteTimestamp;
-      } else {
-        const localDate = new Date(localTs);
-        const remoteDate = new Date(remoteTimestamp);
-        ts = remoteDate > localDate ? remoteTimestamp : localTs;
-      }
-    }
+    // Always use the timestamp from currently loaded data
+    // This ensures consistency: badge matches the templates user is editing
+    const ts = data?.metadata?.updatedAt;
     
     if (!ts) {
       updatedBadge.textContent = '–';
@@ -482,48 +469,16 @@
       return true;
     });
   }
-  // Fetch remote timestamp in background (used when draft is loaded)
-  async function fetchRemoteTimestamp() {
-    // Try GitHub API first (works for private repos)
-    try {
-      const json = await fetchJsonFromGitHubAPI();
-      if (json) {
-        const ts = json?.metadata?.updatedAt || json?.metadata?.generatedAt || null;
-        if (ts) {
-          remoteTimestamp = ts;
-          updateTimestampBadge();
-          console.log('[Badge] Remote timestamp loaded from GitHub API:', ts);
-          return;
-        }
-      }
-    } catch {}
-    // Fallback to URL candidates
-    const urls = buildJsonUrlCandidates({ preferRemote: true });
-    for (const u of urls) {
-      try {
-        const json = await fetchJson(u);
-        const ts = json?.metadata?.updatedAt || json?.metadata?.generatedAt || null;
-        if (ts) {
-          remoteTimestamp = ts;
-          updateTimestampBadge();
-          console.log('[Badge] Remote timestamp loaded:', ts);
-          return;
-        }
-      } catch {}
-    }
-  }
   
   async function loadInitial(){
     const draft = loadDraft();
     if (draft) {
       data = draft;
       afterLoad();
-      // Fetch remote timestamp in background to compare with local
-      fetchRemoteTimestamp();
       return;
     }
     const urls = buildJsonUrlCandidates();
-    let lastErr = null; for (const u of urls){ try{ data = ensureSchema(await fetchJson(u)); remoteTimestamp = data?.metadata?.updatedAt || data?.metadata?.generatedAt || null; break; } catch(e){ lastErr=e; } }
+    let lastErr = null; for (const u of urls){ try{ data = ensureSchema(await fetchJson(u)); break; } catch(e){ lastErr=e; } }
     if (!data) { console.warn('No JSON found', lastErr); data = ensureSchema({}); }
     afterLoad();
   }
@@ -1162,7 +1117,6 @@
       
       if (!json) throw new Error('Impossible de charger depuis GitHub');
       data = ensureSchema(json);
-      remoteTimestamp = data?.metadata?.updatedAt || data?.metadata?.generatedAt || null;
       selected = data.templates[0]?.id || null;
       saveDraft();
       markAsPublished(); // Reset sync status after reload

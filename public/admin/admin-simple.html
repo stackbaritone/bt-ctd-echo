@@ -6,7 +6,7 @@
   <title>ECHO - CTD (admin)</title>
   <!-- meta used for GitHub repo autodetection for JSON publish -->
   <meta name="gh-repo" content="snarky1980/bt-ctd-echo" />
-    <meta property="og:title" content="ECHO - CTD gestion (Admin)" />
+    <meta property="og:title" content="ECHO - CTD (admin)" />
     <meta property="og:description" content="Console d'administration pour la gestion des modèles de courriels" />
     <meta name="description" content="Console d'administration pour la gestion des modèles de courriels" />
     <meta name="robots" content="noindex, nofollow" />
@@ -709,49 +709,7 @@
     <script src="../assets/word-export.js"></script>
     <script src="../assets/rich-text-toolbar.js"></script>
     <script src="../assets/admin-simple.js"></script>
-    <script>
-      // Lightweight badge population: fetch raw main JSON headers quickly
-      (async function(){
-        try {
-          const repo = document.querySelector('meta[name="gh-repo"]')?.content || 'snarky1980/bt-ctd-echo';
-          const origin = window.location.origin && window.location.origin !== 'null' ? window.location.origin.replace(/\/$/, '') : '';
-          const basePath = (window.location.pathname || '').replace(/\/[^\/]*$/, '');
-          const urls = [];
-          const addUrl = (candidate) => { if (!candidate || urls.includes(candidate)) return; urls.push(candidate); };
-          // Try published gh-pages first for latest timestamp
-          if (window.location.hostname === 'snarky1980.github.io') {
-            addUrl(`https://snarky1980.github.io/bt-ctd-echo/complete_email_templates.json?t=${Date.now()}`);
-          }
-          addUrl(`../complete_email_templates.json?t=${Date.now()}`);
-          if (origin) {
-            if (basePath && basePath !== '') addUrl(`${origin}${basePath}/complete_email_templates.json?t=${Date.now()}`);
-            addUrl(`${origin}/complete_email_templates.json?t=${Date.now()}`);
-          }
-          addUrl(`https://raw.githubusercontent.com/${repo}/gh-pages/complete_email_templates.json?t=${Date.now()}`);
-          addUrl(`https://raw.githubusercontent.com/${repo}/main/complete_email_templates.json?t=${Date.now()}`);
-          let json = null;
-          for (const url of urls) {
-            try {
-              const resp = await fetch(url, { cache:'no-store', headers: { 'Cache-Control': 'no-cache' } });
-              if (!resp.ok) continue;
-              json = await resp.json();
-              console.log('[Badge] Loaded timestamp from:', url);
-              break;
-            } catch {}
-          }
-          if (!json) return;
-          const ts = json?.metadata?.updatedAt || json?.metadata?.generatedAt || null;
-          if(ts){
-            const badge = document.getElementById('updated-badge');
-            badge.textContent = new Date(ts).toLocaleString('fr-FR',{ hour12:false });
-            badge.style.display = 'inline-block';
-            console.log('[Badge] Updated with timestamp:', ts);
-          } else {
-            console.log('[Badge] No timestamp found in metadata');
-          }
-        } catch(e){ console.error('[Badge] Error:', e); }
-      })();
-    </script>
+    <!-- Badge timestamp is managed by admin-simple.js for consistency with loaded data -->
     </div><!-- end #admin-content -->
   </body>
   </html>
