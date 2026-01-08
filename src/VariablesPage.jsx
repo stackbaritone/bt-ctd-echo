@@ -23,6 +23,12 @@ export default function VariablesPage() {
   const [pendingTemplateId, setPendingTemplateId] = useState(initialTemplateId || null)
   const [pendingTemplateLanguage, setPendingTemplateLanguage] = useState(initialLang)
   const [loading, setLoading] = useState(true)
+  const [darkMode, setDarkMode] = useState(() => {
+    try {
+      const saved = localStorage.getItem('ea_dark_mode')
+      return saved === 'true'
+    } catch { return false }
+  })
   const hydratedTemplateIdRef = useRef(null)
   const debugLog = (...args) => { try { console.log('[Popout]', ...args) } catch {} }
 
@@ -238,8 +244,18 @@ export default function VariablesPage() {
         
         channel.onmessage = (event) => {
           const data = event.data || {}
+          // Handle dark mode sync from main window
+          if (data.type === 'darkModeChanged') {
+            debugLog('received darkModeChanged', { darkMode: data.darkMode })
+            setDarkMode(!!data.darkMode)
+            return
+          }
           if (data.type === 'variablesUpdated') {
             debugLog('received variablesUpdated', { templateId: data.templateId, templateLanguage: data.templateLanguage, vars: Object.keys(data.variables||{}).length })
+            // Also sync dark mode if present in the update
+            if (typeof data.darkMode === 'boolean') {
+              setDarkMode(data.darkMode)
+            }
             if (data.templateId) {
               setPendingTemplateId(data.templateId)
             }
@@ -410,6 +426,7 @@ export default function VariablesPage() {
       initialVariables={variables}
       interfaceLanguage={interfaceLanguage}
       templateLanguage={pendingTemplateLanguage || interfaceLanguage}
+      darkMode={darkMode}
     />
   )
 }

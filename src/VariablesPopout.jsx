@@ -33,7 +33,8 @@ export default function VariablesPopout({
   templatesData, 
   initialVariables, 
   interfaceLanguage,
-  templateLanguage = 'fr'
+  templateLanguage = 'fr',
+  darkMode = false
 }) {
   const [variables, setVariables] = useState(initialVariables || {})
   const varInputRefs = useRef({})
@@ -477,8 +478,8 @@ export default function VariablesPopout({
 
   if (!selectedTemplate || !templatesData) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <p className="text-gray-500">Loading...</p>
+      <div className={`min-h-screen flex items-center justify-center ${darkMode ? 'bg-[#0f1419]' : 'bg-gray-50'}`}>
+        <p className={darkMode ? 'text-gray-400' : 'text-gray-500'}>Loading...</p>
       </div>
     )
   }
@@ -496,13 +497,13 @@ export default function VariablesPopout({
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className={`min-h-screen ${darkMode ? 'bg-[#0f1419]' : 'bg-white'}`}>
       {/* Header */}
       <div 
         className="sticky top-0 z-10 px-5 py-2 flex items-center justify-between"
         style={{ 
-          background: '#2c3d50',
-          borderBottom: '3px solid rgba(163, 179, 84, 0.3)'
+          background: darkMode ? '#1a2332' : '#2c3d50',
+          borderBottom: darkMode ? '3px solid rgba(201, 185, 115, 0.3)' : '3px solid rgba(163, 179, 84, 0.3)'
         }}
       >
         <div className="flex items-center gap-4">
@@ -574,25 +575,34 @@ export default function VariablesPopout({
               <div
                 key={varName}
                 data-var={varName}
-                className={`ea-popout-card rounded-lg transition-all duration-200 ${isFocused ? 'ea-popout-focused' : ''}`}
+                className={`ea-popout-card rounded-lg transition-all duration-200 ${isFocused ? 'ea-popout-focused' : ''} ${darkMode ? 'ea-popout-dark' : ''}`}
                 style={isFocused ? {
-                  background: 'rgba(219, 234, 254, 0.35)',
-                  border: '2px solid rgba(29, 78, 216, 0.6)',
-                  boxShadow: '0 0 0 3px rgba(29, 78, 216, 0.25), 0 8px 24px rgba(30, 64, 175, 0.25)',
+                  background: darkMode ? 'rgba(96, 165, 250, 0.15)' : 'rgba(219, 234, 254, 0.35)',
+                  border: darkMode ? '2px solid rgba(96, 165, 250, 0.6)' : '2px solid rgba(29, 78, 216, 0.6)',
+                  boxShadow: darkMode 
+                    ? '0 0 0 3px rgba(96, 165, 250, 0.25), 0 8px 24px rgba(96, 165, 250, 0.15)'
+                    : '0 0 0 3px rgba(29, 78, 216, 0.25), 0 8px 24px rgba(30, 64, 175, 0.25)',
                   transform: 'scale(1.02)'
-                } : undefined}
+                } : {
+                  background: darkMode ? '#1a2332' : undefined,
+                  border: darkMode ? '1px solid #3d4f5f' : undefined
+                }}
                 onMouseEnter={() => notifyHoverChange(varName)}
                 onMouseLeave={() => notifyHoverChange(null)}
               >
-                <div className="ea-popout-card-inner rounded-lg p-2">
+                <div className={`ea-popout-card-inner rounded-lg p-2 ${darkMode ? 'bg-[#1a2332]' : ''}`}>
                   {/* Label and buttons */}
                   <div className="mb-2 flex items-start justify-between gap-3">
-                    <label htmlFor={sanitizedVarId} className="text-sm font-semibold text-gray-900 flex-1 leading-snug">
+                    <label htmlFor={sanitizedVarId} className={`text-sm font-semibold flex-1 leading-snug ${darkMode ? 'text-[#e7e9ea]' : 'text-gray-900'}`}>
                       {varInfo.description?.[langForDisplay] || varInfo.description?.fr || varInfo.description?.en || varName}
                     </label>
                     <div className="shrink-0 flex items-center gap-1 opacity-0 hover:opacity-100 focus-within:opacity-100 transition-opacity">
                       <button
-                        className="text-xs px-2 py-0.5 rounded border border-gray-300 text-teal-700 hover:bg-teal-50 flex items-center gap-1"
+                        className={`text-xs px-2 py-0.5 rounded border flex items-center gap-1 ${
+                          darkMode 
+                            ? 'border-[#3d4f5f] text-[#c9b973] hover:bg-[#243042]' 
+                            : 'border-gray-300 text-teal-700 hover:bg-teal-50'
+                        }`}
                         title={t.reinitialize}
                         onClick={() => reinitializeVariable(varName)}
                       >
@@ -600,7 +610,11 @@ export default function VariablesPopout({
                         {t.reinitialize}
                       </button>
                       <button
-                        className="text-xs px-2 py-0.5 rounded border border-gray-300 text-red-700 hover:bg-red-50"
+                        className={`text-xs px-2 py-0.5 rounded border ${
+                          darkMode 
+                            ? 'border-[#3d4f5f] text-red-400 hover:bg-red-900/30' 
+                            : 'border-gray-300 text-red-700 hover:bg-red-50'
+                        }`}
                         title={t.clear}
                         onClick={() => removeVariable(varName)}
                       >
@@ -669,7 +683,11 @@ export default function VariablesPopout({
                       }
                       return ex || ''
                     })()}
-                    className={`w-full min-h-[32px] border-2 border-gray-200 rounded-md resize-none overflow-hidden transition-all duration-200 text-sm px-2 py-1 leading-5 focus:border-blue-600 focus:ring-2 focus:ring-blue-200 ${isFocused ? 'ea-popout-input-focused' : ''}`}
+                    className={`w-full min-h-[32px] border-2 rounded-md resize-none overflow-hidden transition-all duration-200 text-sm px-2 py-1 leading-5 ${isFocused ? 'ea-popout-input-focused' : ''} ${
+                      darkMode 
+                        ? 'bg-[#243042] border-[#3d4f5f] text-[#e7e9ea] placeholder-gray-500 focus:border-[#60a5fa] focus:ring-2 focus:ring-[#60a5fa]/30' 
+                        : 'border-gray-200 focus:border-blue-600 focus:ring-2 focus:ring-blue-200'
+                    }`}
                   />
                 </div>
               </div>

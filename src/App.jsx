@@ -401,6 +401,15 @@ function App() {
     }
     // Save preference
     try { localStorage.setItem('ea_dark_mode', darkMode ? 'true' : 'false') } catch {}
+    
+    // Notify popout window of dark mode change
+    if (canUseBC) {
+      try {
+        const channel = new BroadcastChannel('email-assistant-sync')
+        channel.postMessage({ type: 'darkModeChanged', darkMode, sender: 'main' })
+        channel.close()
+      } catch {}
+    }
   }, [darkMode])
   
   const [preferPopout, setPreferPopout] = useState(() => {
@@ -1423,6 +1432,7 @@ function App() {
         variables: { ...variables }, // send fresh shallow copy to avoid mutation references
         templateId: activeTemplateId,
         templateLanguage,
+        darkMode,
         sender: popoutSenderIdRef.current
       })
     } catch (e) {
