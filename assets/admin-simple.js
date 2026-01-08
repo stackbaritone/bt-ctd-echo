@@ -1128,6 +1128,8 @@
 
     // No mirror to gh-pages: main is the only source of truth
     if (showToast) notify('JSON mis à jour sur main.');
+    // Save to localStorage to sync with main app
+    saveDraft();
     markAsPublished();
   }
 
