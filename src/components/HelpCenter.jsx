@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { LifeBuoy, Lightbulb, BookOpen, AlertTriangle, MessageCircle, ExternalLink, Mail, X, CheckCircle2, Loader2, Copy, Star, Shield, Sparkles, Settings } from 'lucide-react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { LifeBuoy, Lightbulb, BookOpen, AlertTriangle, MessageCircle, ExternalLink, Mail, X, CheckCircle2, Loader2, Copy, Star, Shield, Sparkles, Settings, ArrowUp } from 'lucide-react'
 import { Button } from './ui/button.jsx'
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card.jsx'
 import { ScrollArea } from './ui/scroll-area.jsx'
@@ -395,8 +395,13 @@ export default function HelpCenter({ language = 'fr', onClose, supportEmail = 'e
   const contactOptions = strings.contact?.options || []
   const closeBtnRef = useRef(null)
   const contactFormRef = useRef(null)
+  const scrollAreaRef = useRef(null)
   const [query, setQuery] = useState('')
+  const [showBackToTop, setShowBackToTop] = useState(false)
   
+  // Back to Top button text
+  const backToTopText = language === 'fr' ? 'Retour en haut' : 'Back to top'
+
   // Check URL for initial category
   const initialCategory = useMemo(() => {
     try {
@@ -492,6 +497,32 @@ export default function HelpCenter({ language = 'fr', onClose, supportEmail = 'e
       document.body.style.overflow = prevOverflow
     }
   }, [onClose, initialCategory])
+
+  // Handle scroll tracking for Back to Top button
+  const handleScroll = useCallback((e) => {
+    const scrollTop = e?.target?.scrollTop || 0
+    setShowBackToTop(scrollTop > 200)
+  }, [])
+
+  // Scroll to top function
+  const scrollToTop = useCallback(() => {
+    const viewport = scrollAreaRef.current?.querySelector('[data-radix-scroll-area-viewport]')
+    if (viewport) {
+      viewport.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+  }, [])
+
+  // Attach scroll listener to ScrollArea viewport
+  useEffect(() => {
+    const container = scrollAreaRef.current
+    if (!container) return
+
+    const viewport = container.querySelector('[data-radix-scroll-area-viewport]')
+    if (!viewport) return
+
+    viewport.addEventListener('scroll', handleScroll)
+    return () => viewport.removeEventListener('scroll', handleScroll)
+  }, [handleScroll])
 
   const handleCategorySelect = (value) => {
     setFormData((prev) => ({ ...prev, category: value }))
@@ -670,7 +701,7 @@ export default function HelpCenter({ language = 'fr', onClose, supportEmail = 'e
           </Button>
         </CardHeader>
         <CardContent className="flex-1 m-0 p-0" style={{ minHeight: 0 }}>
-          <ScrollArea className="h-full w-full">
+          <ScrollArea ref={scrollAreaRef} className="h-full w-full">
             <div className={formOnly ? "px-2 py-2 m-0" : "space-y-4 px-2 py-0 m-0"}>
               {formOnly ? null : (
               <>
@@ -1225,6 +1256,19 @@ export default function HelpCenter({ language = 'fr', onClose, supportEmail = 'e
               </section>
             </div>
           </ScrollArea>
+          
+          {/* Floating Back to Top button */}
+          {showBackToTop && !formOnly && (
+            <button
+              onClick={scrollToTop}
+              className="absolute bottom-4 right-6 z-20 flex items-center gap-1.5 rounded-full bg-[#1f8a99] px-3 py-2 text-xs font-medium text-white shadow-lg transition-all duration-200 hover:bg-[#166f7b] hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-[#1f8a99]/50"
+              aria-label={backToTopText}
+              type="button"
+            >
+              <ArrowUp className="h-3.5 w-3.5" aria-hidden="true" />
+              <span>{backToTopText}</span>
+            </button>
+          )}
         </CardContent>
       </Card>
     </div>

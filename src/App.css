@@ -379,6 +379,17 @@ html.dark .ea-popout-card.ea-popout-focused .ea-popout-card-inner {
   box-shadow: 0 0 0 1px rgba(96, 165, 250, 0.4), 0 0 0 4px rgba(96, 165, 250, 0.15);
 }
 
+/* Back to Top button dark mode */
+html.dark button[aria-label*="Retour"],
+html.dark button[aria-label*="Back to top"] {
+  background-color: var(--dark-accent) !important;
+  color: #1a2332 !important;
+}
+html.dark button[aria-label*="Retour"]:hover,
+html.dark button[aria-label*="Back to top"]:hover {
+  background-color: #d4c687 !important;
+}
+
 /* Highlight variables in dark mode */
 html.dark mark.var-highlight {
   background-color: rgba(59, 130, 246, 0.25) !important;
