@@ -67,6 +67,113 @@ html.dark .pattern-banner .hpill-dot {
   box-shadow: 0 0 0 4px var(--dark-accent) !important;
 }
 
+/* ============================================
+   HEADER DARK MODE - CRITICAL FIXES
+   ============================================ */
+
+/* Main header background */
+html.dark header,
+html.dark header[style*="backgroundColor: '#ffffff'"],
+html.dark header[style*="background-color: #ffffff"],
+html.dark header[style*="backgroundColor: 'white'"] {
+  background-color: var(--dark-surface) !important;
+  border-color: var(--dark-border) !important;
+}
+
+/* Header banner pills - adjust opacity for dark mode */
+html.dark .banner-pill {
+  opacity: 0.4 !important;
+}
+
+html.dark .banner-pill[style*="background: #2c3d50"],
+html.dark .banner-pill[style*="background:#2c3d50"] {
+  background: var(--dark-accent) !important;
+  opacity: 0.3 !important;
+}
+
+html.dark .banner-pill[style*="background: #aca868"],
+html.dark .banner-pill[style*="background:#aca868"] {
+  background: #4a5568 !important;
+  opacity: 0.25 !important;
+}
+
+html.dark .banner-pill[style*="background: #426388"],
+html.dark .banner-pill[style*="background:#426388"] {
+  background: #2d3748 !important;
+  opacity: 0.2 !important;
+}
+
+/* Header lines and dots */
+html.dark .hpill-line {
+  background: var(--dark-border) !important;
+  opacity: 0.5 !important;
+}
+
+html.dark .hpill-dot {
+  background: var(--dark-surface) !important;
+  box-shadow: 0 0 0 4px var(--dark-accent) !important;
+}
+
+/* Header subtitle text */
+html.dark header p[style*="color: rgba(44, 61, 80"],
+html.dark header p.font-semibold {
+  color: var(--dark-text) !important;
+}
+
+/* ============================================
+   INTERFACE LANGUAGE SELECTOR - DARK MODE
+   ============================================ */
+
+/* Language selector container (primary colored box) */
+html.dark div[style*="backgroundColor: 'var(--primary)'"],
+html.dark div[style*="background-color: var(--primary)"],
+html.dark header .shadow-xl[style*="backgroundColor"] {
+  background-color: var(--dark-surface-elevated) !important;
+  border: 1px solid var(--dark-border) !important;
+}
+
+/* Language selector label and icon */
+html.dark header .text-white {
+  color: var(--dark-text) !important;
+}
+
+html.dark header .text-white.font-bold {
+  color: var(--dark-text) !important;
+}
+
+html.dark header svg.text-white {
+  color: var(--dark-accent) !important;
+}
+
+/* Language toggle buttons container (white bg) */
+html.dark header .flex.bg-white.p-1,
+html.dark header div.flex.bg-white {
+  background-color: var(--dark-surface) !important;
+  border: 1px solid var(--dark-border) !important;
+}
+
+/* Language toggle buttons - inactive state */
+html.dark header .flex.bg-white button,
+html.dark header div.flex.bg-white button {
+  color: var(--dark-text-muted) !important;
+  background-color: transparent !important;
+}
+
+/* Language toggle buttons - active state */
+html.dark header button[style*="backgroundColor: '#2c3d50'"],
+html.dark header button[style*="background-color: #2c3d50"],
+html.dark header button[style*="backgroundColor: 'rgb(44, 61, 80)'"] {
+  background-color: var(--dark-accent) !important;
+  color: #1a2332 !important;
+}
+
+/* Language toggle buttons - hover state */
+html.dark header .flex.bg-white button:hover,
+html.dark header div.flex.bg-white button:hover {
+  background-color: rgba(201, 185, 115, 0.2) !important;
+  color: var(--dark-text) !important;
+}
+
 /* Cards in dark mode */
 html.dark .bg-card,
 html.dark [class*="Card"],
@@ -74,6 +181,20 @@ html.dark .card-soft {
   background-color: var(--dark-surface) !important;
   border-color: var(--dark-border) !important;
   color: var(--dark-text);
+}
+
+/* Card with inline white background */
+html.dark .card-soft[style*="background: '#ffffff'"],
+html.dark .card-soft[style*="background: #ffffff"],
+html.dark [class*="Card"][style*="background: '#ffffff'"],
+html.dark [class*="Card"][style*="background: #ffffff"] {
+  background-color: var(--dark-surface) !important;
+}
+
+/* Editor panel gradient background */
+html.dark .card-soft.bg-gradient-to-br,
+html.dark .bg-gradient-to-br.from-white {
+  background: linear-gradient(to bottom right, var(--dark-surface), rgba(16, 185, 129, 0.1)) !important;
 }
 
 html.dark .card-soft {
@@ -334,6 +455,130 @@ html.dark .dark-mode-toggle:hover {
 html.dark .rounded-2xl,
 html.dark .rounded-xl {
   border-color: var(--dark-border);
+}
+
+/* ============================================
+   COMPREHENSIVE DARK MODE STYLE OVERRIDES
+   ============================================ */
+
+/* ALL white backgrounds - comprehensive override */
+html.dark .bg-white,
+html.dark [class*="bg-white"],
+html.dark div[style*="backgroundColor: '#ffffff'"],
+html.dark div[style*="backgroundColor: 'white'"],
+html.dark div[style*="background-color: #ffffff"],
+html.dark div[style*="background: #ffffff"],
+html.dark div[style*="background: white"],
+html.dark [style*="background: rgb(255, 255, 255)"] {
+  background-color: var(--dark-surface) !important;
+}
+
+/* Template list container */
+html.dark .flex-1.rounded-b-\[14px\].overflow-y-auto.bg-white {
+  background-color: var(--dark-surface) !important;
+}
+
+/* Template items container */
+html.dark .p-3.bg-white {
+  background-color: var(--dark-surface) !important;
+}
+
+/* Search input */
+html.dark input[style*="backgroundColor: '#ffffff'"],
+html.dark input[style*="background-color: #ffffff"] {
+  background-color: var(--dark-surface-elevated) !important;
+  border-color: var(--dark-border) !important;
+  color: var(--dark-text) !important;
+}
+
+/* Select dropdown content */
+html.dark .bg-white.border.rounded-\[14px\],
+html.dark [class*="SelectContent"] {
+  background-color: var(--dark-surface-elevated) !important;
+  border-color: var(--dark-border) !important;
+}
+
+/* Category badges/chips */
+html.dark .bg-\[\#aca868\]\/20 {
+  background-color: rgba(201, 185, 115, 0.2) !important;
+}
+
+/* Favorites button */
+html.dark button.bg-white.text-\[\#2c3d50\].border-\[\#2c3d50\] {
+  background-color: var(--dark-surface-elevated) !important;
+  color: var(--dark-text) !important;
+  border-color: var(--dark-border) !important;
+}
+
+html.dark button.bg-\[\#aca868\]\/20 {
+  background-color: rgba(201, 185, 115, 0.25) !important;
+  color: var(--dark-text) !important;
+  border-color: var(--dark-accent) !important;
+}
+
+/* Template language toggle */
+html.dark .flex.bg-white.rounded-lg.p-1.shadow-sm {
+  background-color: var(--dark-surface-elevated) !important;
+  border: 1px solid var(--dark-border) !important;
+}
+
+html.dark .flex.bg-white.rounded-lg.p-1.shadow-sm button {
+  color: var(--dark-text-muted) !important;
+}
+
+html.dark .flex.bg-white.rounded-lg.p-1.shadow-sm button[style*="background"] {
+  background-color: var(--dark-accent) !important;
+  color: #1a2332 !important;
+}
+
+/* Modal and popup backgrounds */
+html.dark .bg-white.rounded-2xl.shadow-2xl,
+html.dark .bg-white.rounded-2xl.shadow-xl {
+  background-color: var(--dark-surface) !important;
+  border: 1px solid var(--dark-border) !important;
+}
+
+/* Fixed buttons (Submit template, Help) */
+html.dark .fixed.bottom-4 button.bg-white,
+html.dark .fixed.bottom-4.bg-white {
+  background-color: var(--dark-surface-elevated) !important;
+  border-color: var(--dark-border) !important;
+  color: var(--dark-text) !important;
+}
+
+html.dark .fixed.bottom-4 button.bg-white:hover,
+html.dark .fixed.bottom-4.bg-white:hover {
+  background-color: var(--dark-surface) !important;
+  border-color: var(--dark-accent) !important;
+}
+
+/* Template cards - selected state */
+html.dark div[style*="borderColor: '#2c3d50'"][style*="background: #e6f0ff"] {
+  background-color: rgba(201, 185, 115, 0.15) !important;
+  border-color: var(--dark-accent) !important;
+}
+
+/* Template cards - normal state */
+html.dark .border-\[\#e1eaf2\].bg-white {
+  background-color: var(--dark-surface) !important;
+  border-color: var(--dark-border) !important;
+}
+
+html.dark .border-\[\#e1eaf2\].bg-white:hover {
+  border-color: var(--dark-accent) !important;
+  background-color: var(--dark-surface-elevated) !important;
+}
+
+/* Mobile drawer */
+html.dark .absolute.left-0.top-0.h-full.bg-white {
+  background-color: var(--dark-surface) !important;
+  border-color: var(--dark-border) !important;
+}
+
+/* Shadcn Select Content */
+html.dark [data-radix-select-content],
+html.dark [data-radix-popper-content-wrapper] {
+  background-color: var(--dark-surface-elevated) !important;
 }
 
 /* Language selector in dark mode */
