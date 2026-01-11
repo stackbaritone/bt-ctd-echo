@@ -95,7 +95,38 @@ const WordExport = (function() {
     const paragraphs = [];
     let currentRuns = [];
     const temp = document.createElement('div');
-    temp.innerHTML = html;
+    
+    // Store variables with placeholders to protect them during HTML parsing
+    const variableMap = new Map();
+    let varCounter = 0;
+    
+    // Replace HTML-encoded variables with placeholders before parsing
+    let processedHtml = html.replace(/&lt;&lt;([^&]+?)&gt;&gt;/g, (match, varName) => {
+      const placeholder = `___VAR_${varCounter}___`;
+      variableMap.set(placeholder, varName);
+      varCounter++;
+      return placeholder;
+    });
+    
+    // Also replace plain variables with placeholders
+    processedHtml = processedHtml.replace(/<<([^>]+?)>>/g, (match, varName) => {
+      const placeholder = `___VAR_${varCounter}___`;
+      variableMap.set(placeholder, varName);
+      varCounter++;
+      return placeholder;
+    });
+    
+    // Check if content is plain text (no HTML tags) - convert line breaks to paragraphs
+    const hasHtmlTags = /<[a-z][\s\S]*>/i.test(processedHtml);
+    if (!hasHtmlTags) {
+      // Plain text: convert double line breaks to paragraphs, single to <br>
+      processedHtml = processedHtml
+        .split(/\r?\n\r?\n/)  // Split on double line breaks (paragraphs)
+        .map(para => `<p>${para.replace(/\r?\n/g, '<br>')}</p>`)  // Wrap each paragraph, convert single breaks to <br>
+        .join('');
+    }
+    
+    temp.innerHTML = processedHtml;
 
     function flushParagraph() {
       while (currentRuns.length > 0 && currentRuns[currentRuns.length - 1].text === '' && currentRuns[currentRuns.length - 1].break) {
@@ -114,7 +145,8 @@ const WordExport = (function() {
 
     function addTextWithHighlight(text, inherited = {}) {
       if (!text) return;
-      const regex = /<<([^>]+)>>/g;
+      // Match placeholders that were substituted earlier
+      const regex = /___VAR_(\d+)___/g;
       let lastIndex = 0;
       let match;
       
@@ -126,12 +158,16 @@ const WordExport = (function() {
             ...inherited
           }));
         }
-        currentRuns.push(new docx.TextRun({
-          text: match[0],
-          ...defaultOptions,
-          ...inherited,
-          highlight: 'yellow'
-        }));
+        // Restore variable from map
+        const varName = variableMap.get(match[0]);
+        if (varName) {
+          currentRuns.push(new docx.TextRun({
+            text: `<<${varName}>>`,
+            ...defaultOptions,
+            ...inherited,
+            highlight: 'yellow'
+          }));
+        }
         lastIndex = regex.lastIndex;
       }
       
@@ -418,8 +454,6 @@ const WordExport = (function() {
     const title = isBilingual ? titleFr : (lang === 'en' ? titleEn : titleFr);
     const titleSecondary = isBilingual ? titleEn : null;
 
-    elements.push(createSeparator());
-
     // Title with bookmark and highlighted variables
     const titleRuns = createRunsWithHighlightedVariables(title, {
       bold: true,
@@ -640,8 +674,6 @@ const WordExport = (function() {
       spacing: { after: 300 }
     }));
 
-    elements.push(createSeparator());
-
     // Group templates by category
     const byCategory = {};
     templates.forEach((t, index) => {
@@ -758,8 +790,6 @@ const WordExport = (function() {
       ],
       spacing: { after: 300 }
     }));
-
-    elements.push(createSeparator());
 
     // Build keyword index from template titles, descriptions, subjects
     const keywordMap = new Map();
