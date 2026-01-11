@@ -795,7 +795,7 @@
     if (labels) return labels.fr || labels.en || '';
     return t.category_fr || t.category_en || t.category || '';
   }
-  function renderList(){ const arr = filtered(); list.innerHTML = arr.map(x=>{ const ttl = x.title?.fr || x.title?.en || x.id; const userBadge = x.utilisateur === 'gestion' ? '<span style="margin-left:4px;font-size:10px" title="Gestion">🔐</span>' : x.utilisateur === 'equipe_admin' ? '<span style="margin-left:4px;font-size:10px" title="Équipe Admin">👔</span>' : x.utilisateur === 'relations_fournisseurs' ? '<span style="margin-left:4px;font-size:10px" title="Relations fournisseurs">🤝</span>' : ''; return `<div class="tile ${x.id===selected?'active':''}" data-id="${escapeHtml(x.id)}"><div class="tile-title">${escapeHtml(ttl)}${userBadge}</div><div class="tile-sub">${escapeHtml(getCategoryDisplay(x))}</div></div>`; }).join(''); $$('.tile', list).forEach(el=>{ el.onclick=()=>{ selected = el.dataset.id; renderList(); renderEditor(); }; }); }
+  function renderList(){ const arr = filtered(); list.innerHTML = arr.map(x=>{ const ttl = x.title?.fr || x.title?.en || x.id; const modes = Array.isArray(x.utilisateur) ? x.utilisateur : (x.utilisateur ? [x.utilisateur] : ['tous']); const userBadges = modes.filter(m => m !== 'tous').map(m => m === 'gestion' ? '<span style="margin-left:2px;font-size:10px" title="Gestion">🔐</span>' : m === 'equipe_admin' ? '<span style="margin-left:2px;font-size:10px" title="Équipe Admin">👔</span>' : m === 'relations_fournisseurs' ? '<span style="margin-left:2px;font-size:10px" title="Relations fournisseurs">🤝</span>' : '').join(''); return `<div class="tile ${x.id===selected?'active':''}" data-id="${escapeHtml(x.id)}"><div class="tile-title">${escapeHtml(ttl)}${userBadges}</div><div class="tile-sub">${escapeHtml(getCategoryDisplay(x))}</div></div>`; }).join(''); $$('.tile', list).forEach(el=>{ el.onclick=()=>{ selected = el.dataset.id; renderList(); renderEditor(); }; }); }
 
   function populateCategorySelects(){
     // Only show categories that are actually used by templates
@@ -830,9 +830,9 @@
     }
   }
   
-  function renderEditor(){ const t = (data.templates||[]).find(x=>x.id===selected) || null; hdr.textContent = t ? `Éditeur – ${t.id}` : 'Éditeur'; if (!t) { idEl.value=''; if (utilisateurEl) utilisateurEl.value='tous'; if (catFrEl) catFrEl.value=''; if (catEnEl) catEnEl.value=''; titleFrEl.value=''; titleEnEl.value=''; descFrEl.value=''; descEnEl.value=''; subjFrEl.value=''; subjEnEl.value=''; setBodyValue(bodyFrEl, ''); setBodyValue(bodyEnEl, ''); if (varsBox) varsBox.innerHTML=''; if (varsValidationBox) varsValidationBox.style.display='none'; populateCategorySelects(); return; }
+  function renderEditor(){ const t = (data.templates||[]).find(x=>x.id===selected) || null; hdr.textContent = t ? `Éditeur – ${t.id}` : 'Éditeur'; if (!t) { idEl.value=''; if (utilisateurEl) { const checkboxes = utilisateurEl.querySelectorAll('input[type="checkbox"]'); checkboxes.forEach(cb => cb.checked = cb.value === 'tous'); } if (catFrEl) catFrEl.value=''; if (catEnEl) catEnEl.value=''; titleFrEl.value=''; titleEnEl.value=''; descFrEl.value=''; descEnEl.value=''; subjFrEl.value=''; subjEnEl.value=''; setBodyValue(bodyFrEl, ''); setBodyValue(bodyEnEl, ''); if (varsBox) varsBox.innerHTML=''; if (varsValidationBox) varsValidationBox.style.display='none'; populateCategorySelects(); return; }
     idEl.value = t.id || '';
-    if (utilisateurEl) utilisateurEl.value = t.utilisateur || 'tous';
+    if (utilisateurEl) { const modes = Array.isArray(t.utilisateur) ? t.utilisateur : (t.utilisateur ? [t.utilisateur] : ['tous']); const checkboxes = utilisateurEl.querySelectorAll('input[type="checkbox"]'); checkboxes.forEach(cb => cb.checked = modes.includes(cb.value)); }
   if (catFrEl) catFrEl.value = t.category_fr || '';
   if (catEnEl) catEnEl.value = t.category_en || '';
     populateCategorySelects();
@@ -1314,19 +1314,25 @@
         }
         
         // Filter templates based on audience selection
+        // Helper to check if a template includes a mode
+        const hasMode = (t, mode) => {
+          const modes = Array.isArray(t.utilisateur) ? t.utilisateur : (t.utilisateur ? [t.utilisateur] : ['tous']);
+          return modes.includes(mode);
+        };
+        
         let filteredData = { ...data };
         if (audience === 'users') {
-          // Only templates for all users (not restricted)
-          filteredData.templates = data.templates.filter(t => !['gestion', 'equipe_admin', 'relations_fournisseurs'].includes(t.utilisateur));
+          // Only templates that include 'tous' mode
+          filteredData.templates = data.templates.filter(t => hasMode(t, 'tous'));
         } else if (audience === 'management') {
-          // Only management templates
-          filteredData.templates = data.templates.filter(t => t.utilisateur === 'gestion');
+          // Templates that include 'gestion' mode
+          filteredData.templates = data.templates.filter(t => hasMode(t, 'gestion'));
         } else if (audience === 'equipe_admin') {
-          // Only équipe admin templates
-          filteredData.templates = data.templates.filter(t => t.utilisateur === 'equipe_admin');
+          // Templates that include 'equipe_admin' mode
+          filteredData.templates = data.templates.filter(t => hasMode(t, 'equipe_admin'));
         } else if (audience === 'relations_fournisseurs') {
-          // Only relations fournisseurs templates
-          filteredData.templates = data.templates.filter(t => t.utilisateur === 'relations_fournisseurs');
+          // Templates that include 'relations_fournisseurs' mode
+          filteredData.templates = data.templates.filter(t => hasMode(t, 'relations_fournisseurs'));
         }
         // 'all' keeps all templates
         
@@ -1565,7 +1571,7 @@
   };
   titleFrEl.oninput = (e) => { const t=data.templates.find(x=>x.id===selected); if (!t) return; t.title=t.title||{}; t.title.fr=e.target.value; saveDraft(); renderList(); };
   titleEnEl.oninput = (e) => { const t=data.templates.find(x=>x.id===selected); if (!t) return; t.title=t.title||{}; t.title.en=e.target.value; saveDraft(); renderList(); };
-  if (utilisateurEl) utilisateurEl.onchange = (e) => { const t=data.templates.find(x=>x.id===selected); if (!t) return; t.utilisateur=e.target.value; saveDraft(); renderList(); };
+  if (utilisateurEl) { const checkboxes = utilisateurEl.querySelectorAll('input[type="checkbox"]'); checkboxes.forEach(cb => { cb.onchange = () => { const t=data.templates.find(x=>x.id===selected); if (!t) return; const checked = Array.from(checkboxes).filter(c => c.checked).map(c => c.value); t.utilisateur = checked.length > 0 ? checked : ['tous']; saveDraft(); renderList(); }; }); }
   descFrEl.oninput = (e) => { const t=data.templates.find(x=>x.id===selected); if (!t) return; t.description=t.description||{}; t.description.fr=e.target.value; saveDraft(); };
   descEnEl.oninput = (e) => { const t=data.templates.find(x=>x.id===selected); if (!t) return; t.description=t.description||{}; t.description.en=e.target.value; saveDraft(); };
   subjFrEl.oninput = (e) => { const t=data.templates.find(x=>x.id===selected); if (!t) return; t.subject=t.subject||{}; t.subject.fr=e.target.value; saveDraft(); renderEditor(); scheduleAutoSync(); };

@@ -2069,13 +2069,16 @@ function App() {
     let dataset = templatesData.templates
     
     // Filter by selected mode
-    // 'tous' shows only templates with utilisateur='tous' or undefined
-    // Other modes show templates specific to that mode
-    if (selectedMode === 'tous') {
-      dataset = dataset.filter(t => !t.utilisateur || t.utilisateur === 'tous')
-    } else {
-      dataset = dataset.filter(t => t.utilisateur === selectedMode)
+    // Templates can have multiple modes (array) or single mode (string)
+    // Helper to check if a template includes a specific mode
+    const hasMode = (t, mode) => {
+      const modes = Array.isArray(t.utilisateur) ? t.utilisateur : (t.utilisateur ? [t.utilisateur] : ['tous'])
+      return modes.includes(mode)
     }
+    
+    // 'tous' shows templates that include 'tous' mode (or have no mode specified)
+    // Other modes show templates that include that specific mode
+    dataset = dataset.filter(t => hasMode(t, selectedMode))
 
     const qRaw = (searchQuery || '').trim()
     const hasSearchQuery = qRaw.length > 0
@@ -4016,25 +4019,30 @@ ${cleanBodyHtml}
                                     getMatchRanges(template.id, `title.${templateLanguage}`)
                                   )}
                                 </h3>
-                                {['gestion', 'equipe_admin', 'relations_fournisseurs'].includes(template.utilisateur) && (
-                                  <span 
-                                    className={`text-[10px] px-1.5 py-0.5 rounded-md font-medium ${
-                                      template.utilisateur === 'gestion' ? 'bg-amber-100 text-amber-700' :
-                                      template.utilisateur === 'equipe_admin' ? 'bg-blue-100 text-blue-700' :
-                                      'bg-purple-100 text-purple-700'
-                                    }`}
-                                    title={interfaceLanguage === 'fr' 
-                                      ? (template.utilisateur === 'gestion' ? 'Gestion' :
-                                         template.utilisateur === 'equipe_admin' ? 'Équipe Admin' :
-                                         'Relations fournisseurs')
-                                      : (template.utilisateur === 'gestion' ? 'Management' :
-                                         template.utilisateur === 'equipe_admin' ? 'Admin Team' :
-                                         'Supplier Relations')}
-                                  >
-                                    {template.utilisateur === 'gestion' ? '🔐' :
-                                     template.utilisateur === 'equipe_admin' ? '👔' : '🤝'}
-                                  </span>
-                                )}
+                                {(() => {
+                                  const modes = Array.isArray(template.utilisateur) ? template.utilisateur : (template.utilisateur ? [template.utilisateur] : ['tous'])
+                                  const restrictedModes = modes.filter(m => ['gestion', 'equipe_admin', 'relations_fournisseurs'].includes(m))
+                                  return restrictedModes.map(mode => (
+                                    <span 
+                                      key={mode}
+                                      className={`text-[10px] px-1.5 py-0.5 rounded-md font-medium ${
+                                        mode === 'gestion' ? 'bg-amber-100 text-amber-700' :
+                                        mode === 'equipe_admin' ? 'bg-blue-100 text-blue-700' :
+                                        'bg-purple-100 text-purple-700'
+                                      }`}
+                                      title={interfaceLanguage === 'fr' 
+                                        ? (mode === 'gestion' ? 'Gestion' :
+                                           mode === 'equipe_admin' ? 'Équipe Admin' :
+                                           'Relations fournisseurs')
+                                        : (mode === 'gestion' ? 'Management' :
+                                           mode === 'equipe_admin' ? 'Admin Team' :
+                                           'Supplier Relations')}
+                                    >
+                                      {mode === 'gestion' ? '🔐' :
+                                       mode === 'equipe_admin' ? '👔' : '🤝'}
+                                    </span>
+                                  ))
+                                })()}
                               </div>
                               <p className="text-[12px] text-gray-600 mb-2 leading-relaxed line-clamp-2" title={template.description[templateLanguage]}>
                                 {renderHighlighted(
@@ -4157,25 +4165,30 @@ ${cleanBodyHtml}
                                 getMatchRanges(template.id, `title.${templateLanguage}`)
                               )}
                             </h3>
-                            {['gestion', 'equipe_admin', 'relations_fournisseurs'].includes(template.utilisateur) && (
-                              <span 
-                                className={`text-[10px] px-1.5 py-0.5 rounded-md font-medium ${
-                                  template.utilisateur === 'gestion' ? 'bg-amber-100 text-amber-700' :
-                                  template.utilisateur === 'equipe_admin' ? 'bg-blue-100 text-blue-700' :
-                                  'bg-purple-100 text-purple-700'
-                                }`}
-                                title={interfaceLanguage === 'fr' 
-                                  ? (template.utilisateur === 'gestion' ? 'Gestion' :
-                                     template.utilisateur === 'equipe_admin' ? 'Équipe Admin' :
-                                     'Relations fournisseurs')
-                                  : (template.utilisateur === 'gestion' ? 'Management' :
-                                     template.utilisateur === 'equipe_admin' ? 'Admin Team' :
-                                     'Supplier Relations')}
-                              >
-                                {template.utilisateur === 'gestion' ? '🔐' :
-                                 template.utilisateur === 'equipe_admin' ? '👔' : '🤝'}
-                              </span>
-                            )}
+                            {(() => {
+                              const modes = Array.isArray(template.utilisateur) ? template.utilisateur : (template.utilisateur ? [template.utilisateur] : ['tous'])
+                              const restrictedModes = modes.filter(m => ['gestion', 'equipe_admin', 'relations_fournisseurs'].includes(m))
+                              return restrictedModes.map(mode => (
+                                <span 
+                                  key={mode}
+                                  className={`text-[10px] px-1.5 py-0.5 rounded-md font-medium ${
+                                    mode === 'gestion' ? 'bg-amber-100 text-amber-700' :
+                                    mode === 'equipe_admin' ? 'bg-blue-100 text-blue-700' :
+                                    'bg-purple-100 text-purple-700'
+                                  }`}
+                                  title={interfaceLanguage === 'fr' 
+                                    ? (mode === 'gestion' ? 'Gestion' :
+                                       mode === 'equipe_admin' ? 'Équipe Admin' :
+                                       'Relations fournisseurs')
+                                    : (mode === 'gestion' ? 'Management' :
+                                       mode === 'equipe_admin' ? 'Admin Team' :
+                                       'Supplier Relations')}
+                                >
+                                  {mode === 'gestion' ? '🔐' :
+                                   mode === 'equipe_admin' ? '👔' : '🤝'}
+                                </span>
+                              ))
+                            })()}
                           </div>
                           <p className="text-[12px] text-gray-600 mb-2 leading-relaxed line-clamp-2" title={template.description[templateLanguage]}>
                             {renderHighlighted(

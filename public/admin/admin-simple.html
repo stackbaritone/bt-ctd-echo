@@ -656,13 +656,21 @@
           <div class="row">
             <div class="field"><label>ID</label><input id="tpl-id" placeholder="ex: welcome_email" title="Identifiant unique (lettres, chiffres, underscore)" /></div>
             <div class="field">
-              <label>Utilisateur</label>
-              <select id="tpl-utilisateur" title="Qui peut voir ce modèle">
-                <option value="tous">👥 Tous</option>
-                <option value="gestion">🔐 Gestion</option>
-                <option value="equipe_admin">👔 Équipe Admin</option>
-                <option value="relations_fournisseurs">🤝 Relations fournisseurs</option>
-              </select>
+              <label>Modes (utilisateurs)</label>
+              <div id="tpl-utilisateur" style="display:flex;flex-wrap:wrap;gap:8px;padding:8px 0">
+                <label style="display:flex;align-items:center;gap:4px;cursor:pointer;font-size:13px">
+                  <input type="checkbox" value="tous" style="accent-color:#059669"> 👥 Tous
+                </label>
+                <label style="display:flex;align-items:center;gap:4px;cursor:pointer;font-size:13px">
+                  <input type="checkbox" value="gestion" style="accent-color:#d97706"> 🔐 Gestion
+                </label>
+                <label style="display:flex;align-items:center;gap:4px;cursor:pointer;font-size:13px">
+                  <input type="checkbox" value="equipe_admin" style="accent-color:#2563eb"> 👔 Équipe Admin
+                </label>
+                <label style="display:flex;align-items:center;gap:4px;cursor:pointer;font-size:13px">
+                  <input type="checkbox" value="relations_fournisseurs" style="accent-color:#9333ea"> 🤝 Fournisseurs
+                </label>
+              </div>
             </div>
           </div>
           <div class="row">
