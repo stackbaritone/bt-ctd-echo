@@ -45,7 +45,7 @@
         "en": "External Providers - unsatisfactory quality"
       }
     },
-    "updatedAt": "2026-01-08T13:42:01.658Z",
+    "updatedAt": "2026-01-11T23:54:46.666Z",
     "categoryColors": {
       "s": "#c7ffd2"
     }
@@ -831,7 +831,7 @@
       ],
       "category_fr": "Fournisseurs externes - Qualité insatisfaisante",
       "category_en": "External Providers - unsatisfactory quality",
-      "utilisateur": "gestion"
+      "utilisateur": "relations_fournisseurs"
     },
     {
       "id": "ctd001_copie",
