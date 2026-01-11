@@ -366,11 +366,13 @@ function App() {
   const [adminError, setAdminError] = useState('')
   const [showAdminPassword, setShowAdminPassword] = useState(false)
   
-  // Management mode state (for restricted templates)
-  const [isManagementMode, setIsManagementMode] = useState(() => {
-    try { return localStorage.getItem('ea_management_mode') === 'true' } catch { return false }
+  // Mode selection state (tous, gestion, equipe_admin, relations_fournisseurs)
+  const [selectedMode, setSelectedMode] = useState(() => {
+    try { return localStorage.getItem('ea_selected_mode') || 'tous' } catch { return 'tous' }
   })
-  const [showManagementModal, setShowManagementModal] = useState(false)
+  const [showModeMenu, setShowModeMenu] = useState(false)
+  const [showModeAuthModal, setShowModeAuthModal] = useState(false)
+  const [pendingMode, setPendingMode] = useState(null)
   const [managementPassword, setManagementPassword] = useState('')
   const [managementError, setManagementError] = useState('')
   const [showManagementPassword, setShowManagementPassword] = useState(false)
@@ -1018,12 +1020,45 @@ function App() {
     }
   }, [adminPassword, interfaceLanguage])
 
-  // Management mode authentication - SHA-256 hash for "Gestion2026!Ctd"
-  const MANAGEMENT_PASSWORD_HASH = '3781099aa174d12bad1ee1fd0c916d99ece2221b757e165760ee160611560024'
+  // Mode password hashes (SHA-256)
+  // Gestion: Gestion2026!Ctd
+  // Équipe Admin: EquipeAdmin2026!Ctd  
+  // Relations fournisseurs: Fournisseurs2026!Ctd
+  const MODE_PASSWORD_HASHES = {
+    gestion: '3781099aa174d12bad1ee1fd0c916d99ece2221b757e165760ee160611560024',
+    equipe_admin: '2a5e0835106fc86f87da34fba0f534a6aa7d0361a4bef2173eb338a402c5e37e',
+    relations_fournisseurs: 'd6037fd084cd90ce3e7576122dd194e539903deabd25619e6cbfa778b57cf3ae'
+  }
   
-  const handleManagementLogin = useCallback(async () => {
+  // Mode definitions
+  const MODE_CONFIG = {
+    tous: { icon: '👥', labelFr: 'Tous', labelEn: 'All', requiresAuth: false, color: 'emerald' },
+    gestion: { icon: '🔐', labelFr: 'Gestion', labelEn: 'Management', requiresAuth: true, color: 'amber' },
+    equipe_admin: { icon: '👔', labelFr: 'Équipe Admin', labelEn: 'Admin Team', requiresAuth: true, color: 'blue' },
+    relations_fournisseurs: { icon: '🤝', labelFr: 'Relations fournisseurs', labelEn: 'Supplier Relations', requiresAuth: true, color: 'purple' }
+  }
+  
+  const handleModeSelect = useCallback((mode) => {
+    const config = MODE_CONFIG[mode]
+    if (!config) return
+    
+    if (config.requiresAuth && selectedMode === 'tous') {
+      // Need authentication to access restricted mode
+      setPendingMode(mode)
+      setShowModeAuthModal(true)
+      setManagementPassword('')
+      setManagementError('')
+    } else {
+      // Already authenticated or switching to 'tous'
+      localStorage.setItem('ea_selected_mode', mode)
+      setSelectedMode(mode)
+    }
+    setShowModeMenu(false)
+  }, [selectedMode])
+  
+  const handleModeAuth = useCallback(async () => {
     if (!managementPassword) {
-      setManagementError(interfaceLanguage === 'fr' ? 'Veuillez entrer le code gestion' : 'Please enter management code')
+      setManagementError(interfaceLanguage === 'fr' ? 'Veuillez entrer le code' : 'Please enter the code')
       return
     }
     
@@ -1034,27 +1069,25 @@ function App() {
       const hashArray = Array.from(new Uint8Array(hashBuffer))
       const hash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('')
       
-      if (hash === MANAGEMENT_PASSWORD_HASH) {
-        localStorage.setItem('ea_management_mode', 'true')
-        setIsManagementMode(true)
-        setShowManagementModal(false)
+      // Check against the specific mode's password hash
+      const expectedHash = MODE_PASSWORD_HASHES[pendingMode]
+      if (hash === expectedHash) {
+        localStorage.setItem('ea_selected_mode', pendingMode)
+        setSelectedMode(pendingMode)
+        setShowModeAuthModal(false)
         setManagementPassword('')
         setManagementError('')
         setShowManagementPassword(false)
+        setPendingMode(null)
       } else {
         setManagementError(interfaceLanguage === 'fr' ? 'Code incorrect' : 'Incorrect code')
         setManagementPassword('')
       }
     } catch (e) {
-      console.error('Management auth error:', e)
+      console.error('Mode auth error:', e)
       setManagementError(interfaceLanguage === 'fr' ? 'Erreur d\'authentification' : 'Authentication error')
     }
-  }, [managementPassword, interfaceLanguage])
-  
-  const handleManagementLogout = useCallback(() => {
-    localStorage.removeItem('ea_management_mode')
-    setIsManagementMode(false)
-  }, [])
+  }, [managementPassword, pendingMode, interfaceLanguage])
 
   // Setup BroadcastChannel for variables syncing
   useEffect(() => {
@@ -2035,10 +2068,13 @@ function App() {
     if (!templatesData) return empty
     let dataset = templatesData.templates
     
-    // Filter by user access level (management mode)
-    // Templates with utilisateur='gestion' are only visible in management mode
-    if (!isManagementMode) {
-      dataset = dataset.filter(t => t.utilisateur !== 'gestion')
+    // Filter by selected mode
+    // 'tous' shows only templates with utilisateur='tous' or undefined
+    // Other modes show templates specific to that mode
+    if (selectedMode === 'tous') {
+      dataset = dataset.filter(t => !t.utilisateur || t.utilisateur === 'tous')
+    } else {
+      dataset = dataset.filter(t => t.utilisateur === selectedMode)
     }
 
     const qRaw = (searchQuery || '').trim()
@@ -2294,7 +2330,7 @@ function App() {
     }
 
     return { filteredTemplates: sortWithFavoritesFirst(items), searchMatchMap: matchMap }
-  }, [templatesData, searchQuery, selectedCategory, favoritesOnly, favorites, isManagementMode])
+  }, [templatesData, searchQuery, selectedCategory, favoritesOnly, favorites, selectedMode])
 
   // Helpers for rendering highlighted text
   const getMatchRanges = (id, key) => (searchMatchMap && searchMatchMap[id] && searchMatchMap[id][key]) || null
@@ -3559,30 +3595,64 @@ ${cleanBodyHtml}
     <span className="hidden sm:inline">Admin</span>
   </Button>
 
-  {/* Management Mode Button - next to Admin */}
-  <Button
-    onClick={() => {
-      if (isManagementMode) {
-        handleManagementLogout()
-      } else {
-        setShowManagementModal(true)
-        setManagementPassword('')
-        setManagementError('')
-      }
-    }}
-    variant="ghost"
-    className={`fixed bottom-4 left-24 z-40 inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-medium transition-opacity ${isManagementMode ? 'opacity-100' : 'opacity-40 hover:opacity-100'}`}
-    style={{ color: isManagementMode ? '#059669' : '#64748b' }}
-    title={interfaceLanguage === 'fr' 
-      ? (isManagementMode ? 'Mode Gestion actif - Cliquer pour désactiver' : 'Accès Gestion') 
-      : (isManagementMode ? 'Management Mode active - Click to deactivate' : 'Management Access')}
-  >
-    {isManagementMode ? '🔓' : '🔐'}
-    <span className="hidden sm:inline">{isManagementMode 
-      ? (interfaceLanguage === 'fr' ? 'Gestion ✓' : 'Mgmt ✓')
-      : (interfaceLanguage === 'fr' ? 'Gestion' : 'Mgmt')
-    }</span>
-  </Button>
+  {/* Mode Selector Button - next to Admin */}
+  <div className="fixed bottom-4 left-24 z-40">
+    <Button
+      onClick={() => setShowModeMenu(!showModeMenu)}
+      variant="ghost"
+      className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-medium transition-all ${
+        selectedMode !== 'tous' ? 'opacity-100' : 'opacity-60 hover:opacity-100'
+      }`}
+      style={{ 
+        color: selectedMode === 'tous' ? '#64748b' : 
+               selectedMode === 'gestion' ? '#d97706' :
+               selectedMode === 'equipe_admin' ? '#2563eb' : '#9333ea'
+      }}
+      title={interfaceLanguage === 'fr' ? 'Changer de mode' : 'Change mode'}
+    >
+      {MODE_CONFIG[selectedMode]?.icon || '👥'}
+      <span className="hidden sm:inline">
+        {interfaceLanguage === 'fr' ? MODE_CONFIG[selectedMode]?.labelFr : MODE_CONFIG[selectedMode]?.labelEn}
+      </span>
+      <svg className="h-3 w-3 ml-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+      </svg>
+    </Button>
+    
+    {/* Mode dropdown menu */}
+    {showModeMenu && (
+      <>
+        <div className="fixed inset-0 z-40" onClick={() => setShowModeMenu(false)} />
+        <div className="absolute bottom-full left-0 mb-2 w-56 bg-white dark:bg-zinc-800 rounded-lg shadow-xl border border-zinc-200 dark:border-zinc-700 py-1 z-50">
+          <div className="px-3 py-2 text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wide border-b border-zinc-100 dark:border-zinc-700">
+            {interfaceLanguage === 'fr' ? 'Sélectionner un mode' : 'Select a mode'}
+          </div>
+          {Object.entries(MODE_CONFIG).map(([mode, config]) => (
+            <button
+              key={mode}
+              onClick={() => handleModeSelect(mode)}
+              className={`w-full px-3 py-2.5 text-left text-sm flex items-center gap-2.5 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors ${
+                selectedMode === mode ? 'bg-zinc-100 dark:bg-zinc-700' : ''
+              }`}
+            >
+              <span className="text-base">{config.icon}</span>
+              <span className={`flex-1 ${selectedMode === mode ? 'font-medium' : ''}`}>
+                {interfaceLanguage === 'fr' ? config.labelFr : config.labelEn}
+              </span>
+              {selectedMode === mode && (
+                <svg className="h-4 w-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              )}
+              {config.requiresAuth && selectedMode === 'tous' && (
+                <span className="text-xs text-zinc-400">🔐</span>
+              )}
+            </button>
+          ))}
+        </div>
+      </>
+    )}
+  </div>
 
   {/* Admin Login Modal */}
   {showAdminModal && (
@@ -3669,18 +3739,19 @@ ${cleanBodyHtml}
     </div>
   )}
 
-  {/* Management Login Modal */}
-  {showManagementModal && (
+  {/* Mode Authentication Modal */}
+  {showModeAuthModal && (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
       <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-xl p-6 w-full max-w-sm border border-zinc-200 dark:border-zinc-700">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
-            🔐 {interfaceLanguage === 'fr' ? 'Mode Gestion' : 'Management Mode'}
+            {MODE_CONFIG[pendingMode]?.icon} {interfaceLanguage === 'fr' ? MODE_CONFIG[pendingMode]?.labelFr : MODE_CONFIG[pendingMode]?.labelEn}
           </h2>
           <button
             onClick={() => {
-              setShowManagementModal(false)
+              setShowModeAuthModal(false)
               setShowManagementPassword(false)
+              setPendingMode(null)
             }}
             className="text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors"
           >
@@ -3691,8 +3762,8 @@ ${cleanBodyHtml}
         </div>
         <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-4">
           {interfaceLanguage === 'fr' 
-            ? 'Ce mode permet d\'accéder aux modèles réservés à la gestion.'
-            : 'This mode allows access to management-only templates.'}
+            ? 'Ce mode contient des modèles réservés. Entrez le code d\'accès.'
+            : 'This mode contains restricted templates. Enter the access code.'}
         </p>
         <div className="space-y-3">
           <div className="relative">
@@ -3700,8 +3771,8 @@ ${cleanBodyHtml}
               type={showManagementPassword ? 'text' : 'password'}
               value={managementPassword}
               onChange={(e) => setManagementPassword(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && handleManagementLogin()}
-              placeholder={interfaceLanguage === 'fr' ? 'Mot de passe gestion' : 'Management password'}
+              onKeyDown={(e) => e.key === 'Enter' && handleModeAuth()}
+              placeholder={interfaceLanguage === 'fr' ? 'Code d\'accès' : 'Access code'}
               className="w-full px-3 py-2 pr-10 border border-zinc-300 dark:border-zinc-600 rounded-lg bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:ring-2 focus:ring-amber-500 focus:border-transparent"
               autoFocus
             />
@@ -3710,8 +3781,8 @@ ${cleanBodyHtml}
               onClick={() => setShowManagementPassword(!showManagementPassword)}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-lg hover:opacity-70 transition-opacity"
               title={showManagementPassword 
-                ? (interfaceLanguage === 'fr' ? 'Masquer le mot de passe' : 'Hide password')
-                : (interfaceLanguage === 'fr' ? 'Afficher le mot de passe' : 'Show password')
+                ? (interfaceLanguage === 'fr' ? 'Masquer' : 'Hide')
+                : (interfaceLanguage === 'fr' ? 'Afficher' : 'Show')
               }
             >
               {showManagementPassword ? '🙈' : '👁️'}
@@ -3721,10 +3792,14 @@ ${cleanBodyHtml}
             <p className="text-sm text-red-500">{managementError}</p>
           )}
           <Button
-            onClick={handleManagementLogin}
-            className="w-full bg-amber-600 hover:bg-amber-700 text-white"
+            onClick={handleModeAuth}
+            className="w-full text-white"
+            style={{ 
+              backgroundColor: pendingMode === 'gestion' ? '#d97706' : 
+                              pendingMode === 'equipe_admin' ? '#2563eb' : '#9333ea'
+            }}
           >
-            {interfaceLanguage === 'fr' ? 'Activer le mode gestion' : 'Enable management mode'}
+            {interfaceLanguage === 'fr' ? 'Accéder' : 'Access'}
           </Button>
         </div>
       </div>
@@ -3941,12 +4016,23 @@ ${cleanBodyHtml}
                                     getMatchRanges(template.id, `title.${templateLanguage}`)
                                   )}
                                 </h3>
-                                {template.utilisateur === 'gestion' && (
+                                {['gestion', 'equipe_admin', 'relations_fournisseurs'].includes(template.utilisateur) && (
                                   <span 
-                                    className="text-[10px] px-1.5 py-0.5 bg-amber-100 text-amber-700 rounded-md font-medium"
-                                    title={interfaceLanguage === 'fr' ? 'Réservé à la gestion' : 'Management only'}
+                                    className={`text-[10px] px-1.5 py-0.5 rounded-md font-medium ${
+                                      template.utilisateur === 'gestion' ? 'bg-amber-100 text-amber-700' :
+                                      template.utilisateur === 'equipe_admin' ? 'bg-blue-100 text-blue-700' :
+                                      'bg-purple-100 text-purple-700'
+                                    }`}
+                                    title={interfaceLanguage === 'fr' 
+                                      ? (template.utilisateur === 'gestion' ? 'Gestion' :
+                                         template.utilisateur === 'equipe_admin' ? 'Équipe Admin' :
+                                         'Relations fournisseurs')
+                                      : (template.utilisateur === 'gestion' ? 'Management' :
+                                         template.utilisateur === 'equipe_admin' ? 'Admin Team' :
+                                         'Supplier Relations')}
                                   >
-                                    🔐
+                                    {template.utilisateur === 'gestion' ? '🔐' :
+                                     template.utilisateur === 'equipe_admin' ? '👔' : '🤝'}
                                   </span>
                                 )}
                               </div>
@@ -4071,12 +4157,23 @@ ${cleanBodyHtml}
                                 getMatchRanges(template.id, `title.${templateLanguage}`)
                               )}
                             </h3>
-                            {template.utilisateur === 'gestion' && (
+                            {['gestion', 'equipe_admin', 'relations_fournisseurs'].includes(template.utilisateur) && (
                               <span 
-                                className="text-[10px] px-1.5 py-0.5 bg-amber-100 text-amber-700 rounded-md font-medium"
-                                title={interfaceLanguage === 'fr' ? 'Réservé à la gestion' : 'Management only'}
+                                className={`text-[10px] px-1.5 py-0.5 rounded-md font-medium ${
+                                  template.utilisateur === 'gestion' ? 'bg-amber-100 text-amber-700' :
+                                  template.utilisateur === 'equipe_admin' ? 'bg-blue-100 text-blue-700' :
+                                  'bg-purple-100 text-purple-700'
+                                }`}
+                                title={interfaceLanguage === 'fr' 
+                                  ? (template.utilisateur === 'gestion' ? 'Gestion' :
+                                     template.utilisateur === 'equipe_admin' ? 'Équipe Admin' :
+                                     'Relations fournisseurs')
+                                  : (template.utilisateur === 'gestion' ? 'Management' :
+                                     template.utilisateur === 'equipe_admin' ? 'Admin Team' :
+                                     'Supplier Relations')}
                               >
-                                🔐
+                                {template.utilisateur === 'gestion' ? '🔐' :
+                                 template.utilisateur === 'equipe_admin' ? '👔' : '🤝'}
                               </span>
                             )}
                           </div>

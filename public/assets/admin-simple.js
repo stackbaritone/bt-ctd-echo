@@ -795,7 +795,7 @@
     if (labels) return labels.fr || labels.en || '';
     return t.category_fr || t.category_en || t.category || '';
   }
-  function renderList(){ const arr = filtered(); list.innerHTML = arr.map(x=>{ const ttl = x.title?.fr || x.title?.en || x.id; const isGestion = x.utilisateur === 'gestion'; const gestionBadge = isGestion ? '<span style="margin-left:4px;font-size:10px" title="Réservé à la gestion">🔐</span>' : ''; return `<div class="tile ${x.id===selected?'active':''}" data-id="${escapeHtml(x.id)}"><div class="tile-title">${escapeHtml(ttl)}${gestionBadge}</div><div class="tile-sub">${escapeHtml(getCategoryDisplay(x))}</div></div>`; }).join(''); $$('.tile', list).forEach(el=>{ el.onclick=()=>{ selected = el.dataset.id; renderList(); renderEditor(); }; }); }
+  function renderList(){ const arr = filtered(); list.innerHTML = arr.map(x=>{ const ttl = x.title?.fr || x.title?.en || x.id; const userBadge = x.utilisateur === 'gestion' ? '<span style="margin-left:4px;font-size:10px" title="Gestion">🔐</span>' : x.utilisateur === 'equipe_admin' ? '<span style="margin-left:4px;font-size:10px" title="Équipe Admin">👔</span>' : x.utilisateur === 'relations_fournisseurs' ? '<span style="margin-left:4px;font-size:10px" title="Relations fournisseurs">🤝</span>' : ''; return `<div class="tile ${x.id===selected?'active':''}" data-id="${escapeHtml(x.id)}"><div class="tile-title">${escapeHtml(ttl)}${userBadge}</div><div class="tile-sub">${escapeHtml(getCategoryDisplay(x))}</div></div>`; }).join(''); $$('.tile', list).forEach(el=>{ el.onclick=()=>{ selected = el.dataset.id; renderList(); renderEditor(); }; }); }
 
   function populateCategorySelects(){
     // Only show categories that are actually used by templates
@@ -1316,11 +1316,17 @@
         // Filter templates based on audience selection
         let filteredData = { ...data };
         if (audience === 'users') {
-          // Only templates for all users (not gestion)
-          filteredData.templates = data.templates.filter(t => t.utilisateur !== 'gestion');
+          // Only templates for all users (not restricted)
+          filteredData.templates = data.templates.filter(t => !['gestion', 'equipe_admin', 'relations_fournisseurs'].includes(t.utilisateur));
         } else if (audience === 'management') {
           // Only management templates
           filteredData.templates = data.templates.filter(t => t.utilisateur === 'gestion');
+        } else if (audience === 'equipe_admin') {
+          // Only équipe admin templates
+          filteredData.templates = data.templates.filter(t => t.utilisateur === 'equipe_admin');
+        } else if (audience === 'relations_fournisseurs') {
+          // Only relations fournisseurs templates
+          filteredData.templates = data.templates.filter(t => t.utilisateur === 'relations_fournisseurs');
         }
         // 'all' keeps all templates
         

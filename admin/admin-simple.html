@@ -388,15 +388,23 @@
             <div style="display:flex;flex-direction:column;gap:8px">
               <label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;transition:all 0.2s">
                 <input type="radio" name="word-audience" value="all" checked style="accent-color:#059669;width:18px;height:18px">
-                <span style="font-size:14px"><strong>📋 Tous les modèles</strong> – Gestion + Conseillers</span>
+                <span style="font-size:14px"><strong>📋 Tous les modèles</strong> – Toutes les catégories</span>
               </label>
               <label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;transition:all 0.2s">
                 <input type="radio" name="word-audience" value="users" style="accent-color:#059669;width:18px;height:18px">
-                <span style="font-size:14px"><strong>👥 Conseillers</strong> – Modèles pour tous les employés</span>
+                <span style="font-size:14px"><strong>👥 Tous</strong> – Modèles pour tous les employés</span>
               </label>
               <label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;transition:all 0.2s">
                 <input type="radio" name="word-audience" value="management" style="accent-color:#059669;width:18px;height:18px">
                 <span style="font-size:14px"><strong>🔐 Gestion</strong> – Modèles réservés aux gestionnaires</span>
+              </label>
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;transition:all 0.2s">
+                <input type="radio" name="word-audience" value="equipe_admin" style="accent-color:#059669;width:18px;height:18px">
+                <span style="font-size:14px"><strong>👔 Équipe Admin</strong> – Modèles pour l'équipe administrative</span>
+              </label>
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;transition:all 0.2s">
+                <input type="radio" name="word-audience" value="relations_fournisseurs" style="accent-color:#059669;width:18px;height:18px">
+                <span style="font-size:14px"><strong>🤝 Relations fournisseurs</strong> – Modèles pour les fournisseurs externes</span>
               </label>
             </div>
           </div>
@@ -650,8 +658,10 @@
             <div class="field">
               <label>Utilisateur</label>
               <select id="tpl-utilisateur" title="Qui peut voir ce modèle">
-                <option value="tous">👥 Tous les conseillers</option>
-                <option value="gestion">🔐 Gestion seulement</option>
+                <option value="tous">👥 Tous</option>
+                <option value="gestion">🔐 Gestion</option>
+                <option value="equipe_admin">👔 Équipe Admin</option>
+                <option value="relations_fournisseurs">🤝 Relations fournisseurs</option>
               </select>
             </div>
           </div>
