@@ -45,7 +45,7 @@
         "en": "External Providers - unsatisfactory quality"
       }
     },
-    "updatedAt": "2026-01-11T23:54:46.666Z",
+    "updatedAt": "2026-01-12T00:08:27.334Z",
     "categoryColors": {
       "s": "#c7ffd2"
     }
@@ -78,7 +78,9 @@
         "project_number",
         "urgent_cost"
       ],
-      "utilisateur": "tous"
+      "utilisateur": [
+        "conseillers"
+      ]
     },
     {
       "id": "ctd002",
@@ -831,7 +833,10 @@
       ],
       "category_fr": "Fournisseurs externes - Qualité insatisfaisante",
       "category_en": "External Providers - unsatisfactory quality",
-      "utilisateur": "relations_fournisseurs"
+      "utilisateur": [
+        "gestion",
+        "relations_fournisseurs"
+      ]
     },
     {
       "id": "ctd001_copie",
