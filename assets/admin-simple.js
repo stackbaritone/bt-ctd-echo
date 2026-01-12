@@ -795,7 +795,7 @@
     if (labels) return labels.fr || labels.en || '';
     return t.category_fr || t.category_en || t.category || '';
   }
-  function renderList(){ const arr = filtered(); list.innerHTML = arr.map(x=>{ const ttl = x.title?.fr || x.title?.en || x.id; const modes = Array.isArray(x.utilisateur) ? x.utilisateur : (x.utilisateur ? [x.utilisateur] : ['tous']); const userBadges = modes.filter(m => m !== 'tous').map(m => m === 'gestion' ? '<span style="margin-left:2px;font-size:10px" title="Gestion">🔐</span>' : m === 'equipe_admin' ? '<span style="margin-left:2px;font-size:10px" title="Équipe Admin">👔</span>' : m === 'relations_fournisseurs' ? '<span style="margin-left:2px;font-size:10px" title="Relations fournisseurs">🤝</span>' : '').join(''); return `<div class="tile ${x.id===selected?'active':''}" data-id="${escapeHtml(x.id)}"><div class="tile-title">${escapeHtml(ttl)}${userBadges}</div><div class="tile-sub">${escapeHtml(getCategoryDisplay(x))}</div></div>`; }).join(''); $$('.tile', list).forEach(el=>{ el.onclick=()=>{ selected = el.dataset.id; renderList(); renderEditor(); }; }); }
+  function renderList(){ const arr = filtered(); list.innerHTML = arr.map(x=>{ const ttl = x.title?.fr || x.title?.en || x.id; const modes = Array.isArray(x.utilisateur) ? x.utilisateur : (x.utilisateur ? [x.utilisateur] : ['conseillers']); const userBadges = modes.map(m => m === 'conseillers' ? '<span style="margin-left:2px;font-size:10px" title="Conseillers">👥</span>' : m === 'gestion' ? '<span style="margin-left:2px;font-size:10px" title="Gestion">🔐</span>' : m === 'equipe_admin' ? '<span style="margin-left:2px;font-size:10px" title="Équipe Admin">👔</span>' : m === 'relations_fournisseurs' ? '<span style="margin-left:2px;font-size:10px" title="Relations fournisseurs">🤝</span>' : '').join(''); return `<div class="tile ${x.id===selected?'active':''}" data-id="${escapeHtml(x.id)}"><div class="tile-title">${escapeHtml(ttl)}${userBadges}</div><div class="tile-sub">${escapeHtml(getCategoryDisplay(x))}</div></div>`; }).join(''); $$('.tile', list).forEach(el=>{ el.onclick=()=>{ selected = el.dataset.id; renderList(); renderEditor(); }; }); }
 
   function populateCategorySelects(){
     // Only show categories that are actually used by templates
@@ -830,9 +830,9 @@
     }
   }
   
-  function renderEditor(){ const t = (data.templates||[]).find(x=>x.id===selected) || null; hdr.textContent = t ? `Éditeur – ${t.id}` : 'Éditeur'; if (!t) { idEl.value=''; if (utilisateurEl) { const checkboxes = utilisateurEl.querySelectorAll('input[type="checkbox"]'); checkboxes.forEach(cb => cb.checked = cb.value === 'tous'); } if (catFrEl) catFrEl.value=''; if (catEnEl) catEnEl.value=''; titleFrEl.value=''; titleEnEl.value=''; descFrEl.value=''; descEnEl.value=''; subjFrEl.value=''; subjEnEl.value=''; setBodyValue(bodyFrEl, ''); setBodyValue(bodyEnEl, ''); if (varsBox) varsBox.innerHTML=''; if (varsValidationBox) varsValidationBox.style.display='none'; populateCategorySelects(); return; }
+  function renderEditor(){ const t = (data.templates||[]).find(x=>x.id===selected) || null; hdr.textContent = t ? `Éditeur – ${t.id}` : 'Éditeur'; if (!t) { idEl.value=''; if (utilisateurEl) { const checkboxes = utilisateurEl.querySelectorAll('input[type="checkbox"]'); checkboxes.forEach(cb => cb.checked = cb.value === 'conseillers'); } if (catFrEl) catFrEl.value=''; if (catEnEl) catEnEl.value=''; titleFrEl.value=''; titleEnEl.value=''; descFrEl.value=''; descEnEl.value=''; subjFrEl.value=''; subjEnEl.value=''; setBodyValue(bodyFrEl, ''); setBodyValue(bodyEnEl, ''); if (varsBox) varsBox.innerHTML=''; if (varsValidationBox) varsValidationBox.style.display='none'; populateCategorySelects(); return; }
     idEl.value = t.id || '';
-    if (utilisateurEl) { const modes = Array.isArray(t.utilisateur) ? t.utilisateur : (t.utilisateur ? [t.utilisateur] : ['tous']); const checkboxes = utilisateurEl.querySelectorAll('input[type="checkbox"]'); checkboxes.forEach(cb => cb.checked = modes.includes(cb.value)); }
+    if (utilisateurEl) { const modes = Array.isArray(t.utilisateur) ? t.utilisateur : (t.utilisateur ? [t.utilisateur] : ['conseillers']); const checkboxes = utilisateurEl.querySelectorAll('input[type="checkbox"]'); checkboxes.forEach(cb => cb.checked = modes.includes(cb.value)); }
   if (catFrEl) catFrEl.value = t.category_fr || '';
   if (catEnEl) catEnEl.value = t.category_en || '';
     populateCategorySelects();
@@ -1316,14 +1316,14 @@
         // Filter templates based on audience selection
         // Helper to check if a template includes a mode
         const hasMode = (t, mode) => {
-          const modes = Array.isArray(t.utilisateur) ? t.utilisateur : (t.utilisateur ? [t.utilisateur] : ['tous']);
+          const modes = Array.isArray(t.utilisateur) ? t.utilisateur : (t.utilisateur ? [t.utilisateur] : ['conseillers']);
           return modes.includes(mode);
         };
         
         let filteredData = { ...data };
-        if (audience === 'users') {
-          // Only templates that include 'tous' mode
-          filteredData.templates = data.templates.filter(t => hasMode(t, 'tous'));
+        if (audience === 'conseillers') {
+          // Only templates that include 'conseillers' mode
+          filteredData.templates = data.templates.filter(t => hasMode(t, 'conseillers'));
         } else if (audience === 'management') {
           // Templates that include 'gestion' mode
           filteredData.templates = data.templates.filter(t => hasMode(t, 'gestion'));
@@ -1571,7 +1571,7 @@
   };
   titleFrEl.oninput = (e) => { const t=data.templates.find(x=>x.id===selected); if (!t) return; t.title=t.title||{}; t.title.fr=e.target.value; saveDraft(); renderList(); };
   titleEnEl.oninput = (e) => { const t=data.templates.find(x=>x.id===selected); if (!t) return; t.title=t.title||{}; t.title.en=e.target.value; saveDraft(); renderList(); };
-  if (utilisateurEl) { const checkboxes = utilisateurEl.querySelectorAll('input[type="checkbox"]'); checkboxes.forEach(cb => { cb.onchange = () => { const t=data.templates.find(x=>x.id===selected); if (!t) return; const checked = Array.from(checkboxes).filter(c => c.checked).map(c => c.value); t.utilisateur = checked.length > 0 ? checked : ['tous']; saveDraft(); renderList(); }; }); }
+  if (utilisateurEl) { const checkboxes = utilisateurEl.querySelectorAll('input[type="checkbox"]'); checkboxes.forEach(cb => { cb.onchange = () => { const t=data.templates.find(x=>x.id===selected); if (!t) return; const checked = Array.from(checkboxes).filter(c => c.checked).map(c => c.value); t.utilisateur = checked.length > 0 ? checked : ['conseillers']; saveDraft(); renderList(); }; }); }
   descFrEl.oninput = (e) => { const t=data.templates.find(x=>x.id===selected); if (!t) return; t.description=t.description||{}; t.description.fr=e.target.value; saveDraft(); };
   descEnEl.oninput = (e) => { const t=data.templates.find(x=>x.id===selected); if (!t) return; t.description=t.description||{}; t.description.en=e.target.value; saveDraft(); };
   subjFrEl.oninput = (e) => { const t=data.templates.find(x=>x.id===selected); if (!t) return; t.subject=t.subject||{}; t.subject.fr=e.target.value; saveDraft(); renderEditor(); scheduleAutoSync(); };

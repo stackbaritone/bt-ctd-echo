@@ -366,9 +366,9 @@ function App() {
   const [adminError, setAdminError] = useState('')
   const [showAdminPassword, setShowAdminPassword] = useState(false)
   
-  // Mode selection state (tous, gestion, equipe_admin, relations_fournisseurs)
+  // Mode selection state (conseillers, gestion, equipe_admin, relations_fournisseurs)
   const [selectedMode, setSelectedMode] = useState(() => {
-    try { return localStorage.getItem('ea_selected_mode') || 'tous' } catch { return 'tous' }
+    try { return localStorage.getItem('ea_selected_mode') || 'conseillers' } catch { return 'conseillers' }
   })
   const [showModeMenu, setShowModeMenu] = useState(false)
   const [showModeAuthModal, setShowModeAuthModal] = useState(false)
@@ -1032,7 +1032,7 @@ function App() {
   
   // Mode definitions
   const MODE_CONFIG = {
-    tous: { icon: '👥', labelFr: 'Tous', labelEn: 'All', requiresAuth: false, color: 'emerald' },
+    conseillers: { icon: '👥', labelFr: 'Conseillers', labelEn: 'Advisors', requiresAuth: false, color: 'emerald' },
     gestion: { icon: '🔐', labelFr: 'Gestion', labelEn: 'Management', requiresAuth: true, color: 'amber' },
     equipe_admin: { icon: '👔', labelFr: 'Équipe Admin', labelEn: 'Admin Team', requiresAuth: true, color: 'blue' },
     relations_fournisseurs: { icon: '🤝', labelFr: 'Relations fournisseurs', labelEn: 'Supplier Relations', requiresAuth: true, color: 'purple' }
@@ -1042,14 +1042,14 @@ function App() {
     const config = MODE_CONFIG[mode]
     if (!config) return
     
-    if (config.requiresAuth && selectedMode === 'tous') {
+    if (config.requiresAuth && selectedMode === 'conseillers') {
       // Need authentication to access restricted mode
       setPendingMode(mode)
       setShowModeAuthModal(true)
       setManagementPassword('')
       setManagementError('')
     } else {
-      // Already authenticated or switching to 'tous'
+      // Already authenticated or switching to 'conseillers'
       localStorage.setItem('ea_selected_mode', mode)
       setSelectedMode(mode)
     }
@@ -2072,15 +2072,12 @@ function App() {
     // Templates can have multiple modes (array) or single mode (string)
     // Helper to check if a template includes a specific mode
     const hasMode = (t, mode) => {
-      const modes = Array.isArray(t.utilisateur) ? t.utilisateur : (t.utilisateur ? [t.utilisateur] : ['tous'])
-      // If mode is 'tous', show ALL templates (tous = no filtering)
-      if (mode === 'tous') return true
-      // For specific modes, check if template includes that mode OR includes 'tous'
-      return modes.includes(mode) || modes.includes('tous')
+      const modes = Array.isArray(t.utilisateur) ? t.utilisateur : (t.utilisateur ? [t.utilisateur] : ['conseillers'])
+      // Each mode only shows templates that include that specific mode
+      return modes.includes(mode)
     }
     
-    // 'tous' shows ALL templates (no filtering by mode)
-    // Other modes show templates that include that specific mode OR 'tous' (universal templates)
+    // Each mode shows only templates assigned to it
     dataset = dataset.filter(t => hasMode(t, selectedMode))
 
     const qRaw = (searchQuery || '').trim()
@@ -3607,10 +3604,10 @@ ${cleanBodyHtml}
       onClick={() => setShowModeMenu(!showModeMenu)}
       variant="ghost"
       className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-medium transition-all ${
-        selectedMode !== 'tous' ? 'opacity-100' : 'opacity-60 hover:opacity-100'
+        selectedMode !== 'conseillers' ? 'opacity-100' : 'opacity-60 hover:opacity-100'
       }`}
       style={{ 
-        color: selectedMode === 'tous' ? '#64748b' : 
+        color: selectedMode === 'conseillers' ? '#64748b' : 
                selectedMode === 'gestion' ? '#d97706' :
                selectedMode === 'equipe_admin' ? '#2563eb' : '#9333ea'
       }}
@@ -3650,7 +3647,7 @@ ${cleanBodyHtml}
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
               )}
-              {config.requiresAuth && selectedMode === 'tous' && (
+              {config.requiresAuth && selectedMode === 'conseillers' && (
                 <span className="text-xs text-zinc-400">🔐</span>
               )}
             </button>
@@ -4023,7 +4020,7 @@ ${cleanBodyHtml}
                                   )}
                                 </h3>
                                 {(() => {
-                                  const modes = Array.isArray(template.utilisateur) ? template.utilisateur : (template.utilisateur ? [template.utilisateur] : ['tous'])
+                                  const modes = Array.isArray(template.utilisateur) ? template.utilisateur : (template.utilisateur ? [template.utilisateur] : ['conseillers'])
                                   const restrictedModes = modes.filter(m => ['gestion', 'equipe_admin', 'relations_fournisseurs'].includes(m))
                                   return restrictedModes.map(mode => (
                                     <span 
@@ -4169,7 +4166,7 @@ ${cleanBodyHtml}
                               )}
                             </h3>
                             {(() => {
-                              const modes = Array.isArray(template.utilisateur) ? template.utilisateur : (template.utilisateur ? [template.utilisateur] : ['tous'])
+                              const modes = Array.isArray(template.utilisateur) ? template.utilisateur : (template.utilisateur ? [template.utilisateur] : ['conseillers'])
                               const restrictedModes = modes.filter(m => ['gestion', 'equipe_admin', 'relations_fournisseurs'].includes(m))
                               return restrictedModes.map(mode => (
                                 <span 
