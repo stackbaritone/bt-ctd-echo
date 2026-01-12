@@ -2073,11 +2073,14 @@ function App() {
     // Helper to check if a template includes a specific mode
     const hasMode = (t, mode) => {
       const modes = Array.isArray(t.utilisateur) ? t.utilisateur : (t.utilisateur ? [t.utilisateur] : ['tous'])
-      return modes.includes(mode)
+      // If mode is 'tous', show ALL templates (tous = no filtering)
+      if (mode === 'tous') return true
+      // For specific modes, check if template includes that mode OR includes 'tous'
+      return modes.includes(mode) || modes.includes('tous')
     }
     
-    // 'tous' shows templates that include 'tous' mode (or have no mode specified)
-    // Other modes show templates that include that specific mode
+    // 'tous' shows ALL templates (no filtering by mode)
+    // Other modes show templates that include that specific mode OR 'tous' (universal templates)
     dataset = dataset.filter(t => hasMode(t, selectedMode))
 
     const qRaw = (searchQuery || '').trim()
