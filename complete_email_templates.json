@@ -45,7 +45,7 @@
         "en": "External Providers - unsatisfactory quality"
       }
     },
-    "updatedAt": "2026-01-12T00:08:27.334Z",
+    "updatedAt": "2026-02-05T12:27:00.642Z",
     "categoryColors": {
       "s": "#c7ffd2"
     }
@@ -57,7 +57,7 @@
       "category_fr": "Devis et approbations",
       "category_en": "Quotes and approvals",
       "title": {
-        "fr": "Projet <<ProjectNumber_FR>> – Devis à approbation requise",
+        "fr": "Projet <<ProjectNumber_FR>> – Devis à approbation requise TEST",
         "en": "Project <<ProjectNumber_EN>>- requesting approval on quote"
       },
       "description": {
@@ -114,7 +114,7 @@
       "category_fr": "Suivis et annulations",
       "category_en": "Follow-ups and cancellations",
       "title": {
-        "fr": "Projet <<ProjectNumber_FR>> – Suivi d’approbation",
+        "fr": "Projet <<ProjectNumber_FR>> – Suivi d’approbation TEST",
         "en": "Project <<ProjectNumber_EN>> – follow-up for approval"
       },
       "description": {
