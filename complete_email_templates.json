@@ -50,7 +50,7 @@
         "en": "Fiscal Year end"
       }
     },
-    "updatedAt": "2026-02-11T19:17:33.581Z",
+    "updatedAt": "2026-02-11T19:21:32.195Z",
     "categoryColors": {
       "s": "#c7ffd2"
     }
@@ -62,8 +62,8 @@
       "category_fr": "Devis et approbations",
       "category_en": "Quotes and approvals",
       "title": {
-        "fr": "Projet <<ProjectNumber_FR>> – Devis à approbation requis",
-        "en": "Project <<ProjectNumber_EN>>- requesting approval on quote"
+        "fr": "Projet – Devis à approbation requis",
+        "en": "Project - requesting approval on quote"
       },
       "description": {
         "fr": "Devis avant le lancement d'un projet - approbation requise",
@@ -847,8 +847,8 @@
       "id": "ctd030",
       "category": "fin_d_annee_financiere",
       "title": {
-        "fr": "Demande <<ProjectNumber_FR>> – Considérations de facturation selon l’exercice financier ",
-        "en": "Request <<ProjectNumber_EN>> – Fiscal Year Billing Considerations"
+        "fr": "Demande – Considérations de facturation selon l’exercice financier ",
+        "en": "Request – Fiscal Year Billing Considerations"
       },
       "description": {
         "fr": "Procédure de fin d’année financière ",
