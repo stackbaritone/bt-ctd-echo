@@ -10,6 +10,7 @@
       "clarifications_and_client_instructions",
       "deadlines_and_delivery",
       "documents_and_formatting",
+      "fin_d_annee_financiere",
       "follow_ups_and_cancellations",
       "quotes_and_approvals",
       "security_and_copyright",
@@ -43,9 +44,13 @@
       "unsatisfactory": {
         "fr": "Fournisseurs externes - Qualité insatisfaisante",
         "en": "External Providers - unsatisfactory quality"
+      },
+      "fin_d_annee_financiere": {
+        "fr": "Fin d’année financière",
+        "en": "Fiscal Year end"
       }
     },
-    "updatedAt": "2026-02-05T12:29:16.036Z",
+    "updatedAt": "2026-02-11T18:58:25.144Z",
     "categoryColors": {
       "s": "#c7ffd2"
     }
@@ -839,32 +844,33 @@
       ]
     },
     {
-      "id": "ctd001_copie",
-      "category": "quotes_and_approvals",
-      "category_fr": "Devis et approbations",
-      "category_en": "Quotes and approvals",
+      "id": "ctd030",
+      "category": "fin_d_annee_financiere",
       "title": {
-        "fr": "Projet <<ProjectNumber_FR>> – Devis à approbation requise (copie)",
-        "en": "Project <<ProjectNumber_EN>>- requesting approval on quote (copy)"
+        "fr": "Projet <<ProjectNumber_FR>> – Considérations de facturation selon l’exercice financier ",
+        "en": "Project <<ProjectNumber_EN>> – Fiscal Year Billing Considerations"
       },
       "description": {
-        "fr": "Devis avant le lancement d'un projet - approbation requise",
-        "en": "Devis avant le lancement d'un projet - approbation requise"
+        "fr": "Procédure de fin d’année financière ",
+        "en": "Fiscal year end procedure"
       },
       "subject": {
-        "fr": "Projet <<ProjectNumber_FR>> – Devis à approbation requise",
-        "en": "Project <<ProjectNumber_EN>>- requesting approval on quote"
+        "fr": "Projet <<ProjectNumber_FR>> – Considérations de facturation selon l’exercice financier ",
+        "en": "Project <<ProjectNumber_EN>> – Fiscal Year Billing Considerations"
       },
       "body": {
-        "fr": "Bonjour,\r\n\r\nNous accusons réception du projet <<ProjectNumber_FR>>. \r\n\r\nSa réalisation est évaluée à environ <<NbDays_FR>> jour(s) de travail. L’estimation des coûts s’élève à <<Cost_FR>>$. Le montant estimé pourrait varier de plus ou moins 10 %, selon l’évaluation finale du volume et de la complexité des documents.\r\n \r\nDes frais d’urgence de 50 % s’appliqueront si le projet doit être livré dans un délai de moins de <<NbDays_FR>> jour(s) ouvrable(s) ou de moins de 24 heures. Le coût révisé serait alors de <<UrgentCost_FR>> $.\r\n\r\nNous vous confirmons que ce projet sera traité uniquement après réception de votre approbation. Afin d’assurer un résultat fidèle et professionnel, et compte tenu de la disponibilité des ressources, la date de livraison pourrait être ajustée une fois l’approbation reçue.\r\n\r\nPour toute question ou tout renseignement complémentaire, n’hésitez pas à communiquer avec nous.\r\n\r\nBien cordialement,",
-        "en": "<p>Hello,</p><p>We have received Project &lt;&lt;ProjectNumber_EN&gt;&gt;.</p><p>Based on our assessment, it will take approximately &lt;&lt;NbDays_EN&gt;&gt; working day(s) to complete. The estimated cost is $&lt;&lt;Cost_EN&gt;&gt;. The amount may vary by up to 10%, depending on our final assessment of the size and complexity of the documents.</p><p>A 50% rush premium will apply if the project needs to be delivered in under &lt;&lt;NbDays_EN&gt;&gt; working day(s) or within 24 hours, and the revised cost would be $&lt;&lt;UrgentCost_EN&gt;&gt;.</p><p>Please note that we will begin work on this project only after receiving your approval. To ensure accurate and professional results, and depending on the availability of resources, the delivery date may be adjusted once we receive your approval.</p><p>Please feel free to contact us if you have any questions or need more information.</p><p>Best regards,</p>"
+        "fr": "<p class=\"MsoNormal\"><span style=\"font-family:&quot;Arial&quot;,sans-serif\">Bonjour,<o:p></o:p></span></p>\n\n<p class=\"MsoNormal\"><span style=\"font-family:&quot;Arial&quot;,sans-serif\">&nbsp;<o:p></o:p></span></p>\n\n<p class=\"MsoNormal\"><span style=\"font-family:&quot;Arial&quot;,sans-serif\">Nous accusons\nréception de votre demande numéro&nbsp;</span><font face=\"Arial, sans-serif\">&lt;&lt;ProjectNumber_FR&gt;&gt;</font><span style=\"font-family: Arial, sans-serif;\">.</span></p>\n\n<p class=\"MsoNormal\"><span style=\"font-family: Arial, sans-serif;\"><br></span></p><p class=\"MsoNormal\"><span style=\"font-family: Arial, sans-serif;\">Nous vous\ninformons que, pour des raisons de facturation, les demandes dépassant 40\nheures facturables ne peuvent pas s’étendre sur deux exercices financiers.\nCompte tenu de cette contrainte, nous vous proposons les options suivantes :</span></p>\n\n<p class=\"MsoNormal\"><span style=\"font-family:&quot;Arial&quot;,sans-serif\">&nbsp;<o:p></o:p></span></p>\n\n<p class=\"MsoNormal\"><b><span style=\"font-family:&quot;Arial&quot;,sans-serif\">Option 1 :</span></b><span style=\"font-family:&quot;Arial&quot;,sans-serif\"><br>\nCommencer les travaux le 1er avril et facturer l’intégralité de la demande au\ncours du nouvel exercice financier.<b> Cette solution garantit une gestion\nadministrative optimale et la continuité des travaux.</b><o:p></o:p></span></p>\n\n<p class=\"MsoNormal\"><span style=\"font-family:&quot;Arial&quot;,sans-serif\">&nbsp;<o:p></o:p></span></p>\n\n<p class=\"MsoNormal\"><b><span style=\"font-family:&quot;Arial&quot;,sans-serif\">Option 2 :</span></b><span style=\"font-family:&quot;Arial&quot;,sans-serif\"><br>\nFacturer la partie des travaux réalisée entre aujourd’hui et le 30 mars,\naccompagnée d’un document brouillon à cette date. Une nouvelle demande serait\nalors créée pour la réalisation et la facturation du reste des travaux au cours\ndu nouvel exercice financier.<o:p></o:p></span></p>\n\n<p class=\"MsoNormal\"><span style=\"font-family:&quot;Arial&quot;,sans-serif\">&nbsp;<o:p></o:p></span></p>\n\n<p class=\"MsoNormal\"><span style=\"font-family:&quot;Arial&quot;,sans-serif\">Nous vous\nremercions de bien vouloir nous confirmer l’option que vous préférez afin que\nnous puissions procéder en conséquence.<o:p></o:p></span></p>\n\n<p class=\"MsoNormal\"><span style=\"font-family:&quot;Arial&quot;,sans-serif\">&nbsp;<o:p></o:p></span></p>\n\n<p class=\"MsoNormal\"><span lang=\"EN-CA\" style=\"font-family:&quot;Arial&quot;,sans-serif;\nmso-ansi-language:EN-CA\">Cordialement,<o:p></o:p></span></p>",
+        "en": "<p class=\"MsoNormal\"><span lang=\"EN-CA\" style=\"font-family:&quot;Arial&quot;,sans-serif;\nmso-ansi-language:EN-CA\">Good Morning,<o:p></o:p></span></p>\n\n<p class=\"MsoNormal\"><span lang=\"EN-CA\" style=\"font-family:&quot;Arial&quot;,sans-serif;\nmso-ansi-language:EN-CA\">&nbsp;<o:p></o:p></span></p>\n\n<p class=\"MsoNormal\"><span lang=\"EN-CA\" style=\"font-family:&quot;Arial&quot;,sans-serif;\nmso-ansi-language:EN-CA\">We acknowledge receipt of your request number &lt;&lt;ProjectNumber_EN&gt;&gt;.<o:p></o:p></span></p>\n\n<p class=\"MsoNormal\"><span lang=\"EN-CA\" style=\"font-family:&quot;Arial&quot;,sans-serif;\nmso-ansi-language:EN-CA\">&nbsp;<o:p></o:p></span></p>\n\n<p class=\"MsoNormal\"><span lang=\"EN-CA\" style=\"font-family:&quot;Arial&quot;,sans-serif;\nmso-ansi-language:EN-CA\">Please note that, for billing purposes, requests\nexceeding 40 billable hours may not overlap two fiscal years. In light of this\nconstraint, we have the following two options for your consideration:<o:p></o:p></span></p>\n\n<p class=\"MsoNormal\"><span lang=\"EN-CA\" style=\"font-family:&quot;Arial&quot;,sans-serif;\nmso-ansi-language:EN-CA\">&nbsp;<o:p></o:p></span></p>\n\n<p class=\"MsoNormal\"><b><span lang=\"EN-CA\" style=\"font-family:&quot;Arial&quot;,sans-serif;\nmso-ansi-language:EN-CA\">Option 1:</span></b><span lang=\"EN-CA\" style=\"font-family:\n&quot;Arial&quot;,sans-serif;mso-ansi-language:EN-CA\"><br>\nCommence work on April 1, with the full scope of the request invoiced in the\nnew fiscal year. <b>Please note that this approach would ensure administrative\nefficiency and continuity of work.</b><o:p></o:p></span></p>\n\n<p class=\"MsoNormal\"><span lang=\"EN-CA\" style=\"font-family:&quot;Arial&quot;,sans-serif;\nmso-ansi-language:EN-CA\">&nbsp;<o:p></o:p></span></p>\n\n<p class=\"MsoNormal\"><b><span lang=\"EN-CA\" style=\"font-family:&quot;Arial&quot;,sans-serif;\nmso-ansi-language:EN-CA\">Option 2:</span></b><span lang=\"EN-CA\" style=\"font-family:\n&quot;Arial&quot;,sans-serif;mso-ansi-language:EN-CA\"><br>\nInvoice for the portion of work completed between now and March 30, at which\ntime a draft would be provided. A separate request would then be created for\nthe remaining work to be undertaken and invoiced in the new fiscal year.<o:p></o:p></span></p>\n\n<p class=\"MsoNormal\"><span lang=\"EN-CA\" style=\"font-family:&quot;Arial&quot;,sans-serif;\nmso-ansi-language:EN-CA\">&nbsp;<o:p></o:p></span></p>\n\n<p class=\"MsoNormal\"><span lang=\"EN-CA\" style=\"font-family:&quot;Arial&quot;,sans-serif;\nmso-ansi-language:EN-CA\">We would appreciate your confirmation as to which\noption you prefer so that we may proceed accordingly.<o:p></o:p></span></p>\n\n<p class=\"MsoNormal\"><span lang=\"EN-CA\" style=\"font-family:&quot;Arial&quot;,sans-serif;\nmso-ansi-language:EN-CA\">&nbsp;<o:p></o:p></span></p>\n\n<p class=\"MsoNormal\"><span style=\"font-family:&quot;Arial&quot;,sans-serif\">Regards,<o:p></o:p></span></p>"
       },
       "variables": [
-        "cost",
-        "nb_days",
-        "project_number",
-        "urgent_cost"
-      ]
+        "project_number"
+      ],
+      "utilisateur": [
+        "conseillers",
+        "gestion"
+      ],
+      "category_fr": "Fin d’année financière",
+      "category_en": "Fiscal Year end"
     }
   ],
   "variables": {
