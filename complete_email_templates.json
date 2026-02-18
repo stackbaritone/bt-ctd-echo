@@ -50,7 +50,7 @@
         "en": "Fiscal Year end"
       }
     },
-    "updatedAt": "2026-02-11T20:16:50.139Z",
+    "updatedAt": "2026-02-18T19:42:23.664Z",
     "categoryColors": {
       "s": "#c7ffd2"
     }
@@ -602,13 +602,13 @@
       },
       "body": {
         "fr": "Bonjour,\r\n\r\nNous accusons réception du projet <<ProjectNumber_FR>> et souhaitons confirmer une information auprès de vous.\r\n\r\nVotre demande indique une traduction du <<SourceLanguage_FR>> vers le <<TargetLanguage_FR>>. Toutefois, le document soumis est rédigé en <<DetectedLanguage_FR>>.\r\n\r\nNous vous serions reconnaissants de bien vouloir nous confirmer s’il s’agit d’un document soumis par erreur ou d’une combinaison linguistique erronée sélectionnée lors de la création du projet.\r\n\r\nNous attendons votre confirmation avant de pouvoir aller de l’avant.\r\n\r\nPour toute question ou tout renseignement complémentaire, n’hésitez pas à communiquer avec nous.\r\n\r\nBien cordialement,",
-        "en": "Hello,\r\n\r\nWe have received Project <<ProjectNumber_EN>> and would like to confirm one detail with you.\r\n\r\nYour request indicates a translation from <<SourceLanguage_EN>> to <<TargetLanguage_EN>>; however, the submitted document appears to be written in <<DetectedLanguage_EN>>.\r\n\r\nCould you please confirm whether the wrong document was submitted or the wrong language combination was selected when creating the project?\r\n\r\nWe will wait for your confirmation before proceeding.\r\n\r\nPlease feel free to contact us if you have any questions or need more information.\r\n\r\nBest regards,"
+        "en": "<p>Hello,</p><p>We have received Project &lt;&lt;ProjectNumber_EN&gt;&gt; and would like to confirm some information with you.</p><p>Your request indicates a translation from &lt;&lt;SourceLanguage_EN&gt;&gt; to &lt;&lt;TargetLanguage_EN&gt;&gt;; however, the submitted document appears to be written in &lt;&lt;DetectedLanguage_EN&gt;&gt;.</p><p>Could you please confirm whether the wrong document was submitted or the wrong language combination was selected when creating the project?</p><p>We will wait for your confirmation before proceeding.</p><p>Please feel free to contact us if you have any questions or need more information.</p><p>Best regards,</p>"
       },
       "variables": [
+        "detected_language",
         "project_number",
         "source_language",
-        "target_language",
-        "detected_language"
+        "target_language"
       ]
     },
     {
@@ -648,7 +648,7 @@
         "en": "Project <<ProjectNumber_EN>> – plain language services"
       },
       "description": {
-        "fr": "Précisions pour services en language clair et simples",
+        "fr": "Précisions pour services en langage clair et simple",
         "en": "Plain language services"
       },
       "subject": {
@@ -732,7 +732,7 @@
       },
       "body": {
         "fr": "Bonjour,\r\n\r\nAfin d’orienter adéquatement le traitement de votre projet <<ProjectNumber_FR>>, nous aimerions confirmer le type de révision que vous souhaitez. Nous offrons deux services distincts :\r\n\r\nRévision comparative\r\nLe texte traduit est comparé au texte source pour en vérifier l’exactitude, l’exhaustivité et la fidélité. Ce type de révision permet de corriger les erreurs de sens et d’assurer une bonne formulation dans la langue cible.\r\n\r\nRévision unilingue\r\nLe texte est révisé uniquement dans la langue d’origine, sans référence au texte dans une autre langue. L’accent est mis sur la clarté, la fluidité, la grammaire, la ponctuation et la cohérence du texte.\r\n\r\nNous vous serions reconnaissants de bien vouloir préciser vos besoins, ou de nous indiquer l’objectif principal de votre demande, afin que nous puissions vous orienter vers l’option la plus appropriée. \r\nPour toute question ou tout renseignement complémentaire, n’hésitez pas à communiquer avec nous.\r\n\r\nBien cordialement,",
-        "en": "Hello,\r\n\r\nTo ensure that Project <<ProjectNumber_EN>> is processed appropriately, we would like to confirm the type of revision you are requesting. We offer two distinct services:\r\n\r\nComparative revision\r\nThe translated text is compared to the source text to check for accuracy, completeness and fidelity. This type of revision corrects errors in meaning and ensures proper wording in the target language.\r\n\r\nUnilingual editing\r\nThe text is revised in the target language only, without reference to the text in another language. The focus is on the text’s clarity, flow, grammar, punctuation and coherence.\r\n\r\nCould you clarify which service you would prefer or tell us the main objective of your project so that we can recommend the most suitable option?\r\n \r\nPlease feel free to contact us if you have any questions or need more information.\r\n\r\nBest regards,"
+        "en": "<p>Hello,</p><p>To ensure that Project &lt;&lt;ProjectNumber_EN&gt;&gt; is processed appropriately, we would like to confirm the type of revision you are requesting. We offer two distinct services:</p><p>Comparative revision<br>The translated text is compared to the source text to check for accuracy, completeness and fidelity. This type of revision corrects errors in meaning and ensures proper wording in the target language.</p><p>Unilingual editing<br>The text is revised in the source language only, without reference to the text in another language. The focus is on the text’s clarity, flow, grammar, punctuation and coherence.</p><p>Could you clarify which service you would prefer or tell us the main objective of your project so that we can recommend the most suitable option?<br> <br>Please feel free to contact us if you have any questions or need more information.</p><p>Best regards,</p>"
       },
       "variables": [
         "project_number"
