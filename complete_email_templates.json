@@ -50,7 +50,7 @@
         "en": "Fiscal Year end"
       }
     },
-    "updatedAt": "2026-02-18T19:54:05.821Z",
+    "updatedAt": "2026-02-18T19:55:22.987Z",
     "categoryColors": {
       "s": "#c7ffd2"
     }
@@ -523,7 +523,7 @@
       },
       "body": {
         "fr": "Bonjour, \r\n\r\nNous accusons réception du projet <<ProjectNumber_FR>>.\r\n \r\nAprès une première analyse de la traduction fournie, nous avons remarqué plusieurs lacunes. Nous pensons qu’elle nécessiterait plus qu’une simple révision. Par souci de qualité, nous recommandons donc une retraduction complète à partir du texte source, afin d’assurer un résultat fidèle, fluide et professionnel.\r\n\r\nPourriez-vous nous confirmer si vous souhaitez aller de l’avant avec ce service?\r\n\r\nBien cordialement,",
-        "en": "<p><font size=\"3\">Hello,</font></p><p><font size=\"3\">We have received Project &lt;&lt;ProjectNumber_EN&gt;&gt;.</font></p><p><font size=\"3\">After an initial review of the translation provided, we have identified several issues and believe that the translation requires more than a basic revision.&nbsp;<span class=\"NormalTextRun SCXW193189737 BCX8\" style=\"-webkit-user-drag: none; -webkit-tap-highlight-color: transparent; margin: 0px; padding: 0px; user-select: text; color: rgb(0, 0, 0); font-family: Calibri, Calibri_EmbeddedFont, Calibri_MSFontService, sans-serif; font-variant-ligatures: none;\">To ensure quality, we recommend creating a completely new translation from the source text to deliver&nbsp;</span><span class=\"NormalTextRun SCXW193189737 BCX8\" style=\"-webkit-user-drag: none; -webkit-tap-highlight-color: transparent; margin: 0px; padding: 0px; user-select: text; color: rgb(0, 0, 0); font-family: Calibri, Calibri_EmbeddedFont, Calibri_MSFontService, sans-serif; font-variant-ligatures: none;\">an accurate</span><span class=\"NormalTextRun SCXW193189737 BCX8\" style=\"-webkit-user-drag: none; -webkit-tap-highlight-color: transparent; margin: 0px; padding: 0px; user-select: text; color: rgb(0, 0, 0); font-family: Calibri, Calibri_EmbeddedFont, Calibri_MSFontService, sans-serif; font-variant-ligatures: none;\">, polished, and professional result.</span></font></p><p><font size=\"3\">Could you please confirm whether you would like to proceed with this service?</font></p><p><font size=\"3\">Best regards,</font></p>"
+        "en": "<p><font size=\"3\">Hello,</font></p><p><font size=\"3\">We have received Project &lt;&lt;ProjectNumber_EN&gt;&gt;.</font></p><p><font size=\"3\">After an initial review of the translation provided, we have identified several issues and believe that the translation requires more than a basic revision. To ensure quality, we recommend completing a completely new translation from the source text to deliver an accurate, polished, and professional result.</font></p><p><font size=\"3\">Could you please confirm whether you would like to proceed with this service?</font></p><p><font size=\"3\">Best regards,</font></p>"
       },
       "variables": [
         "project_number"
