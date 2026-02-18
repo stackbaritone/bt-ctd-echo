@@ -50,7 +50,7 @@
         "en": "Fiscal Year end"
       }
     },
-    "updatedAt": "2026-02-18T19:42:23.664Z",
+    "updatedAt": "2026-02-18T19:44:45.491Z",
     "categoryColors": {
       "s": "#c7ffd2"
     }
@@ -597,7 +597,7 @@
         "en": "Confirming a document or language combination"
       },
       "subject": {
-        "fr": "Projet <<ProjectNumber_FR>> – Confirmation du documFRt ou de la combinaison de langues",
+        "fr": "Projet <<ProjectNumber_FR>> – Confirmation du document ou de la combinaison de langues",
         "en": "Project <<ProjectNumber_EN>> – document or language combination confirmation"
       },
       "body": {
