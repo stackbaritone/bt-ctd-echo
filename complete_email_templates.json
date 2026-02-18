@@ -50,7 +50,7 @@
         "en": "Fiscal Year end"
       }
     },
-    "updatedAt": "2026-02-18T20:01:01.717Z",
+    "updatedAt": "2026-02-18T20:03:18.852Z",
     "categoryColors": {
       "s": "#c7ffd2"
     }
@@ -215,7 +215,7 @@
       },
       "body": {
         "fr": "<p>Bonjour,</p><p>Nous accusons réception du projet &lt;&lt;ProjectNumber_FR&gt;&gt;.</p><p>Comme le délai prévu pour traiter ce projet est de moins de &lt;&lt;NbDays_FR&gt;&gt; jour(s) ouvrable(s) (ou de moins de 24 heures), des frais d’urgence de 50 % s’appliqueront.</p><p>Pour éviter l’application de ces frais, nous vous suggérons de reporter si possible la date de livraison à &lt;&lt;NewDate_FR&gt;&gt;.</p><p>Nous vous serions reconnaissants de bien vouloir nous confirmer votre préférence d’ici &lt;&lt;DeadlineTime_FR&gt;&gt; aujourd’hui.</p><p>Pour toute question ou tout renseignement complémentaire, n’hésitez pas à communiquer avec nous.</p><p>Bien cordialement,</p>",
-        "en": "Hello,\r\n\r\nWe have received Project <<ProjectNumber_EN>>.\r\n\r\nSince the expected deadline to process this project is under <<NbDays_EN>> working day(s) (or within 24 hours), a 50% rush premium will apply.\r\n\r\nTo avoid these fees, we suggest postponing the delivery date to <<NewDate_EN>>, if possible.\r\n\r\nCould you please confirm your preference by <<DeadlineTime_EN>> today?\r\n\r\nPlease feel free to contact us if you have any questions or need more information.\r\n\r\nBest regards,"
+        "en": "<p>Hello,</p><p>We have received Project &lt;&lt;ProjectNumber_EN&gt;&gt;.</p><p>As the expected deadline to process this project is under &lt;&lt;NbDays_EN&gt;&gt; working day(s) (or within 24 hours), a 50% rush premium will apply.</p><p>To avoid these fees, we suggest postponing the delivery date to &lt;&lt;NewDate_EN&gt;&gt;, if possible.</p><p>Could you please confirm your preference by &lt;&lt;DeadlineTime_EN&gt;&gt; today?</p><p>Please feel free to contact us if you have any questions or need more information.</p><p>Best regards,</p>"
       },
       "variables": [
         "deadline_time",
@@ -498,7 +498,7 @@
       },
       "body": {
         "fr": "Bonjour,\r\n\r\nNous accusons réception du projet <<ProjectNumber_FR>>.\r\n \r\nNous vous prions de nous excuser pour le délai de prise en charge. En raison d’un volume élevé de projets, nous n’avons pas pu entamer le traitement avant aujourd’hui.\r\n\r\nNous procédons actuellement à la vérification de la disponibilité des ressources nécessaires et vous confirmons qu’aucun frais d’urgence ne sera appliqué.\r\n \r\nNous vous remercions de votre compréhension et demeurons à votre disposition pour toute question ou tout renseignement complémentaire.\r\n\r\nBien cordialement,",
-        "en": "Hello,\r\n\r\nWe have received Project <<ProjectNumber_EN>>.\r\n \r\nWe apologize for the delay in processing your project. Due to a high volume of projects, we were unable to start working on it until today.\r\n\r\nWe are currently checking the availability of the necessary resources and can confirm that no rush premium will apply.\r\n\r\nWe thank you for your understanding. Please contact us if you have any questions or need more information.\r\n\r\nBest regards,"
+        "en": "<p>Hello,</p><p>We have received Project &lt;&lt;ProjectNumber_EN&gt;&gt;.<br> <br>We apologize for the delay in processing your project. Due to a high volume of projects, we were unable to start working on it until today.</p><p>We are currently verifying the availability of the necessary resources and can confirm that no rush premium will apply.</p><p>We thank you for your understanding. Please contact us if you have any questions or need more information.</p><p>Best regards,</p>"
       },
       "variables": [
         "project_number"
@@ -979,8 +979,8 @@
         "fr": "Taux horaire d’éditique"
       },
       "example": {
-        "en": "75",
-        "fr": "75"
+        "en": "89",
+        "fr": "89"
       },
       "format": "number"
     },
