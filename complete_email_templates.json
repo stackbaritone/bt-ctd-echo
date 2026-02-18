@@ -50,7 +50,7 @@
         "en": "Fiscal Year end"
       }
     },
-    "updatedAt": "2026-02-18T19:44:45.491Z",
+    "updatedAt": "2026-02-18T19:52:24.886Z",
     "categoryColors": {
       "s": "#c7ffd2"
     }
@@ -319,8 +319,8 @@
         "en": "Project <<ProjectNumber_EN>> - instructions regarding images"
       },
       "body": {
-        "fr": "Bonjour,\r\n\r\nNous accusons réception du projet <<ProjectNumber_FR>>.\r\n\r\nLe document transmis contient des images non modifiables. Souhaitez-vous que leur contenu soit traduit? Dans l’affirmative, disposez-vous des versions modifiables? À défaut, nous pourrons insérer la traduction dans une légende distincte.\r\n\r\nNous vous serions reconnaissants de bien vouloir nous transmettre vos instructions dès que possible. Nous traiterons entretemps les parties modifiables du document.\r\n\r\nPour toute question ou tout renseignement complémentaire, n’hésitez pas à communiquer avec nous.\r\n\r\nBien cordialement,",
-        "en": "Hello,\r\n\r\nWe have received Project <<ProjectNumber_EN>>.\r\n\r\nThe document you sent contains non-editable images. Would you like the content of these images to be translated? If so, do you have editable versions available? If not, we can include a translation in a separate caption.\r\n\r\nCould you please send us your instructions as soon as possible? In the meantime, the editable parts of the document will be translated.\r\n\r\nPlease feel free to contact us if you have any questions or need more information.\r\n\r\nBest regards,"
+        "fr": "<p>Bonjour,</p><p>Nous accusons réception du projet &lt;&lt;ProjectNumber_FR&gt;&gt;.</p><p>Le document transmis contient du texte non éditable dans les images. Souhaitez-vous que leur contenu soit traduit? Dans l’affirmative, disposez-vous des versions modifiables? À défaut, nous pourrons insérer la traduction dans une légende distincte.</p><p>Nous vous serions reconnaissants de bien vouloir nous transmettre vos instructions dès que possible.&nbsp;</p><p>Pour toute question ou tout renseignement complémentaire, n’hésitez pas à communiquer avec nous.</p><p>Bien cordialement,</p>",
+        "en": "<p>Hello,</p><p>We have received Project &lt;&lt;ProjectNumber_EN&gt;&gt;.</p><p>The submitted document contains non-editable text in the images. Would you like the content of these images to be translated? If so, do you have editable versions available? If not, we can include a translation in a separate caption.</p><p>Could you please send us your instructions as soon as possible?&nbsp;</p><p>Please feel free to contact us if you have any questions or need more information.</p><p>Best regards,</p>"
       },
       "variables": [
         "project_number"
@@ -371,7 +371,7 @@
       },
       "body": {
         "fr": "Bonjour,\r\n\r\nNous accusons réception du projet <<ProjectNumber_FR>>.\r\n\r\nVeuillez nous indiquer si vous souhaitez que nous traduisions  uniquement le contenu des diapositives, ou si les notes du présentateur doivent être incluses.\r\n \r\nNous vous serions reconnaissants de bien vouloir nous confirmer vos instructions afin que nous puissions procéder au traitement de votre projet.\r\n\r\nPour toute question ou tout renseignement complémentaire, n’hésitez pas à communiquer avec nous.\r\n\r\nBien cordialement,",
-        "en": "Hello,\r\n\r\nWe have received Project <<ProjectNumber_EN>>.\r\n\r\nCould you confirm if you would like us to translate only the content in the PowerPoint slides, or if you would like to have the speaker notes translated as well?\r\n \r\nWe would appreciate it if you could let us know so that we can process your project.\r\n\r\nPlease feel free to contact us if you have any questions or need more information.\r\n\r\nBest regards,"
+        "en": "<p>Hello,</p><p>We have received Project &lt;&lt;ProjectNumber_EN&gt;&gt;.</p><p>Could you confirm if you would like us to translate only the content in the PowerPoint slides, or if you would like to have the speaker notes translated as well?<br> <br>Please note that we are waiting for your confirmation prior to processing your request.</p><p>Please feel free to contact us if you have any questions or need more information.</p><p>Best regards,</p>"
       },
       "variables": [
         "project_number"
@@ -518,12 +518,12 @@
         "en": "Requesting comparative/client revision"
       },
       "subject": {
-        "fr": "Projet <<ProjectNumber_FR>> – Demande de révision",
-        "en": "Project <<ProjectNumber_EN>> – request for revision"
+        "fr": "Projet <<ProjectNumber_FR>> – Demande de révision de traduction client",
+        "en": "Project <<ProjectNumber_EN>> – request for revision of a client translation"
       },
       "body": {
         "fr": "Bonjour, \r\n\r\nNous accusons réception du projet <<ProjectNumber_FR>>.\r\n \r\nAprès une première analyse de la traduction fournie, nous avons remarqué plusieurs lacunes. Nous pensons qu’elle nécessiterait plus qu’une simple révision. Par souci de qualité, nous recommandons donc une retraduction complète à partir du texte source, afin d’assurer un résultat fidèle, fluide et professionnel.\r\n\r\nPourriez-vous nous confirmer si vous souhaitez aller de l’avant avec ce service?\r\n\r\nBien cordialement,",
-        "en": "Hello, \r\n\r\nWe have received Project <<ProjectNumber_EN>>. \r\n\r\nAfter an initial review of the translation provided, we have identified several issues and believe that the translation requires more than a basic revision. For quality purposes, we recommend a full retranslation of the source text to ensure a faithful, fluent and professional result.\r\n\r\nCould you please confirm whether you would like to proceed with this service?\r\n\r\nBest regards,"
+        "en": "<p>Hello,</p><p>We have received Project &lt;&lt;ProjectNumber_EN&gt;&gt;.</p><p>After an initial review of the translation provided, we have identified several issues and believe that the translation requires more than a basic revision.&nbsp;<span class=\"NormalTextRun SCXW193189737 BCX8\" style=\"-webkit-user-drag: none; -webkit-tap-highlight-color: transparent; margin: 0px; padding: 0px; user-select: text; color: rgb(0, 0, 0); font-family: Calibri, Calibri_EmbeddedFont, Calibri_MSFontService, sans-serif; font-size: 14.6667px; font-variant-ligatures: none;\">To ensure quality, we recommend creating a completely new translation from the source text to deliver&nbsp;</span><span class=\"NormalTextRun SCXW193189737 BCX8\" style=\"-webkit-user-drag: none; -webkit-tap-highlight-color: transparent; margin: 0px; padding: 0px; user-select: text; color: rgb(0, 0, 0); font-family: Calibri, Calibri_EmbeddedFont, Calibri_MSFontService, sans-serif; font-size: 14.6667px; font-variant-ligatures: none;\">an accurate</span><span class=\"NormalTextRun SCXW193189737 BCX8\" style=\"-webkit-user-drag: none; -webkit-tap-highlight-color: transparent; margin: 0px; padding: 0px; user-select: text; color: rgb(0, 0, 0); font-family: Calibri, Calibri_EmbeddedFont, Calibri_MSFontService, sans-serif; font-size: 14.6667px; font-variant-ligatures: none;\">, polished, and professional result.</span></p><p>Could you please confirm whether you would like to proceed with this service?</p><p>Best regards,</p>"
       },
       "variables": [
         "project_number"
