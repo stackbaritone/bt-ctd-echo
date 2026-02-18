@@ -50,7 +50,7 @@
         "en": "Fiscal Year end"
       }
     },
-    "updatedAt": "2026-02-18T20:09:38.034Z",
+    "updatedAt": "2026-02-18T20:14:51.147Z",
     "categoryColors": {
       "s": "#c7ffd2"
     }
@@ -62,16 +62,16 @@
       "category_fr": "Devis et approbations",
       "category_en": "Quotes and approvals",
       "title": {
-        "fr": "Projet – Devis à approbation requis",
+        "fr": "Projet – Devis à approbation requise",
         "en": "Project - requesting approval on quote"
       },
       "description": {
         "fr": "Devis avant le lancement d'un projet - approbation requise",
-        "en": "Devis avant le lancement d'un projet - approbation requise"
+        "en": "Quote approval prior to proceeding with the project"
       },
       "subject": {
         "fr": "Projet <<ProjectNumber_FR>> – Devis à approbation requise",
-        "en": "Project <<ProjectNumber_EN>>- requesting approval on quote"
+        "en": "Project <<ProjectNumber_EN>>- requesting quote approval"
       },
       "body": {
         "fr": "Bonjour,\r\n\r\nNous accusons réception du projet <<ProjectNumber_FR>>. \r\n\r\nSa réalisation est évaluée à environ <<NbDays_FR>> jour(s) de travail. L’estimation des coûts s’élève à <<Cost_FR>>$. Le montant estimé pourrait varier de plus ou moins 10 %, selon l’évaluation finale du volume et de la complexité des documents.\r\n \r\nDes frais d’urgence de 50 % s’appliqueront si le projet doit être livré dans un délai de moins de <<NbDays_FR>> jour(s) ouvrable(s) ou de moins de 24 heures. Le coût révisé serait alors de <<UrgentCost_FR>> $.\r\n\r\nNous vous confirmons que ce projet sera traité uniquement après réception de votre approbation. Afin d’assurer un résultat fidèle et professionnel, et compte tenu de la disponibilité des ressources, la date de livraison pourrait être ajustée une fois l’approbation reçue.\r\n\r\nPour toute question ou tout renseignement complémentaire, n’hésitez pas à communiquer avec nous.\r\n\r\nBien cordialement,",
@@ -796,8 +796,8 @@
         "en": "Security breach notification - actions to be taken"
       },
       "description": {
-        "fr": "Instructions to external provider following a security breach",
-        "en": "Instructions au fournisseur externe suite à un bris de sécurité"
+        "fr": "Instructions au fournisseur externe suite à un bris de sécurité ",
+        "en": "Instructions to external provider following a security breach"
       },
       "subject": {
         "fr": "Avis de bris de sécurité - mesures à prendre",
@@ -825,8 +825,8 @@
         "en": ""
       },
       "body": {
-        "fr": "Hello,\n\nUnder Article A6 of the Statement of Work for contract No. <<contract_number_EN>>, you are obliged to provide translation work that meets the quality and timeliness standards for official languages translation. \n\nCanada hereby advises you that translation request No. <<project_number_EN>> was deemed to be unsatisfactory. As stated in clause <<article_number1_EN>>, Notice of Unsatisfactory Performance, of your contract, notices of unsatisfactory performance affect the quality indicator and may result in termination of the contract for default and suspension of the supply arrangement in whole or in part.\n\nPlease note that Canada will deduct a fee of $<<penalty_EN>> (excluding taxes) from your invoice in order to compensate Canada for the additional costs relating to the production of a deliverable translation (see clause <<article_number2_EN>>of your contract for more information.\n\nIf you disagree with this email and wish to challenge the notice of unsatisfactory performance, please send your comments in writing, as described in clause <<article_number3_EN>>, Challenge Mechanism Following a Notice of Unsatisfactory Performance, of your contract, for reconsideration.\n\nPlease note that this unsatisfactory evaluation will be placed on your file.\n\nThank you.",
-        "en": "Bonjour,\n\nEn vertu de l’article A6 de l’énoncé des travaux du contrat no <<contract_number_FR>>, vous êtes tenu de fournir les travaux de traduction conformément aux normes de qualité et respect des délais pour la traduction en langues officielles.\n\nPar la présente, le Canada vous informe que le texte no <<project_number_FR>> a été jugé insatisfaisant. Comme stipulé à l’article <<article_number1_FR>> Avis de prestations insatisfaisantes du contrat, les avis de prestations insatisfaisantes ont une incidence sur l’indice de qualité et peuvent entraîner la résiliation d’un contrat pour manquement et la suspension de l’AMA du fournisseur, en partie ou en entier.  \n\nVeuillez prendre note que le Canada déduira des frais de <<penalty_FR>> $ (taxes non comprises) de votre facture afin de le dédommager du coût additionnel lié à la production d’une traduction livrable (voir article <<article_number2_FR>> du contrat pour plus d’information). \n\nSi vous n’êtes pas d’accord avec le présent courriel, et que vous désirez contester l’avis de prestation insatisfaisante, veuillez faire parvenir vos observations par écrit selon les modalités décrites à l’article <<article_number3_FR>> Mécanisme de contestation suite à un avis de prestation insatisfaisante de votre contrat, pour fins de réexamen. \n\nVeuillez prendre note que cette évaluation insatisfaisante sera versée à votre dossier.  \n\nMerci."
+        "fr": "<p>Bonjour,</p><p>En vertu de l’article A6 de l’énoncé des travaux du contrat no &lt;&lt;contract_number_FR&gt;&gt;, vous êtes tenu de fournir les travaux de traduction conformément aux normes de qualité et respect des délais pour la traduction en langues officielles.</p><p>Par la présente, le Canada vous informe que le texte no &lt;&lt;project_number_FR&gt;&gt; a été jugé insatisfaisant. Comme stipulé à l’article &lt;&lt;article_number1_FR&gt;&gt; Avis de prestations insatisfaisantes du contrat, les avis de prestations insatisfaisantes ont une incidence sur l’indice de qualité et peuvent entraîner la résiliation d’un contrat pour manquement et la suspension de l’AMA du fournisseur, en partie ou en entier.</p><p>Veuillez prendre note que le Canada déduira des frais de &lt;&lt;penalty_FR&gt;&gt; $ (taxes non comprises) de votre facture afin de le dédommager du coût additionnel lié à la production d’une traduction livrable (voir article &lt;&lt;article_number2_FR&gt;&gt; du contrat pour plus d’information).</p><p>Si vous n’êtes pas d’accord avec le présent courriel, et que vous désirez contester l’avis de prestation insatisfaisante, veuillez faire parvenir vos observations par écrit selon les modalités décrites à l’article &lt;&lt;article_number3_FR&gt;&gt; Mécanisme de contestation suite à un avis de prestation insatisfaisante de votre contrat, pour fins de réexamen.</p><p>Veuillez prendre note que cette évaluation insatisfaisante sera versée à votre dossier.</p><p>Merci.</p>",
+        "en": "<p class=\"MsoNormal\">Hello,<o:p></o:p></p><p class=\"MsoNormal\">Under Article A6 of the Statement of Work for contract No.\n&lt;&lt;contract_number_EN&gt;&gt;, you are obliged to provide translation work\nthat meets the quality and timeliness standards for official languages\ntranslation.<o:p></o:p></p><p class=\"MsoNormal\">Canada hereby advises you that translation request No.\n&lt;&lt;project_number_EN&gt;&gt; was deemed to be unsatisfactory. As stated in\nclause &lt;&lt;article_number1_EN&gt;&gt;, Notice of Unsatisfactory\nPerformance, of your contract, notices of unsatisfactory performance affect the\nquality indicator and may result in termination of the contract for default and\nsuspension of the supply arrangement in whole or in part.<o:p></o:p></p><p class=\"MsoNormal\">Please note that Canada will deduct a fee of\n$&lt;&lt;penalty_EN&gt;&gt; (excluding taxes) from your invoice in order to\ncompensate Canada for the additional costs relating to the production of a\ndeliverable translation (see clause &lt;&lt;article_number2_EN&gt;&gt;of your\ncontract for more information.<o:p></o:p></p><p class=\"MsoNormal\">If you disagree with this email and wish to challenge the\nnotice of unsatisfactory performance, please send your comments in writing, as\ndescribed in clause &lt;&lt;article_number3_EN&gt;&gt;, Challenge Mechanism\nFollowing a Notice of Unsatisfactory Performance, of your contract, for\nreconsideration.<o:p></o:p></p><p class=\"MsoNormal\">Please note that this unsatisfactory evaluation will be\nplaced on your file.<o:p></o:p></p><p>\n\n\n\n\n\n\n\n\n\n\n\n</p><p class=\"MsoNormal\"><span lang=\"FR-CA\">Thank you.<o:p></o:p></span></p>"
       },
       "variables": [
         "article_number1",
