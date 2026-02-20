@@ -50,7 +50,7 @@
         "en": "Fiscal Year end"
       }
     },
-    "updatedAt": "2026-02-20T15:39:29.357Z",
+    "updatedAt": "2026-02-20T15:42:08.418Z",
     "categoryColors": {
       "s": "#c7ffd2"
     }
@@ -214,8 +214,8 @@
         "en": "Project <<ProjectNumber_EN>> – Rush premium"
       },
       "body": {
-        "fr": "<p>Bonjour,</p><p>Nous accusons réception du projet &lt;&lt;ProjectNumber_FR&gt;&gt;.</p><p>Comme le délai prévu pour traiter ce projet est de moins de &lt;&lt;NbDays_FR&gt;&gt; jour(s) ouvrable(s) (ou de moins de 24 heures), des frais d’urgence de 50 % s’appliqueront.</p><p>Pour éviter l’application de ces frais, nous vous suggérons de reporter si possible la date de livraison à &lt;&lt;NewDate_FR&gt;&gt;.</p><p>Nous vous serions reconnaissants de bien vouloir nous confirmer votre préférence d’ici &lt;&lt;DeadlineTime_FR&gt;&gt; aujourd’hui.</p><p>Pour toute question ou tout renseignement complémentaire, n’hésitez pas à communiquer avec nous.</p><p>Bien cordialement,</p>",
-        "en": "<p>Hello,</p><p>We have received project &lt;&lt;ProjectNumber_EN&gt;&gt;.</p><p>As the expected deadline to process this project is under &lt;&lt;NbDays_EN&gt;&gt; working day(s) (or within 24 hours), a 50% rush premium will apply.</p><p>To avoid these fees, we suggest postponing the delivery date to &lt;&lt;NewDate_EN&gt;&gt;, if possible.</p><p>Could you please confirm your preference by &lt;&lt;DeadlineTime_EN&gt;&gt; today?</p><p>Please feel free to contact us if you have any questions or need more information.</p><p>Best regards,</p>"
+        "fr": "<p>Bonjour,</p><p>Nous accusons réception du projet &lt;&lt;ProjectNumber_FR&gt;&gt;.</p><p>Comme le délai demandé pour ce projet est de moins de &lt;&lt;NbDays_FR&gt;&gt; jour(s) ouvrable(s) (ou de moins de 24 heures), des frais d’urgence de 50 % s’appliqueront.</p><p>Pour éviter l’application de ces frais, nous vous suggérons de reporter si possible la date de livraison à &lt;&lt;NewDate_FR&gt;&gt;.</p><p>Nous vous serions reconnaissants de bien vouloir nous confirmer votre préférence d’ici &lt;&lt;DeadlineTime_FR&gt;&gt; aujourd’hui.</p><p>Pour toute question ou tout renseignement complémentaire, n’hésitez pas à communiquer avec nous.</p><p>Bien cordialement,</p>",
+        "en": "<p>Hello,</p><p>We have received project &lt;&lt;ProjectNumber_EN&gt;&gt;.</p><p>As the requested deadline to process this project is under &lt;&lt;NbDays_EN&gt;&gt; working day(s) (or within 24 hours), a 50% rush premium will apply.</p><p>To avoid these fees, we suggest postponing the delivery date to &lt;&lt;NewDate_EN&gt;&gt;, if possible.</p><p>Could you please confirm your preference by &lt;&lt;DeadlineTime_EN&gt;&gt; today?</p><p>Please feel free to contact us if you have any questions or need more information.</p><p>Best regards,</p>"
       },
       "variables": [
         "deadline_time",
