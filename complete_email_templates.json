@@ -50,7 +50,7 @@
         "en": "Fiscal Year end"
       }
     },
-    "updatedAt": "2026-02-20T14:21:29.175Z",
+    "updatedAt": "2026-02-20T14:22:34.631Z",
     "categoryColors": {
       "s": "#c7ffd2"
     }
@@ -968,8 +968,8 @@
         "fr": "Coût estimé en dollars"
       },
       "example": {
-        "en": "800",
-        "fr": "800"
+        "en": "800.00",
+        "fr": "800.00"
       },
       "format": "number"
     },
