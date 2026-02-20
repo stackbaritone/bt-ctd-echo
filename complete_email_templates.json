@@ -50,7 +50,7 @@
         "en": "Fiscal Year end"
       }
     },
-    "updatedAt": "2026-02-20T14:22:34.631Z",
+    "updatedAt": "2026-02-20T14:40:37.009Z",
     "categoryColors": {
       "s": "#c7ffd2"
     }
@@ -903,7 +903,7 @@
       },
       "example": {
         "en": "1500.00",
-        "fr": "1500.00"
+        "fr": "1500,00"
       },
       "format": "number"
     },
@@ -914,7 +914,7 @@
       },
       "example": {
         "en": "1200.00",
-        "fr": "1200.00"
+        "fr": "1200,00"
       },
       "format": "number"
     },
@@ -1045,8 +1045,8 @@
         "fr": "Coût estimé minimal en dollars"
       },
       "example": {
-        "en": "300",
-        "fr": "300"
+        "en": "300.00",
+        "fr": "300,00"
       },
       "format": "number"
     },
@@ -1056,8 +1056,8 @@
         "fr": "Coût estimé maximal en dollars"
       },
       "example": {
-        "en": "900",
-        "fr": "900"
+        "en": "900.00",
+        "fr": "900,00"
       },
       "format": "number"
     },
