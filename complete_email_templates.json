@@ -50,7 +50,7 @@
         "en": "Fiscal Year end"
       }
     },
-    "updatedAt": "2026-02-20T15:43:35.482Z",
+    "updatedAt": "2026-02-20T20:48:18.186Z",
     "categoryColors": {
       "s": "#c7ffd2"
     }
@@ -969,7 +969,7 @@
       },
       "example": {
         "en": "800.00",
-        "fr": "800.00"
+        "fr": "800,00"
       },
       "format": "number"
     },
