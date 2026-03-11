@@ -250,6 +250,58 @@ function App() {
   const [isFullscreen, setIsFullscreen] = useState(() => {
     try { return !!(document.fullscreenElement || document.webkitFullscreenElement) } catch { return false }
   })
+  // Pop-out (child window) mode: render variables only when ?varsOnly=1
+  const varsOnlyMode = useMemo(() => {
+    try { return new URLSearchParams(window.location.search).get('varsOnly') === '1' } catch { return false }
+  }, [])
+
+  // Auto-open variables popup in vars-only mode
+  useEffect(() => {
+    if (varsOnlyMode) setShowVariablePopup(true)
+  }, [varsOnlyMode])
+
+  // In varsOnly mode, mark popout as open and clean up on close
+  useEffect(() => {
+    if (!varsOnlyMode) return
+    try { localStorage.setItem('ea_popout_opened', String(Date.now())) } catch {}
+    const refreshInterval = setInterval(() => {
+      try { localStorage.setItem('ea_popout_opened', String(Date.now())) } catch {}
+    }, 10000)
+    const onUnload = () => {
+      try { localStorage.removeItem('ea_popout_opened') } catch {}
+    }
+    window.addEventListener('beforeunload', onUnload)
+    return () => {
+      clearInterval(refreshInterval)
+      window.removeEventListener('beforeunload', onUnload)
+      try { localStorage.removeItem('ea_popout_opened') } catch {}
+    }
+  }, [varsOnlyMode])
+
+  // In varsOnly mode, make the popup fill the window and follow resize
+  useEffect(() => {
+    if (!varsOnlyMode) return
+    const setFull = () => setVarPopupPos(p => ({ ...p, top: 0, left: 0, width: window.innerWidth, height: window.innerHeight }))
+    setFull()
+    const onResize = () => setFull()
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [varsOnlyMode])
+
+  // Track fullscreen state (pop-out only)
+  useEffect(() => {
+    const onFs = () => {
+      setIsFullscreen(!!(document.fullscreenElement || document.webkitFullscreenElement))
+      if (varsOnlyMode) setVarPopupPos(p => ({ ...p, top: 0, left: 0, width: window.innerWidth, height: window.innerHeight }))
+    }
+    document.addEventListener('fullscreenchange', onFs)
+    document.addEventListener('webkitfullscreenchange', onFs)
+    return () => {
+      document.removeEventListener('fullscreenchange', onFs)
+      document.removeEventListener('webkitfullscreenchange', onFs)
+    }
+  }, [varsOnlyMode])
+
   // Cross-window sync (BroadcastChannel, highlights, popout)
   const {
     canUseBC,
@@ -327,65 +379,6 @@ function App() {
   const [scrollTop, setScrollTop] = useState(0)
   const [viewportH, setViewportH] = useState(600)
   const [showMobileTemplates, setShowMobileTemplates] = useState(false)
-  // Pop-out (child window) mode: render variables only when ?varsOnly=1
-  const varsOnlyMode = useMemo(() => {
-    try { return new URLSearchParams(window.location.search).get('varsOnly') === '1' } catch { return false }
-  }, [])
-
-  // Auto-open variables popup in vars-only mode
-  useEffect(() => {
-    if (varsOnlyMode) setShowVariablePopup(true)
-  }, [varsOnlyMode])
-
-  // In varsOnly mode, mark popout as open and clean up on close
-  useEffect(() => {
-    if (!varsOnlyMode) return
-    
-    // Mark popout as open
-    try { localStorage.setItem('ea_popout_opened', String(Date.now())) } catch {}
-    
-    // Keep the timestamp fresh while popout is open
-    const refreshInterval = setInterval(() => {
-      try { localStorage.setItem('ea_popout_opened', String(Date.now())) } catch {}
-    }, 10000) // Refresh every 10 seconds
-    
-    // Clean up on close
-    const onUnload = () => {
-      try { localStorage.removeItem('ea_popout_opened') } catch {}
-    }
-    window.addEventListener('beforeunload', onUnload)
-    
-    return () => {
-      clearInterval(refreshInterval)
-      window.removeEventListener('beforeunload', onUnload)
-      try { localStorage.removeItem('ea_popout_opened') } catch {}
-    }
-  }, [varsOnlyMode])
-
-  // In varsOnly mode, make the popup fill the window and follow resize
-  useEffect(() => {
-    if (!varsOnlyMode) return
-    const setFull = () => setVarPopupPos(p => ({ ...p, top: 0, left: 0, width: window.innerWidth, height: window.innerHeight }))
-    setFull()
-    const onResize = () => setFull()
-    window.addEventListener('resize', onResize)
-    return () => window.removeEventListener('resize', onResize)
-  }, [varsOnlyMode])
-
-  // Track fullscreen state (pop-out only)
-  useEffect(() => {
-    const onFs = () => {
-      setIsFullscreen(!!(document.fullscreenElement || document.webkitFullscreenElement))
-      // adjust size again when entering/exiting fullscreen
-      if (varsOnlyMode) setVarPopupPos(p => ({ ...p, top: 0, left: 0, width: window.innerWidth, height: window.innerHeight }))
-    }
-    document.addEventListener('fullscreenchange', onFs)
-    document.addEventListener('webkitfullscreenchange', onFs)
-    return () => {
-      document.removeEventListener('fullscreenchange', onFs)
-      document.removeEventListener('webkitfullscreenchange', onFs)
-    }
-  }, [varsOnlyMode])
 
   const toggleFullscreen = () => {
     try {
