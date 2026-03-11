@@ -426,7 +426,7 @@
   async function fetchJsonFromGitHubAPI() {
     const token = localStorage.getItem('ea_gh_token') || PRECONFIGURED_GH_TOKEN;
     if (!token) return null;
-    const repoMeta = document.querySelector('meta[name="gh-repo"]')?.content || 'snarky1980/bt-ctd-echo';
+    const repoMeta = document.querySelector('meta[name="gh-repo"]')?.content || 'stackbaritone/bt-ctd-echo';
     const [owner, repo] = repoMeta.split('/');
     const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/complete_email_templates.json?ref=main`;
     try {
@@ -449,9 +449,9 @@
 
   function buildJsonUrlCandidates(options={}){
     const { includeRemote=true, preferRemote=false } = options;
-    const repoMeta = document.querySelector('meta[name="gh-repo"]')?.content || 'snarky1980/bt-ctd-echo';
+    const repoMeta = document.querySelector('meta[name="gh-repo"]')?.content || 'stackbaritone/bt-ctd-echo';
     const rawBase = `https://raw.githubusercontent.com/${repoMeta}/main/complete_email_templates.json`;
-    const ghPagesUrl = 'https://snarky1980.github.io/bt-ctd-echo/complete_email_templates.json';
+    const ghPagesUrl = 'https://stackbaritone.github.io/bt-ctd-echo/complete_email_templates.json';
     const origin = window.location.origin && window.location.origin !== 'null' ? window.location.origin.replace(/\/$/, '') : '';
     const pathRoot = (window.location.pathname || '').replace(/\/[^\/]*$/, '');
     const locals = ['.\/complete_email_templates.json', '.\/public/complete_email_templates.json'];
@@ -1042,7 +1042,7 @@
     }
     // Derive owner/repo from homepage or location
     const homepage = (data.metadata && data.metadata.homepage) || document.querySelector('meta[name="gh-repo"]')?.content || '';
-    let owner='snarky1980', repo='bt-ctd-echo';
+    let owner='stackbaritone', repo='bt-ctd-echo';
     try {
       // Try to get repo from meta tag first (most reliable)
       const metaRepo = document.querySelector('meta[name="gh-repo"]')?.content;

@@ -9,7 +9,7 @@
  Uses local /api/openai proxy (no API key in client).
 */
 (function(){
-  const REPO_RAW_URL = 'https://raw.githubusercontent.com/snarky1980/bt-ctd-echo/main/complete_email_templates.json';
+  const REPO_RAW_URL = 'https://raw.githubusercontent.com/stackbaritone/bt-ctd-echo/main/complete_email_templates.json';
   const LOCAL_JSON = 'complete_email_templates.json';
   const isLocal = /^(localhost|127\.0\.0\.1|0\.0\.0\.0)$/i.test(location.hostname);
   const HOST_ID = 'ai-template-assistant-host';

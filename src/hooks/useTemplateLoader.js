@@ -19,8 +19,8 @@ function tryLoadAdminDataset(debug) {
 
 async function fetchTemplatesFromSources(debug) {
   if (debug) console.log('[EA][Debug] Fetching templates (prefer local data)...')
-  const RAW_MAIN = (import.meta?.env?.VITE_TEMPLATES_URL) || 'https://raw.githubusercontent.com/snarky1980/bt-ctd-echo/main/complete_email_templates.json'
-  const RAW_GHPAGES = 'https://raw.githubusercontent.com/snarky1980/bt-ctd-echo/gh-pages/complete_email_templates.json'
+  const RAW_MAIN = (import.meta?.env?.VITE_TEMPLATES_URL) || 'https://raw.githubusercontent.com/stackbaritone/bt-ctd-echo/main/complete_email_templates.json'
+  const RAW_GHPAGES = 'https://raw.githubusercontent.com/stackbaritone/bt-ctd-echo/gh-pages/complete_email_templates.json'
   const LOCAL_URL = './complete_email_templates.json'
   const BASE_URL = (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.BASE_URL) ? import.meta.env.BASE_URL : '/'
   const ABSOLUTE_URL = (BASE_URL.endsWith('/') ? BASE_URL : BASE_URL + '/') + 'complete_email_templates.json'

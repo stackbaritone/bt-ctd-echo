@@ -3,7 +3,7 @@
 > Application web de gestion de modèles de courriels avec édition de texte riche, variables dynamiques et support bilingue (FR/EN).
 
 [![Demo](https://img.shields.io/badge/demo-live-success)](https://bt-ctd-echo.bt-tb.ca/)
-[![Version](https://img.shields.io/badge/version-1.0.0-blue)](https://github.com/snarky1980/bt-ctd-echo)
+[![Version](https://img.shields.io/badge/version-1.0.0-blue)](https://github.com/stackbaritone/bt-ctd-echo)
 
 ---
 
@@ -48,7 +48,7 @@
 
 ```bash
 # Cloner et installer
-git clone https://github.com/snarky1980/bt-ctd-echo.git
+git clone https://github.com/stackbaritone/bt-ctd-echo.git
 cd bt-ctd-echo
 npm install
 

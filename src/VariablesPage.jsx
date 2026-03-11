@@ -168,8 +168,8 @@ export default function VariablesPage() {
 
     const loadData = async () => {
       try {
-        const RAW_MAIN = 'https://raw.githubusercontent.com/snarky1980/bt-ctd-echo/main/complete_email_templates.json'
-        const RAW_GHPAGES = 'https://raw.githubusercontent.com/snarky1980/bt-ctd-echo/gh-pages/complete_email_templates.json'
+        const RAW_MAIN = 'https://raw.githubusercontent.com/stackbaritone/bt-ctd-echo/main/complete_email_templates.json'
+        const RAW_GHPAGES = 'https://raw.githubusercontent.com/stackbaritone/bt-ctd-echo/gh-pages/complete_email_templates.json'
         const base = (import.meta?.env?.BASE_URL) || '/'
         const normalizedBase = base.endsWith('/') ? base : `${base}/`
         const primaryBase = new URL(normalizedBase, window.location.origin)
