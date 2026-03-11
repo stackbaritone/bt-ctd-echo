@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react'
-import { varKeysMatch, resolveVariableValue } from '../utils/variables'
-import { escapeHtml, BLOCK_ELEMENTS, convertPlainTextToHtml } from '../utils/html'
+import React, { useCallback, useEffect, useImperativeHandle, useRef } from 'react'
+import { escapeHtml, convertPlainTextToHtml } from '../utils/html'
+import { usePillEditorCore } from '../hooks/usePillEditorCore'
 import RichTextToolbar from './RichTextToolbar.jsx'
 
 const PILL_TEMPLATE_TOKEN = '__RT_PILL_VALUE__'
@@ -144,16 +144,6 @@ const refreshAllPillTemplates = (editor) => {
   pills.forEach(storePillTemplate);
 };
 
-const selectEntirePill = (pill) => {
-  if (!pill) return;
-  const selection = document.getSelection?.();
-  if (!selection) return;
-  const range = document.createRange();
-  range.selectNodeContents(pill);
-  selection.removeAllRanges();
-  selection.addRange(range);
-};
-
 const haveVariablesChanged = (prevVars = {}, nextVars = {}) => {
   const prevKeys = Object.keys(prevVars);
   const nextKeys = Object.keys(nextVars);
@@ -192,102 +182,68 @@ const RichTextPillEditor = React.forwardRef(({
   onRichTextCommand,
   templateLanguage = 'fr'
 }, ref) => {
-  const editorRef = useRef(null);
-  const [isFocused, setIsFocused] = useState(false);
-  const lastSelectionVarRef = useRef(null);
-  const prevValueRef = useRef(value);
-  const prevVariablesRef = useRef(variables);
-  const hasMountedRef = useRef(false);
-  const autoSelectTrackerRef = useRef({ varName: null, timestamp: 0 });
-  const autoSelectSuppressedUntilRef = useRef(0);
-  const clickSelectTimerRef = useRef(null);
-  
-  // Undo deleted pill state
-  const [deletedPill, setDeletedPill] = useState(null);
-  const deletedPillTimeoutRef = useRef(null);
-  const previousPillsRef = useRef(new Set());
+  const editorRef = useRef(null)
+  const prevValueRef = useRef(value)
+  const prevVariablesRef = useRef(variables)
+  const hasMountedRef = useRef(false)
 
-  // Resolve variable value by language preference
-  const getVarValue = useCallback((name = '') => {
-    return resolveVariableValue(variables, name, templateLanguage);
-  }, [variables, templateLanguage]);
+  const {
+    isFocused,
+    setIsFocused,
+    deletedPill,
+    setDeletedPill,
+    deletedPillTimeoutRef,
+    autoSelectSuppressedUntilRef,
+    getVarValue,
+    clearActivePillPlaceholder,
+    applyFocusedPill,
+    queueAutoSelectForPill,
+    syncSiblingPills,
+    detectDeletedPills,
+    extractText,
+    emitFocusedVarChange,
+    processPillValues,
+    trackDeletedPill,
+    updatePreviousPills,
+    handleKeyDown,
+    handleBeforeInput,
+    handleCompositionStart,
+    handleDoubleClick,
+    handleMouseDown,
+    handleCopy,
+  } = usePillEditorCore({
+    editorRef,
+    variables,
+    templateLanguage,
+    focusedVarName,
+    onFocusedVarChange,
+    value,
+    trackFocusedVar: true
+  })
 
-  const clearActivePillPlaceholder = useCallback(() => {
-    if (!editorRef.current) return false;
-    const selection = document.getSelection?.();
-    if (!selection?.anchorNode) return false;
-    const anchor = selection.anchorNode;
-    const pillElement = anchor.nodeType === Node.ELEMENT_NODE
-      ? anchor.closest?.('.var-pill')
-      : anchor.parentElement?.closest?.('.var-pill');
-    if (!pillElement) return false;
-    const varName = pillElement.getAttribute('data-var');
-    if (!varName) return false;
-    const placeholderToken = `<<${varName}>>`;
-    const currentText = (pillElement.textContent || '').trim();
-    if (currentText === placeholderToken) {
-      pillElement.innerHTML = '';
-      pillElement.setAttribute('data-display', '');
-      pillElement.classList.add('empty');
-      pillElement.classList.remove('filled');
-      return true;
-    }
-    return false;
-  }, []);
-
-  // Detect if a pill was deleted by comparing current pills to previous state
-  const detectDeletedPills = useCallback(() => {
-    if (!editorRef.current) return null;
-    const currentPills = new Set();
-    editorRef.current.querySelectorAll('.var-pill').forEach(pill => {
-      const varName = pill.getAttribute('data-var');
-      if (varName) currentPills.add(varName);
-    });
-    
-    // Find pills that were in previous state but not in current
-    for (const varName of previousPillsRef.current) {
-      if (!currentPills.has(varName)) {
-        return varName;
-      }
-    }
-    return null;
-  }, []);
-
-  // Restore a deleted pill by inserting its placeholder at the end
+  // Restore a deleted pill by inserting its placeholder at cursor or end
   const restoreDeletedPill = useCallback((varName) => {
-    if (!varName || !editorRef.current) return;
-    
-    // Insert the placeholder at the current cursor position or at the end
-    const placeholder = `<<${varName}>>`;
-    const selection = document.getSelection?.();
-    
+    if (!varName || !editorRef.current) return
+    const placeholder = `<<${varName}>>`
+    const selection = document.getSelection?.()
     if (selection && selection.rangeCount > 0 && editorRef.current.contains(selection.anchorNode)) {
-      const range = selection.getRangeAt(0);
-      range.deleteContents();
-      const textNode = document.createTextNode(placeholder);
-      range.insertNode(textNode);
-      range.collapse(false);
+      const range = selection.getRangeAt(0)
+      range.deleteContents()
+      const textNode = document.createTextNode(placeholder)
+      range.insertNode(textNode)
+      range.collapse(false)
     } else {
-      // Insert at end
-      const currentValue = extractText();
-      const newValue = currentValue + placeholder;
-      if (onChange) {
-        onChange({ target: { value: newValue, htmlValue: editorRef.current.innerHTML } });
-      }
+      const currentValue = extractText()
+      const newValue = currentValue + placeholder
+      if (onChange) onChange({ target: { value: newValue, htmlValue: editorRef.current.innerHTML } })
     }
-    
-    // Clear the undo state
-    setDeletedPill(null);
+    setDeletedPill(null)
     if (deletedPillTimeoutRef.current) {
-      clearTimeout(deletedPillTimeoutRef.current);
-      deletedPillTimeoutRef.current = null;
+      clearTimeout(deletedPillTimeoutRef.current)
+      deletedPillTimeoutRef.current = null
     }
-    
-    // Trigger input to re-render
-    setTimeout(() => {
-      handleInput();
-    }, 10);
-  }, [onChange]);
+    setTimeout(() => { handleInput() }, 10)
+  }, [onChange, extractText, setDeletedPill, deletedPillTimeoutRef])
 
   // Render content with pills - IDENTICAL to SimplePillEditor
   const renderContent = (text) => {
@@ -351,285 +307,46 @@ const RichTextPillEditor = React.forwardRef(({
     return parts.join('');
   };
 
-  // Focus management - IDENTICAL to SimplePillEditor
-  const applyFocusedPill = useCallback((varName) => {
-    const editor = editorRef.current;
-    if (!editor) return;
-
-    editor.querySelectorAll('.var-pill').forEach((pill) => {
-      const pillVar = pill.getAttribute('data-var');
-      const isMatch = varName ? varKeysMatch(pillVar, varName) : false;
-      pill.classList.toggle('focused', !!isMatch);
-    });
-  }, []);
-
-  const queueAutoSelectForPill = useCallback((pill, varName) => {
-    if (!pill || !varName) return;
-    if (!pill.classList.contains('empty')) return;
-    const nowTs = Date.now();
-    if (nowTs < (autoSelectSuppressedUntilRef.current || 0)) {
-      return;
-    }
-    const selection = document.getSelection?.();
-    if (!selection) return;
-    if (!selection.isCollapsed && selection.toString()) return;
-
-    const tracker = autoSelectTrackerRef.current;
-    const now = Date.now();
-    if (tracker.varName === varName && now - tracker.timestamp < 200) {
-      return;
-    }
-
-    tracker.varName = varName;
-    tracker.timestamp = now;
-
-    requestAnimationFrame(() => {
-      selectEntirePill(pill);
-    });
-  }, []);
-
-  const syncSiblingPills = useCallback((varName, newValue) => {
-    if (!editorRef.current || !varName) return;
-
-    const selection = document.getSelection?.();
-    let activePill = null;
-    if (selection?.anchorNode) {
-      const anchor = selection.anchorNode;
-      activePill = anchor.nodeType === Node.ELEMENT_NODE
-        ? anchor.closest?.('.var-pill')
-        : anchor.parentElement?.closest?.('.var-pill');
-    }
-
-    const normalizedValue = newValue ?? '';
-    const trimmed = normalizedValue.trim();
-    const displayValue = trimmed.length > 0 ? normalizedValue : `<<${varName}>>`;
-    const displayHtml = convertPlainTextToHtml(displayValue);
-    const isFilled = trimmed.length > 0;
-
-    editorRef.current.querySelectorAll('.var-pill').forEach((pill) => {
-      if (pill.getAttribute('data-var') !== varName) return;
-      if (activePill && pill === activePill) return;
-
-      if (pill.innerHTML !== displayHtml) {
-        pill.innerHTML = displayHtml;
-      }
-      pill.classList.toggle('filled', isFilled);
-      pill.classList.toggle('empty', !isFilled);
-      pill.setAttribute('data-display', isFilled ? normalizedValue : '');
-    });
-  }, []);
-
-  const emitFocusedVarChange = useCallback((varName) => {
-    const normalized = varName || null;
-    if (lastSelectionVarRef.current === normalized) return;
-    lastSelectionVarRef.current = normalized;
-    if (typeof onFocusedVarChange === 'function') {
-      onFocusedVarChange(normalized);
-    }
-  }, [onFocusedVarChange]);
-
-  // Extract text - IDENTICAL to SimplePillEditor
-  const extractText = () => {
-    if (!editorRef.current) return '';
-
-    let result = '';
-
-    const append = (text = '') => {
-      if (!text) return;
-      result += text;
-    };
-
-    const ensureTrailingNewline = () => {
-      if (!result.endsWith('\n')) {
-        result += '\n';
-      }
-    };
-
-    const traverse = (node) => {
-      node.childNodes.forEach((child) => {
-        if (child.nodeType === Node.TEXT_NODE) {
-          const parentElement = child.parentElement;
-          if (parentElement && parentElement.closest('.var-pill')) {
-            return;
-          }
-          append(child.textContent ?? '');
-        } else if (child.nodeType === Node.ELEMENT_NODE) {
-          const element = child;
-          if (element.classList.contains('var-pill')) {
-            const varName = element.getAttribute('data-var');
-            const placeholder = element.getAttribute('data-value') || (varName ? `<<${varName}>>` : '');
-            append(placeholder);
-          } else if (element.tagName === 'BR') {
-            append('\n');
-          } else {
-            const isBlock = BLOCK_ELEMENTS.has(element.tagName);
-            if (isBlock && result && !result.endsWith('\n')) {
-              append('\n');
-            }
-            traverse(element);
-            if (isBlock) {
-              ensureTrailingNewline();
-            }
-          }
-        }
-      });
-    };
-
-    traverse(editorRef.current);
-
-    const normalized = result.replace(/\u00a0/g, ' ');
-    if (normalized.endsWith('\n') && !normalized.endsWith('\n\n')) {
-      return normalized.slice(0, -1);
-    }
-    return normalized;
-  };
-
-
-
-  // Handle input - IDENTICAL to SimplePillEditor
+  // Handle input - Rich text version with storePillTemplate
   const handleInput = () => {
-    const text = extractText();
-    const html = editorRef.current?.innerHTML ?? '';
+    const text = extractText()
+    const html = editorRef.current?.innerHTML ?? ''
+    const pillElements = editorRef.current?.querySelectorAll('.var-pill')
 
-    const pillElements = editorRef.current?.querySelectorAll('.var-pill');
-    const updates = {};
-    const seenVars = new Set();
-    let hasChanges = false;
-
-    // Get the currently active/focused pill to prioritize its value
-    const selection = document.getSelection?.();
-    let activePill = null;
+    const selection = document.getSelection?.()
+    let activePill = null
     if (selection?.anchorNode) {
-      const anchor = selection.anchorNode;
+      const anchor = selection.anchorNode
       activePill = anchor.nodeType === Node.ELEMENT_NODE
         ? anchor.closest?.('.var-pill')
-        : anchor.parentElement?.closest?.('.var-pill');
+        : anchor.parentElement?.closest?.('.var-pill')
     }
 
-    // First pass: collect value from active pill
-    if (activePill && pillElements) {
-      const varName = activePill.getAttribute('data-var');
-      if (varName) {
-        const rawText = activePill.textContent ?? '';
-        const normalizedText = rawText
-          .replace(/\u00a0/g, ' ')
-          .replace(/[\r\n]+/g, ' ');
-        const placeholder = `<<${varName}>>`;
-        const withoutPlaceholder = normalizedText.split(placeholder).join('');
-        const trimmedValue = withoutPlaceholder.trim();
-        let newValue = trimmedValue;
+    const { updates, hasChanges } = processPillValues(pillElements, activePill, (pill) => {
+      storePillTemplate(pill)
+    })
 
-        if (!trimmedValue) {
-          newValue = '';
-          if (rawText !== placeholder) {
-            activePill.textContent = placeholder;
-          }
-          activePill.classList.remove('filled');
-          activePill.classList.add('empty');
-        } else {
-          activePill.classList.add('filled');
-          activePill.classList.remove('empty');
-        }
+    Object.entries(updates).forEach(([vn, nv]) => syncSiblingPills(vn, nv))
 
-        activePill.setAttribute('data-display', newValue);
+    if (hasChanges && typeof onVariablesChange === 'function') onVariablesChange(updates)
+    if (onChange) onChange({ target: { value: text, htmlValue: html } })
 
-        if ((variables?.[varName] || '') !== newValue) {
-          hasChanges = true;
-        }
-        updates[varName] = newValue;
-        seenVars.add(varName);
-        storePillTemplate(activePill);
-      }
-    }
-
-    // Second pass: collect values from other pills (but skip if varName already collected)
-    if (pillElements) {
-      pillElements.forEach((pill) => {
-        const varName = pill.getAttribute('data-var');
-        if (!varName || seenVars.has(varName)) return;
-
-        const rawText = pill.textContent ?? '';
-        const normalizedText = rawText
-          .replace(/\u00a0/g, ' ')
-          .replace(/[\r\n]+/g, ' ');
-        const placeholder = `<<${varName}>>`;
-        const withoutPlaceholder = normalizedText.split(placeholder).join('');
-        const trimmedValue = withoutPlaceholder.trim();
-        let newValue = trimmedValue;
-
-        if (!trimmedValue) {
-          newValue = '';
-          if (rawText !== placeholder) {
-            pill.textContent = placeholder;
-          }
-          pill.classList.remove('filled');
-          pill.classList.add('empty');
-        } else {
-          pill.classList.add('filled');
-          pill.classList.remove('empty');
-        }
-
-        pill.setAttribute('data-display', newValue);
-
-        if ((variables?.[varName] || '') !== newValue) {
-          hasChanges = true;
-        }
-        updates[varName] = newValue;
-        seenVars.add(varName);
-        storePillTemplate(pill);
-      });
-    }
-
-    Object.entries(updates).forEach(([varName, newValue]) => {
-      syncSiblingPills(varName, newValue);
-    });
-
-    if (hasChanges && typeof onVariablesChange === 'function') {
-      onVariablesChange(updates);
-    }
-
-    if (onChange) {
-      onChange({ target: { value: text, htmlValue: html } });
-    }
-
-    // Detect if a pill was deleted and offer undo
-    const deletedVar = detectDeletedPills();
-    if (deletedVar) {
-      // Clear any existing timeout
-      if (deletedPillTimeoutRef.current) {
-        clearTimeout(deletedPillTimeoutRef.current);
-      }
-      setDeletedPill(deletedVar);
-      // Auto-hide after 5 seconds
-      deletedPillTimeoutRef.current = setTimeout(() => {
-        setDeletedPill(null);
-        deletedPillTimeoutRef.current = null;
-      }, 5000);
-    }
-
-    // Update previous pills reference
-    const currentPills = new Set();
-    if (pillElements) {
-      pillElements.forEach(pill => {
-        const varName = pill.getAttribute('data-var');
-        if (varName) currentPills.add(varName);
-      });
-    }
-    previousPillsRef.current = currentPills;
-  };
+    // Detect deleted pills after processing
+    const deletedVar = detectDeletedPills()
+    if (deletedVar) trackDeletedPill(deletedVar)
+    updatePreviousPills(pillElements)
+  }
 
   useImperativeHandle(ref, () => ({
-    focus: () => {
-      editorRef.current?.focus();
-    },
+    focus: () => editorRef.current?.focus(),
     getHtml: () => editorRef.current?.innerHTML ?? '',
     getPlainText: () => extractText(),
     getEditorElement: () => editorRef.current
-  }));
+  }))
 
-  // Handle focus - IDENTICAL to SimplePillEditor
+  // Handle focus
   const handleFocus = (e) => {
-    setIsFocused(true);
+    setIsFocused(true)
     // Defer to allow selection to settle
     requestAnimationFrame(() => {
       const selection = document.getSelection?.();
@@ -651,21 +368,18 @@ const RichTextPillEditor = React.forwardRef(({
     onFocus?.(e);
   };
 
-  // Handle blur - IDENTICAL to SimplePillEditor
   const handleBlur = (e) => {
-    setIsFocused(false);
-    handleInput(); // Ensure final value is captured
+    setIsFocused(false)
+    handleInput()
 
     if (typeof document !== 'undefined' ? document.hasFocus?.() !== false : true) {
-      emitFocusedVarChange(null);
-      applyFocusedPill(null);
+      emitFocusedVarChange(null)
+      applyFocusedPill(null)
     }
 
-    autoSelectTrackerRef.current = { varName: null, timestamp: 0 };
-    onBlur?.(e);
-  };
+    onBlur?.(e)
+  }
 
-  // Handle paste - IDENTICAL to SimplePillEditor
   const handlePaste = (event) => {
     if (!editorRef.current) return;
 
@@ -695,217 +409,7 @@ const RichTextPillEditor = React.forwardRef(({
     });
   };
 
-  // Handle key down - IDENTICAL to SimplePillEditor
-  const handleKeyDown = (event) => {
-    if (event.key !== 'Enter') {
-      return;
-    }
 
-    const selection = document.getSelection?.();
-    if (!selection) {
-      return;
-    }
-
-    const anchorNode = selection.anchorNode;
-    if (!anchorNode) {
-      return;
-    }
-
-    const pillElement = anchorNode.nodeType === Node.ELEMENT_NODE
-      ? anchorNode.closest?.('.var-pill')
-      : anchorNode.parentElement?.closest?.('.var-pill');
-
-    if (pillElement) {
-      event.preventDefault();
-    }
-  };
-
-  // Auto-select pill content on mouse down to enable quick overwrite
-  const handleMouseDown = (event) => {
-    if (!editorRef.current) return;
-    const target = event.target;
-    if (!(target instanceof Element)) return;
-
-    const pillElement = target.closest?.('.var-pill');
-    if (pillElement && editorRef.current.contains(pillElement)) {
-      const clickCount = event.detail;
-      const varName = pillElement.getAttribute('data-var') || null;
-      // Single click: schedule select-all shortly. Double-click: cancel and allow native caret in pill.
-      if (clickCount === 1) {
-        if (clickSelectTimerRef.current) {
-          clearTimeout(clickSelectTimerRef.current);
-        }
-        clickSelectTimerRef.current = setTimeout(() => {
-          selectEntirePill(pillElement);
-          clickSelectTimerRef.current = null;
-        }, 220);
-      } else if (clickCount >= 2) {
-        if (clickSelectTimerRef.current) {
-          clearTimeout(clickSelectTimerRef.current);
-          clickSelectTimerRef.current = null;
-        }
-        autoSelectSuppressedUntilRef.current = Date.now() + 600;
-      }
-      emitFocusedVarChange(varName);
-      applyFocusedPill(varName);
-    }
-  };
-
-  const handleBeforeInput = useCallback((event) => {
-    const inputType = event?.inputType || '';
-    if (!inputType || inputType.startsWith('insert') || inputType === 'deleteContentBackward') {
-      clearActivePillPlaceholder();
-    }
-  }, [clearActivePillPlaceholder]);
-
-  const handleCompositionStart = useCallback(() => {
-    clearActivePillPlaceholder();
-  }, [clearActivePillPlaceholder]);
-
-  // Handle copy event - clean up pill styles and resolve variables
-  const handleCopy = useCallback((event) => {
-    const selection = document.getSelection?.();
-    if (!selection || selection.isCollapsed) return; // Let default handle if no selection
-    
-    event.preventDefault();
-    
-    // Get the selected range
-    const range = selection.getRangeAt(0);
-    const fragment = range.cloneContents();
-    
-    // Create a temporary container to process the content
-    const tempDiv = document.createElement('div');
-    tempDiv.appendChild(fragment);
-    
-    // Colors to strip (pill backgrounds that should not appear in pasted content)
-    const pillBackgroundColors = new Set([
-      'rgb(245, 243, 232)', 'rgb(245,243,232)', '#f5f3e8',  // filled pill
-      'rgb(254, 249, 195)', 'rgb(254,249,195)', '#fef9c3',  // empty pill (yellow)
-      'rgb(219, 234, 254)', 'rgb(219,234,254)', '#dbeafe',  // focused pill (blue)
-      'rgba(245, 243, 232, 1)', 'rgba(245,243,232,1)',
-      'rgba(254, 249, 195, 1)', 'rgba(254,249,195,1)',
-      'rgba(219, 234, 254, 1)', 'rgba(219,234,254,1)',
-    ]);
-    
-    // Helper to check if a color is a pill background
-    const isPillBackground = (color) => {
-      if (!color) return false;
-      const normalized = color.replace(/\s+/g, '').toLowerCase();
-      return pillBackgroundColors.has(normalized) || 
-             normalized.includes('245,243,232') || 
-             normalized.includes('254,249,195') ||
-             normalized.includes('219,234,254');
-    };
-    
-    // Process all pills - replace with resolved values
-    const pills = tempDiv.querySelectorAll('.var-pill');
-    pills.forEach(pill => {
-      const varName = pill.getAttribute('data-var');
-      const resolvedValue = varName ? getVarValue(varName) : '';
-      const displayText = resolvedValue.trim() || pill.textContent || '';
-      
-      // Create a plain text node (no span, no styling)
-      const textNode = document.createTextNode(displayText);
-      pill.replaceWith(textNode);
-    });
-    
-    // Strip pill background colors from ALL elements (in case browser left remnants)
-    const allElements = tempDiv.querySelectorAll('*');
-    allElements.forEach(el => {
-      const style = el.getAttribute('style');
-      if (style) {
-        // Parse and filter out pill background colors
-        const bgMatch = style.match(/background(?:-color)?:\s*([^;]+)/i);
-        if (bgMatch && isPillBackground(bgMatch[1])) {
-          // Remove background-color from style
-          const newStyle = style
-            .replace(/background-color:\s*[^;]+;?\s*/gi, '')
-            .replace(/background:\s*[^;]+;?\s*/gi, '')
-            .trim();
-          if (newStyle) {
-            el.setAttribute('style', newStyle);
-          } else {
-            el.removeAttribute('style');
-          }
-        }
-      }
-      
-      // Also remove var-pill class if any remnants
-      el.classList.remove('var-pill', 'filled', 'empty', 'focused', 'hovered');
-      if (el.classList.length === 0) {
-        el.removeAttribute('class');
-      }
-      
-      // Remove data attributes from pills
-      el.removeAttribute('data-var');
-      el.removeAttribute('data-value');
-      el.removeAttribute('data-display');
-      el.removeAttribute('data-template');
-    });
-    
-    // Get clean text content
-    const textContent = tempDiv.textContent || '';
-    
-    // Build clean HTML preserving rich text formatting (but no pill styles)
-    const htmlContent = tempDiv.innerHTML;
-    
-    // Write to clipboard with both formats
-    try {
-      if (navigator.clipboard && window.ClipboardItem) {
-        const clipboardItem = new ClipboardItem({
-          'text/html': new Blob([htmlContent], { type: 'text/html' }),
-          'text/plain': new Blob([textContent], { type: 'text/plain' })
-        });
-        navigator.clipboard.write([clipboardItem]);
-      } else {
-        // Fallback for older browsers
-        event.clipboardData?.setData('text/plain', textContent);
-        event.clipboardData?.setData('text/html', htmlContent);
-      }
-    } catch (err) {
-      console.error('Copy failed:', err);
-      // Last resort fallback
-      event.clipboardData?.setData('text/plain', textContent);
-    }
-  }, [getVarValue]);
-
-  const handleDoubleClick = (event) => {
-    if (!editorRef.current) return;
-    const target = event.target;
-    if (!(target instanceof Element)) return;
-
-    const pillElement = target.closest?.('.var-pill');
-    if (!pillElement || !editorRef.current.contains(pillElement)) return;
-
-    // Prevent native word selection and place a collapsed caret where clicked
-    event.preventDefault();
-    try {
-      const selection = document.getSelection?.();
-      if (!selection) return;
-
-      let range = null;
-      if (document.caretRangeFromPoint) {
-        range = document.caretRangeFromPoint(event.clientX, event.clientY);
-      } else if (document.caretPositionFromPoint) {
-        const pos = document.caretPositionFromPoint(event.clientX, event.clientY);
-        if (pos) {
-          range = document.createRange();
-          range.setStart(pos.offsetNode, pos.offset);
-          range.collapse(true);
-        }
-      }
-
-      if (!range || !pillElement.contains(range.startContainer)) {
-        range = document.createRange();
-        range.selectNodeContents(pillElement);
-        range.collapse(false);
-      }
-
-      selection.removeAllRanges();
-      selection.addRange(range);
-      autoSelectSuppressedUntilRef.current = Date.now() + 600;
-    } catch {}
-  };
 
   // Handle rich text commands
   const handleRichTextCommand = useCallback((command, value) => {
@@ -1004,11 +508,6 @@ const RichTextPillEditor = React.forwardRef(({
     }
   }, [value, variables, isFocused, getVarValue, templateLanguage]);
 
-  // Apply focused pill styling - IDENTICAL to SimplePillEditor
-  useEffect(() => {
-    applyFocusedPill(focusedVarName);
-  }, [focusedVarName, variables, applyFocusedPill]);
-
   // Update pill display values when variables change, even when focused
   useEffect(() => {
     if (!editorRef.current) return;
@@ -1050,75 +549,6 @@ const RichTextPillEditor = React.forwardRef(({
       }
     });
   }, [variables, getVarValue]);
-
-  // Selection change handler - IDENTICAL to SimplePillEditor
-  useEffect(() => {
-    if (!isFocused || !editorRef.current) return;
-
-    const handleSelectionChange = () => {
-      const editor = editorRef.current;
-      if (!editor) return;
-      const docHasFocus = typeof document === 'undefined' || !document.hasFocus || document.hasFocus();
-      if (!docHasFocus) {
-        return;
-      }
-      const selection = document.getSelection?.();
-      if (!selection) {
-        emitFocusedVarChange(null);
-        applyFocusedPill(null);
-        autoSelectTrackerRef.current = { varName: null, timestamp: 0 };
-        return;
-      }
-
-      const anchor = selection.anchorNode;
-      if (!anchor || !editor.contains(anchor)) {
-        emitFocusedVarChange(null);
-        applyFocusedPill(null);
-        autoSelectTrackerRef.current = { varName: null, timestamp: 0 };
-        return;
-      }
-
-      const pillElement = anchor.nodeType === Node.ELEMENT_NODE
-        ? anchor.closest?.('.var-pill')
-        : anchor.parentElement?.closest?.('.var-pill');
-      const varName = pillElement?.getAttribute('data-var') || null;
-      emitFocusedVarChange(varName);
-      applyFocusedPill(varName);
-
-      if (varName && selection.isCollapsed) {
-        if (Date.now() >= (autoSelectSuppressedUntilRef.current || 0)) {
-          queueAutoSelectForPill(pillElement, varName);
-        }
-      }
-
-      if (!varName) {
-        autoSelectTrackerRef.current = { varName: null, timestamp: 0 };
-      }
-    };
-
-    document.addEventListener('selectionchange', handleSelectionChange);
-    return () => document.removeEventListener('selectionchange', handleSelectionChange);
-  }, [isFocused, emitFocusedVarChange, applyFocusedPill, queueAutoSelectForPill]);
-
-  // Initialize previous pills reference when value changes
-  useEffect(() => {
-    if (!editorRef.current) return;
-    const pillNames = new Set();
-    editorRef.current.querySelectorAll('.var-pill').forEach(pill => {
-      const varName = pill.getAttribute('data-var');
-      if (varName) pillNames.add(varName);
-    });
-    previousPillsRef.current = pillNames;
-  }, [value]);
-
-  // Cleanup timeout on unmount
-  useEffect(() => {
-    return () => {
-      if (deletedPillTimeoutRef.current) {
-        clearTimeout(deletedPillTimeoutRef.current);
-      }
-    };
-  }, []);
 
   const undoLabel = templateLanguage === 'fr' ? 'Annuler' : 'Undo';
 

@@ -1,17 +1,84 @@
-import { useMemo, useCallback } from 'react'
-import { useSynonyms } from './useSynonyms'
+import React, { useMemo, useCallback } from 'react'
 import Fuse from 'fuse.js'
+import { normalize, expandQuery } from '../constants/synonyms.js'
+import { interfaceTexts } from '../constants/interfaceTexts.js'
 
-const normalize = (s = '') => s
-  .normalize('NFD')
-  .replace(/\p{Diacritic}+/gu, '')
-  .toLowerCase()
+/**
+ * Hook for template search, filtering, category labelling, and favorites.
+ * Extracts the advanced search logic from App.jsx (exact → synonym → fuzzy → substring).
+ */
+export function useTemplateFilter({
+  templatesData,
+  searchQuery,
+  selectedCategory,
+  favoritesOnly,
+  favorites,
+  selectedMode,
+  interfaceLanguage,
+  debug,
+}) {
+  // Category labels from metadata + template fallbacks
+  const categoryLabels = useMemo(() => {
+    if (!templatesData) return {}
+    const labels = { ...(templatesData.metadata?.categoryLabels || {}) }
+    ;(templatesData.templates || []).forEach(t => {
+      const key = t?.category
+      if (!key) return
+      if (!labels[key]) labels[key] = { fr: '', en: '' }
+      if (t.category_fr && !labels[key].fr) labels[key].fr = t.category_fr
+      if (t.category_en && !labels[key].en) labels[key].en = t.category_en
+    })
+    return labels
+  }, [templatesData])
 
-export function useTemplateSearch(templatesData, searchQuery, selectedCategory, favoritesOnly, favorites) {
+  // Category list from metadata or derived from templates
+  const categories = useMemo(() => {
+    if (!templatesData) return []
+    const metaCats = templatesData?.metadata?.categories
+    return Array.isArray(metaCats) && metaCats.length
+      ? metaCats
+      : [...new Set((templatesData.templates || []).map(t => t.category).filter(Boolean))]
+  }, [templatesData])
+
+  const getCategoryLabel = useCallback((categoryKey) => {
+    if (!categoryKey) {
+      return interfaceLanguage === 'fr' ? 'Autre' : 'Other'
+    }
+    const labels = categoryLabels[categoryKey]
+    if (labels) {
+      const primary = interfaceLanguage === 'fr' ? labels.fr : labels.en
+      if (primary && primary.trim().length > 0) return primary
+      const fallback = interfaceLanguage === 'fr' ? labels.en : labels.fr
+      if (fallback && fallback.trim().length > 0) return fallback
+    }
+    const fallbackText = (interfaceTexts?.[interfaceLanguage]?.categories?.[categoryKey]) || categoryKey
+    if (debug && !labels) {
+      console.log(`Category label not found for: ${categoryKey}, using fallback: ${fallbackText}`)
+    }
+    return fallbackText
+  }, [categoryLabels, interfaceLanguage, debug])
+
+  const orderedCategories = useMemo(() => {
+    if (!categories || !categories.length) return []
+    return [...categories].sort((a, b) => {
+      const labelA = getCategoryLabel(a) || a
+      const labelB = getCategoryLabel(b) || b
+      return labelA.localeCompare(labelB, interfaceLanguage === 'fr' ? 'fr' : 'en', { sensitivity: 'base' })
+    })
+  }, [categories, getCategoryLabel, interfaceLanguage])
+
+  // Main search/filter computation
   const { filteredTemplates, searchMatchMap } = useMemo(() => {
     const empty = { filteredTemplates: [], searchMatchMap: {} }
     if (!templatesData) return empty
     let dataset = templatesData.templates
+
+    const hasMode = (t, mode) => {
+      const modes = Array.isArray(t.utilisateur) ? t.utilisateur : (t.utilisateur ? [t.utilisateur] : ['conseillers'])
+      return modes.includes(mode)
+    }
+
+    dataset = dataset.filter(t => hasMode(t, selectedMode))
 
     const qRaw = (searchQuery || '').trim()
     const hasSearchQuery = qRaw.length > 0
@@ -26,6 +93,7 @@ export function useTemplateSearch(templatesData, searchQuery, selectedCategory, 
 
     if (!qRaw) return { filteredTemplates: dataset, searchMatchMap: {} }
 
+    // Tokenize query supporting quotes and AND/OR (EN/FR)
     const tokenize = (s) => {
       const out = []
       let buf = ''
@@ -68,19 +136,10 @@ export function useTemplateSearch(templatesData, searchQuery, selectedCategory, 
       it.title?.fr || '', it.title?.en || '', it.description?.fr || '', it.description?.en || '', it.category || ''
     ].join(' '))
 
-    const expandedClauses = useMemo(() => {
-      return clauses.map(clause =>
-        clause.map(term => {
-          const synonyms = getSynonyms(term)
-          return synonyms.split(/\s+/).filter(Boolean)
-        })
-      )
-    }, [clauses, getSynonyms])
-
-    const itemMatchesClause = (it, clause, expandedClause) => {
+    const itemMatchesClause = (it, clause) => {
       const text = itemText(it)
-      return clause.every((term, index) => {
-        const exp = expandedClause[index]
+      return clause.every(term => {
+        const exp = expandQuery(term).split(/\s+/).filter(Boolean)
         if (!exp.length) return true
         return exp.some(w => text.includes(w))
       })
@@ -88,9 +147,7 @@ export function useTemplateSearch(templatesData, searchQuery, selectedCategory, 
 
     let gated = dataset
     if (hasOps && clauses.length) {
-      gated = dataset.filter(it =>
-        clauses.some((cl, clIndex) => itemMatchesClause(it, cl, expandedClauses[clIndex]))
-      )
+      gated = dataset.filter(it => clauses.some(cl => itemMatchesClause(it, cl)))
     }
     if (!gated.length) return { filteredTemplates: [], searchMatchMap: {} }
 
@@ -152,6 +209,7 @@ export function useTemplateSearch(templatesData, searchQuery, selectedCategory, 
       return { items: out.map(o => o.item), matchMap: map }
     }
 
+    // Stage 1: exact match on RAW tokens
     const rawTerms = tokens.filter(t => t !== 'AND' && t !== 'OR').map(s => s.trim()).filter(Boolean)
     if (rawTerms.length) {
       const { items: exactItems, matchMap: exactMap } = collectExact(gated, rawTerms)
@@ -160,7 +218,8 @@ export function useTemplateSearch(templatesData, searchQuery, selectedCategory, 
       }
     }
 
-    const expanded = useSynonyms(qRaw)
+    // Stage 2: exact match on expanded synonyms
+    const expanded = expandQuery(qRaw)
     const expandedTerms = Array.from(new Set(expanded.split(/\s+/).filter(Boolean)))
     if (expandedTerms.length) {
       const { items: exactItems2, matchMap: exactMap2 } = collectExact(gated, expandedTerms)
@@ -169,6 +228,7 @@ export function useTemplateSearch(templatesData, searchQuery, selectedCategory, 
       }
     }
 
+    // Stage 3: conservative fuzzy with dynamic threshold
     const shortest = (rawTerms.length ? Math.min(...rawTerms.map(t => t.length)) : qRaw.length) || 1
     let dynThreshold = 0.32
     if (shortest <= 2) dynThreshold = 0.1
@@ -224,6 +284,7 @@ export function useTemplateSearch(templatesData, searchQuery, selectedCategory, 
       }
     }
 
+    // Stage 4: simple normalized substring fallback
     if (acc.size === 0) {
       const needle = normalize(qRaw)
       const simple = []
@@ -257,16 +318,16 @@ export function useTemplateSearch(templatesData, searchQuery, selectedCategory, 
     const items = results.map(r => r.item)
     const matchMap = {}
     for (const r of results) {
-      const id = r.item.id
-      matchMap[id] = r.matches
+      matchMap[r.item.id] = r.matches
     }
 
     return { filteredTemplates: sortWithFavoritesFirst(items), searchMatchMap: matchMap }
-  }, [templatesData, searchQuery, selectedCategory, favoritesOnly, favorites])
+  }, [templatesData, searchQuery, selectedCategory, favoritesOnly, favorites, selectedMode])
 
-  const getMatchRanges = useCallback((id, key) => (searchMatchMap && searchMatchMap[id] && searchMatchMap[id][key]) || null, [searchMatchMap])
+  // Highlight helpers
+  const getMatchRanges = (id, key) => (searchMatchMap && searchMatchMap[id] && searchMatchMap[id][key]) || null
 
-  const renderHighlighted = useCallback((text = '', ranges) => {
+  const renderHighlighted = (text = '', ranges) => {
     if (!ranges || !ranges.length) return text
     const parts = []
     let last = 0
@@ -277,7 +338,19 @@ export function useTemplateSearch(templatesData, searchQuery, selectedCategory, 
     }
     if (last < text.length) parts.push(text.slice(last))
     return <>{parts}</>
-  }, [])
+  }
 
-  return { filteredTemplates, getMatchRanges, renderHighlighted }
+  const isFav = (id) => favorites.includes(id)
+
+  return {
+    filteredTemplates,
+    searchMatchMap,
+    getMatchRanges,
+    renderHighlighted,
+    categoryLabels,
+    categories,
+    getCategoryLabel,
+    orderedCategories,
+    isFav,
+  }
 }

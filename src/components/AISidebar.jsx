@@ -5,6 +5,7 @@ import { Button } from './ui/button.jsx'
 import { Textarea } from './ui/textarea.jsx'
 import { Sparkles, Copy, CheckCircle, Lightbulb, Zap, Globe, ExternalLink, Info } from 'lucide-react'
 import { resolveVariableValue as resolveCanonicalVar } from '../utils/variables'
+import { sanitizeHtml } from '../utils/html'
 
 const ACTIONS = {
   improve: { icon: Sparkles, color: 'from-slate-600 to-slate-700' },
@@ -190,7 +191,7 @@ const AISidebar = ({ emailText, onResult, variables, interfaceLanguage = 'fr', t
 
     // Fallback: parse HTML and replace spans with data-var attributes
     const tempDiv = document.createElement('div')
-    tempDiv.innerHTML = htmlText
+    tempDiv.innerHTML = sanitizeHtml(htmlText)
 
     const normalizeValue = (value) => sanitizeResolvedValue(value)
 

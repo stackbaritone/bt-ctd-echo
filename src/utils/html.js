@@ -2,6 +2,18 @@
  * Common HTML utilities shared across editors
  * Centralized to avoid duplication between SimplePillEditor and RichTextPillEditor
  */
+import DOMPurify from 'dompurify'
+
+/**
+ * Sanitize HTML string to prevent XSS attacks.
+ * Allows safe formatting tags and data-* attributes used by pill editors.
+ */
+export const sanitizeHtml = (html = '') =>
+  DOMPurify.sanitize(html, {
+    ADD_ATTR: ['data-var', 'data-value', 'data-display', 'data-template', 'data-line-break', 'spellcheck', 'contenteditable'],
+    ADD_TAGS: ['mark'],
+    ALLOW_DATA_ATTR: true
+  })
 
 /**
  * Escape special HTML characters in a string

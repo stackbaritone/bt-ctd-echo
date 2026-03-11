@@ -1,12 +1,12 @@
-// Unused imports removed - these utilities are not needed in extraction.js
+import { sanitizeHtml } from './html'
 
 // Helper function to strip rich text formatting while preserving variable pills
 export const stripRichTextForSync = (htmlText = '') => {
   if (!htmlText) return ''
   
-  // Create a temporary div to parse HTML
+  // Create a temporary div to parse HTML (sanitized to prevent XSS)
   const tempDiv = document.createElement('div')
-  tempDiv.innerHTML = htmlText
+  tempDiv.innerHTML = sanitizeHtml(htmlText)
   
   // Process nodes to extract plain text while preserving variable pills
   const processNode = (node) => {
@@ -65,7 +65,7 @@ export const extractVariablesFromPills = (htmlText = '') => {
   if (!htmlText) return {}
   
   const tempDiv = document.createElement('div')
-  tempDiv.innerHTML = htmlText
+  tempDiv.innerHTML = sanitizeHtml(htmlText)
   
   const variables = {}
   const pills = tempDiv.querySelectorAll('[data-var]')
