@@ -149,9 +149,17 @@ const SimplePillEditor = React.forwardRef(({
     if (docHasFocus) applyFocusedPill(null)
   }
 
-  // Render when props change (not focused)
+  // Render on mount and when props change (not focused)
+  const hasMountedRef = useRef(false)
   useEffect(() => {
-    if (!editorRef.current || isFocused) return
+    if (!editorRef.current) return
+    if (!hasMountedRef.current) {
+      // First mount: always render
+      editorRef.current.innerHTML = renderContent(value)
+      hasMountedRef.current = true
+      return
+    }
+    if (isFocused) return
     const rendered = renderContent(value)
     if (editorRef.current.innerHTML !== rendered) editorRef.current.innerHTML = rendered
   }, [value, variables, isFocused, getVarValue, templateLanguage])
@@ -217,7 +225,6 @@ const SimplePillEditor = React.forwardRef(({
         onCopy={handleCopy}
         suppressContentEditableWarning
         data-placeholder={placeholder}
-        dangerouslySetInnerHTML={{ __html: renderContent(value) }}
       />
       {deletedPill && (
         <button
