@@ -11,6 +11,7 @@ export function useTemplateFilter({
   templatesData,
   searchQuery,
   selectedCategory,
+  selectedType,
   favoritesOnly,
   favorites,
   selectedMode,
@@ -79,6 +80,11 @@ export function useTemplateFilter({
     }
 
     dataset = dataset.filter(t => hasMode(t, selectedMode))
+
+    // Filter by template type (default to 'email' for templates without a type)
+    if (selectedType && selectedType !== 'all') {
+      dataset = dataset.filter(t => (t.type || 'email') === selectedType)
+    }
 
     const qRaw = (searchQuery || '').trim()
     const hasSearchQuery = qRaw.length > 0
@@ -322,7 +328,7 @@ export function useTemplateFilter({
     }
 
     return { filteredTemplates: sortWithFavoritesFirst(items), searchMatchMap: matchMap }
-  }, [templatesData, searchQuery, selectedCategory, favoritesOnly, favorites, selectedMode])
+  }, [templatesData, searchQuery, selectedCategory, selectedType, favoritesOnly, favorites, selectedMode])
 
   // Highlight helpers
   const getMatchRanges = (id, key) => (searchMatchMap && searchMatchMap[id] && searchMatchMap[id][key]) || null

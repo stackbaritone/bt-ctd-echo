@@ -21,9 +21,10 @@ import { createPortal } from 'react-dom'
 import { loadState, saveState, getDefaultState, clearState } from './utils/storage.js'
 
 import { NAVY_TEXT, CATEGORY_BADGE_STYLES, getCategoryBadgeStyle, customEditorStyles } from './constants/styles.js'
+import { TEMPLATE_TYPES, TEMPLATE_TYPE_STYLES, getTemplateTypeStyle } from './constants/categories.js'
 
 import { interfaceTexts } from './constants/interfaceTexts.js'
-import { Search, FileText, Copy, RotateCcw, Languages, Filter, Globe, Sparkles, Mail, Edit3, Link, Settings, X, Move, Send, Star, ClipboardPaste, Eraser, Pin, PinOff, Minimize2, ExternalLink, Expand, Shrink, MoveRight, LifeBuoy, Moon, Sun } from 'lucide-react'
+import { Search, FileText, Copy, RotateCcw, Languages, Filter, Globe, Sparkles, Mail, Edit3, Link, Settings, X, Move, Send, Star, ClipboardPaste, Eraser, Pin, PinOff, Minimize2, ExternalLink, Expand, Shrink, MoveRight, LifeBuoy, Moon, Sun, StickyNote, Terminal } from 'lucide-react'
 import echoLogo from './assets/echo-logo.svg'
 import { Button } from './components/ui/button.jsx'
 import { Input } from './components/ui/input.jsx'
@@ -94,6 +95,7 @@ function App() {
   const [selectedTemplateId, setSelectedTemplateId] = useState(savedState.selectedTemplateId || null)
   const [searchQuery, setSearchQuery] = useState(savedState.searchQuery || '')
   const [selectedCategory, setSelectedCategory] = useState(savedState.selectedCategory || 'all')
+  const [selectedType, setSelectedType] = useState(savedState.selectedType || 'all')
   
   const [finalSubject, setFinalSubject] = useState('') // Final editable version
   const [finalBody, setFinalBody] = useState('') // Final editable version
@@ -161,7 +163,7 @@ function App() {
     filteredTemplates, searchMatchMap, getMatchRanges, renderHighlighted,
     categoryLabels, categories, getCategoryLabel, orderedCategories, isFav,
   } = useTemplateFilter({
-    templatesData, searchQuery, selectedCategory, favoritesOnly,
+    templatesData, searchQuery, selectedCategory, selectedType, favoritesOnly,
     favorites, selectedMode, interfaceLanguage, debug,
   })
   
@@ -402,6 +404,7 @@ function App() {
         templateLanguage,
         searchQuery,
         selectedCategory,
+        selectedType,
         selectedTemplateId,
         variables,
         favorites,
@@ -411,7 +414,7 @@ function App() {
     }, 300) // 300ms debounce
     
     return () => clearTimeout(timeoutId)
-  }, [interfaceLanguage, templateLanguage, searchQuery, selectedCategory, selectedTemplateId, variables, favorites, favoritesOnly, darkMode])
+  }, [interfaceLanguage, templateLanguage, searchQuery, selectedCategory, selectedType, selectedTemplateId, variables, favorites, favoritesOnly, darkMode])
 
   // Persist pane sizes
   useEffect(() => {
@@ -1552,6 +1555,25 @@ function App() {
                   </SelectContent>
                 </Select>
               </div>
+              {/* Type filter */}
+              <div className="mt-2 px-4">
+                <Select value={selectedType} onValueChange={setSelectedType}>
+                  <SelectTrigger
+                    className="w-full h-10 border rounded-md !bg-[#2c3d50] !border-[#2c3d50] text-white font-semibold tracking-wide shadow-sm"
+                    style={{ color: 'white', fontSize: selectedType === 'all' ? '0.875rem' : '0.8rem' }}
+                  >
+                    <span>{selectedType === 'all' ? t.allTypes : `${TEMPLATE_TYPE_STYLES[selectedType]?.icon || ''} ${t.templateTypes?.[selectedType] || selectedType}`}</span>
+                  </SelectTrigger>
+                  <SelectContent className="bg-white border border-[#2c3d50] rounded-[14px] shadow-xl text-[#2c3d50]">
+                    <SelectItem value="all" className="font-semibold">{t.allTypes}</SelectItem>
+                    {TEMPLATE_TYPES.map(type => (
+                      <SelectItem key={type} value={type}>
+                        {TEMPLATE_TYPE_STYLES[type]?.icon} {t.templateTypes?.[type] || type}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
               {/* Search */}
               <div className="relative group mt-2 px-4">
                 <Search className="absolute top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground pointer-events-none" style={{ left: 34 }} />
@@ -1703,6 +1725,7 @@ function App() {
                                   getMatchRanges(template.id, `description.${templateLanguage}`)
                                 )}
                               </p>
+                              <div className="flex items-center gap-1.5 flex-wrap">
                               <Badge
                                 variant="outline"
                                 className="text-[11px] font-semibold px-3 py-1 border rounded-full shadow-sm"
@@ -1711,6 +1734,18 @@ function App() {
 
                                 {badgeLabel}
                               </Badge>
+                              {template.type && template.type !== 'email' && (() => {
+                                const ts = getTemplateTypeStyle(template.type)
+                                return (
+                                  <span
+                                    className="text-[10px] font-semibold px-2 py-0.5 rounded-full border"
+                                    style={{ background: ts.bg, color: ts.text, borderColor: ts.border }}
+                                  >
+                                    {ts.icon} {t.templateTypes?.[template.type] || template.type}
+                                  </span>
+                                )
+                              })()}
+                              </div>
                             </div>
                             <button
                               onClick={(e) => { e.stopPropagation(); toggleFav(template.id); }}
@@ -1789,6 +1824,21 @@ function App() {
                   </SelectContent>
                 </Select>
               </div>
+              <div className="mt-2">
+                <Select value={selectedType} onValueChange={setSelectedType}>
+                  <SelectTrigger className="w-full h-10 border rounded-md" style={{ background: '#2c3d50', borderColor: '#2c3d50', color: 'white', fontSize: '0.875rem' }}>
+                    <span>{selectedType === 'all' ? t.allTypes : `${TEMPLATE_TYPE_STYLES[selectedType]?.icon || ''} ${t.templateTypes?.[selectedType] || selectedType}`}</span>
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all" className="font-semibold">{t.allTypes}</SelectItem>
+                    {TEMPLATE_TYPES.map(type => (
+                      <SelectItem key={type} value={type}>
+                        {TEMPLATE_TYPE_STYLES[type]?.icon} {t.templateTypes?.[type] || type}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
               <div className="relative group mt-2">
                 <Search className="absolute top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground pointer-events-none" style={{ left: 14 }} />
                 <Input
@@ -1849,6 +1899,7 @@ function App() {
                               getMatchRanges(template.id, `description.${templateLanguage}`)
                             )}
                           </p>
+                          <div className="flex items-center gap-1.5 flex-wrap">
                           <Badge
                             variant="outline"
                             className="text-[11px] font-semibold px-3 py-1 border rounded-full shadow-sm"
@@ -1856,6 +1907,18 @@ function App() {
                           >
                             {badgeLabel}
                           </Badge>
+                          {template.type && template.type !== 'email' && (() => {
+                            const ts = getTemplateTypeStyle(template.type)
+                            return (
+                              <span
+                                className="text-[10px] font-semibold px-2 py-0.5 rounded-full border"
+                                style={{ background: ts.bg, color: ts.text, borderColor: ts.border }}
+                              >
+                                {ts.icon} {t.templateTypes?.[template.type] || template.type}
+                              </span>
+                            )
+                          })()}
+                          </div>
                         </div>
                         <button onClick={(e) => { e.stopPropagation(); toggleFav(template.id) }} className={`ml-3 text-xl ${isFav(template.id) ? 'text-[#8a8535]' : 'text-gray-200 hover:text-[#8a8535]'}`} title={isFav(template.id) ? 'Unfavorite' : 'Favorite'} aria-label="Toggle favorite">★</button>
                       </div>
@@ -1878,8 +1941,15 @@ function App() {
                   <CardHeader style={{ background: 'var(--primary)', paddingTop: 10, paddingBottom: 10, minHeight: 48, boxShadow: 'none', borderBottom: 'none', borderTopLeftRadius: 14, borderTopRightRadius: 14, borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }}>
                     <CardTitle className="text-2xl font-bold text-white flex items-center justify-between">
                       <div className="flex items-center">
-                        <Mail className="h-6 w-6 mr-3 text-white" />
-	                      {t.editEmail}
+                        {(selectedTemplate?.type || 'email') === 'prompt' ? (
+                          <Terminal className="h-6 w-6 mr-3 text-white" />
+                        ) : (selectedTemplate?.type || 'email') === 'blurb' ? (
+                          <StickyNote className="h-6 w-6 mr-3 text-white" />
+                        ) : (
+                          <Mail className="h-6 w-6 mr-3 text-white" />
+                        )}
+	                      {(selectedTemplate?.type || 'email') === 'prompt' ? t.editPrompt :
+	                       (selectedTemplate?.type || 'email') === 'blurb' ? t.editBlurb : t.editEmail}
 	                    </div>
 	                    <div className="flex items-center space-x-3">
 	                      {selectedTemplate && selectedTemplate.variables && selectedTemplate.variables.length > 0 && (
@@ -1979,7 +2049,8 @@ function App() {
                   </CardHeader>
                   <CardContent className="p-5 space-y-5 mt-1" style={{ background: '#f6fbfb', borderRadius: 14 }}>
 
-                    {/* Editable subject with preview highlighting */}
+                    {/* Editable subject with preview highlighting (emails only) */}
+                    {(selectedTemplate?.type || 'email') === 'email' && (
                     <div className="space-y-3 mt-2">
                       <div className="flex items-center gap-2 text-slate-800 font-semibold">
                         <span className="inline-block h-2 w-2 rounded-full bg-[#2c3d50]"></span>
@@ -2022,12 +2093,13 @@ function App() {
                       />
 
                     </div>
+                    )}
 
                     {/* Editable body with preview highlighting */}
                     <div className="space-y-3">
                       <div className="flex items-center gap-2 text-slate-800 font-semibold">
                         <span className="inline-block h-2 w-2 rounded-full bg-[#2c3d50]"></span>
-                        <span>{t.body}</span>
+                        <span>{(selectedTemplate?.type || 'email') === 'email' ? t.body : t.content}</span>
                       </div>
                       <RichTextPillEditor
                         key={`body-${selectedTemplate?.id || 'none'}-${templateLanguage}`}
@@ -2061,7 +2133,8 @@ function App() {
                           }
                         }}
                         minHeight="150px"
-                        showRichTextToolbar={true}
+                        showRichTextToolbar={(selectedTemplate?.type || 'email') !== 'prompt'}
+                        style={(selectedTemplate?.type || 'email') === 'prompt' ? { fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace', fontSize: '13px', lineHeight: '1.6' } : undefined}
                       />
 
                     </div>
@@ -2117,7 +2190,8 @@ function App() {
                     GRANULAR COPY BUTTONS - ENHANCED UX
                   */}
                   <div className="flex space-x-2">
-                    {/* Subject Copy Button - Teal theme */}
+                    {/* Subject Copy Button - Teal theme (emails only) */}
+                    {(selectedTemplate?.type || 'email') === 'email' && (
                     <Button 
                       onClick={() => copyToClipboard('subject')} 
                       variant="outline"
@@ -2141,8 +2215,10 @@ function App() {
                       <Mail className="h-4 w-4 mr-2 text-[#2c3d50]" />
                       <span className="text-[#2c3d50]">{copySuccess === 'subject' ? t.copied : (t.copySubject || 'Subject')}</span>
                     </Button>
+                    )}
                     
-                    {/* Body Copy Button - Sage accent (slightly darker) */}
+                    {/* Body Copy Button - Sage accent (emails only, since blurb/prompt have only body) */}
+                    {(selectedTemplate?.type || 'email') === 'email' && (
                     <Button 
                       onClick={() => copyToClipboard('body')} 
                       variant="outline"
@@ -2166,20 +2242,21 @@ function App() {
                       <Edit3 className="h-4 w-4 mr-2 text-[#2c3d50]" />
                       <span className="text-[#2c3d50]">{copySuccess === 'body' ? t.copied : (t.copyBody || 'Body')}</span>
                     </Button>
+                    )}
                     
-                    {/* Complete Copy Button - Gradient (main action) */}
+                    {/* Complete Copy Button - main action (for blurb/prompt this is the only copy button) */}
                     <Button 
-                      onClick={() => copyToClipboard('all')} 
+                      onClick={() => copyToClipboard((selectedTemplate?.type || 'email') === 'email' ? 'all' : 'body')} 
                       className={`font-bold transition-all duration-200 shadow-soft btn-pill text-white ${
-                        copySuccess === 'all'
+                        copySuccess === 'all' || copySuccess === 'body'
                           ? 'transform scale-[1.02]' 
                           : 'hover:scale-[1.02]'
                       }`}
                       style={{ background: '#5a88b5' }}
-                      title="Copy entire template (Ctrl+Enter)"
+                      title={(selectedTemplate?.type || 'email') === 'email' ? 'Copy entire template (Ctrl+Enter)' : 'Copy to clipboard (Ctrl+Enter)'}
                     >
                       <Copy className="h-5 w-5 mr-2" />
-                      {copySuccess === 'all' ? t.copied : (t.copyAll || 'All')}
+                      {(copySuccess === 'all' || ((selectedTemplate?.type || 'email') !== 'email' && copySuccess === 'body')) ? t.copied : ((selectedTemplate?.type || 'email') === 'email' ? (t.copyAll || 'All') : (t.copy || 'Copy'))}
                     </Button>
                   </div>
                   </div>

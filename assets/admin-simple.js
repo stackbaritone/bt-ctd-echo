@@ -174,6 +174,7 @@
   
   // editor fields
   const idEl = $('#tpl-id');
+  const typeEl = $('#tpl-type');
   const utilisateurEl = $('#tpl-utilisateur');
   const catFrEl = $('#tpl-cat-fr');
   const catEnEl = $('#tpl-cat-en');
@@ -830,8 +831,9 @@
     }
   }
   
-  function renderEditor(){ const t = (data.templates||[]).find(x=>x.id===selected) || null; hdr.textContent = t ? `Éditeur – ${t.id}` : 'Éditeur'; if (!t) { idEl.value=''; if (utilisateurEl) { const checkboxes = utilisateurEl.querySelectorAll('input[type="checkbox"]'); checkboxes.forEach(cb => cb.checked = cb.value === 'conseillers'); } if (catFrEl) catFrEl.value=''; if (catEnEl) catEnEl.value=''; titleFrEl.value=''; titleEnEl.value=''; descFrEl.value=''; descEnEl.value=''; subjFrEl.value=''; subjEnEl.value=''; setBodyValue(bodyFrEl, ''); setBodyValue(bodyEnEl, ''); if (varsBox) varsBox.innerHTML=''; if (varsValidationBox) varsValidationBox.style.display='none'; populateCategorySelects(); return; }
+  function renderEditor(){ const t = (data.templates||[]).find(x=>x.id===selected) || null; hdr.textContent = t ? `Éditeur – ${t.id}` : 'Éditeur'; if (!t) { idEl.value=''; if (typeEl) typeEl.value='email'; if (utilisateurEl) { const checkboxes = utilisateurEl.querySelectorAll('input[type="checkbox"]'); checkboxes.forEach(cb => cb.checked = cb.value === 'conseillers'); } if (catFrEl) catFrEl.value=''; if (catEnEl) catEnEl.value=''; titleFrEl.value=''; titleEnEl.value=''; descFrEl.value=''; descEnEl.value=''; subjFrEl.value=''; subjEnEl.value=''; setBodyValue(bodyFrEl, ''); setBodyValue(bodyEnEl, ''); if (varsBox) varsBox.innerHTML=''; if (varsValidationBox) varsValidationBox.style.display='none'; populateCategorySelects(); return; }
     idEl.value = t.id || '';
+    if (typeEl) typeEl.value = t.type || 'email';
     if (utilisateurEl) { const modes = Array.isArray(t.utilisateur) ? t.utilisateur : (t.utilisateur ? [t.utilisateur] : ['conseillers']); const checkboxes = utilisateurEl.querySelectorAll('input[type="checkbox"]'); checkboxes.forEach(cb => cb.checked = modes.includes(cb.value)); }
   if (catFrEl) catFrEl.value = t.category_fr || '';
   if (catEnEl) catEnEl.value = t.category_en || '';
@@ -1363,7 +1365,7 @@
   }
   if (btnHelp) btnHelp.onclick = openHelpModal;
   $('#btn-reset').onclick = () => { if (!confirm('Effacer le brouillon local et recharger le fichier d\'origine ?')) return; localStorage.removeItem(DRAFT_KEY); location.reload(); };
-  $('#btn-new').onclick = () => { const id = uniqueId('modele'); const t={ id, category:'', title:{fr:'',en:''}, description:{fr:'',en:''}, subject:{fr:'',en:''}, body:{fr:'',en:''}, variables:[] }; data.templates.push(t); selected=id; saveDraft(); renderList(); renderEditor(); };
+  $('#btn-new').onclick = () => { const id = uniqueId('modele'); const t={ id, type:'email', category:'', title:{fr:'',en:''}, description:{fr:'',en:''}, subject:{fr:'',en:''}, body:{fr:'',en:''}, variables:[] }; data.templates.push(t); selected=id; saveDraft(); renderList(); renderEditor(); };
   
   // Duplicate template
   function duplicateTemplate() {
@@ -1572,6 +1574,7 @@
   titleFrEl.oninput = (e) => { const t=data.templates.find(x=>x.id===selected); if (!t) return; t.title=t.title||{}; t.title.fr=e.target.value; saveDraft(); renderList(); };
   titleEnEl.oninput = (e) => { const t=data.templates.find(x=>x.id===selected); if (!t) return; t.title=t.title||{}; t.title.en=e.target.value; saveDraft(); renderList(); };
   if (utilisateurEl) { const checkboxes = utilisateurEl.querySelectorAll('input[type="checkbox"]'); checkboxes.forEach(cb => { cb.onchange = () => { const t=data.templates.find(x=>x.id===selected); if (!t) return; const checked = Array.from(checkboxes).filter(c => c.checked).map(c => c.value); t.utilisateur = checked.length > 0 ? checked : ['conseillers']; saveDraft(); renderList(); }; }); }
+  if (typeEl) { typeEl.onchange = () => { const t=data.templates.find(x=>x.id===selected); if (!t) return; t.type = typeEl.value; saveDraft(); renderList(); }; }
   descFrEl.oninput = (e) => { const t=data.templates.find(x=>x.id===selected); if (!t) return; t.description=t.description||{}; t.description.fr=e.target.value; saveDraft(); };
   descEnEl.oninput = (e) => { const t=data.templates.find(x=>x.id===selected); if (!t) return; t.description=t.description||{}; t.description.en=e.target.value; saveDraft(); };
   subjFrEl.oninput = (e) => { const t=data.templates.find(x=>x.id===selected); if (!t) return; t.subject=t.subject||{}; t.subject.fr=e.target.value; saveDraft(); renderEditor(); scheduleAutoSync(); };

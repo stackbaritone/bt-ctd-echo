@@ -16,6 +16,18 @@ export const CATEGORY_BADGE_STYLES = {
   default: { bg: '#e6f0ff', border: '#c7dbff', text: NAVY_TEXT }
 }
 
+// Template type definitions
+export const TEMPLATE_TYPES = ['email', 'blurb', 'prompt']
+
+export const TEMPLATE_TYPE_STYLES = {
+  email:  { bg: '#e0f2fe', border: '#7dd3fc', text: '#0c4a6e', icon: '📧' },
+  blurb:  { bg: '#fce7f3', border: '#f9a8d4', text: '#831843', icon: '📝' },
+  prompt: { bg: '#f3e8ff', border: '#d8b4fe', text: '#581c87', icon: '🤖' },
+}
+
+export const getTemplateTypeStyle = (type = 'email') =>
+  TEMPLATE_TYPE_STYLES[type] || TEMPLATE_TYPE_STYLES.email
+
 export const getCategoryBadgeStyle = (category = '', customColors = {}) => {
   if (customColors[category]) {
     const baseColor = customColors[category]
