@@ -55,12 +55,9 @@ async function fetchTemplatesFromSources(debug) {
 export function useTemplateLoader(debug, selectedTemplateRef, setSelectedTemplate, lastRebuiltTemplateIdRef) {
   const [templatesData, setTemplatesData] = useState(null)
   const [loading, setLoading] = useState(true)
-  const loadingGuardRef = useRef(false)
 
   // Initial load
   useEffect(() => {
-    if (loadingGuardRef.current) return
-    loadingGuardRef.current = true
     let cancelled = false
 
     const loadTemplatesData = async () => {
