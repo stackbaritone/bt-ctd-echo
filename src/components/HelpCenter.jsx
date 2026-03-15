@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { LifeBuoy, Lightbulb, BookOpen, AlertTriangle, MessageCircle, ExternalLink, Mail, X, CheckCircle2, Loader2, Copy, Star, Shield, Sparkles, Settings, ArrowUp } from 'lucide-react'
+import { LifeBuoy, Lightbulb, BookOpen, AlertTriangle, MessageCircle, ExternalLink, Mail, X, CheckCircle2, Loader2, Copy, Star, Shield, Sparkles, Settings, ArrowUp, FileText, Users } from 'lucide-react'
 import { Button } from './ui/button.jsx'
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card.jsx'
 import { ScrollArea } from './ui/scroll-area.jsx'
@@ -360,6 +360,12 @@ export default function HelpCenter({ language = 'fr', onClose, supportEmail = 'e
               <div className="flex flex-col gap-2 border-b border-[#e6eef5] bg-transparent md:flex-row md:items-center md:justify-between m-0 p-0">
                 <div className="flex flex-wrap items-center gap-2 text-xs text-slate-700">
                   <a href="#quickstart" className="font-semibold text-[#145a64] hover:underline px-2 py-1">{strings.quickStart.heading}</a>
+                  {strings.sections?.templateTypes ? (
+                    <a href="#templateTypes" className="font-semibold text-[#145a64] hover:underline px-2 py-1">{strings.sections.templateTypes.heading}</a>
+                  ) : null}
+                  {strings.sections?.modes ? (
+                    <a href="#modes" className="font-semibold text-[#145a64] hover:underline px-2 py-1">{strings.sections.modes.heading}</a>
+                  ) : null}
                   {strings.sections?.copilot ? (
                     <a href="#copilot" className="font-semibold text-[#145a64] hover:underline px-2 py-1">{strings.sections.copilot.heading}</a>
                   ) : null}
@@ -424,6 +430,8 @@ export default function HelpCenter({ language = 'fr', onClose, supportEmail = 'e
                   </section>
                 )
               })()}
+              <FilteredBulletSection id="templateTypes" icon={FileText} title={strings.sections?.templateTypes?.heading} points={strings.sections?.templateTypes?.points} query={query} />
+              <FilteredBulletSection id="modes" icon={Users} title={strings.sections?.modes?.heading} points={strings.sections?.modes?.points} query={query} />
               {(() => {
                 if (!strings.sections?.copilot) return null
                 const copilot = strings.sections.copilot

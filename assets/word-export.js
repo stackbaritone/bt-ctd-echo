@@ -429,6 +429,7 @@ const WordExport = (function() {
     const elements = [];
     const lang = options.lang;
     const isBilingual = lang === 'both';
+    const templateType = template.type || 'email';
 
     // Category header (if first in category)
     if (template._isFirstInCategory) {
@@ -521,52 +522,74 @@ const WordExport = (function() {
       }
     }
 
+    // Type badge for non-email templates
+    if (templateType !== 'email') {
+      const typeLabel = templateType === 'blurb'
+        ? (isBilingual || lang === 'fr' ? '📝 Texte court (blurb)' : '📝 Short text (blurb)')
+        : (isBilingual || lang === 'fr' ? '🤖 Prompt (assistant IA)' : '🤖 Prompt (AI assistant)');
+      const typeColor = templateType === 'blurb' ? '6D28D9' : '1D4ED8'; // purple / blue
+      elements.push(new docx.Paragraph({
+        children: [
+          new docx.TextRun({
+            text: typeLabel,
+            bold: true,
+            size: 18,
+            font: FONTS.body,
+            color: typeColor,
+            italics: true
+          })
+        ],
+        spacing: { before: 50, after: 100 }
+      }));
+    }
+
     // Subject with highlighted variables
     const subjFr = template.subject?.fr || '';
     const subjEn = template.subject?.en || '';
-    
-    elements.push(new docx.Paragraph({
-      children: [
-        new docx.TextRun({
-          text: lang === 'en' ? '✉️ Email Subject' : '✉️ Objet du courriel',
-          bold: true,
-          size: 20,
-          font: FONTS.body,
-          color: COLORS.primary
-        })
-      ],
-      spacing: { before: 250, after: 100 }
-    }));
+    if (templateType === 'email' || subjFr || subjEn) {
+      elements.push(new docx.Paragraph({
+        children: [
+          new docx.TextRun({
+            text: lang === 'en' ? '✉️ Email Subject' : '✉️ Objet du courriel',
+            bold: true,
+            size: 20,
+            font: FONTS.body,
+            color: COLORS.primary
+          })
+        ],
+        spacing: { before: 250, after: 100 }
+      }));
 
-    if (isBilingual) {
-      // French subject
-      elements.push(new docx.Paragraph({
-        children: [
-          new docx.TextRun({ text: '🇫🇷 ', size: 20 }),
-          ...createRunsWithHighlightedVariables(subjFr, { size: 20, font: FONTS.body })
-        ],
-        spacing: { after: 50 },
-        shading: { type: docx.ShadingType.SOLID, color: 'F0F9FF' },
-        indent: { left: 200, right: 200 }
-      }));
-      // English subject
-      elements.push(new docx.Paragraph({
-        children: [
-          new docx.TextRun({ text: '🇬🇧 ', size: 20 }),
-          ...createRunsWithHighlightedVariables(subjEn, { size: 20, font: FONTS.body })
-        ],
-        spacing: { after: 100 },
-        shading: { type: docx.ShadingType.SOLID, color: 'FEF3C7' },
-        indent: { left: 200, right: 200 }
-      }));
-    } else {
-      const subj = lang === 'en' ? subjEn : subjFr;
-      elements.push(new docx.Paragraph({
-        children: createRunsWithHighlightedVariables(subj, { size: 20, font: FONTS.body }),
-        spacing: { after: 100 },
-        shading: { type: docx.ShadingType.SOLID, color: COLORS.lightBg },
-        indent: { left: 200, right: 200 }
-      }));
+      if (isBilingual) {
+        // French subject
+        elements.push(new docx.Paragraph({
+          children: [
+            new docx.TextRun({ text: '🇫🇷 ', size: 20 }),
+            ...createRunsWithHighlightedVariables(subjFr, { size: 20, font: FONTS.body })
+          ],
+          spacing: { after: 50 },
+          shading: { type: docx.ShadingType.SOLID, color: 'F0F9FF' },
+          indent: { left: 200, right: 200 }
+        }));
+        // English subject
+        elements.push(new docx.Paragraph({
+          children: [
+            new docx.TextRun({ text: '🇬🇧 ', size: 20 }),
+            ...createRunsWithHighlightedVariables(subjEn, { size: 20, font: FONTS.body })
+          ],
+          spacing: { after: 100 },
+          shading: { type: docx.ShadingType.SOLID, color: 'FEF3C7' },
+          indent: { left: 200, right: 200 }
+        }));
+      } else {
+        const subj = lang === 'en' ? subjEn : subjFr;
+        elements.push(new docx.Paragraph({
+          children: createRunsWithHighlightedVariables(subj, { size: 20, font: FONTS.body }),
+          spacing: { after: 100 },
+          shading: { type: docx.ShadingType.SOLID, color: COLORS.lightBg },
+          indent: { left: 200, right: 200 }
+        }));
+      }
     }
 
     // Body with highlighted variables
@@ -576,7 +599,11 @@ const WordExport = (function() {
     elements.push(new docx.Paragraph({
       children: [
         new docx.TextRun({
-          text: lang === 'en' ? '📄 Message Body' : '📄 Corps du message',
+          text: templateType === 'blurb'
+            ? (lang === 'en' ? '📝 Short Text' : '📝 Texte court')
+            : templateType === 'prompt'
+              ? '🤖 Prompt'
+              : (lang === 'en' ? '📄 Message Body' : '📄 Corps du message'),
           bold: true,
           size: 20,
           font: FONTS.body,
