@@ -246,7 +246,7 @@ const RichTextPillEditor = React.forwardRef(({
   }, [onChange, extractText, setDeletedPill, deletedPillTimeoutRef])
 
   // Render content with pills - IDENTICAL to SimplePillEditor
-  const renderContent = (text) => {
+  const renderContent = useCallback((text) => {
     if (!text) return '';
     
     // First, decode HTML entities in variables
@@ -305,7 +305,7 @@ const RichTextPillEditor = React.forwardRef(({
     }
 
     return parts.join('');
-  };
+  }, [getVarValue]);
 
   // Handle input - Rich text version with storePillTemplate
   const handleInput = () => {
@@ -506,7 +506,7 @@ const RichTextPillEditor = React.forwardRef(({
     if (firstRun || textChanged) {
       refreshAllPillTemplates(editor);
     }
-  }, [value, variables, isFocused, getVarValue, templateLanguage]);
+  }, [value, variables, isFocused, renderContent, getVarValue, templateLanguage]);
 
   // Update pill display values when variables change, even when focused
   useEffect(() => {

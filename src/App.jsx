@@ -30,6 +30,7 @@ import { Button } from './components/ui/button.jsx'
 import { Input } from './components/ui/input.jsx'
 import SimplePillEditor from './components/SimplePillEditor.jsx'
 import RichTextPillEditor from './components/RichTextPillEditor.jsx'
+import TemplateCard from './components/TemplateCard.jsx'
 import AISidebar from './components/AISidebar';
 import HelpCenter from './components/HelpCenter.jsx'
 import { Card, CardContent, CardHeader, CardTitle } from './components/ui/card.jsx'
@@ -43,7 +44,9 @@ import { useTemplateLoader } from './hooks/useTemplateLoader.js'
 import { useClipboardActions } from './hooks/useClipboardActions.js'
 import { useTemplateFilter } from './hooks/useTemplateFilter.jsx'
 import { useVariablesSync } from './hooks/useVariablesSync.js'
+import { useLocalStorageSync } from './hooks/useLocalStorageSync.js'
 import { extractVariablesFromPills, extractVariablesFromTemplate } from './utils/extraction.js'
+import { openPopupWindow } from './utils/window.js'
 import './App.css'
 
 function App() {
@@ -124,9 +127,7 @@ function App() {
   useEffect(() => { finalBodyRef.current = finalBody }, [finalBody])
 
   // Persist Strict Classic preference
-  useEffect(() => {
-    try { localStorage.setItem('ea_strict_classic', strictClassic ? '1' : '0') } catch (e) {}
-  }, [strictClassic])
+  useLocalStorageSync('ea_strict_classic', strictClassic ? '1' : '0')
   useEffect(() => { selectedTemplateRef.current = selectedTemplate }, [selectedTemplate])
   useEffect(() => { templateLanguageRef.current = templateLanguage }, [templateLanguage])
   const [favorites, setFavorites] = useState(savedState.favorites || [])
@@ -382,7 +383,7 @@ function App() {
   const [viewportH, setViewportH] = useState(600)
   const [showMobileTemplates, setShowMobileTemplates] = useState(false)
 
-  const toggleFullscreen = () => {
+  const toggleFullscreen = useCallback(() => {
     try {
       const el = document.documentElement
       const isFs = !!(document.fullscreenElement || document.webkitFullscreenElement)
@@ -394,7 +395,7 @@ function App() {
         else if (document.webkitExitFullscreen) document.webkitExitFullscreen()
       }
     } catch {}
-  }
+  }, [])
 
   // Automatically save important preferences with debouncing for variables
   useEffect(() => {
@@ -416,37 +417,13 @@ function App() {
     return () => clearTimeout(timeoutId)
   }, [interfaceLanguage, templateLanguage, searchQuery, selectedCategory, selectedType, selectedTemplateId, variables, favorites, favoritesOnly, darkMode])
 
-  // Persist pane sizes
-  useEffect(() => {
-    try {
-      localStorage.setItem('ea_left_width', String(leftWidth))
-    } catch {}
-  }, [leftWidth])
-
-  // Persist highlight visibility
-  useEffect(() => {
-    try {
-      localStorage.setItem('ea_show_highlights', String(showHighlights))
-    } catch {}
-  }, [showHighlights])
-
-  // Persist popup position/size
-  useEffect(() => {
-    try { localStorage.setItem('ea_var_popup_pos_v3', JSON.stringify(varPopupPos)) } catch {}
-  }, [varPopupPos])
-
-  // Persist popout preference
-  useEffect(() => {
-    try { localStorage.setItem('ea_prefer_popout', String(preferPopout)) } catch {}
-  }, [preferPopout])
-
-  // Persist last used template and language for robust popout fallback
-  useEffect(() => {
-    try {
-      if (selectedTemplateId) localStorage.setItem('ea_last_template_id', selectedTemplateId)
-      if (templateLanguage) localStorage.setItem('ea_last_template_lang', templateLanguage)
-    } catch {}
-  }, [selectedTemplateId, templateLanguage])
+  // Persist UI preferences
+  useLocalStorageSync('ea_left_width', leftWidth)
+  useLocalStorageSync('ea_show_highlights', showHighlights)
+  useLocalStorageSync('ea_var_popup_pos_v3', varPopupPos)
+  useLocalStorageSync('ea_prefer_popout', preferPopout)
+  useLocalStorageSync('ea_last_template_id', selectedTemplateId, { skipFalsy: true })
+  useLocalStorageSync('ea_last_template_lang', templateLanguage, { skipFalsy: true })
 
   // Smart function to open variables (popup or popout based on preference)
   const openVariables = useCallback(async () => {
@@ -617,7 +594,7 @@ function App() {
   }, [showVariablePopup, varsPinned, varsMinimized])
 
   // Smart paste-to-fill: parse lines like "var: value" or "var = value" and map to known variables (case/diacritic-insensitive)
-  const handleVarsSmartPaste = (text) => {
+  const handleVarsSmartPaste = useCallback((text) => {
     if (!text || !selectedTemplate) return
     const lines = String(text).split(/\r?\n/)
     const map = {}
@@ -671,7 +648,7 @@ function App() {
       const el = varInputRefs.current[first]
       if (el) el.focus()
     }
-  }
+  }, [selectedTemplate, templatesData])
 
   // Close export menu on outside click or ESC
   useEffect(() => {
@@ -693,9 +670,7 @@ function App() {
   const t = interfaceTexts[interfaceLanguage]
 
   // Get interface-specific placeholder text
-  const getPlaceholderText = () => {
-    return interfaceLanguage === 'fr' ? 'Sélectionnez un modèle' : 'Select a template'
-  }
+  const placeholderText = interfaceLanguage === 'fr' ? 'Sélectionnez un modèle' : 'Select a template'
 
   // Set initial empty editors so contentEditable placeholder shows
   useEffect(() => {
@@ -802,9 +777,9 @@ function App() {
     handleVarsSmartPaste
   })
 
-  const toggleFav = (id) => {
+  const toggleFav = useCallback((id) => {
     setFavorites(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id])
-  }
+  }, [])
 
   // Sync from text: Extract variable values from text areas back to Variables Editor
   const syncFromText = useCallback(() => {
@@ -1164,13 +1139,7 @@ function App() {
         url.searchParams.set('lang', interfaceLanguage)
         url.searchParams.set('category', 'template')
         url.searchParams.set('support', supportEmail)
-        const w = Math.min(900, (window.screen?.availWidth || window.innerWidth) - 80)
-        const h = Math.min(700, (window.screen?.availHeight || window.innerHeight) - 120)
-        const left = Math.max(0, Math.floor(((window.screen?.availWidth || window.innerWidth) - w) / 2))
-        const top = Math.max(0, Math.floor(((window.screen?.availHeight || window.innerHeight) - h) / 3))
-        const features = `popup=yes,width=${Math.round(w)},height=${Math.round(h)},left=${left},top=${top},toolbar=0,location=0,menubar=0,status=0,scrollbars=1,resizable=1,noopener=1`
-        const win = window.open(url.toString(), '_blank', features)
-        if (win && win.focus) win.focus()
+        openPopupWindow(url.toString(), 900, 700, { extra: 'noopener=1' })
       } catch {}
     }}
     variant="outline"
@@ -1198,18 +1167,7 @@ function App() {
         url.searchParams.set('helpOnly', '1')
         url.searchParams.set('lang', interfaceLanguage)
         url.searchParams.set('support', supportEmail)
-        // Minimal compact help popout dimensions
-        const preferredW = 560
-        const preferredH = 620
-        const availW = (window.screen?.availWidth || window.innerWidth) - 40
-        const availH = (window.screen?.availHeight || window.innerHeight) - 40
-        const w = Math.min(preferredW, availW)
-        const h = Math.min(preferredH, availH)
-        const left = Math.max(0, Math.floor(((window.screen?.availWidth || window.innerWidth) - w) / 2))
-        const top = Math.max(0, Math.floor(((window.screen?.availHeight || window.innerHeight) - h) / 3))
-        const features = `popup=yes,width=${Math.round(w)},height=${Math.round(h)},left=${left},top=${top},toolbar=0,location=0,menubar=0,status=0,scrollbars=1,resizable=1,noopener=1`
-        const win = window.open(url.toString(), '_blank', features)
-        if (win && win.focus) win.focus()
+        openPopupWindow(url.toString(), 560, 620, { extra: 'noopener=1' })
       } catch {}
     }}
     variant="outline"
@@ -1659,102 +1617,27 @@ function App() {
                       const badgeStyle = getCategoryBadgeStyle(template.category, templatesData?.metadata?.categoryColors || {})
                       const badgeLabel = getCategoryLabel(template.category)
                       return (
-                        <div
+                        <TemplateCard
                           key={template.id}
-                          ref={(el) => { if (el) itemRefs.current[template.id] = el }}
-                          onClick={() => {
-                            setSelectedTemplate(template)
-                            setSelectedTemplateId(template.id)
-                          }}
+                          template={template}
+                          templateLanguage={templateLanguage}
+                          interfaceLanguage={interfaceLanguage}
+                          t={t}
+                          badgeStyle={badgeStyle}
+                          badgeLabel={badgeLabel}
+                          isSelected={selectedTemplate?.id === template.id}
+                          isPressed={pressedCardId === template.id}
+                          isFavourite={isFav(template.id)}
+                          onClick={() => { setSelectedTemplate(template); setSelectedTemplateId(template.id) }}
                           onMouseDown={() => setPressedCardId(template.id)}
                           onMouseUp={() => setPressedCardId(null)}
                           onMouseLeave={() => setPressedCardId(null)}
-                          className={`w-full p-4 border cursor-pointer transition-all duration-150 ${
-                            selectedTemplate?.id === template.id
-                              ? 'shadow-lg transform scale-[1.02]'
-                              : 'border-[#e1eaf2] bg-white hover:border-[#2c3d50] hover:shadow-md hover:-translate-y-[1px]'
-                          }`}
-                          style={
-                            selectedTemplate?.id === template.id
-                              ? {
-                                  borderColor: '#2c3d50',
-                                  background: '#e6f0ff',
-                                  borderRadius: '14px',
-                                  scrollMarginTop: 220,
-                                }
-                              : { borderRadius: '14px', transform: pressedCardId === template.id ? 'scale(0.995)' : undefined, boxShadow: pressedCardId === template.id ? 'inset 0 0 0 1px rgba(0,0,0,0.05)' : undefined, scrollMarginTop: 220 }
-                          }
-                        >
-                          <div className="flex items-start justify-between">
-                            <div className="flex-1">
-                              <div className="flex items-center gap-2 mb-1">
-                                <h3 className="font-bold text-gray-900 text-[13px]" title={template.title[templateLanguage]}>
-                                  {renderHighlighted(
-                                    template.title[templateLanguage],
-                                    getMatchRanges(template.id, `title.${templateLanguage}`)
-                                  )}
-                                </h3>
-                                {(() => {
-                                  const modes = Array.isArray(template.utilisateur) ? template.utilisateur : (template.utilisateur ? [template.utilisateur] : ['conseillers'])
-                                  const restrictedModes = modes.filter(m => ['gestion', 'equipe_admin', 'relations_fournisseurs'].includes(m))
-                                  return restrictedModes.map(mode => (
-                                    <span 
-                                      key={mode}
-                                      className={`text-[10px] px-1.5 py-0.5 rounded-md font-medium ${
-                                        mode === 'gestion' ? 'bg-amber-100 text-amber-700' :
-                                        mode === 'equipe_admin' ? 'bg-blue-100 text-blue-700' :
-                                        'bg-purple-100 text-purple-700'
-                                      }`}
-                                      title={interfaceLanguage === 'fr' 
-                                        ? (mode === 'gestion' ? 'Gestion' :
-                                           mode === 'equipe_admin' ? 'Équipe Admin' :
-                                           'Relations fournisseurs')
-                                        : (mode === 'gestion' ? 'Management' :
-                                           mode === 'equipe_admin' ? 'Admin Team' :
-                                           'Supplier Relations')}
-                                    >
-                                      {mode === 'gestion' ? '🔐' :
-                                       mode === 'equipe_admin' ? '👔' : '🤝'}
-                                    </span>
-                                  ))
-                                })()}
-                              </div>
-                              <p className="text-[12px] text-gray-600 mb-2 leading-relaxed line-clamp-2" title={template.description[templateLanguage]}>
-                                {renderHighlighted(
-                                  template.description[templateLanguage],
-                                  getMatchRanges(template.id, `description.${templateLanguage}`)
-                                )}
-                              </p>
-                              <div className="flex items-center gap-1.5 flex-wrap">
-                              <Badge
-                                variant="outline"
-                                className="text-[11px] font-semibold px-3 py-1 border rounded-full shadow-sm"
-                                style={{ background: badgeStyle.bg, color: badgeStyle.text, borderColor: badgeStyle.border }}
-                              >
-
-                                {badgeLabel}
-                              </Badge>
-                              {template.type && template.type !== 'email' && (() => {
-                                const ts = getTemplateTypeStyle(template.type)
-                                return (
-                                  <span
-                                    className="text-[10px] font-semibold px-2 py-0.5 rounded-full border"
-                                    style={{ background: ts.bg, color: ts.text, borderColor: ts.border }}
-                                  >
-                                    {ts.icon} {t.templateTypes?.[template.type] || template.type}
-                                  </span>
-                                )
-                              })()}
-                              </div>
-                            </div>
-                            <button
-                              onClick={(e) => { e.stopPropagation(); toggleFav(template.id); }}
-                              className={`ml-3 text-xl transition-colors ${isFav(template.id) ? 'text-[#8a8535]' : 'text-gray-200 hover:text-[#8a8535]'}`}
-                              title={isFav(template.id) ? 'Unfavorite' : 'Favorite'}
-                              aria-label="Toggle favorite"
-                            >★</button>
-                          </div>
-                        </div>
+                          innerRef={(el) => { if (el) itemRefs.current[template.id] = el }}
+                          onToggleFav={toggleFav}
+                          renderHighlighted={renderHighlighted}
+                          getMatchRanges={getMatchRanges}
+                          getTemplateTypeStyle={getTemplateTypeStyle}
+                        />
                       );
                     })}
                   </div>
@@ -1858,71 +1741,21 @@ function App() {
                   const badgeStyle = getCategoryBadgeStyle(template.category, templatesData?.metadata?.categoryColors || {})
                   const badgeLabel = getCategoryLabel(template.category)
                   return (
-                    <div key={template.id} onClick={() => { setSelectedTemplate(template); setShowMobileTemplates(false) }} className="w-full p-4 border border-[#e1eaf2] bg-white rounded-[14px]">
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-1">
-                            <h3 className="font-bold text-gray-900 text-[13px]" title={template.title[templateLanguage]}>
-                              {renderHighlighted(
-                                template.title[templateLanguage],
-                                getMatchRanges(template.id, `title.${templateLanguage}`)
-                              )}
-                            </h3>
-                            {(() => {
-                              const modes = Array.isArray(template.utilisateur) ? template.utilisateur : (template.utilisateur ? [template.utilisateur] : ['conseillers'])
-                              const restrictedModes = modes.filter(m => ['gestion', 'equipe_admin', 'relations_fournisseurs'].includes(m))
-                              return restrictedModes.map(mode => (
-                                <span 
-                                  key={mode}
-                                  className={`text-[10px] px-1.5 py-0.5 rounded-md font-medium ${
-                                    mode === 'gestion' ? 'bg-amber-100 text-amber-700' :
-                                    mode === 'equipe_admin' ? 'bg-blue-100 text-blue-700' :
-                                    'bg-purple-100 text-purple-700'
-                                  }`}
-                                  title={interfaceLanguage === 'fr' 
-                                    ? (mode === 'gestion' ? 'Gestion' :
-                                       mode === 'equipe_admin' ? 'Équipe Admin' :
-                                       'Relations fournisseurs')
-                                    : (mode === 'gestion' ? 'Management' :
-                                       mode === 'equipe_admin' ? 'Admin Team' :
-                                       'Supplier Relations')}
-                                >
-                                  {mode === 'gestion' ? '🔐' :
-                                   mode === 'equipe_admin' ? '👔' : '🤝'}
-                                </span>
-                              ))
-                            })()}
-                          </div>
-                          <p className="text-[12px] text-gray-600 mb-2 leading-relaxed line-clamp-2" title={template.description[templateLanguage]}>
-                            {renderHighlighted(
-                              template.description[templateLanguage],
-                              getMatchRanges(template.id, `description.${templateLanguage}`)
-                            )}
-                          </p>
-                          <div className="flex items-center gap-1.5 flex-wrap">
-                          <Badge
-                            variant="outline"
-                            className="text-[11px] font-semibold px-3 py-1 border rounded-full shadow-sm"
-                            style={{ background: badgeStyle.bg, color: badgeStyle.text, borderColor: badgeStyle.border }}
-                          >
-                            {badgeLabel}
-                          </Badge>
-                          {template.type && template.type !== 'email' && (() => {
-                            const ts = getTemplateTypeStyle(template.type)
-                            return (
-                              <span
-                                className="text-[10px] font-semibold px-2 py-0.5 rounded-full border"
-                                style={{ background: ts.bg, color: ts.text, borderColor: ts.border }}
-                              >
-                                {ts.icon} {t.templateTypes?.[template.type] || template.type}
-                              </span>
-                            )
-                          })()}
-                          </div>
-                        </div>
-                        <button onClick={(e) => { e.stopPropagation(); toggleFav(template.id) }} className={`ml-3 text-xl ${isFav(template.id) ? 'text-[#8a8535]' : 'text-gray-200 hover:text-[#8a8535]'}`} title={isFav(template.id) ? 'Unfavorite' : 'Favorite'} aria-label="Toggle favorite">★</button>
-                      </div>
-                    </div>
+                    <TemplateCard
+                      key={template.id}
+                      template={template}
+                      templateLanguage={templateLanguage}
+                      interfaceLanguage={interfaceLanguage}
+                      t={t}
+                      badgeStyle={badgeStyle}
+                      badgeLabel={badgeLabel}
+                      isFavourite={isFav(template.id)}
+                      onClick={() => { setSelectedTemplate(template); setShowMobileTemplates(false) }}
+                      onToggleFav={toggleFav}
+                      renderHighlighted={renderHighlighted}
+                      getMatchRanges={getMatchRanges}
+                      getTemplateTypeStyle={getTemplateTypeStyle}
+                    />
                   )
                 })}
               </div>
@@ -2002,16 +1835,7 @@ function App() {
                                 const rows = Math.max(1, Math.ceil(count / columns))
                                 let w = columns * cardW + (columns - 1) * gap + 48
                                 let h = Math.min(700, headerH + rows * rowH + 48)
-                                const availW = (window.screen?.availWidth || window.innerWidth) - 40
-                                const availH = (window.screen?.availHeight || window.innerHeight) - 80
-                                w = Math.min(w, availW)
-                                h = Math.min(h, availH)
-                                const left = Math.max(0, Math.floor(((window.screen?.availWidth || window.innerWidth) - w) / 2))
-                                const top = Math.max(0, Math.floor(((window.screen?.availHeight || window.innerHeight) - h) / 3))
-                                const features = `popup=yes,width=${Math.round(w)},height=${Math.round(h)},left=${left},top=${top},toolbar=0,location=0,menubar=0,status=0,scrollbars=1,resizable=1,noopener=1`
-                                
-                                const win = window.open(url.toString(), '_blank', features)
-                                if (win && win.focus) win.focus()
+                                const win = openPopupWindow(url.toString(), w, h, { extra: 'noopener=1' })
                                 
                                 // Auto-close the popup when popout opens successfully
                                 if (win) {
@@ -2068,7 +1892,7 @@ function App() {
                         }}
                         variables={variables}
                         templateLanguage={templateLanguage}
-                        placeholder={getPlaceholderText()}
+                        placeholder={placeholderText}
                         onVariablesChange={handleInlineVariableChange}
                         focusedVarName={focusedVar}
                         onFocusedVarChange={(varName) => {
@@ -2113,7 +1937,7 @@ function App() {
                         ref={bodyEditorRef}
                         variables={variables}
                         templateLanguage={templateLanguage}
-                        placeholder={getPlaceholderText()}
+                        placeholder={placeholderText}
                         onVariablesChange={handleInlineVariableChange}
                         focusedVarName={focusedVar}
                         onFocusedVarChange={(varName) => {
@@ -2418,16 +2242,7 @@ function App() {
                         const rows = Math.max(1, count)
                         let w = Math.max(baseWidth, cardW + padding)
                         let h = Math.max(baseHeight, headerH + Math.min(rows, 8) * rowH + padding)
-                        const availW = (window.screen?.availWidth || window.innerWidth) - 40
-                        const availH = (window.screen?.availHeight || window.innerHeight) - 80
-                        w = Math.min(w, availW)
-                        h = Math.min(h, availH)
-                        const left = Math.max(0, Math.floor(((window.screen?.availWidth || window.innerWidth) - w) / 2))
-                        const top = Math.max(0, Math.floor(((window.screen?.availHeight || window.innerHeight) - h) / 3))
-                        const features = `popup=yes,width=${Math.round(w)},height=${Math.round(h)},left=${left},top=${top},toolbar=0,location=0,menubar=0,status=0,scrollbars=1,resizable=1,noopener=1`
-                        
-                        const win = window.open(url.toString(), '_blank', features)
-                        if (win && win.focus) win.focus()
+                        const win = openPopupWindow(url.toString(), w, h, { extra: 'noopener=1' })
                         
                         // Auto-close the popup when popout opens successfully
                         if (win) {
