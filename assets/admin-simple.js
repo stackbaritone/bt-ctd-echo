@@ -1016,6 +1016,69 @@
     else { notify('Aucune variable à ajouter.'); }
   }
 
+  // ============================================
+  // CATEGORY SKELETONS
+  // ============================================
+  const CATEGORY_SKELETONS = {
+    quotes_and_approvals: {
+      fr: '<p>Bonjour,</p><p>Nous accusons réception du projet &lt;&lt;ProjectNumber_FR&gt;&gt;.</p><p>Sa réalisation est évaluée à environ &lt;&lt;NbDays_FR&gt;&gt; jour(s) de travail. L&#39;estimation des coûts s&#39;élève à &lt;&lt;Cost_FR&gt;&gt;&nbsp;$.</p><p>Nous vous confirmons que ce projet sera traité uniquement après réception de votre approbation.</p><p>Pour toute question ou tout renseignement complémentaire, n&#39;hésitez pas à communiquer avec nous.</p><p>Bien cordialement,</p>',
+      en: '<p>Hello,</p><p>We have received Project &lt;&lt;ProjectNumber_EN&gt;&gt;.</p><p>Based on our assessment, it will take approximately &lt;&lt;NbDays_EN&gt;&gt; working day(s) to complete, and the estimated cost is $&lt;&lt;Cost_EN&gt;&gt;.</p><p>Please note that we will only begin work on this project once we have received your approval.</p><p>Please feel free to contact us if you have any questions or need more information.</p><p>Best regards,</p>'
+    },
+    follow_ups_and_cancellations: {
+      fr: '<p>Bonjour,</p><p>Nous aimerions faire un suivi au sujet du projet &lt;&lt;ProjectNumber_FR&gt;&gt;. Nous attendons toujours [préciser ce qui est attendu].</p><p>Si aucune réponse n&#39;est reçue d&#39;ici &lt;&lt;DeadlineTime_FR&gt;&gt; le &lt;&lt;DeadlineDate_FR&gt;&gt;, le projet sera annulé.</p><p>Pour toute question ou tout renseignement complémentaire, n&#39;hésitez pas à communiquer avec nous.</p><p>Bien cordialement,</p>',
+      en: '<p>Hello,</p><p>We would like to follow up on Project &lt;&lt;ProjectNumber_EN&gt;&gt;. We are still waiting for [specify what is awaited].</p><p>If we do not receive a response by &lt;&lt;DeadlineTime_EN&gt;&gt; on &lt;&lt;DeadlineDate_EN&gt;&gt;, the project will be cancelled.</p><p>Please feel free to contact us if you have any questions or need more information.</p><p>Best regards,</p>'
+    },
+    documents_and_formatting: {
+      fr: '<p>Bonjour,</p><p>Nous accusons réception du projet &lt;&lt;ProjectNumber_FR&gt;&gt;.</p><p>[Décrire le problème de format ou de document]</p><p>Nous vous proposons les options suivantes :</p><p>1. [Option A]<br>2. [Option B]</p><p>Nous vous serions reconnaissants de bien vouloir nous indiquer l&#39;option retenue afin que nous puissions procéder au traitement de votre projet.</p><p>Bien cordialement,</p>',
+      en: '<p>Hello,</p><p>We have received Project &lt;&lt;ProjectNumber_EN&gt;&gt;.</p><p>[Describe the document or formatting issue]</p><p>Please consider the following options:</p><p>1. [Option A]<br>2. [Option B]</p><p>In order to proceed with your request, please confirm which option you prefer.</p><p>Best regards,</p>'
+    },
+    deadlines_and_delivery: {
+      fr: '<p>Bonjour,</p><p>Nous accusons réception du projet &lt;&lt;ProjectNumber_FR&gt;&gt;.</p><p>[Décrire la situation concernant le délai ou la livraison]</p><p>Nous vous proposons de reporter la date de livraison au &lt;&lt;NewDeadline_FR&gt;&gt;. Merci de nous confirmer si ce nouvel échéancier vous convient.</p><p>Pour toute question ou tout renseignement complémentaire, n&#39;hésitez pas à communiquer avec nous.</p><p>Bien cordialement,</p>',
+      en: '<p>Hello,</p><p>We have received Project &lt;&lt;ProjectNumber_EN&gt;&gt;.</p><p>[Describe the deadline or delivery situation]</p><p>We are proposing to change the delivery date to &lt;&lt;NewDeadline_EN&gt;&gt;. Please confirm if this new date works for you.</p><p>Please feel free to contact us if you have any questions or need more information.</p><p>Best regards,</p>'
+    },
+    clarifications_and_client_instructions: {
+      fr: '<p>Bonjour,</p><p>Nous accusons réception du projet &lt;&lt;ProjectNumber_FR&gt;&gt;.</p><p>[Décrire l&#39;élément qui nécessite des précisions ou des instructions]</p><p>Nous vous serions reconnaissants de bien vouloir nous transmettre vos instructions dès que possible.</p><p>Pour toute question ou tout renseignement complémentaire, n&#39;hésitez pas à communiquer avec nous.</p><p>Bien cordialement,</p>',
+      en: '<p>Hello,</p><p>We have received Project &lt;&lt;ProjectNumber_EN&gt;&gt;.</p><p>[Describe the element requiring clarification or instructions from the client]</p><p>Could you please send us your instructions as soon as possible?</p><p>Please feel free to contact us if you have any questions or need more information.</p><p>Best regards,</p>'
+    },
+    security_and_copyright: {
+      fr: '<p>Bonjour,</p><p>Nous accusons réception du projet &lt;&lt;ProjectNumber_FR&gt;&gt;.</p><p>[Décrire la problématique de sécurité ou de droits d&#39;auteur]</p><p>Nous vous prions de bien vouloir confirmer votre autorisation avant que nous puissions procéder au traitement de votre demande.</p><p>Pour toute question ou tout renseignement complémentaire, n&#39;hésitez pas à communiquer avec nous.</p><p>Bien cordialement,</p>',
+      en: '<p>Hello,</p><p>We have received Project &lt;&lt;ProjectNumber_EN&gt;&gt;.</p><p>[Describe the security or copyright concern]</p><p>Please confirm your authorization before we can proceed with your request.</p><p>Please feel free to contact us if you have any questions or need more information.</p><p>Best regards,</p>'
+    },
+    unsatisfactory: {
+      fr: '<p>Bonjour,</p><p>Nous avons procédé à l&#39;examen du travail soumis pour le projet &lt;&lt;ProjectNumber_FR&gt;&gt;.</p><p>[Décrire les problèmes de qualité identifiés]</p><p>Nous vous demandons de bien vouloir :<br>1. [Action corrective requise]<br>2. [Action complémentaire si nécessaire]</p><p>Veuillez soumettre votre travail révisé d&#39;ici le &lt;&lt;DeadlineDate_FR&gt;&gt;.</p><p>Bien cordialement,</p>',
+      en: '<p>Hello,</p><p>We have reviewed the work submitted for Project &lt;&lt;ProjectNumber_EN&gt;&gt;.</p><p>[Describe the quality issues identified]</p><p>We are requesting that you:<br>1. [Required corrective action]<br>2. [Additional action if necessary]</p><p>Please resubmit your revised work by &lt;&lt;DeadlineDate_EN&gt;&gt;.</p><p>Best regards,</p>'
+    },
+    fin_d_annee_financiere: {
+      fr: '<p>Bonjour,</p><p>Dans le cadre de la clôture de l&#39;exercice financier, nous souhaitons vous aviser des éléments suivants :</p><p>[Décrire les actions ou les délais requis pour la fin d&#39;année financière]</p><p>Nous vous prions de bien vouloir soumettre vos demandes avant le &lt;&lt;DeadlineDate_FR&gt;&gt; afin d&#39;assurer leur traitement dans les délais requis.</p><p>Pour toute question ou tout renseignement complémentaire, n&#39;hésitez pas à communiquer avec nous.</p><p>Bien cordialement,</p>',
+      en: '<p>Hello,</p><p>As we approach the end of the fiscal year, we would like to inform you of the following:</p><p>[Describe the actions or deadlines required for fiscal year end]</p><p>Please submit your requests before &lt;&lt;DeadlineDate_EN&gt;&gt; to ensure they are processed within the required timeframe.</p><p>Please feel free to contact us if you have any questions or need more information.</p><p>Best regards,</p>'
+    }
+  };
+
+  function applySkeletonForCategory() {
+    const t = data.templates.find(x => x.id === selected);
+    if (!t) { notify('Sélectionnez un modèle d&#x27;abord.'); return; }
+    const cat = t.category;
+    const skeleton = CATEGORY_SKELETONS[cat];
+    if (!skeleton) {
+      notify('Aucun squelette disponible. Sélectionnez d&#x27;abord une catégorie dans le menu déroulant.');
+      return;
+    }
+    const hasFrContent = (getBodyValue(bodyFrEl) || '').trim().length > 0;
+    const hasEnContent = (getBodyValue(bodyEnEl) || '').trim().length > 0;
+    if (hasFrContent || hasEnContent) {
+      const catLabel = t.category_fr || cat;
+      if (!confirm(`Remplacer le contenu actuel du corps (FR et EN) par le squelette de la catégorie « ${catLabel} » ?`)) return;
+    }
+    setBodyValue(bodyFrEl, skeleton.fr);
+    setBodyValue(bodyEnEl, skeleton.en);
+    t.body = t.body || {};
+    t.body.fr = skeleton.fr;
+    t.body.en = skeleton.en;
+    saveDraft();
+    scheduleAutoSync();
+    notify('🏗️ Squelette appliqué ! Remplacez les crochets [ ] par votre contenu.');
+  }
+
   // wire events
   function exportJson(){
     (data.templates||[]).forEach(syncTemplateCategory);
@@ -1383,6 +1446,8 @@
     notify('Modèle dupliqué : ' + newId);
   }
   if (btnDuplicate) btnDuplicate.onclick = duplicateTemplate;
+  const btnSkeleton = $('#btn-skeleton');
+  if (btnSkeleton) btnSkeleton.onclick = applySkeletonForCategory;
   
   // Delete with modal confirmation
   const modalDelete = $('#modal-delete');
