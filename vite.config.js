@@ -117,7 +117,7 @@ export default defineConfig(({ mode }) => {
       rollupOptions: {
         output: {
           manualChunks(id) {
-            if (id.includes('node_modules/react/') || id.includes('node_modules/react-dom/')) return 'react'
+            if (id.includes('node_modules/react/') || id.includes('node_modules/react-dom/') || id.includes('node_modules/scheduler/')) return 'react'
             if (id.includes('node_modules/@radix-ui/')) return 'radix'
             if (id.includes('node_modules/lucide-react/')) return 'lucide'
             if (id.includes('node_modules/fuse.js/')) return 'search'
