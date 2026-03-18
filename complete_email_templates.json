@@ -50,7 +50,7 @@
         "en": "Fiscal Year end"
       }
     },
-    "updatedAt": "2026-03-13T17:57:44.999Z",
+    "updatedAt": "2026-03-18T15:44:10.065Z",
     "categoryColors": {
       "s": "#c7ffd2"
     }
@@ -294,11 +294,11 @@
       },
       "body": {
         "fr": "Bonjour,\r\n\r\nNous accusons réception du projet <<ProjectNumber_FR>>.\r\n\r\nMalgré tous nos efforts, il ne nous sera pas possible de respecter la date de livraison initialement prévue. Un délai supplémentaire est nécessaire afin d’assurer un résultat qui répond aux normes de qualité du Bureau. \r\n\r\nNous vous proposons donc de reporter la livraison au <<NewDeadline_FR>>. Merci de nous confirmer si ce nouvel échéancier vous convient. À défaut de réponse, nous l’adopterons afin d’éviter tout retard supplémentaire.\r\n\r\nNous regrettons les inconvénients que ce report pourrait occasionner et vous remercions de votre compréhension.\r\n\r\nPour toute question ou tout renseignement complémentaire, n’hésitez pas à communiquer avec nous.\r\n\r\nBien cordialement,",
-        "en": "Hello,\r\n\r\nWe have received Project <<ProjectNumber_EN>>.\r\n\r\nDespite our best efforts, we will not be able to meet the original delivery date. Additional time is required to ensure that the result meets the Translation Bureau’s quality standards. \r\n\r\nWe are proposing to change the delivery date to <<NewDeadline_EN>>. Please confirm if this new date works for you. If we do not hear back from you, we will use a new delivery date to avoid any further delays.\r\n\r\nWe apologize for any inconvenience this may cause and thank you for your understanding.\r\n\r\nPlease feel free to contact us if you have any questions or need more information.\r\n\r\nBest regards,"
+        "en": "<p>Hello,</p><p>We have received project &lt;&lt;ProjectNumber_EN&gt;&gt;.</p><p>Despite our best efforts, we will not be able to meet the original delivery date. Additional time is required to ensure that the result meets the Translation Bureau’s quality standards.</p><p>We are proposing to change the delivery date to &lt;&lt;NewDeadline_EN&gt;&gt;. Please confirm if this new date works for you. If we do not hear back from you, we will use a new delivery date to avoid any further delays.</p><p>We apologize for any inconvenience this may cause and thank you for your understanding.</p><p>Please feel free to contact us if you have any questions or need more information.</p><p>Best regards,</p>"
       },
       "variables": [
-        "project_number",
-        "new_deadline"
+        "new_deadline",
+        "project_number"
       ]
     },
     {
@@ -485,7 +485,7 @@
       "category_fr": "Délais et livraisons",
       "category_en": "Deadlines and delivery",
       "title": {
-        "fr": "Projet <<ProjectNumber_FR>> – Retard de prise FR charge",
+        "fr": "Projet <<ProjectNumber_FR>> – Retard de prise en charge",
         "en": "Project <<ProjectNumber_EN>> – delay in processing"
       },
       "description": {
@@ -493,12 +493,12 @@
         "en": "Confirming receipt of project and apologizing for delay in processing"
       },
       "subject": {
-        "fr": "Projet <<ProjectNumber_FR>> – Retard de prise FR charge",
+        "fr": "Projet <<ProjectNumber_FR>> – Retard de prise en charge",
         "en": "Project <<ProjectNumber_EN>> – delay in processing"
       },
       "body": {
         "fr": "Bonjour,\r\n\r\nNous accusons réception du projet <<ProjectNumber_FR>>.\r\n \r\nNous vous prions de nous excuser pour le délai de prise en charge. En raison d’un volume élevé de projets, nous n’avons pas pu entamer le traitement avant aujourd’hui.\r\n\r\nNous procédons actuellement à la vérification de la disponibilité des ressources nécessaires et vous confirmons qu’aucun frais d’urgence ne sera appliqué.\r\n \r\nNous vous remercions de votre compréhension et demeurons à votre disposition pour toute question ou tout renseignement complémentaire.\r\n\r\nBien cordialement,",
-        "en": "<p>Hello,</p><p>We have received Project &lt;&lt;ProjectNumber_EN&gt;&gt;.<br> <br>We apologize for the delay in processing your project. Due to a high volume of projects, we were unable to start working on it until today.</p><p>We are currently verifying the availability of the necessary resources and can confirm that no rush premium will apply.</p><p>We thank you for your understanding. Please contact us if you have any questions or need more information.</p><p>Best regards,</p>"
+        "en": "<p>Hello,</p><p>We have received project &lt;&lt;ProjectNumber_EN&gt;&gt;.<br> <br>We apologize for the delay in processing your project. Due to a high volume of projects, we were unable to start working on it until today.</p><p>We are currently verifying the availability of the necessary resources and can confirm that no rush premium will apply.</p><p>We thank you for your understanding. Please contact us if you have any questions or need more information.</p><p>Best regards,</p>"
       },
       "variables": [
         "project_number"
