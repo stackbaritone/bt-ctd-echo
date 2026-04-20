@@ -1,13 +1,14 @@
 {
   "metadata": {
     "version": "1.0",
-    "totalTemplates": 32,
+    "totalTemplates": 33,
     "languages": [
       "fr",
       "en"
     ],
     "categories": [
       "clarifications_and_client_instructions",
+      "d",
       "deadlines_and_delivery",
       "documents_and_formatting",
       "documents_et_formats",
@@ -53,9 +54,13 @@
       "documents_et_formats": {
         "fr": "Documents et formats",
         "en": "Documents and formatting"
+      },
+      "d": {
+        "fr": "Précisions et instructions client",
+        "en": "Clarifications and client instructions"
       }
     },
-    "updatedAt": "2026-04-20T15:24:25.911Z",
+    "updatedAt": "2026-04-20T15:32:52.483Z",
     "categoryColors": {
       "s": "#c7ffd2"
     }
@@ -935,6 +940,30 @@
       "_isFirstInCategory": true,
       "category_fr": "Documents et formats",
       "category_en": "Documents and formatting"
+    },
+    {
+      "id": "ctd034",
+      "type": "email",
+      "category": "d",
+      "title": {
+        "fr": "",
+        "en": ""
+      },
+      "description": {
+        "fr": "",
+        "en": ""
+      },
+      "subject": {
+        "fr": "",
+        "en": ""
+      },
+      "body": {
+        "fr": "",
+        "en": ""
+      },
+      "variables": [],
+      "category_fr": "Précisions et instructions client",
+      "category_en": "Clarifications and client instructions"
     }
   ],
   "variables": {
