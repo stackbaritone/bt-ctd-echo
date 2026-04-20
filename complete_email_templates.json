@@ -1,7 +1,7 @@
 {
   "metadata": {
     "version": "1.0",
-    "totalTemplates": 31,
+    "totalTemplates": 32,
     "languages": [
       "fr",
       "en"
@@ -10,6 +10,7 @@
       "clarifications_and_client_instructions",
       "deadlines_and_delivery",
       "documents_and_formatting",
+      "documents_et_formats",
       "fin_d_annee_financiere",
       "follow_ups_and_cancellations",
       "quotes_and_approvals",
@@ -48,9 +49,13 @@
       "fin_d_annee_financiere": {
         "fr": "Fin d’année financière",
         "en": "Fiscal Year end"
+      },
+      "documents_et_formats": {
+        "fr": "Documents et formats",
+        "en": "Documents and formatting"
       }
     },
-    "updatedAt": "2026-03-20T14:50:31.986Z",
+    "updatedAt": "2026-04-20T15:24:25.911Z",
     "categoryColors": {
       "s": "#c7ffd2"
     }
@@ -85,7 +90,8 @@
       ],
       "utilisateur": [
         "conseillers"
-      ]
+      ],
+      "_isFirstInCategory": false
     },
     {
       "id": "ctd002",
@@ -111,7 +117,8 @@
       "variables": [
         "nb_days",
         "project_number"
-      ]
+      ],
+      "_isFirstInCategory": false
     },
     {
       "id": "ctd003",
@@ -139,7 +146,8 @@
         "deadline_date",
         "deadline_time",
         "project_number"
-      ]
+      ],
+      "_isFirstInCategory": false
     },
     {
       "id": "ctd004",
@@ -167,7 +175,8 @@
         "nb_days",
         "page_count",
         "urgent_cost"
-      ]
+      ],
+      "_isFirstInCategory": true
     },
     {
       "id": "ctd005",
@@ -194,7 +203,8 @@
         "dphours",
         "dprate",
         "project_number"
-      ]
+      ],
+      "_isFirstInCategory": true
     },
     {
       "id": "ctd006",
@@ -222,7 +232,8 @@
         "nb_days",
         "new_date",
         "project_number"
-      ]
+      ],
+      "_isFirstInCategory": false
     },
     {
       "id": "ctd007",
@@ -248,7 +259,8 @@
       "variables": [
         "new_deadline",
         "project_number"
-      ]
+      ],
+      "_isFirstInCategory": false
     },
     {
       "id": "ctd008",
@@ -273,7 +285,8 @@
       },
       "variables": [
         "project_number"
-      ]
+      ],
+      "_isFirstInCategory": true
     },
     {
       "id": "ctd009",
@@ -299,7 +312,8 @@
       "variables": [
         "new_deadline",
         "project_number"
-      ]
+      ],
+      "_isFirstInCategory": false
     },
     {
       "id": "ctd010",
@@ -324,7 +338,8 @@
       },
       "variables": [
         "project_number"
-      ]
+      ],
+      "_isFirstInCategory": false
     },
     {
       "id": "ctd011",
@@ -350,7 +365,8 @@
       "variables": [
         "project_number",
         "target_language"
-      ]
+      ],
+      "_isFirstInCategory": false
     },
     {
       "id": "ctd012",
@@ -375,7 +391,8 @@
       },
       "variables": [
         "project_number"
-      ]
+      ],
+      "_isFirstInCategory": false
     },
     {
       "id": "ctd013",
@@ -400,7 +417,8 @@
       },
       "variables": [
         "project_number"
-      ]
+      ],
+      "_isFirstInCategory": false
     },
     {
       "id": "ctd014",
@@ -425,7 +443,8 @@
       },
       "variables": [
         "project_number"
-      ]
+      ],
+      "_isFirstInCategory": false
     },
     {
       "id": "ctd015",
@@ -450,7 +469,8 @@
       },
       "variables": [
         "project_number"
-      ]
+      ],
+      "_isFirstInCategory": false
     },
     {
       "id": "ctd016",
@@ -477,7 +497,8 @@
         "new_date",
         "original_date",
         "project_number"
-      ]
+      ],
+      "_isFirstInCategory": true
     },
     {
       "id": "ctd017",
@@ -502,7 +523,8 @@
       },
       "variables": [
         "project_number"
-      ]
+      ],
+      "_isFirstInCategory": false
     },
     {
       "id": "ctd018",
@@ -527,7 +549,8 @@
       },
       "variables": [
         "project_number"
-      ]
+      ],
+      "_isFirstInCategory": false
     },
     {
       "id": "ctd019",
@@ -555,7 +578,8 @@
         "min_amount",
         "nb_days",
         "project_number"
-      ]
+      ],
+      "_isFirstInCategory": false
     },
     {
       "id": "ctd020",
@@ -580,7 +604,8 @@
       },
       "variables": [
         "project_number"
-      ]
+      ],
+      "_isFirstInCategory": false
     },
     {
       "id": "ctd021",
@@ -608,7 +633,8 @@
         "project_number",
         "source_language",
         "target_language"
-      ]
+      ],
+      "_isFirstInCategory": false
     },
     {
       "id": "ctd022",
@@ -635,7 +661,8 @@
         "project_number1",
         "project_number2",
         "project_number3"
-      ]
+      ],
+      "_isFirstInCategory": false
     },
     {
       "id": "ctd023",
@@ -660,7 +687,8 @@
       },
       "variables": [
         "project_number"
-      ]
+      ],
+      "_isFirstInCategory": false
     },
     {
       "id": "ctd024",
@@ -685,7 +713,8 @@
       },
       "variables": [
         "project_number"
-      ]
+      ],
+      "_isFirstInCategory": false
     },
     {
       "id": "ctd025",
@@ -710,7 +739,8 @@
       },
       "variables": [
         "project_number"
-      ]
+      ],
+      "_isFirstInCategory": false
     },
     {
       "id": "ctd026",
@@ -735,7 +765,8 @@
       },
       "variables": [
         "project_number"
-      ]
+      ],
+      "_isFirstInCategory": false
     },
     {
       "id": "ctd027",
@@ -760,7 +791,8 @@
       },
       "variables": [
         "project_number"
-      ]
+      ],
+      "_isFirstInCategory": false
     },
     {
       "id": "ctd028",
@@ -783,7 +815,8 @@
         "fr": "Bonjour,\r\n\r\nMerci de l’intérêt que vous portez à nos services.\r\n\r\nPour vous aider à mieux comprendre nos services et la structure de nos prix, vous trouverez ci-joint les versions française et anglaise du tableau résumant chacun de nos services ainsi que les tarifs correspondants.\r\n\r\nN’hésitez pas à nous écrire si vous avez des questions ou si vous souhaitez des précisions supplémentaires.\r\n\r\nVoici également les coordonnées de nos gestionnaires de portefeuilles clients:\r\nNeysa McLeod: neysa.mcleod@tpsgc-pwgsc.gc.ca\r\nMélanie Danis: melanie.danis@tpsgc-pwgsc.gc.ca\r\n \r\nBien cordialement,",
         "en": "Hello,\r\n\r\nThank you for your interest in our services.\r\n\r\nTo help you better understand our services and pricing structure, please find attached the English and French versions of a table summarizing each of our services and the corresponding rates.\r\n\r\nPlease feel free to contact us if you have any questions or need more information.\r\n\r\nPlease find the contact information of our client portfolio managers below:\r\nNeysa McLeod: neysa.mcleod@tpsgc-pwgsc.gc.ca\r\nMélanie Danis: melanie.danis@tpsgc-pwgsc.gc.ca \r\n\r\nBest regards,"
       },
-      "variables": []
+      "variables": [],
+      "_isFirstInCategory": true
     },
     {
       "id": "ctd029",
@@ -806,7 +839,8 @@
         "fr": "Bonjour,\r\n\r\nJe vous écris pour vous informer qu’une erreur a eu lieu concernant l’envoi de documents protégés. Cette situation doit être rectifiée immédiatement afin de garantir la sécurité et la confidentialité des informations.\r\n\r\nVoici les actions que vous devez prendre sans délai :\r\n\r\nVérification du téléchargement des documents\r\nVeuillez confirmer si vous avez téléchargé les documents que nous vous avons envoyés. Cette étape est essentielle afin de déterminer si les documents ont été enregistrés sur vos systèmes. Si vous avez téléchargé ces documents, il est impératif que vous procédiez à la suppression immédiate de toutes les copies.\r\n\r\nSuppression de toutes les copies des documents\r\nSi les documents ont été téléchargés, merci de les supprimer dans leur intégralité de tous vos dispositifs et supports de stockage, y compris, mais sans s'y limiter :\r\nSur votre serveur\r\nSur votre ordinateur local\r\nDans tous les systèmes ou bases de données où les documents ont pu être copiés ou stockés\r\nSur tout autre dispositif ou réseau pouvant avoir conservé une copie des documents (disques durs externes, systèmes de sauvegarde, etc.)\r\n\r\nCette suppression doit être effectuée de manière complète, en vous assurant qu'aucune copie résiduelle ne subsiste sur vos systèmes.\r\n\r\nVérification des mémoires non protégées\r\nAssurez-vous également que ces documents n’ont pas été transférés dans des zones de stockage non protégées, telles que des dossiers non sécurisés, des applications tierces, ou des dispositifs de stockage amovibles. Si tel est le cas, veuillez procéder à la suppression de ces copies sans délai.\r\n\r\nConfirmation de la suppression\r\nUne fois toutes les copies supprimées, merci de nous confirmer par retour de courriel que cette action a été réalisée avec succès. Il est essentiel que nous recevions une confirmation de votre part afin de clore cette situation.\r\n\r\nEnfin, nous vous demandons de nous signaler toute difficulté que vous pourriez rencontrer lors de la mise en œuvre de ces actions, ou si vous avez besoin d'assistance technique.\r\n\r\nNous comprenons que cette situation puisse engendrer des désagréments et nous vous remercions pour votre collaboration rapide et efficace pour assurer la sécurité des informations. Nous restons à votre disposition pour toute question ou précision supplémentaire.\r\n\r\nCordialement,",
         "en": "Hello,\r\n\r\nI am writing to inform you that an error has occurred regarding the transmission of protected documents. This situation must be rectified immediately to ensure the security and confidentiality of the information.\r\n\r\nHere are the actions you need to take without delay:\r\n\r\nVerification of document download\r\nPlease confirm whether you have downloaded the documents we sent you. This step is essential to determine if the documents have been saved on your systems. If you have downloaded these documents, it is imperative that you proceed with the immediate deletion of all copies.\r\n\r\nDeletion of all copies of the documents\r\nIf the documents have been downloaded, please delete them entirely from all your devices and storage media, including, but not limited to:\r\nOn your server\r\nOn your local computer\r\nIn all systems or databases where the documents may have been copied or stored\r\nOn any other device or network that may have retained a copy of the documents (external hard drives, backup systems, etc.)\r\n\r\nThis deletion must be carried out thoroughly, ensuring that no residual copies remain on your systems.\r\n\r\nVerification of unprotected storage\r\nAlso ensure that these documents have not been transferred to unprotected storage areas, such as unsecured folders, third-party applications, or removable storage devices. If this is the case, please proceed with the deletion of these copies without delay.\r\n\r\nConfirmation of deletion\r\nOnce all copies have been deleted, please confirm by replying to this email that this action has been successfully completed. It is crucial that we receive a confirmation from you to close this matter.\r\n\r\nFinally, we ask that you report any difficulty you may encounter while carrying out these actions, or if you need any technical assistance.\r\n\r\nWe understand that this situation may cause inconvenience, and we thank you for your prompt and efficient cooperation to ensure the security of the information. We remain available for any questions or additional clarifications.\r\n\r\nBest regards,"
       },
-      "variables": []
+      "variables": [],
+      "_isFirstInCategory": true
     },
     {
       "id": "insat_qualite_nouvelleAMA",
@@ -840,7 +874,8 @@
       "utilisateur": [
         "gestion",
         "relations_fournisseurs"
-      ]
+      ],
+      "_isFirstInCategory": true
     },
     {
       "id": "ctd030",
@@ -869,7 +904,37 @@
         "gestion"
       ],
       "category_fr": "Fin d’année financière",
-      "category_en": "Fiscal Year end"
+      "category_en": "Fiscal Year end",
+      "_isFirstInCategory": true
+    },
+    {
+      "id": "ctd033",
+      "type": "email",
+      "category": "documents_et_formats",
+      "title": {
+        "fr": "Changement au standard de conversion PDF",
+        "en": "Change to PDF conversion standards"
+      },
+      "description": {
+        "fr": "Avis au client - changement au standard de conversion PDF - confirmation requise",
+        "en": "To client - change to PDF conversion standards - confirmation required"
+      },
+      "subject": {
+        "fr": "Projet <<ProjectNumber_FR>> - Conversion PDF",
+        "en": "Project <<ProjectNumber_FR>> - PDF conversion"
+      },
+      "body": {
+        "fr": "Bonjour,&nbsp;<div><br></div><div>Nous accusons réception du projet &lt;&lt;ProjectNumber_FR&gt;&gt;, lequel contient un ou des documents en format PDF.</div><div><br></div><div>Nous offrons deux options afin d'être en mesure de procéder à la traduction de votre projet:</div><div><ol><li>Vous pouvez nous transmettre le document original modifiable (Word, Excel, etc.), s'il est disponible. Cette option est la plus avantageuse financièrement.</li><li>Nous pouvons convrtir et formater le PDF selon l'offre d'éditique standard décrite ci-dessous, au tarif de 89$/heure (environ &lt;&lt;nb_hours&gt;&gt; heure(s)).</li></ol></div><div>Notre offre d'éditique standard repose sur un formatage fonctionnel. Cette approche vise à produire un document clair et bien structuré, afin d'assurer une traduction de qualité et une lecture fluide, sans recréer fidèlement la mise en page originale. Elle permet ainsi de limiter les coûts et d'optimiser les délais. Elle comprend notamment:</div><div><ul><li>la conversion de l'ensemble du contenu à traduire, incluant la transcription des images non modifiables (si elles doivent être traduites);</li><li>la correction des coupures de phrases ou de paragraphes;</li><li>le maintien de la cohérence du contenu du document (structure logique, police uniforme, retrait des éléments nuisibles à la traduction).</li></ul><div>Les ajustements esthétiques (reproduction exacte de la mise en page, recontruction détaillée des tableaux, tables de matières automatisées, éléments graphiques ou décoratifs) ne sont pas inclus.&nbsp;</div></div><div><br></div><div>Si la mise en page doit absolument être reproduite fidèlement, merci de nous en aviser dans les plus brefs délais et nous communiquerons pour discuter du prix et du délai.&nbsp;</div><div><br></div><div>Nous vous remercions de bien vouloir nous indiquer l'option retenue au plus tard le &lt;&lt;date&gt;&gt;, afin que nous puissions poursuivre le traitement de votre projet.&nbsp;<span style=\"font-family: inherit;\">À défaut de\nréponse, l’éditique standard sera appliqué.</span></div><p class=\"MsoNormal\"><span lang=\"FR-CA\"><o:p></o:p></span></p><div><br></div><div><p class=\"MsoNormal\"><span lang=\"FR-CA\">Nous\ndemeurons à votre disposition pour toute question ou pour vous conseiller sur\nla solution la plus avantageuse selon vos besoins.</span></p>\n\n<p class=\"MsoNormal\"><span lang=\"FR-CA\">Bien\ncordialement,<o:p></o:p></span></p></div>",
+        "en": "<p class=\"MsoNormal\">Hello,<o:p></o:p></p>\n\n<p class=\"MsoNormal\">We acknowledge receipt of project &lt;&lt;ProjectNumber_FR&gt;&gt;, which\ncontains one or more PDF documents. <o:p></o:p></p>\n\n<p class=\"MsoNormal\">To proceed with translation, we offer the following two\noptions:<o:p></o:p></p>\n\n<ol style=\"margin-top:0in\" start=\"1\" type=\"1\">\n <li class=\"MsoNormal\">You\n     can send us the original editable document (Word, Excel, etc.), if\n     available. This option is the most cost‑effective.<o:p></o:p></li>\n <li class=\"MsoNormal\">We can\n     convert and format the PDF according to the standard desktop publishing\n     service described below, at a rate of $89 per hour (estimated at &lt;&lt;nb_hours&gt;&gt;&nbsp;hours).<o:p></o:p></li>\n</ol>\n\n<p class=\"MsoNormal\">Our standard desktop publishing service is based on\nfunctional formatting. This approach aims to produce a clear, well‑structured\ndocument, ensuring a high‑quality translation and easy reading, without strictly\nreplicating the original layout. This helps keep costs down and optimize turnaround\ntimes. It includes the following:<o:p></o:p></p>\n\n<ul style=\"margin-top:0in\" type=\"disc\">\n <li class=\"MsoNormal\">Converting\n     all content to be translated, including transcribing non‑modifiable images\n     (if they need to be translated)<o:p></o:p></li>\n <li class=\"MsoNormal\">Correcting\n     breaks in sentences and paragraphs<o:p></o:p></li>\n <li class=\"MsoNormal\">Ensuring\n     the document’s content is consistent (logical structure, consistent font,\n     removal of elements that could hinder translation)<o:p></o:p></li>\n</ul>\n\n<p class=\"MsoNormal\">Aesthetic adjustments (exact reproduction of layout,\ndetailed reconstruction of tables, automatic table of contents, and graphic or\ndecorative elements) are not included.<o:p></o:p></p>\n\n<p class=\"MsoNormal\">If the layout must be reproduced exactly, please let us know\nas soon as possible, and we will contact you to discuss the cost and deadline.<o:p></o:p></p>\n\n<p class=\"MsoNormal\">Please let us know which option you have chosen by &lt;&lt;date&gt;&gt;,\nso that we can proceed with your project. If no response is received, the\nstandard desktop publishing service will be applied.<o:p></o:p></p>\n\n<p class=\"MsoNormal\">We remain available to answer any questions you may have or\nto advise you on the best solution for your needs.<o:p></o:p></p>\n\n<p class=\"MsoNormal\">Regards,<o:p></o:p></p>"
+      },
+      "variables": [
+        "date",
+        "nb_hours",
+        "project_number"
+      ],
+      "_isFirstInCategory": true,
+      "category_fr": "Documents et formats",
+      "category_en": "Documents and formatting"
     }
   ],
   "variables": {
@@ -879,8 +944,8 @@
         "fr": "Numéro de projet"
       },
       "example": {
-        "en": "123-4567-001",
-        "fr": "123-4567-001"
+        "en": "123-124567-001",
+        "fr": "123-456712-001"
       },
       "format": "text"
     },
@@ -919,12 +984,12 @@
     },
     "date": {
       "description": {
-        "en": "Date when the quote was sent",
-        "fr": "Date d’envoi du devis"
+        "en": "Max date to receive client confirmation",
+        "fr": "Date max pour recevoir la confirmation du client"
       },
       "example": {
-        "en": "2025-01-15",
-        "fr": "15 janvier 2025"
+        "en": "July 15th, 2026",
+        "fr": "15 juillet 2026"
       },
       "format": "date"
     },
@@ -1212,6 +1277,17 @@
       "example": {
         "fr": "XXX",
         "en": "XXX"
+      }
+    },
+    "nb_hours": {
+      "description": {
+        "fr": "Nombre d'heures estimé",
+        "en": "Estimated number of hours"
+      },
+      "format": "text",
+      "example": {
+        "fr": "1",
+        "en": "1"
       }
     }
   }
