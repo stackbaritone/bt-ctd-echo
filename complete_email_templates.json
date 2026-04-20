@@ -60,7 +60,7 @@
         "en": "Clarifications and client instructions"
       }
     },
-    "updatedAt": "2026-04-20T15:32:52.483Z",
+    "updatedAt": "2026-04-20T17:14:49.940Z",
     "categoryColors": {
       "s": "#c7ffd2"
     }
@@ -946,22 +946,24 @@
       "type": "email",
       "category": "d",
       "title": {
-        "fr": "",
-        "en": ""
+        "fr": "CISR - Courriel d'avis au client - Décision SI ultra spécialisé",
+        "en": "IRB - Email to advise client of ultra specialized SI decision"
       },
       "description": {
-        "fr": "",
-        "en": ""
+        "fr": "CISR - Courriel d'avis au client - Décision SI ultra spécialisé",
+        "en": "IRB - Email to advise client of ultra specialized SI decision"
       },
       "subject": {
-        "fr": "",
-        "en": ""
+        "fr": "Projet <<ProjectNumber_FR>> – Décision SI ultra spécialisée",
+        "en": "Project <<ProjectNumber_EN>> - Ultra specialized SI decision"
       },
       "body": {
-        "fr": "",
-        "en": ""
+        "fr": "<span data-teams=\"true\"><p>Bonjour,</p><p>Tel que demandé, nous souhaitons vous aviser que le projet<strong>&nbsp;</strong>&lt;&lt;ProjectNumber_FR&gt;&gt;&nbsp;a été évalué par notre équipe de traduction, qui a conclu qu’il s’agit d’une décision SI ultra spécialisée.</p><p>Nous attendrons votre retour concernant toute documentation ou référence qui pourrait appuyer la traduction et alléger le travail de notre équipe sur ce dossier.</p><p>Merci beaucoup et bonne journée,</p></span>",
+        "en": "<span data-teams=\"true\"><p>Hello,</p><p>As requested, we would like to inform you that project&nbsp;&lt;&lt;ProjectNumber_EN&gt;&gt;has been evaluated by our translation team, who determined that it is an ultra specialized SI decision.</p><p>We will await your response regarding any documentation or reference material that could support the translation and help ease the work of our team on this file.</p><p>Thank you very much, and have a great day.</p></span>"
       },
-      "variables": [],
+      "variables": [
+        "project_number"
+      ],
       "category_fr": "Précisions et instructions client",
       "category_en": "Clarifications and client instructions"
     }
