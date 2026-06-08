@@ -11,7 +11,7 @@
   
   // Netlify Function URL — set once when you deploy to Netlify.
   // Override at runtime via: localStorage.setItem('ea_netlify_publish_url', 'https://YOUR_SITE.netlify.app/.netlify/functions/publish-templates')
-  const NETLIFY_PUBLISH_URL = localStorage.getItem('ea_netlify_publish_url') || 'https://YOUR_SITE.netlify.app/.netlify/functions/publish-templates';
+  const NETLIFY_PUBLISH_URL = localStorage.getItem('ea_netlify_publish_url') || 'https://stunning-rugelach-a3f0bc.netlify.app/.netlify/functions/publish-templates';
   
   async function hashPassword(password) {
     const encoder = new TextEncoder();
