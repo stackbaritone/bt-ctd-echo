@@ -9,8 +9,9 @@
   const ADMIN_PASSWORD_HASH = 'e5b5a086d2bf2efe5d63c15e5a763a8f6aaf8a3f0b93664c9c885894ba0fd062'; // Echo2026!Ctd
   const AUTH_KEY = 'ea_admin_auth';
   
-  // Pre-configured GitHub token (repo is private)
-  const PRECONFIGURED_GH_TOKEN = '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';
+  // Netlify Function URL — set once when you deploy to Netlify.
+  // Override at runtime via: localStorage.setItem('ea_netlify_publish_url', 'https://YOUR_SITE.netlify.app/.netlify/functions/publish-templates')
+  const NETLIFY_PUBLISH_URL = localStorage.getItem('ea_netlify_publish_url') || 'https://YOUR_SITE.netlify.app/.netlify/functions/publish-templates';
   
   async function hashPassword(password) {
     const encoder = new TextEncoder();
@@ -47,6 +48,8 @@
     
     if (hash === ADMIN_PASSWORD_HASH) {
       setAuthenticated(true);
+      // Keep password for the current session only (cleared on tab/browser close)
+      sessionStorage.setItem('ea_admin_session_pw', password);
       showAdminContent();
     } else {
       errorEl.style.display = 'block';
@@ -70,6 +73,7 @@
     
     if (loginScreen) loginScreen.style.display = 'flex';
     if (adminContent) adminContent.classList.remove('authenticated');
+    sessionStorage.removeItem('ea_admin_session_pw');
   }
   
   // Initialize authentication
@@ -1096,60 +1100,34 @@
     (data.templates||[]).forEach(syncTemplateCategory);
     data.metadata.totalTemplates = data.templates.length;
     data.metadata.categories = Array.from(new Set((data.templates||[]).map(t=>t.category).filter(Boolean))).sort();
-    // Update timestamp on publish
     data.metadata.updatedAt = new Date().toISOString();
-    // Use pre-configured token or localStorage override
-    const token = localStorage.getItem('ea_gh_token') || PRECONFIGURED_GH_TOKEN;
-    if (!token){
-      notify('Token GitHub manquant. Téléchargement local à la place.');
-      exportJson();
+
+    // Retrieve the session password (stored at login, cleared on tab close)
+    const password = sessionStorage.getItem('ea_admin_session_pw');
+    if (!password) {
+      notify('Session expirée. Veuillez vous reconnecter pour publier.', 'warn');
+      setAuthenticated(false);
+      showLoginScreen();
       return;
     }
-    // Derive owner/repo from homepage or location
-    const homepage = (data.metadata && data.metadata.homepage) || document.querySelector('meta[name="gh-repo"]')?.content || '';
-    let owner='stackbaritone', repo='bt-ctd-echo';
-    try {
-      // Try to get repo from meta tag first (most reliable)
-      const metaRepo = document.querySelector('meta[name="gh-repo"]')?.content;
-      if (metaRepo && metaRepo.includes('/')) {
-        const parts = metaRepo.split('/');
-        owner = parts[0];
-        repo = parts[1];
-      } else {
-        // Fallback to URL detection only on github.io
-        const m = homepage.match(/github\.io\/([^/]+)\/?/); if (m) repo = m[1];
-        const m2 = (document.location.href).match(/https:\/\/([^.]+)\.github\.io\//); if (m2) owner = m2[1];
-        // Only use pathname on github.io pages, not in dev
-        if (location.hostname.endsWith('.github.io')) {
-          const pathSeg = (location.pathname||'').split('/').filter(Boolean)[0];
-          if (pathSeg) repo = pathSeg;
-        }
-      }
-    } catch{}
-    // For safety allow override
-    const override = localStorage.getItem('ea_gh_repo');
-    if (override){ const parts = override.split('/'); if (parts.length===2){ owner = parts[0]; repo = parts[1]; } }
-    console.log('[publish] Using owner/repo:', owner, repo);
-  if (showToast) notify('Publication GitHub…');
-    const path = 'complete_email_templates.json';
-    const baseUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
-    const contentB64 = btoa(unescape(encodeURIComponent(JSON.stringify(data,null,2))));
 
-    // 1. Update main branch (source of truth)
-    let shaMain = null;
-    try {
-      const getMain = await fetch(baseUrl+`?ref=main`, { headers:{ Authorization:`Bearer ${token}`, Accept:'application/vnd.github+json' }});
-      if (getMain.ok){ const j = await getMain.json(); shaMain = j.sha; }
-    } catch(e){ console.warn('Unable to get main sha', e); }
-    const bodyMain = { message: 'feat(admin): update complete_email_templates.json via admin-simple', content: contentB64, branch: 'main' };
-    if (shaMain) bodyMain.sha = shaMain;
-    const putMain = await fetch(baseUrl, { method:'PUT', headers:{ Authorization:`Bearer ${token}`, Accept:'application/vnd.github+json', 'Content-Type':'application/json' }, body: JSON.stringify(bodyMain) });
-    if (!putMain.ok){ const txt = await putMain.text(); throw new Error('GitHub API (main) error: '+txt); }
-    console.log('[publish] main branch updated');
-    // gh-pages is managed exclusively by the CI workflow to avoid ref conflicts.
+    if (showToast) notify('Publication en cours…');
+    console.log('[publish] Calling Netlify Function:', NETLIFY_PUBLISH_URL);
 
+    const resp = await fetch(NETLIFY_PUBLISH_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password, data }),
+    });
+
+    if (resp.status === 401) throw new Error('Mot de passe refusé par le serveur.');
+    if (!resp.ok) {
+      const txt = await resp.text();
+      throw new Error(`Erreur serveur (${resp.status}): ${txt}`);
+    }
+
+    console.log('[publish] main branch updated via Netlify Function');
     if (showToast) notify('✅ Publié! Le déploiement CI démarrera dans quelques secondes.');
-    // Save to localStorage to sync with main app
     saveDraft();
     markAsPublished();
   }

@@ -1,0 +1,18 @@
+# Netlify configuration
+# This project is hosted on GitHub Pages; Netlify is used only for the
+# serverless function that proxies GitHub API writes (no static hosting here).
+
+[build]
+  # No static build — functions only
+  command   = ""
+  publish   = "dist"
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+
+# Allow the function to be called cross-origin from the GitHub Pages domain
+[[headers]]
+  for = "/.netlify/functions/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "https://bt-ctd-echo.bt-tb.ca"
