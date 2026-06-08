@@ -1146,30 +1146,9 @@
     const putMain = await fetch(baseUrl, { method:'PUT', headers:{ Authorization:`Bearer ${token}`, Accept:'application/vnd.github+json', 'Content-Type':'application/json' }, body: JSON.stringify(bodyMain) });
     if (!putMain.ok){ const txt = await putMain.text(); throw new Error('GitHub API (main) error: '+txt); }
     console.log('[publish] main branch updated');
+    // gh-pages is managed exclusively by the CI workflow to avoid ref conflicts.
 
-    // 2. Also update gh-pages branch directly for immediate visibility
-    // (The full deploy workflow will rebuild the app later, but JSON changes are instant)
-    if (showToast) notify('Mise à jour gh-pages…');
-    let shaGhPages = null;
-    try {
-      const getGhPages = await fetch(baseUrl+`?ref=gh-pages`, { headers:{ Authorization:`Bearer ${token}`, Accept:'application/vnd.github+json' }});
-      if (getGhPages.ok){ const j = await getGhPages.json(); shaGhPages = j.sha; }
-    } catch(e){ console.warn('Unable to get gh-pages sha', e); }
-    if (shaGhPages) {
-      const bodyGhPages = { message: 'chore: sync complete_email_templates.json from admin', content: contentB64, branch: 'gh-pages', sha: shaGhPages };
-      try {
-        const putGhPages = await fetch(baseUrl, { method:'PUT', headers:{ Authorization:`Bearer ${token}`, Accept:'application/vnd.github+json', 'Content-Type':'application/json' }, body: JSON.stringify(bodyGhPages) });
-        if (putGhPages.ok) {
-          console.log('[publish] gh-pages branch updated');
-        } else {
-          console.warn('[publish] gh-pages update failed:', await putGhPages.text());
-        }
-      } catch (e) {
-        console.warn('[publish] gh-pages update error:', e);
-      }
-    }
-
-    if (showToast) notify('✅ Publié! Changements actifs immédiatement.');
+    if (showToast) notify('✅ Publié! Le déploiement CI démarrera dans quelques secondes.');
     // Save to localStorage to sync with main app
     saveDraft();
     markAsPublished();
