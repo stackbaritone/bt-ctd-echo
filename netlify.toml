@@ -5,7 +5,6 @@
 [build]
   # No static build — functions only
   command   = ""
-  publish   = "dist"
   functions = "netlify/functions"
 
 [functions]
