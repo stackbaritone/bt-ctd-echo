@@ -5,14 +5,16 @@ const ADMIN_PASSWORD_HASH = import.meta.env.VITE_ADMIN_HASH || ''
 const MODE_PASSWORD_HASHES = {
   gestion: import.meta.env.VITE_MODE_HASH_GESTION || '',
   equipe_admin: import.meta.env.VITE_MODE_HASH_EQUIPE_ADMIN || '',
-  relations_fournisseurs: import.meta.env.VITE_MODE_HASH_RELATIONS_FOURNISSEURS || ''
+  relations_fournisseurs: import.meta.env.VITE_MODE_HASH_RELATIONS_FOURNISSEURS || '',
+  cap: import.meta.env.VITE_MODE_HASH_CAP || ''
 }
 
 export const MODE_CONFIG = {
   conseillers: { icon: '👥', labelFr: 'Conseillers', labelEn: 'Advisors', requiresAuth: false, color: 'emerald' },
   gestion: { icon: '🔐', labelFr: 'Gestion', labelEn: 'Management', requiresAuth: true, color: 'amber' },
   equipe_admin: { icon: '👔', labelFr: 'Équipe Admin', labelEn: 'Admin Team', requiresAuth: true, color: 'blue' },
-  relations_fournisseurs: { icon: '🤝', labelFr: 'Relations fournisseurs', labelEn: 'Supplier Relations', requiresAuth: true, color: 'purple' }
+  relations_fournisseurs: { icon: '🤝', labelFr: 'Relations fournisseurs', labelEn: 'Supplier Relations', requiresAuth: true, color: 'purple' },
+  cap: { icon: '🎓', labelFr: 'CAP', labelEn: 'CAP', requiresAuth: true, color: 'teal' }
 }
 
 async function sha256(text) {

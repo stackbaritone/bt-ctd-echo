@@ -27,7 +27,7 @@ const TemplateCard = React.memo(function TemplateCard({
       ? [template.utilisateur]
       : ['conseillers']
   const restrictedModes = modes.filter(m =>
-    ['gestion', 'equipe_admin', 'relations_fournisseurs'].includes(m)
+    ['gestion', 'equipe_admin', 'relations_fournisseurs', 'cap'].includes(m)
   )
 
   const containerClass = [
@@ -72,15 +72,18 @@ const TemplateCard = React.memo(function TemplateCard({
                 className={`text-[10px] px-1.5 py-0.5 rounded-md font-medium ${
                   mode === 'gestion' ? 'bg-amber-100 text-amber-700' :
                   mode === 'equipe_admin' ? 'bg-blue-100 text-blue-700' :
+                  mode === 'cap' ? 'bg-teal-100 text-teal-700' :
                   'bg-purple-100 text-purple-700'
                 }`}
                 title={interfaceLanguage === 'fr'
                   ? (mode === 'gestion' ? 'Gestion' :
-                     mode === 'equipe_admin' ? 'Équipe Admin' : 'Relations fournisseurs')
+                     mode === 'equipe_admin' ? 'Équipe Admin' :
+                     mode === 'cap' ? 'CAP' : 'Relations fournisseurs')
                   : (mode === 'gestion' ? 'Management' :
-                     mode === 'equipe_admin' ? 'Admin Team' : 'Supplier Relations')}
+                     mode === 'equipe_admin' ? 'Admin Team' :
+                     mode === 'cap' ? 'CAP' : 'Supplier Relations')}
               >
-                {mode === 'gestion' ? '🔐' : mode === 'equipe_admin' ? '👔' : '🤝'}
+                {mode === 'gestion' ? '🔐' : mode === 'equipe_admin' ? '👔' : mode === 'cap' ? '🎓' : '🤝'}
               </span>
             ))}
           </div>

@@ -819,7 +819,7 @@
     if (labels) return labels.fr || labels.en || '';
     return t.category_fr || t.category_en || t.category || '';
   }
-  function renderList(){ const arr = filtered(); list.innerHTML = arr.map(x=>{ const ttl = x.title?.fr || x.title?.en || x.id; const modes = Array.isArray(x.utilisateur) ? x.utilisateur : (x.utilisateur ? [x.utilisateur] : ['conseillers']); const userBadges = modes.map(m => m === 'conseillers' ? '<span style="margin-left:2px;font-size:10px" title="Conseillers">👥</span>' : m === 'gestion' ? '<span style="margin-left:2px;font-size:10px" title="Gestion">🔐</span>' : m === 'equipe_admin' ? '<span style="margin-left:2px;font-size:10px" title="Équipe Admin">👔</span>' : m === 'relations_fournisseurs' ? '<span style="margin-left:2px;font-size:10px" title="Relations fournisseurs">🤝</span>' : '').join(''); return `<div class="tile ${x.id===selected?'active':''}" data-id="${escapeHtml(x.id)}"><div class="tile-title">${escapeHtml(ttl)}${userBadges}</div><div class="tile-sub">${escapeHtml(getCategoryDisplay(x))}</div></div>`; }).join(''); $$('.tile', list).forEach(el=>{ el.onclick=()=>{ selected = el.dataset.id; renderList(); renderEditor(); }; }); }
+  function renderList(){ const arr = filtered(); list.innerHTML = arr.map(x=>{ const ttl = x.title?.fr || x.title?.en || x.id; const modes = Array.isArray(x.utilisateur) ? x.utilisateur : (x.utilisateur ? [x.utilisateur] : ['conseillers']); const userBadges = modes.map(m => m === 'conseillers' ? '<span style="margin-left:2px;font-size:10px" title="Conseillers">👥</span>' : m === 'gestion' ? '<span style="margin-left:2px;font-size:10px" title="Gestion">🔐</span>' : m === 'equipe_admin' ? '<span style="margin-left:2px;font-size:10px" title="Équipe Admin">👔</span>' : m === 'relations_fournisseurs' ? '<span style="margin-left:2px;font-size:10px" title="Relations fournisseurs">🤝</span>' : m === 'cap' ? '<span style="margin-left:2px;font-size:10px" title="CAP">🎓</span>' : '').join(''); return `<div class="tile ${x.id===selected?'active':''}" data-id="${escapeHtml(x.id)}"><div class="tile-title">${escapeHtml(ttl)}${userBadges}</div><div class="tile-sub">${escapeHtml(getCategoryDisplay(x))}</div></div>`; }).join(''); $$('.tile', list).forEach(el=>{ el.onclick=()=>{ selected = el.dataset.id; renderList(); renderEditor(); }; }); }
 
   function populateCategorySelects(){
     // Only show categories that are actually used by templates
@@ -1374,6 +1374,9 @@
         } else if (audience === 'relations_fournisseurs') {
           // Templates that include 'relations_fournisseurs' mode
           filteredData.templates = data.templates.filter(t => hasMode(t, 'relations_fournisseurs'));
+        } else if (audience === 'cap') {
+          // Templates that include 'cap' mode
+          filteredData.templates = data.templates.filter(t => hasMode(t, 'cap'));
         }
         // 'all' keeps all templates
         

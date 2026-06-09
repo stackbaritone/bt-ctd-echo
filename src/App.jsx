@@ -1223,7 +1223,8 @@ function App() {
       style={{ 
         color: selectedMode === 'conseillers' ? '#64748b' : 
                selectedMode === 'gestion' ? '#d97706' :
-               selectedMode === 'equipe_admin' ? '#2563eb' : '#9333ea'
+               selectedMode === 'equipe_admin' ? '#2563eb' :
+               selectedMode === 'cap' ? '#0d9488' : '#9333ea'
       }}
       title={interfaceLanguage === 'fr' ? 'Changer de mode' : 'Change mode'}
     >
@@ -1412,8 +1413,9 @@ function App() {
             onClick={handleModeAuth}
             className="w-full text-white"
             style={{ 
-              backgroundColor: pendingMode === 'gestion' ? '#d97706' : 
-                              pendingMode === 'equipe_admin' ? '#2563eb' : '#9333ea'
+              backgroundColor: pendingMode === 'gestion' ? '#d97706' :
+                              pendingMode === 'equipe_admin' ? '#2563eb' :
+                              pendingMode === 'cap' ? '#0d9488' : '#9333ea'
             }}
           >
             {interfaceLanguage === 'fr' ? 'Accéder' : 'Access'}
