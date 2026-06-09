@@ -548,7 +548,8 @@
     return source.toLowerCase();
   }
   function deriveCategoryKey(current='', labelEn='', labelFr=''){
-    const candidates = [current, labelEn, labelFr]
+    // Prefer FR before EN for key generation (French-primary app)
+    const candidates = [current, labelFr, labelEn]
       .map(v => String(v||'').trim())
       .filter(Boolean);
     if (!candidates.length) return '';
@@ -559,9 +560,27 @@
   }
   function syncTemplateCategory(t){
     if (!t) return;
-    const key = deriveCategoryKey(t.category, t.category_en, t.category_fr);
-    t.category = key;
     const labels = data.metadata.categoryLabels || (data.metadata.categoryLabels = {});
+    // Before generating a new key, check if an existing category already has a matching label
+    const frInput = String(t.category_fr || '').trim().toLowerCase();
+    const enInput = String(t.category_en || '').trim().toLowerCase();
+    let key = '';
+    if (t.category && labels[t.category]) {
+      // Current key is already valid — keep it
+      key = t.category;
+    } else if (frInput || enInput) {
+      for (const [existingKey, existingLabel] of Object.entries(labels)) {
+        const existingFr = String(existingLabel.fr || '').trim().toLowerCase();
+        const existingEn = String(existingLabel.en || '').trim().toLowerCase();
+        if ((frInput && existingFr && frInput === existingFr) ||
+            (enInput && existingEn && enInput === existingEn)) {
+          key = existingKey;
+          break;
+        }
+      }
+    }
+    if (!key) key = deriveCategoryKey(t.category, t.category_en, t.category_fr);
+    t.category = key;
     if (key){
       if (!labels[key]) labels[key] = { fr:'', en:'' };
       if (t.category_fr) labels[key].fr = t.category_fr;
