@@ -35,3 +35,8 @@ jobs:
           npx gh-pages -d dist --dotfiles --no-history --repo https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VITE_ADMIN_HASH: ${{ secrets.VITE_ADMIN_HASH }}
+          VITE_MODE_HASH_GESTION: ${{ secrets.VITE_MODE_HASH_GESTION }}
+          VITE_MODE_HASH_EQUIPE_ADMIN: ${{ secrets.VITE_MODE_HASH_EQUIPE_ADMIN }}
+          VITE_MODE_HASH_RELATIONS_FOURNISSEURS: ${{ secrets.VITE_MODE_HASH_RELATIONS_FOURNISSEURS }}
+          VITE_MODE_HASH_CAP: ${{ secrets.VITE_MODE_HASH_CAP }}
