@@ -6,7 +6,7 @@
   // SHA-256 hash of the admin password
   // To change the password, generate a new hash with:
   // crypto.subtle.digest('SHA-256', new TextEncoder().encode('YOUR_PASSWORD')).then(h => console.log(Array.from(new Uint8Array(h)).map(b => b.toString(16).padStart(2, '0')).join('')))
-  const ADMIN_PASSWORD_HASH = 'e5b5a086d2bf2efe5d63c15e5a763a8f6aaf8a3f0b93664c9c885894ba0fd062'; // Echo2026!Ctd
+  const ADMIN_PASSWORD_HASH = 'e5b5a086d2bf2efe5d63c15e5a763a8f6aaf8a3f0b93664c9c885894ba0fd062';
   const AUTH_KEY = 'ea_admin_auth';
   
   // Netlify Function URL — set once when you deploy to Netlify.
