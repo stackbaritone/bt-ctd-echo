@@ -149,7 +149,7 @@ function App() {
   const {
     showAdminModal, setShowAdminModal,
     adminPassword, setAdminPassword,
-    adminError, showAdminPassword, setShowAdminPassword,
+    adminError, setAdminError, showAdminPassword, setShowAdminPassword,
     handleAdminLogin,
     selectedMode,
     showModeMenu, setShowModeMenu,
