@@ -3,10 +3,10 @@ import { useState, useCallback } from 'react'
 const ADMIN_PASSWORD_HASH = import.meta.env.VITE_ADMIN_HASH || ''
 
 const MODE_PASSWORD_HASHES = {
-  gestion: import.meta.env.VITE_MODE_HASH_GESTION || '',
-  equipe_admin: import.meta.env.VITE_MODE_HASH_EQUIPE_ADMIN || '',
-  relations_fournisseurs: import.meta.env.VITE_MODE_HASH_RELATIONS_FOURNISSEURS || '',
-  cap: import.meta.env.VITE_MODE_HASH_CAP || ''
+  gestion: import.meta.env.VITE_MODE_HASH_GESTION || 'eda6f063839887d1fb9892565910ac44a2d1351c04540a2585e9b092e9d3a178',
+  equipe_admin: import.meta.env.VITE_MODE_HASH_EQUIPE_ADMIN || '059a50ce956b7ec61527c7ecc0c55b5a009dc54ab4acddce8852b46baa2aba30',
+  relations_fournisseurs: import.meta.env.VITE_MODE_HASH_RELATIONS_FOURNISSEURS || '97afd14103d6c8abdbc3fc4f349ebf4111a89845a12e78a867d3a636abd62b1e',
+  cap: import.meta.env.VITE_MODE_HASH_CAP || 'b67663923ca7ae3b45945a1182d4ebe154bbb7f4760dc3c260910fc90eba18f5'
 }
 
 export const MODE_CONFIG = {
