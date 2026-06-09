@@ -7,6 +7,11 @@
   command   = ""
   functions = "netlify/functions"
 
+[build.environment]
+  # admin-simple.js is a standalone file (not processed by Vite) that
+  # legitimately contains the admin hash — exclude from secrets scan
+  SECRETS_SCAN_OMIT_PATHS = "assets/admin-simple.js,public/assets/admin-simple.js"
+
 [functions]
   node_bundler = "esbuild"
 
