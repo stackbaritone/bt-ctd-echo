@@ -458,7 +458,9 @@
       afterLoad();
       return;
     }
-    const urls = buildJsonUrlCandidates();
+    // Prefer fetching the remote raw GitHub JSON first to avoid 404s from
+    // static hosts that do not include the file in their published build.
+    const urls = buildJsonUrlCandidates({ preferRemote: true });
     let lastErr = null; for (const u of urls){ try{ data = ensureSchema(await fetchJson(u)); break; } catch(e){ lastErr=e; } }
     if (!data) { console.warn('No JSON found', lastErr); data = ensureSchema({}); }
     afterLoad();

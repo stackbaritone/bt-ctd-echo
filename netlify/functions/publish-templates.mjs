@@ -118,7 +118,9 @@ export async function handler(event) {
   if (!putResp.ok) {
     const txt = await putResp.text();
     console.error('[publish-templates] GitHub API error:', putResp.status, txt);
-    return { statusCode: 502, headers: cors, body: JSON.stringify({ error: 'GitHub API error', status: putResp.status }) };
+    // Include the GitHub response text in the returned body to help debugging
+    // (This is safe because it does not expose the GITHUB_TOKEN itself).
+    return { statusCode: 502, headers: cors, body: JSON.stringify({ error: 'GitHub API error', status: putResp.status, detail: txt }) };
   }
 
   return {
