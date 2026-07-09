@@ -427,30 +427,6 @@
   }
   function loadDraft(){ try{ const t = localStorage.getItem(DRAFT_KEY); return t ? ensureSchema(JSON.parse(t)) : null; }catch{ return null; } }
   async function fetchJson(url){ const r = await fetch(url, { cache:'no-cache' }); if (!r.ok) throw new Error('HTTP '+r.status); return r.json(); }
-  // Fetch JSON from GitHub API with authentication (for private repos)
-  async function fetchJsonFromGitHubAPI() {
-    const token = localStorage.getItem('ea_gh_token') || PRECONFIGURED_GH_TOKEN;
-    if (!token) return null;
-    const repoMeta = document.querySelector('meta[name="gh-repo"]')?.content || 'stackbaritone/bt-ctd-echo';
-    const [owner, repo] = repoMeta.split('/');
-    const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/complete_email_templates.json?ref=main`;
-    try {
-      const resp = await fetch(apiUrl, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Accept': 'application/vnd.github+json'
-        }
-      });
-      if (!resp.ok) return null;
-      const data = await resp.json();
-      // GitHub API returns base64 encoded content
-      const content = atob(data.content);
-      return JSON.parse(content);
-    } catch (e) {
-      console.warn('[fetchJsonFromGitHubAPI] Error:', e);
-      return null;
-    }
-  }
 
   function buildJsonUrlCandidates(options={}){
     const { includeRemote=true, preferRemote=false } = options;
@@ -1151,9 +1127,8 @@
     markAsPublished();
   }
 
-  // Publish to GitHub (token is pre-configured)
+  // Publish to GitHub (via Netlify Function proxy — token stays server-side)
   async function gimmeGithub(){
-    // Token is pre-configured, no need to ask
     try {
       await publishJsonToGitHub(true);
     } catch (err) {
@@ -1166,21 +1141,14 @@
     try {
       localStorage.removeItem(DRAFT_KEY);
       let json = null;
-      
-      // Try GitHub API first (works for private repos)
-      console.info('[admin] Reload depuis GitHub API...');
-      json = await fetchJsonFromGitHubAPI();
-      
-      // Fallback to URL candidates if API fails
-      if (!json) {
-        const urls = buildJsonUrlCandidates({ preferRemote: true });
-        console.info('[admin] Reload depuis URLs – tentatives', urls);
-        for (const url of urls) {
-          try {
-            json = await fetchJson(url);
-            break;
-          } catch {}
-        }
+
+      const urls = buildJsonUrlCandidates({ preferRemote: true });
+      console.info('[admin] Reload depuis URLs – tentatives', urls);
+      for (const url of urls) {
+        try {
+          json = await fetchJson(url);
+          break;
+        } catch {}
       }
       
       if (!json) throw new Error('Impossible de charger depuis GitHub');
