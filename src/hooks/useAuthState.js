@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
 
-const ADMIN_PASSWORD_HASH = import.meta.env.VITE_ADMIN_HASH || ''
+const ADMIN_PASSWORD_HASH = import.meta.env.VITE_ADMIN_HASH || '953f488036b5abe3cbada18c59faac9fe88d9330760c04c1677b7b804fa20e70'
 
 const MODE_PASSWORD_HASHES = {
   gestion: import.meta.env.VITE_MODE_HASH_GESTION || 'cb336e03b55ca7d7f6b03ff1366767deb7d1cb7bc98fed7c6c1f99086124f9a8',
