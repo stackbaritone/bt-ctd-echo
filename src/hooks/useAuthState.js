@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react'
 
+// SHA-256 hash of the admin console password
 const ADMIN_PASSWORD_HASH = import.meta.env.VITE_ADMIN_HASH || '953f488036b5abe3cbada18c59faac9fe88d9330760c04c1677b7b804fa20e70'
 
 const MODE_PASSWORD_HASHES = {
