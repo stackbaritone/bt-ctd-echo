@@ -4,6 +4,7 @@ import { useState, useCallback } from 'react'
 const ADMIN_PASSWORD_HASH = import.meta.env.VITE_ADMIN_HASH || '953f488036b5abe3cbada18c59faac9fe88d9330760c04c1677b7b804fa20e70'
 
 const MODE_PASSWORD_HASHES = {
+  conseillers: import.meta.env.VITE_MODE_HASH_CONSEILLERS || 'b6d579d6fe6d34b8a5dfc502d05dc9737622575929ca2c20bc186a12d6d45a13',
   gestion: import.meta.env.VITE_MODE_HASH_GESTION || 'cb336e03b55ca7d7f6b03ff1366767deb7d1cb7bc98fed7c6c1f99086124f9a8',
   equipe_admin: import.meta.env.VITE_MODE_HASH_EQUIPE_ADMIN || 'a3583cb38b9453f1cc8bc9064cdf267d47e54e5f12b91e806525cd9e918665b9',
   relations_fournisseurs: import.meta.env.VITE_MODE_HASH_RELATIONS_FOURNISSEURS || '8b0bf8d5cb34af871d81d82d2ba8086385d128672d8931ec988f89ca7889fa83',
@@ -11,7 +12,7 @@ const MODE_PASSWORD_HASHES = {
 }
 
 export const MODE_CONFIG = {
-  conseillers: { icon: '👥', labelFr: 'Conseillers', labelEn: 'Advisors', requiresAuth: false, color: 'emerald' },
+  conseillers: { icon: '👥', labelFr: 'Conseillers', labelEn: 'Advisors', requiresAuth: true, color: 'emerald' },
   gestion: { icon: '🔐', labelFr: 'Gestion', labelEn: 'Management', requiresAuth: true, color: 'amber' },
   equipe_admin: { icon: '👔', labelFr: 'Équipe Admin', labelEn: 'Admin Team', requiresAuth: true, color: 'blue' },
   relations_fournisseurs: { icon: '🤝', labelFr: 'Relations fournisseurs', labelEn: 'Supplier Relations', requiresAuth: true, color: 'purple' },
@@ -36,6 +37,13 @@ export function useAuthState(interfaceLanguage) {
   // Mode selection state
   const [selectedMode, setSelectedMode] = useState(() => {
     try { return localStorage.getItem('ea_selected_mode') || 'conseillers' } catch { return 'conseillers' }
+  })
+  const [unlockedModes, setUnlockedModes] = useState(() => {
+    try {
+      const raw = localStorage.getItem('ea_unlocked_modes')
+      const arr = raw ? JSON.parse(raw) : []
+      return Array.isArray(arr) ? arr : []
+    } catch { return [] }
   })
   const [showModeMenu, setShowModeMenu] = useState(false)
   const [showModeAuthModal, setShowModeAuthModal] = useState(false)
@@ -71,11 +79,20 @@ export function useAuthState(interfaceLanguage) {
     }
   }, [adminPassword, interfaceLanguage])
 
+  const unlockMode = useCallback((mode) => {
+    setUnlockedModes(prev => {
+      if (prev.includes(mode)) return prev
+      const next = [...prev, mode]
+      try { localStorage.setItem('ea_unlocked_modes', JSON.stringify(next)) } catch {}
+      return next
+    })
+  }, [])
+
   const handleModeSelect = useCallback((mode) => {
     const config = MODE_CONFIG[mode]
     if (!config) return
 
-    if (config.requiresAuth && selectedMode === 'conseillers') {
+    if (config.requiresAuth && !unlockedModes.includes(mode)) {
       setPendingMode(mode)
       setShowModeAuthModal(true)
       setManagementPassword('')
@@ -85,7 +102,7 @@ export function useAuthState(interfaceLanguage) {
       setSelectedMode(mode)
     }
     setShowModeMenu(false)
-  }, [selectedMode])
+  }, [unlockedModes])
 
   const handleModeAuth = useCallback(async () => {
     if (!managementPassword) {
@@ -100,6 +117,7 @@ export function useAuthState(interfaceLanguage) {
       if (hash === expectedHash) {
         localStorage.setItem('ea_selected_mode', pendingMode)
         setSelectedMode(pendingMode)
+        unlockMode(pendingMode)
         setShowModeAuthModal(false)
         setManagementPassword('')
         setManagementError('')
@@ -113,7 +131,7 @@ export function useAuthState(interfaceLanguage) {
       console.error('Mode auth error:', e)
       setManagementError(interfaceLanguage === 'fr' ? 'Erreur d\'authentification' : 'Authentication error')
     }
-  }, [managementPassword, pendingMode, interfaceLanguage])
+  }, [managementPassword, pendingMode, interfaceLanguage, unlockMode])
 
   return {
     // Admin
@@ -124,6 +142,7 @@ export function useAuthState(interfaceLanguage) {
     handleAdminLogin,
     // Mode
     selectedMode, setSelectedMode,
+    unlockedModes,
     showModeMenu, setShowModeMenu,
     showModeAuthModal, setShowModeAuthModal,
     pendingMode, setPendingMode,

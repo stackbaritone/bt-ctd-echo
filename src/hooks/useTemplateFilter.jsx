@@ -15,6 +15,7 @@ export function useTemplateFilter({
   favoritesOnly,
   favorites,
   selectedMode,
+  isModeUnlocked,
   interfaceLanguage,
   debug,
 }) {
@@ -69,9 +70,10 @@ export function useTemplateFilter({
   }, [categories, getCategoryLabel, interfaceLanguage])
 
   // Main search/filter computation
-  const { filteredTemplates, searchMatchMap } = useMemo(() => {
-    const empty = { filteredTemplates: [], searchMatchMap: {} }
+  const { filteredTemplates, searchMatchMap, locked } = useMemo(() => {
+    const empty = { filteredTemplates: [], searchMatchMap: {}, locked: false }
     if (!templatesData) return empty
+    if (!isModeUnlocked) return { ...empty, locked: true }
     let dataset = templatesData.templates
 
     const hasMode = (t, mode) => {
@@ -328,7 +330,7 @@ export function useTemplateFilter({
     }
 
     return { filteredTemplates: sortWithFavoritesFirst(items), searchMatchMap: matchMap }
-  }, [templatesData, searchQuery, selectedCategory, selectedType, favoritesOnly, favorites, selectedMode])
+  }, [templatesData, searchQuery, selectedCategory, selectedType, favoritesOnly, favorites, selectedMode, isModeUnlocked])
 
   // Highlight helpers
   const getMatchRanges = (id, key) => (searchMatchMap && searchMatchMap[id] && searchMatchMap[id][key]) || null
@@ -351,6 +353,7 @@ export function useTemplateFilter({
   return {
     filteredTemplates,
     searchMatchMap,
+    locked,
     getMatchRanges,
     renderHighlighted,
     categoryLabels,

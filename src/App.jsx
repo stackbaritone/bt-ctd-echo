@@ -152,20 +152,23 @@ function App() {
     adminError, setAdminError, showAdminPassword, setShowAdminPassword,
     handleAdminLogin,
     selectedMode,
+    unlockedModes,
     showModeMenu, setShowModeMenu,
     showModeAuthModal, setShowModeAuthModal,
-    pendingMode,
+    pendingMode, setPendingMode,
     managementPassword, setManagementPassword,
-    managementError, showManagementPassword, setShowManagementPassword,
+    managementError, setManagementError, showManagementPassword, setShowManagementPassword,
     handleModeSelect, handleModeAuth
   } = auth
 
+  const isModeUnlocked = !MODE_CONFIG[selectedMode]?.requiresAuth || unlockedModes.includes(selectedMode)
+
   const {
-    filteredTemplates, searchMatchMap, getMatchRanges, renderHighlighted,
+    filteredTemplates, searchMatchMap, locked, getMatchRanges, renderHighlighted,
     categoryLabels, categories, getCategoryLabel, orderedCategories, isFav,
   } = useTemplateFilter({
     templatesData, searchQuery, selectedCategory, selectedType, favoritesOnly,
-    favorites, selectedMode, interfaceLanguage, debug,
+    favorites, selectedMode, isModeUnlocked, interfaceLanguage, debug,
   })
   
   // Dark mode state
@@ -1262,7 +1265,7 @@ function App() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
               )}
-              {config.requiresAuth && selectedMode === 'conseillers' && (
+              {config.requiresAuth && !unlockedModes.includes(mode) && (
                 <span className="text-xs text-zinc-400">🔐</span>
               )}
             </button>
@@ -1413,7 +1416,8 @@ function App() {
             onClick={handleModeAuth}
             className="w-full text-white"
             style={{ 
-              backgroundColor: pendingMode === 'gestion' ? '#d97706' :
+              backgroundColor: pendingMode === 'conseillers' ? '#059669' :
+                              pendingMode === 'gestion' ? '#d97706' :
                               pendingMode === 'equipe_admin' ? '#2563eb' :
                               pendingMode === 'cap' ? '#0d9488' : '#9333ea'
             }}
@@ -1604,6 +1608,30 @@ function App() {
           >
             {/* Virtualized list */}
             {(() => {
+              if (locked) {
+                return (
+                  <div className="flex flex-col items-center justify-center text-center px-6 py-16 gap-3">
+                    <span className="text-4xl">{MODE_CONFIG[selectedMode]?.icon || '🔒'}</span>
+                    <p className="text-sm text-gray-600">
+                      {interfaceLanguage === 'fr'
+                        ? 'Ce mode contient des modèles réservés. Entrez le code d\'accès pour les afficher.'
+                        : 'This mode contains restricted templates. Enter the access code to view them.'}
+                    </p>
+                    <Button
+                      onClick={() => { setPendingMode(selectedMode); setShowModeAuthModal(true); setManagementPassword(''); setManagementError('') }}
+                      className="text-white"
+                      style={{
+                        backgroundColor: selectedMode === 'gestion' ? '#d97706' :
+                                        selectedMode === 'equipe_admin' ? '#2563eb' :
+                                        selectedMode === 'cap' ? '#0d9488' :
+                                        selectedMode === 'conseillers' ? '#059669' : '#9333ea'
+                      }}
+                    >
+                      {interfaceLanguage === 'fr' ? 'Entrer le code' : 'Enter code'}
+                    </Button>
+                  </div>
+                )
+              }
               const ITEM_H = 104
               const count = filteredTemplates.length
               const start = Math.max(0, Math.floor(scrollTop / ITEM_H) - 3)
@@ -1739,7 +1767,29 @@ function App() {
                 />
               </div>
               <div className="mt-3 space-y-3">
-                {filteredTemplates.slice(0, 80).map((template) => {
+                {locked && (
+                  <div className="flex flex-col items-center justify-center text-center px-6 py-16 gap-3">
+                    <span className="text-4xl">{MODE_CONFIG[selectedMode]?.icon || '🔒'}</span>
+                    <p className="text-sm text-gray-600">
+                      {interfaceLanguage === 'fr'
+                        ? 'Ce mode contient des modèles réservés. Entrez le code d\'accès pour les afficher.'
+                        : 'This mode contains restricted templates. Enter the access code to view them.'}
+                    </p>
+                    <Button
+                      onClick={() => { setPendingMode(selectedMode); setShowModeAuthModal(true); setManagementPassword(''); setManagementError('') }}
+                      className="text-white"
+                      style={{
+                        backgroundColor: selectedMode === 'gestion' ? '#d97706' :
+                                        selectedMode === 'equipe_admin' ? '#2563eb' :
+                                        selectedMode === 'cap' ? '#0d9488' :
+                                        selectedMode === 'conseillers' ? '#059669' : '#9333ea'
+                      }}
+                    >
+                      {interfaceLanguage === 'fr' ? 'Entrer le code' : 'Enter code'}
+                    </Button>
+                  </div>
+                )}
+                {!locked && filteredTemplates.slice(0, 80).map((template) => {
                   const badgeStyle = getCategoryBadgeStyle(template.category, templatesData?.metadata?.categoryColors || {})
                   const badgeLabel = getCategoryLabel(template.category)
                   return (
