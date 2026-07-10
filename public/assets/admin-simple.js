@@ -458,7 +458,9 @@
       afterLoad();
       return;
     }
-    const urls = buildJsonUrlCandidates();
+    // Prefer fetching the remote raw GitHub JSON first to avoid 404s from
+    // static hosts that do not include the file in their published build.
+    const urls = buildJsonUrlCandidates({ preferRemote: true });
     let lastErr = null; for (const u of urls){ try{ data = ensureSchema(await fetchJson(u)); break; } catch(e){ lastErr=e; } }
     if (!data) { console.warn('No JSON found', lastErr); data = ensureSchema({}); }
     afterLoad();
@@ -524,43 +526,54 @@
     return source.toLowerCase();
   }
   function deriveCategoryKey(current='', labelEn='', labelFr=''){
-    // Prefer FR before EN for key generation (French-primary app)
-    const candidates = [current, labelFr, labelEn]
+    // Only an already-assigned key gets the as-is fast path — it's a finished
+    // value, not text a user might still be mid-typing. Labels always go
+    // through toSnakeCase, even if a partial label happens to already look
+    // like a valid key (e.g. a single letter typed so far).
+    const cur = String(current||'').trim();
+    if (cur && /^[a-z0-9_]+$/.test(cur) && cur === cur.toLowerCase()) return cur;
+    const candidates = [labelFr, labelEn]
       .map(v => String(v||'').trim())
       .filter(Boolean);
     if (!candidates.length) return '';
-    for (const candidate of candidates){
-      if (/^[a-z0-9_]+$/.test(candidate) && candidate === candidate.toLowerCase()) return candidate;
-    }
     return toSnakeCase(candidates[0]);
+  }
+  // Find an existing category key whose stored label matches the given fr/en text
+  // (case-insensitive, trimmed). Used to avoid minting near-duplicate category
+  // keys when a template's label text already matches an existing category.
+  function findMatchingCategoryKey(labels, labelFr, labelEn){
+    const frInput = String(labelFr || '').trim().toLowerCase();
+    const enInput = String(labelEn || '').trim().toLowerCase();
+    if (!frInput && !enInput) return '';
+    for (const [existingKey, existingLabel] of Object.entries(labels)) {
+      const existingFr = String(existingLabel.fr || '').trim().toLowerCase();
+      const existingEn = String(existingLabel.en || '').trim().toLowerCase();
+      if ((frInput && existingFr && frInput === existingFr) ||
+          (enInput && existingEn && enInput === existingEn)) {
+        return existingKey;
+      }
+    }
+    return '';
   }
   function syncTemplateCategory(t){
     if (!t) return;
     const labels = data.metadata.categoryLabels || (data.metadata.categoryLabels = {});
-    // Before generating a new key, check if an existing category already has a matching label
-    const frInput = String(t.category_fr || '').trim().toLowerCase();
-    const enInput = String(t.category_en || '').trim().toLowerCase();
     let key = '';
     if (t.category && labels[t.category]) {
       // Current key is already valid — keep it
       key = t.category;
-    } else if (frInput || enInput) {
-      for (const [existingKey, existingLabel] of Object.entries(labels)) {
-        const existingFr = String(existingLabel.fr || '').trim().toLowerCase();
-        const existingEn = String(existingLabel.en || '').trim().toLowerCase();
-        if ((frInput && existingFr && frInput === existingFr) ||
-            (enInput && existingEn && enInput === existingEn)) {
-          key = existingKey;
-          break;
-        }
-      }
+    } else {
+      key = findMatchingCategoryKey(labels, t.category_fr, t.category_en);
     }
     if (!key) key = deriveCategoryKey(t.category, t.category_en, t.category_fr);
     t.category = key;
     if (key){
       if (!labels[key]) labels[key] = { fr:'', en:'' };
-      if (t.category_fr) labels[key].fr = t.category_fr;
-      if (t.category_en) labels[key].en = t.category_en;
+      // Only fill in a label that's still blank — a shared label belongs to
+      // every template in the category, so one template's edits must not
+      // silently overwrite what other templates already display.
+      if (t.category_fr && !labels[key].fr) labels[key].fr = t.category_fr;
+      if (t.category_en && !labels[key].en) labels[key].en = t.category_en;
     }
     data.metadata.categories = Array.from(new Set((data.templates||[]).map(item => item.category).filter(Boolean))).sort();
   }
@@ -692,7 +705,13 @@
       const variablesDescFrRaw = row.variables_description_fr || '';
       const variablesDescEnRaw = row.variables_description_en || '';
 
-      const categoryKey = deriveCategoryKey('', category_en, category_fr);
+      // Check the existing global categories, then this batch's new ones,
+      // before minting a brand new key — otherwise a label phrased slightly
+      // differently than an existing category (FR vs EN wording, etc.)
+      // creates a near-duplicate category instead of joining the real one.
+      const categoryKey = findMatchingCategoryKey(data.metadata.categoryLabels || {}, category_fr, category_en)
+        || findMatchingCategoryKey(categoryLabels, category_fr, category_en)
+        || deriveCategoryKey('', category_en, category_fr);
       const categoryLabelFr = category_fr || category_en || '';
       const categoryLabelEn = category_en || category_fr || '';
       if (categoryKey){
@@ -1561,28 +1580,45 @@
     if (t) { t.category_en = catEnEl.value; syncTemplateCategory(t); saveDraft(); renderList(); }
   };
   
-  // Category text inputs - for manual entry or new categories
-  if (catFrEl) catFrEl.oninput = (e) => { 
-    const t=data.templates.find(x=>x.id===selected); 
-    if (!t) return; 
-    t.category_fr=e.target.value; 
-    syncTemplateCategory(t); 
-    saveDraft(); 
-    renderList();
-    // Reset select to "new category" option when typing manually
-    if (catFrSelectEl) catFrSelectEl.value = '';
-  };
-  
-  if (catEnEl) catEnEl.oninput = (e) => { 
-    const t=data.templates.find(x=>x.id===selected); 
-    if (!t) return; 
-    t.category_en=e.target.value; 
-    syncTemplateCategory(t); 
-    saveDraft(); 
-    renderList();
-    // Reset select to "new category" option when typing manually
-    if (catEnSelectEl) catEnSelectEl.value = '';
-  };
+  // Category text inputs - for manual entry or new categories.
+  // syncTemplateCategory only runs on blur (not per keystroke): committing a
+  // category key from partial, still-being-typed text is what created
+  // near-duplicate/single-letter categories and clobbered shared labels.
+  if (catFrEl) {
+    catFrEl.oninput = (e) => {
+      const t=data.templates.find(x=>x.id===selected);
+      if (!t) return;
+      t.category_fr=e.target.value;
+      saveDraft();
+      // Reset select to "new category" option when typing manually
+      if (catFrSelectEl) catFrSelectEl.value = '';
+    };
+    catFrEl.onblur = () => {
+      const t=data.templates.find(x=>x.id===selected);
+      if (!t) return;
+      syncTemplateCategory(t);
+      saveDraft();
+      renderList();
+    };
+  }
+
+  if (catEnEl) {
+    catEnEl.oninput = (e) => {
+      const t=data.templates.find(x=>x.id===selected);
+      if (!t) return;
+      t.category_en=e.target.value;
+      saveDraft();
+      // Reset select to "new category" option when typing manually
+      if (catEnSelectEl) catEnSelectEl.value = '';
+    };
+    catEnEl.onblur = () => {
+      const t=data.templates.find(x=>x.id===selected);
+      if (!t) return;
+      syncTemplateCategory(t);
+      saveDraft();
+      renderList();
+    };
+  }
   titleFrEl.oninput = (e) => { const t=data.templates.find(x=>x.id===selected); if (!t) return; t.title=t.title||{}; t.title.fr=e.target.value; saveDraft(); renderList(); };
   titleEnEl.oninput = (e) => { const t=data.templates.find(x=>x.id===selected); if (!t) return; t.title=t.title||{}; t.title.en=e.target.value; saveDraft(); renderList(); };
   if (utilisateurEl) { const checkboxes = utilisateurEl.querySelectorAll('input[type="checkbox"]'); checkboxes.forEach(cb => { cb.onchange = () => { const t=data.templates.find(x=>x.id===selected); if (!t) return; const checked = Array.from(checkboxes).filter(c => c.checked).map(c => c.value); t.utilisateur = checked.length > 0 ? checked : ['conseillers']; saveDraft(); renderList(); }; }); }
