@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ECHO - CTD (Aide)</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon-e.svg" />
+    <meta property="og:title" content="ECHO - CTD gestion (Aide)" />
+    <meta property="og:description" content="Documentation et aide pour l'assistant de courriels ECHO" />
+    <meta name="description" content="Documentation et aide pour l'assistant de courriels ECHO" />
+    <meta name="robots" content="noindex, nofollow" />
+    <style>
+      :root {
+        --bg: #f8fafc; --panel: #ffffff; --border:#e2e8f0; --muted:#64748b;
+      }
+      *{box-sizing:border-box}
+      body{margin:0;font-family:Inter,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:#0f172a}
+  header{position:sticky;top:0;z-index:10;background:#ffffff;border-bottom:1px solid var(--border)}
+  .wrap{max-width:1100px;margin:0 auto;padding:14px 18px}
+  .wrap-header{display:flex;align-items:center;gap:12px;justify-content:space-between;flex-wrap:wrap}
+      h1{margin:0;font-size:22px}
+      main .wrap{display:grid;grid-template-columns: 280px 1fr; gap:16px}
+      nav{position:sticky; top:64px; align-self:start}
+      .panel{background:var(--panel);border:1px solid var(--border);border-radius:14px;box-shadow:0 6px 30px rgba(2,6,23,0.05)}
+      .toc{padding:12px}
+      .toc a{display:block;padding:8px 10px;color:#0f172a;text-decoration:none;border-radius:10px}
+      .toc a:hover{background:#f1f5f9}
+      section{scroll-margin-top:80px}
+      .content{padding:16px;display:grid;gap:18px}
+      .hint{color:var(--muted);font-size:12px}
+      pre{background:#0b1020;color:#e5e7eb;padding:10px;border-radius:10px;overflow:auto}
+      code{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}
+      .copy{margin-top:6px}
+  .link-button{display:inline-flex;align-items:center;gap:6px;text-decoration:none;border:1px solid var(--border);padding:8px 12px;border-radius:10px;background:white;color:#0f172a;font-weight:600;transition:background .2s ease,border-color .2s ease}
+  .link-button:hover{background:#f8fafc;border-color:#cbd5f4}
+      .badge{background:#ecfeff;color:#0e7490;border:1px solid #bae6fd;padding:2px 8px;border-radius:999px;font-size:12px;font-weight:700}
+      .grid{display:grid;gap:10px}
+      .card{background:white;border:1px solid var(--border);border-radius:12px;padding:12px}
+      ul{margin:6px 0 0 18px}
+      @media (max-width: 980px){ main .wrap{grid-template-columns:1fr} nav{position:static} }
+    </style>
+  </head>
+  <body>
+    <header>
+  <div class="wrap wrap-header">
+        <h1>Aide – Email Assistant</h1>
+  <a href="./admin.html" class="link-button">Ouvrir la console</a>
+      </div>
+    </header>
+    <main>
+      <div class="wrap">
+        <nav class="panel toc">
+          <strong>Sommaire</strong>
+          <a href="#overview">1) Vue d’ensemble</a>
+          <a href="#lang">2) Langues (FR/EN)</a>
+          <a href="#import">3) Import / Export / Brouillon</a>
+          <a href="#docx">4) Convertir un .docx</a>
+          <a href="#templates">5) Édition de templates</a>
+          <a href="#variables">6) Variables</a>
+          <a href="#metadata">7) Métadonnées (catégories)</a>
+          <a href="#bulk">8) Sélection multiple</a>
+          <a href="#nav">9) Navigation & accessibilité</a>
+          <a href="#warnings">10) Avertissements</a>
+          <a href="#tips">Bonnes pratiques</a>
+        </nav>
+        <div class="grid">
+          <section id="overview" class="panel content">
+            <h2>1) Vue d’ensemble</h2>
+            <ul>
+              <li>Barre latérale: liste des modèles avec recherche et filtre par catégorie.</li>
+              <li>Onglets: Templates / Variables / Métadonnées.</li>
+              <li>Barre d’outils: Dupliquer, Supprimer, Prévisualiser, Enregistrer le brouillon.</li>
+            </ul>
+          </section>
+          <section id="lang" class="panel content">
+            <h2>2) Langues (FR/EN)</h2>
+            <ul>
+              <li>Commutateur FR/EN en haut à droite pour éditer les champs localisés.</li>
+              <li>Préférence mémorisée localement.</li>
+            </ul>
+          </section>
+          <section id="import" class="panel content">
+            <h2>3) Import / Export / Brouillon</h2>
+            <ul>
+              <li><strong>Importer JSON</strong>: charge un fichier local dans le brouillon.</li>
+              <li><strong>Import (lot)</strong>: CSV / JSON / NDJSON. Colonne <span class="badge">Variables</span> ou <span class="badge">Vars</span> acceptée (séparateurs ; ou ,). ID auto, catégories ajoutées, placeholders &laquo;&laquo;NomVariable&raquo;&raquo; auto-détectés, variables manquantes ajoutées à la bibliothèque.</li>
+              <li><strong>Exporter JSON</strong>: télécharge un fichier complet.</li>
+              <li><strong>Enregistrer le brouillon</strong> / <strong>Réinitialiser</strong> disponibles en haut.</li>
+            </ul>
+          </section>
+          <section id="docx" class="panel content">
+            <h2>4) Convertir un .docx en JSON d’import</h2>
+            <div>Placez le .docx dans <code>imports/</code> puis exécutez:</div>
+            <pre><code>npm run convert:docx -- imports/monclient.docx &gt; imports/monclient.json</code></pre>
+            <button class="copy" data-copy="npm run convert:docx -- imports/monclient.docx &gt; imports/monclient.json">Copier</button>
+            <div class="hint">Reconnaît: titres (H1–H6), EN – Subject:, EN – Message body:, FR – Objet:, FR – Corps:, et Category: ….</div>
+          </section>
+          <section id="templates" class="panel content">
+            <h2>5) Édition de templates</h2>
+            <ul>
+              <li>Champs: ID, Catégorie, Titre, Description, Objet, Corps selon la langue.</li>
+              <li>Variables utilisées: auto-détection, “Détecter maintenant”, Tout/Aucun (mode manuel), ajout des manquantes.</li>
+              <li>Prévisualiser: remplacements d’exemple et copier Objet/Corps.</li>
+            </ul>
+          </section>
+          <section id="variables" class="panel content">
+            <h2>6) Variables (bibliothèque)</h2>
+            <ul>
+              <li>Ajouter/éditer: descriptions FR/EN, format, exemple.</li>
+              <li>Renommer: met à jour les références et placeholders.</li>
+              <li>Supprimer: enlève la variable et la retire des modèles.</li>
+              <li>Nettoyer: aperçu des variables inutilisées puis suppression confirmée.</li>
+            </ul>
+          </section>
+          <section id="metadata" class="panel content">
+            <h2>7) Métadonnées (catégories)</h2>
+            <div>Ajouter, Renommer (propagation), Supprimer, Réordonner. Alimente le filtre.</div>
+          </section>
+          <section id="bulk" class="panel content">
+            <h2>8) Sélection multiple</h2>
+            <div>Tout sélectionner / Effacer, appliquer une catégorie en masse.</div>
+          </section>
+          <section id="nav" class="panel content">
+            <h2>9) Navigation & accessibilité</h2>
+            <div>↑/↓ pour naviguer la liste, Entrée pour ouvrir; défilement automatique sur l’élément actif.</div>
+          </section>
+          <section id="warnings" class="panel content">
+            <h2>10) Avertissements</h2>
+            <div>Panneau épinglable; incohérences listées; export possible avec confirmation.</div>
+          </section>
+          <section id="tips" class="panel content">
+            <h2>Bonnes pratiques</h2>
+            <ul>
+              <li>Placeholders: utilisez &laquo;&laquo;NomVariable&raquo;&raquo; et documentez-les.</li>
+              <li>ID modèle: lettres/chiffres/_ et unique.</li>
+              <li>Le brouillon est local; exportez pour partager et versionner.</li>
+            </ul>
+          </section>
+        </div>
+      </div>
+    </main>
+    <script>
+      addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-copy]');
+        if (!btn) return;
+        const txt = btn.getAttribute('data-copy') || '';
+        if (!txt) return;
+        navigator.clipboard && navigator.clipboard.writeText(txt);
+        btn.textContent = 'Copié';
+        setTimeout(() => { btn.textContent = 'Copier'; }, 1200);
+      });
+    </script>
+  </body>
+  </html>

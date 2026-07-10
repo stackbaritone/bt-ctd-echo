@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Soumettre un modèle – Email Assistant</title>
+  <style>
+    :root {
+      --tb-teal: #059669;
+      --tb-teal-500: #10b981;
+      --bg: #f8fafc;
+      --panel: #ffffff;
+      --muted: #64748b;
+      --border: #e2e8f0;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif;
+      background: linear-gradient(180deg, #f0fdf4, var(--bg));
+      color: #0f172a;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: 0 8px 40px rgba(2,6,23,0.1);
+      padding: 32px;
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+      color: #0f172a;
+    }
+    .subtitle {
+      color: var(--muted);
+      margin: 0 0 24px;
+      font-size: 14px;
+    }
+    .form {
+      display: grid;
+      gap: 20px;
+    }
+    .field label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .field label .required {
+      color: #dc2626;
+    }
+    .field input,
+    .field textarea,
+    .field select {
+      width: 100%;
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      border-radius: 10px;
+      font: inherit;
+      background: white;
+    }
+    .field textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+    .field .hint {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .actions {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+    .btn {
+      border: 1px solid var(--border);
+      background: var(--panel);
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .btn.primary {
+      background: var(--tb-teal);
+      border-color: var(--tb-teal);
+      color: white;
+    }
+    .btn.primary:hover {
+      background: var(--tb-teal-500);
+    }
+    .btn:hover {
+      background: #f8fafc;
+    }
+    .notice {
+      display: none;
+      padding: 12px 16px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .notice.success {
+      background: #d1fae5;
+      color: #065f46;
+      border: 1px solid #6ee7b7;
+    }
+    .notice.error {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fca5a5;
+    }
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin: 24px 0 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📝 Soumettre un nouveau modèle</h1>
+    <p class="subtitle">Partagez un modèle d'email que vous souhaitez ajouter à la bibliothèque.</p>
+    
+    <div id="notice" class="notice"></div>
+
+    <form id="submit-form" class="form">
+      <!-- Template Details -->
+      <div class="field">
+        <label>ID du modèle <span class="required">*</span></label>
+        <input type="text" id="template-id" placeholder="ex: welcome_email" required />
+        <div class="hint">Identifiant unique (lettres, chiffres, underscore uniquement)</div>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label>Catégorie (FR) <span class="required">*</span></label>
+          <input type="text" id="category-fr" placeholder="ex: Service client" required />
+        </div>
+        <div class="field">
+          <label>Catégorie (EN) <span class="required">*</span></label>
+          <input type="text" id="category-en" placeholder="ex: Customer Care" required />
+        </div>
+      </div>
+
+      <!-- French Version -->
+      <div class="section-title">🇫🇷 Version française</div>
+      
+      <div class="field">
+        <label>Titre (FR) <span class="required">*</span></label>
+        <input type="text" id="title-fr" placeholder="ex: Bienvenue – Nouveau client" required />
+      </div>
+
+      <div class="field">
+        <label>Description (FR) <span class="required">*</span></label>
+        <input type="text" id="description-fr" placeholder="ex: Courriel de bienvenue pour les nouveaux clients" required />
+      </div>
+
+      <div class="field">
+        <label>Objet (FR) <span class="required">*</span></label>
+        <input type="text" id="subject-fr" placeholder="ex: Bienvenue chez nous !" required />
+      </div>
+
+      <div class="field">
+        <label>Corps du message (FR) <span class="required">*</span></label>
+        <textarea id="body-fr" placeholder="Bonjour <<nom_client>>,&#10;&#10;Nous sommes ravis de vous accueillir..." required></textarea>
+        <div class="hint">Utilisez &lt;&lt;nom_variable&gt;&gt; pour les placeholders</div>
+      </div>
+
+      <!-- English Version -->
+      <div class="section-title">🇬🇧 English version</div>
+      
+      <div class="field">
+        <label>Title (EN) <span class="required">*</span></label>
+        <input type="text" id="title-en" placeholder="ex: Welcome – New customer" required />
+      </div>
+
+      <div class="field">
+        <label>Description (EN) <span class="required">*</span></label>
+        <input type="text" id="description-en" placeholder="ex: Welcome email for new customers" required />
+      </div>
+
+      <div class="field">
+        <label>Subject (EN) <span class="required">*</span></label>
+        <input type="text" id="subject-en" placeholder="ex: Welcome to us!" required />
+      </div>
+
+      <div class="field">
+        <label>Body (EN) <span class="required">*</span></label>
+        <textarea id="body-en" placeholder="Hello <<customer_name>>,&#10;&#10;We're excited to welcome you..." required></textarea>
+        <div class="hint">Use &lt;&lt;variable_name&gt;&gt; for placeholders</div>
+      </div>
+
+      <!-- Variables Description -->
+      <div class="section-title">📋 Variables</div>
+      <div class="field">
+        <label>Description des variables (FR)</label>
+        <textarea id="variables-fr" placeholder="<<nom_client>>:Nom du client(Jean Dupont)&#10;<<numero_compte>>:Numéro de compte(AC-12345)"></textarea>
+        <div class="hint">Format: &lt;&lt;variable&gt;&gt;:Description(Exemple par défaut) – une par ligne</div>
+      </div>
+
+      <div class="field">
+        <label>Variables description (EN)</label>
+        <textarea id="variables-en" placeholder="<<customer_name>>:Customer name(John Smith)&#10;<<account_number>>:Account number(AC-12345)"></textarea>
+        <div class="hint">Format: &lt;&lt;variable&gt;&gt;:Description(Default example) – one per line</div>
+      </div>
+
+      <!-- Submitter Info -->
+      <div class="section-title">👤 Vos informations (optionnel)</div>
+      <div class="row">
+        <div class="field">
+          <label>Votre nom</label>
+          <input type="text" id="submitter-name" placeholder="ex: Jean Dupont" />
+        </div>
+        <div class="field">
+          <label>Votre email</label>
+          <input type="email" id="submitter-email" placeholder="ex: jean@example.com" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Notes ou commentaires</label>
+        <textarea id="notes" placeholder="Ajoutez des remarques ou contexte supplémentaire..."></textarea>
+      </div>
+
+      <div class="actions">
+        <button type="button" class="btn" onclick="window.close()">Annuler</button>
+        <button type="submit" class="btn primary">📤 Soumettre le modèle</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const notice = document.getElementById('notice');
+    const form = document.getElementById('submit-form');
+
+    function showNotice(msg, type = 'success') {
+      notice.textContent = msg;
+      notice.className = `notice ${type}`;
+      notice.style.display = 'block';
+      setTimeout(() => notice.style.display = 'none', 5000);
+    }
+
+    // Sanitize ID input
+    document.getElementById('template-id').addEventListener('input', (e) => {
+      const val = e.target.value;
+      const sanitized = val.replace(/[^A-Za-z0-9_]+/g, '_');
+      if (val !== sanitized) e.target.value = sanitized;
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const formData = {
+        id: document.getElementById('template-id').value.trim(),
+        category_fr: document.getElementById('category-fr').value.trim(),
+        category_en: document.getElementById('category-en').value.trim(),
+        title_fr: document.getElementById('title-fr').value.trim(),
+        title_en: document.getElementById('title-en').value.trim(),
+        description_fr: document.getElementById('description-fr').value.trim(),
+        description_en: document.getElementById('description-en').value.trim(),
+        subject_fr: document.getElementById('subject-fr').value.trim(),
+        subject_en: document.getElementById('subject-en').value.trim(),
+        body_fr: document.getElementById('body-fr').value.trim(),
+        body_en: document.getElementById('body-en').value.trim(),
+        variables_fr: document.getElementById('variables-fr').value.trim(),
+        variables_en: document.getElementById('variables-en').value.trim(),
+        submitter_name: document.getElementById('submitter-name').value.trim(),
+        submitter_email: document.getElementById('submitter-email').value.trim(),
+        notes: document.getElementById('notes').value.trim(),
+        timestamp: new Date().toISOString()
+      };
+
+      try {
+        // Save to localStorage for the admin console to pick up
+        const existingSubmissions = JSON.parse(localStorage.getItem('ea_template_submissions') || '[]');
+        existingSubmissions.push(formData);
+        localStorage.setItem('ea_template_submissions', JSON.stringify(existingSubmissions));
+
+        // Also generate a downloadable JSON file
+        const blob = new Blob([JSON.stringify(formData, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `template_submission_${formData.id}_${Date.now()}.json`;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(() => {
+          URL.revokeObjectURL(url);
+          a.remove();
+        }, 1000);
+
+        showNotice('✅ Modèle soumis avec succès ! Un fichier JSON a été téléchargé.', 'success');
+        
+        // Reset form after 2 seconds
+        setTimeout(() => {
+          form.reset();
+        }, 2000);
+
+      } catch (error) {
+        console.error('Submission error:', error);
+        showNotice('❌ Erreur lors de la soumission. Veuillez réessayer.', 'error');
+      }
+    });
+  </script>
+</body>
+</html>

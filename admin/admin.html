@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Email Assistant – Admin Console (Legacy Redirect)</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" type="image/svg+xml" href="/favicon-e.svg" />
+    <meta name="description" content="Admin console to manage email templates and variables." />
+    <style>
+      :root {
+        --tb-teal: #059669;        /* Emerald-600 */
+        --tb-teal-500: #10b981;    /* Emerald-500 */
+        --tb-teal-700: #047857;    /* Emerald-700 */
+        --tb-sage: #65a30d;        /* Lime-600 */
+        --tb-sage-500: #84cc16;    /* Lime-500 */
+        --bg: #f8fafc;             /* slate-50 */
+        --panel: #ffffff;
+        --muted: #64748b;          /* slate-500 */
+        --border: #e2e8f0;         /* slate-200 */
+        --danger: #e54848;
+        --warning: #eab308;
+      }
+
+      * { box-sizing: border-box; }
+      html, body { height: 100%; }
+      body {
+        margin: 0;
+        font-family: Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+        background: linear-gradient(180deg, #f7fee7, var(--bg));
+        color: #0f172a; /* slate-900 */
+      }
+
+      .topbar {
+        position: sticky; top: 0; z-index: 10;
+        display: flex; align-items: center; gap: 12px; padding: 12px 16px;
+        border-bottom: 1px solid var(--border);
+        background: rgba(255,255,255,0.8); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+      }
+      .topbar .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; }
+      .topbar .brand .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--tb-teal); box-shadow: 0 0 0 3px rgba(16,185,129,0.2); }
+      .topbar .spacer { flex: 1; }
+      .topbar button, .topbar label.btn {
+        border: 1px solid var(--border); background: var(--panel); color: #0f172a; padding: 8px 12px; border-radius: 10px; font-weight: 600; cursor: pointer;
+      }
+      .topbar button.primary { background: var(--tb-teal); border-color: var(--tb-teal); color: white; }
+      .topbar button.warning { background: #fff7ed; border-color: #fed7aa; color: #9a3412; }
+      .topbar button.danger { background: #fef2f2; border-color: #fecaca; color: #991b1b; }
+  .topbar select { border: 1px solid var(--border); background: var(--panel); padding: 8px 10px; border-radius: 10px; }
+  /* Segmented toggle for FR/EN */
+  .seg-toggle { display:inline-flex; align-items:center; gap:4px; background:#f1f5f9; padding:4px; border-radius: 12px; border:1px solid var(--border); }
+  .seg-toggle button { border:none; background:transparent; padding:6px 10px; border-radius: 10px; font-weight: 800; color: var(--muted); cursor:pointer; }
+  .seg-toggle button[aria-pressed="true"] { background:white; color:#0f172a; box-shadow: 0 1px 0 rgba(0,0,0,0.02); }
+      /* Hide file input visually but keep it interactable for label clicks (Safari/macOS friendly) */
+      .hidden-input {
+        position: absolute;
+        left: -9999px;
+        width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        z-index: -1;
+      }
+
+      .container { display: grid; grid-template-columns: 320px 1fr; gap: 16px; padding: 16px; }
+      .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; box-shadow: 0 6px 30px rgba(2,6,23,0.06); }
+      .panel .head { padding: 14px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+      .panel .body { padding: 16px; }
+
+      .search { display: flex; gap: 8px; }
+      .search input, .search select { width: 100%; border: 1px solid var(--border); padding: 10px 12px; border-radius: 12px; }
+
+      .list { display: grid; gap: 8px; margin-top: 12px; max-height: calc(100vh - 240px); overflow: auto; }
+      .tile { border: 1px solid var(--border); border-radius: 12px; padding: 12px; display: grid; gap: 6px; cursor: pointer; background: white; }
+    .tile:hover { border-color: #cbd5e1; }
+  .tile.active { border-color: var(--tb-teal); background: #ecfdf5; box-shadow: inset 0 0 0 2px rgba(16,185,129,0.15); }
+  /* Subtle left accent for active tile */
+  .tile.active::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; border-top-left-radius: 12px; border-bottom-left-radius: 12px; background: linear-gradient(180deg, var(--tb-teal-700), var(--tb-teal)); opacity: 0.9; }
+  .tile:focus-visible { outline: 2px solid var(--tb-teal-500); outline-offset: 2px; }
+      .tile .title { font-weight: 700; }
+      .tile .meta { color: var(--muted); font-size: 12px; display: flex; gap: 8px; }
+
+      .tabs { display: flex; gap: 8px; background: #f1f5f9; padding: 6px; border-radius: 12px; width: fit-content; }
+      .tabs button { border: none; background: transparent; padding: 8px 12px; border-radius: 10px; font-weight: 700; color: var(--muted); cursor: pointer; }
+      .tabs button.active { background: white; color: #0f172a; box-shadow: 0 1px 0 rgba(0,0,0,0.02); }
+
+      .form { display: grid; gap: 14px; }
+      .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+      .row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+      .field label { display: block; font-size: 12px; color: var(--muted); font-weight: 700; margin-bottom: 6px; }
+      .field input, .field textarea, .field select { width: 100%; border: 1px solid var(--border); padding: 10px 12px; border-radius: 12px; font: inherit; }
+      .field textarea { min-height: 120px; resize: vertical; }
+      .kpis { display: flex; gap: 10px; }
+      .badge { background: #ecfeff; color: #0e7490; border: 1px solid #bae6fd; padding: 2px 8px; border-radius: 999px; font-size: 12px; font-weight: 700; }
+      .pill { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; padding: 3px 8px; border-radius: 999px; font-size: 12px; font-weight: 700; }
+      .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+      .chip { background: #fef3c7; border: 1px solid #fde68a; color: #92400e; padding: 4px 8px; border-radius: 999px; font-weight: 700; font-size: 12px; }
+      .chip button { margin-left: 6px; background: transparent; border: none; color: #991b1b; cursor: pointer; }
+      .hint { font-size: 12px; color: var(--muted); }
+
+      .toolbar { display: flex; gap: 8px; flex-wrap: wrap; }
+      .toolbar button { border: 1px solid var(--border); background: white; padding: 8px 12px; border-radius: 10px; font-weight: 700; cursor: pointer; }
+      .toolbar button.primary { background: var(--tb-teal); border-color: var(--tb-teal); color: white; }
+
+      .split { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+      .warn { background: #fff7ed; border: 1px solid #fed7aa; color: #9a3412; padding: 10px 12px; border-radius: 10px; }
+  .ok { background: #f0fdf4; border: 1px solid #bbf7d0; color: #14532d; padding: 10px 12px; border-radius: 10px; }
+  .status-bar { display:flex; align-items:center; justify-content:space-between; gap: 12px; }
+  .status-actions { display:flex; align-items:center; gap:8px; }
+  
+  /* Utility classes */
+  .cursor-pointer { cursor: pointer; }
+  .hidden-display { display: none; }
+  .warnings-notice { display: none; margin: 12px 16px; }
+  .notice-toast { 
+    display: none; 
+    position: fixed; 
+    top: 12px; 
+    right: 12px; 
+    z-index: 1000;
+    background: #111827; 
+    color: #fff; 
+    padding: 10px 12px; 
+    border-radius: 10px; 
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    border: 1px solid rgba(255,255,255,0.1); 
+    font-weight: 600; 
+    font-size: 14px; 
+    max-width: 60vw;
+  }
+  .flex-gap { display: flex; gap: 8px; align-items: center; }
+  
+  /* Modal styles */
+  .modal-overlay { 
+    display: none; 
+    position: fixed; 
+    inset: 0; 
+    background: rgba(0,0,0,0.35); 
+    z-index: 1000; 
+    align-items: center; 
+    justify-content: center;
+  }
+  .modal-card { 
+    background: white; 
+    border: 1px solid var(--border); 
+    border-radius: 12px; 
+    box-shadow: 0 10px 40px rgba(2,6,23,0.2); 
+    width: min(640px, 92vw); 
+    max-height: 80vh; 
+    display: flex; 
+    flex-direction: column;
+  }
+  .modal-header { 
+    padding: 12px 14px; 
+    border-bottom: 1px solid var(--border); 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between;
+  }
+  .modal-body { padding: 12px; overflow: auto; }
+  .modal-actions { 
+    padding: 12px; 
+    border-top: 1px solid var(--border); 
+    display: flex; 
+    gap: 8px; 
+    justify-content: flex-end;
+  }
+  .view-section { display: none; }
+  
+      @media (max-width: 1000px){ .container { grid-template-columns: 1fr; } .row, .row-3, .split { grid-template-columns: 1fr; } }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand"><span class="dot"></span> Email Assistant Admin (Legacy)</div>
+      <div class="spacer"></div>
+      <div style="font-weight:600;color:#64748b">Cette page est obsolète. Redirection vers le nouvel admin simplifié…</div>
+    </header>
+
+    <div style="max-width:640px;margin:60px auto;padding:28px 32px;background:#ffffff;border:1px solid var(--border);border-radius:16px;box-shadow:0 6px 30px rgba(2,6,23,0.06);text-align:center">
+      <h1 style="margin-top:0;font-size:26px">Administration migrée</h1>
+      <p>Cette ancienne console a été remplacée par une version simplifiée unique qui inclut l’import Excel, l’export et la gestion des variables.</p>
+      <p><a href="./admin-simple.html" style="display:inline-block;margin-top:18px;background:#059669;color:#fff;padding:12px 20px;border-radius:10px;font-weight:700;text-decoration:none">Aller vers la nouvelle console</a></p>
+      <p style="margin-top:30px;font-size:12px;color:#64748b">Si vous avez un ancien favori, mettez-le à jour vers <code>admin-simple.html</code>.</p>
+    </div>
+    <script>setTimeout(()=>{ location.href='./admin-simple.html'; }, 2500);</script>
+  </body>
+</html>
+

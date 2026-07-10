@@ -1,0 +1,752 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ECHO - CTD (admin)</title>
+  <!-- meta used for GitHub repo autodetection for JSON publish -->
+  <meta name="gh-repo" content="stackbaritone/bt-ctd-echo" />
+    <meta property="og:title" content="ECHO - CTD (admin)" />
+    <meta property="og:description" content="Console d'administration pour la gestion des modèles de courriels" />
+    <meta name="description" content="Console d'administration pour la gestion des modèles de courriels" />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" type="image/svg+xml" href="/favicon-e.svg" />
+    <style>
+      :root { --border:#e2e8f0; --panel:#fff; --muted:#64748b; --ink:#0f172a; --teal:#059669; }
+      *{box-sizing:border-box}
+      body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:#f8fafc;color:var(--ink)}
+      .topbar{position:sticky;top:0;z-index:10;display:flex;gap:8px;align-items:center;padding:10px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.9);backdrop-filter:blur(6px)}
+      .topbar .brand{font-weight:800}
+      .topbar .spacer{flex:1}
+      .btn{border:1px solid var(--border);background:#fff;padding:8px 12px;border-radius:10px;font-weight:700;cursor:pointer}
+      .btn.primary{background:var(--teal);border-color:var(--teal);color:#fff}
+  .btn.danger{background:#fef2f2;border-color:#fecaca;color:#991b1b}
+        .btn.info{background:#0ea5e9;border-color:#0ea5e9;color:#fff}
+        .btn.indigo{background:#6366f1;border-color:#6366f1;color:#fff}
+        .btn.warning{background:#f59e0b;border-color:#fbbf24;color:#1f2937}
+        .btn.neutral{background:#fff;color:#0f172a}
+        .topbar .group{display:flex;gap:8px;padding:4px;border:1px solid var(--border);border-radius:12px;background:#f1f5f9}
+        .dropdown{position:relative}
+        .dropdown-toggle{display:flex;align-items:center;gap:4px}
+        .dropdown-toggle::after{content:'\25BC';font-size:8px;opacity:0.7}
+        .menu{display:none;position:absolute;right:0;top:44px;background:#fff;border:1px solid var(--border);border-radius:10px;box-shadow:0 8px 30px rgba(2,6,23,.12);min-width:220px;z-index:20}
+        .menu.open{display:block}
+        .menu .item{display:flex;align-items:center;gap:8px;width:100%;text-align:left;border:0;background:transparent;padding:10px 14px;cursor:pointer;font-weight:600;color:#334155}
+        .menu .item:hover{background:#f8fafc}
+        .menu .item + .item{border-top:1px solid var(--border)}
+        .menu .item-icon{font-size:16px}
+        .menu .divider{height:1px;background:var(--border);margin:4px 0}
+        /* Sync status indicator */
+        #sync-status{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:8px;font-size:12px;font-weight:700;margin-left:8px}
+        #sync-status.synced{background:#dcfce7;border:1px solid #bbf7d0;color:#166534}
+        #sync-status.pending{background:#fef3c7;border:1px solid #fde68a;color:#92400e}
+        #sync-status .status-dot{width:8px;height:8px;border-radius:50%}
+        #sync-status.synced .status-dot{background:#22c55e}
+        #sync-status.pending .status-dot{background:#f59e0b;animation:pulse 1.5s infinite}
+        /* Badge + import mode */
+        #updated-badge{display:none;margin-left:6px;padding:4px 8px;font-size:11px;font-weight:700;border:1px solid #bae6fd;background:#ecfeff;color:#0e7490;border-radius:8px}
+        #import-mode{margin-left:8px;border:1px solid var(--border);background:#fff;padding:4px 8px;border-radius:8px;font-weight:700;font-size:12px}
+        /* Utilities */
+        .span-2{grid-column:1 / span 2}
+        /* Modal styling */
+        #modal-category-colors{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:1000;align-items:center;justify-content:center}
+        .modal-panel{background:#fff;border:1px solid var(--border);border-radius:14px;width:min(720px,92vw);max-height:85vh;display:flex;flex-direction:column}
+        .modal-header{padding:12px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+        .modal-close{border:0;background:transparent;font-size:18px;cursor:pointer}
+        .modal-body{padding:14px;overflow:auto;flex:1}
+        .modal-note{margin:0 0 12px;color:var(--muted);font-size:13px}
+        #category-colors-list{display:grid;gap:10px}
+        .modal-footer{padding:12px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end}
+      .seg{display:inline-flex;gap:4px;border:1px solid var(--border);border-radius:10px;padding:4px;background:#f1f5f9}
+      .seg button{border:0;background:transparent;padding:6px 10px;border-radius:8px;font-weight:800;color:var(--muted);cursor:pointer}
+      .seg button[aria-pressed="true"]{background:#fff;color:var(--ink)}
+      .frame{display:grid;grid-template-columns:320px 1fr;gap:12px;padding:12px}
+      .panel{background:var(--panel);border:1px solid var(--border);border-radius:14px}
+      .panel .head{padding:10px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+      .panel .body{padding:12px}
+      .search{display:flex;gap:8px}
+      .search input{flex:1;border:1px solid var(--border);padding:8px 10px;border-radius:10px}
+      .list{display:grid;gap:8px;max-height:calc(100vh - 230px);overflow:auto;margin-top:10px}
+      .tile{border:1px solid var(--border);border-radius:12px;padding:10px;background:#fff;cursor:pointer}
+      .tile.active{border-color:#99f6e4;box-shadow:inset 0 0 0 2px rgba(16,185,129,.15)}
+      .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+      .field{display:grid;gap:6px}
+      .field label{font-size:12px;color:var(--muted);font-weight:700}
+      .field input,.field textarea,.field select{border:1px solid var(--border);border-radius:10px;padding:8px 10px;font:inherit;width:100%}
+      .field textarea{min-height:120px;resize:vertical}
+      .toolbar{display:flex;gap:8px;flex-wrap:wrap}
+      .chips{display:flex;gap:6px;flex-wrap:wrap}
+      .chip{background:#ecfeff;color:#0e7490;border:1px solid #bae6fd;padding:2px 8px;border-radius:999px;font-size:12px;font-weight:700}
+      .chip.muted{opacity:.7}
+      .tile-title{font-weight:700}
+      .tile-sub{color:var(--muted);font-size:12px}
+      /* Category colors row */
+      .cat-row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:10px;border:1px solid var(--border);border-radius:10px;background:#fafafa}
+      .cat-label{font-weight:700;color:#334155}
+      .cat-controls{display:flex;align-items:center;gap:10px}
+      .cat-preview{width:34px;height:24px;border-radius:6px;display:grid;place-items:center;font-weight:800;font-size:11px}
+      .cat-color{width:60px;height:36px;border:1px solid var(--border);border-radius:6px;cursor:pointer}
+      .notice{display:none;position:fixed;top:10px;right:10px;background:#111827;color:#fff;padding:8px 10px;border-radius:10px;border:1px solid rgba(255,255,255,.1);font-weight:700;z-index:1000}
+  .hidden{display:none!important}
+  /* Save indicator */
+  .save-indicator{position:fixed;bottom:20px;right:20px;padding:10px 16px;border-radius:12px;font-size:13px;font-weight:600;z-index:999;display:flex;align-items:center;gap:8px;transition:all 0.3s ease;opacity:0;transform:translateY(10px)}
+  .save-indicator.visible{opacity:1;transform:translateY(0)}
+  .save-indicator.saving{background:#fef3c7;border:1px solid #fde68a;color:#92400e}
+  .save-indicator.saved{background:#dcfce7;border:1px solid #bbf7d0;color:#166534}
+  .save-indicator .dot{width:8px;height:8px;border-radius:50%;animation:pulse 1s infinite}
+  .save-indicator.saving .dot{background:#f59e0b}
+  .save-indicator.saved .dot{background:#22c55e}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+  /* Delete confirmation modal */
+  #modal-delete{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1002;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+  .delete-modal-panel{background:#fff;border-radius:16px;padding:24px;width:min(420px,90vw);text-align:center;box-shadow:0 25px 50px -12px rgba(0,0,0,0.25)}
+  .delete-modal-icon{font-size:48px;margin-bottom:16px}
+  .delete-modal-title{font-size:20px;font-weight:700;color:#0f172a;margin:0 0 8px}
+  .delete-modal-desc{font-size:14px;color:#64748b;margin:0 0 8px}
+  .delete-modal-name{font-size:15px;font-weight:600;color:#0f172a;background:#f1f5f9;padding:8px 12px;border-radius:8px;margin:12px 0 20px;display:inline-block}
+  .delete-modal-actions{display:flex;gap:12px;justify-content:center}
+  .delete-modal-actions .btn{padding:12px 24px;font-size:14px}
+  /* Highlight assist */
+  .ea-highlight-pulse{outline:3px solid #0ea5e9!important;animation:eaPulse 1.2s linear infinite;border-radius:8px}
+  @keyframes eaPulse{0%,100%{outline-color:#0ea5e9}50%{outline-color:#fbbf24}}
+  /* Variables editor */
+  .vars-editor{margin-top:8px;border-top:1px dashed var(--border);padding-top:10px}
+  .vgrid{display:grid;grid-template-columns: minmax(140px, 240px) 1fr 1fr minmax(130px, 180px) minmax(130px, 180px);gap:8px;align-items:start}
+  .vrow{display:contents}
+  .vkey{font-weight:700;padding:6px 8px;background:#f1f5f9;border:1px solid var(--border);border-radius:8px;color:#334155}
+  .vinput{border:1px solid var(--border);border-radius:10px;padding:8px 10px;font:inherit;width:100%}
+  .vhead{font-size:12px;color:var(--muted);font-weight:700}
+  @media (max-width: 900px){ .vgrid{grid-template-columns:1fr} .vkey{margin-bottom:2px} }
+      @media (max-width: 1000px){ .frame{grid-template-columns:1fr} .row{grid-template-columns:1fr} }
+      
+      /* Rich text editor */
+      .rich-text-editor {
+        min-height: 180px;
+        max-height: 500px;
+        overflow-y: auto;
+        padding: 12px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        background: #fff;
+        font-family: inherit;
+        font-size: 14px;
+        line-height: 1.6;
+        word-wrap: break-word;
+      }
+      .rich-text-editor:focus {
+        outline: 2px solid #0ea5e9;
+        outline-offset: -1px;
+      }
+      .rich-text-editor:empty:before {
+        content: attr(data-placeholder);
+        color: #94a3b8;
+        white-space: pre-wrap;
+        pointer-events: none;
+      }
+      .rich-text-editor[contenteditable="true"] {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+      }
+      /* Better paragraph spacing in rich text */
+      .rich-text-editor p {
+        margin: 0.5em 0;
+      }
+      .rich-text-editor p:first-child {
+        margin-top: 0;
+      }
+      .rich-text-editor p:last-child {
+        margin-bottom: 0;
+      }
+      /* Login screen */
+      #login-screen {
+        position: fixed;
+        inset: 0;
+        background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 50%, #f0fdf4 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+      }
+      .login-box {
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 40px;
+        width: min(420px, 90vw);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+        text-align: center;
+      }
+      .login-box h1 {
+        margin: 0 0 8px;
+        font-size: 28px;
+        color: #0f172a;
+      }
+      .login-box .subtitle {
+        margin: 0 0 32px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .login-box .field {
+        margin-bottom: 20px;
+        text-align: left;
+      }
+      .login-box input[type="password"] {
+        width: 100%;
+        padding: 14px 16px;
+        font-size: 16px;
+        border: 2px solid var(--border);
+        border-radius: 12px;
+        transition: border-color 0.2s;
+      }
+      .login-box input[type="password"]:focus {
+        outline: none;
+        border-color: var(--teal);
+      }
+      .login-box .error {
+        color: #dc2626;
+        font-size: 13px;
+        margin-top: 8px;
+        display: none;
+      }
+      .login-box .btn-login {
+        width: 100%;
+        padding: 14px;
+        font-size: 16px;
+        font-weight: 700;
+        background: var(--teal);
+        color: #fff;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: background 0.2s, transform 0.1s;
+      }
+      .login-box .btn-login:hover {
+        background: #047857;
+      }
+      .login-box .btn-login:active {
+        transform: scale(0.98);
+      }
+      .login-box .lock-icon {
+        font-size: 48px;
+        margin-bottom: 16px;
+      }
+      .password-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+      }
+      .password-wrapper input {
+        padding-right: 44px;
+      }
+      .password-toggle {
+        position: absolute;
+        right: 12px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 4px;
+        color: #64748b;
+        font-size: 18px;
+        transition: color 0.2s;
+      }
+      .password-toggle:hover {
+        color: #0f172a;
+      }
+      #admin-content {
+        display: none;
+      }
+      #admin-content.authenticated {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Login Screen -->
+    <div id="login-screen">
+      <div class="login-box">
+        <div class="lock-icon">🔐</div>
+        <h1>Console Admin</h1>
+        <p class="subtitle">Accès réservé aux administrateurs</p>
+        <form id="login-form" onsubmit="return false;">
+          <div class="field">
+            <label for="admin-password">Mot de passe</label>
+            <div class="password-wrapper">
+              <input type="password" id="admin-password" placeholder="Entrez le mot de passe" autocomplete="current-password" />
+              <button type="button" class="password-toggle" id="toggle-password" title="Afficher/masquer le mot de passe">
+                👁️
+              </button>
+            </div>
+            <p class="error" id="login-error">Mot de passe incorrect</p>
+          </div>
+          <button type="submit" class="btn-login" id="btn-login">Se connecter</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Admin Content (hidden until authenticated) -->
+    <div id="admin-content">
+    <div class="topbar">
+      <div class="brand">ECHO Admin <span id="updated-badge" title="Dernière mise à jour distante du JSON">–</span>
+        <span id="sync-status" class="synced" title="Statut de synchronisation">
+          <span class="status-dot"></span>
+          <span id="sync-status-text">À jour</span>
+        </span>
+      </div>
+      <div class="spacer"></div>
+      
+      <!-- Primary action: Publish -->
+      <button class="btn primary" id="btn-gimme-github" title="Publier sur GitHub" style="padding:10px 20px;font-size:14px">
+        🚀 Publier
+      </button>
+      
+      <!-- Import/Export dropdown -->
+      <div class="dropdown">
+        <button class="btn neutral dropdown-toggle" id="btn-io-dropdown">📁 Import / Export</button>
+        <div class="menu" id="menu-io">
+          <button class="btn item" id="btn-import"><span class="item-icon">📥</span> Importer (JSON/Excel)</button>
+          <input id="file" type="file" class="hidden" accept=".json,application/json,.xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+          <div class="divider"></div>
+          <button class="btn item" id="btn-export-xlsx"><span class="item-icon">📊</span> Exporter Excel</button>
+          <button class="btn item" id="btn-export-word"><span class="item-icon">📄</span> Exporter Word</button>
+          <button class="btn item" id="btn-export-download"><span class="item-icon">💾</span> Télécharger JSON</button>
+          <button class="btn item" id="btn-dl-template-xlsx"><span class="item-icon">📋</span> Modèle Excel vide</button>
+        </div>
+      </div>
+      
+      <!-- Settings dropdown -->
+      <div class="dropdown">
+        <button class="btn neutral dropdown-toggle" id="btn-settings-dropdown">⚙️ Paramètres</button>
+        <div class="menu" id="menu-settings">
+          <button class="btn item" id="btn-category-colors"><span class="item-icon">🎨</span> Couleurs catégories</button>
+          <button class="btn item" id="btn-clean-categories"><span class="item-icon">🧹</span> Nettoyer catégories</button>
+          <div class="divider"></div>
+          <button class="btn item" id="btn-reload-github"><span class="item-icon">🔄</span> Recharger depuis GitHub</button>
+          <button class="btn item" id="btn-reset" style="color:#dc2626"><span class="item-icon">🗑️</span> Réinitialiser</button>
+        </div>
+      </div>
+      
+      <button class="btn neutral" id="btn-help" title="Aide">❓ Aide</button>
+    </div>
+
+    <div id="notice" class="notice"></div>
+
+    <!-- Category Colors Modal -->
+    <div id="modal-category-colors">
+      <div class="modal-panel">
+        <div class="modal-header">
+          <strong>Couleurs des catégories</strong>
+          <button onclick="document.getElementById('modal-category-colors').style.display='none'" class="modal-close">×</button>
+        </div>
+        <div id="category-colors-body" class="modal-body">
+          <p class="modal-note">Définir une couleur indicatrice pour chaque catégorie (affichée dans le sélecteur de modèles).</p>
+          <div id="category-colors-list"></div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn" onclick="document.getElementById('modal-category-colors').style.display='none'">Fermer</button>
+          <button class="btn primary" id="btn-save-category-colors">Enregistrer</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Word Export Modal -->
+    <div id="modal-word-export" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1001;align-items:center;justify-content:center;overflow:auto;padding:20px">
+      <div class="modal-panel" style="max-width:500px;margin:auto">
+        <div class="modal-header">
+          <strong>📄 Exporter en Word</strong>
+          <button onclick="document.getElementById('modal-word-export').style.display='none'" class="modal-close">×</button>
+        </div>
+        <div class="modal-body" style="padding:20px">
+          <p style="margin:0 0 20px;color:#64748b;font-size:14px;line-height:1.6">
+            Générer un document Word professionnel contenant tous vos gabarits de courriels. 
+            Idéal pour les utilisateurs qui préfèrent copier-coller manuellement.
+          </p>
+          
+          <div style="margin-bottom:20px">
+            <label style="display:block;font-weight:600;margin-bottom:8px;color:#334155">
+              🌐 Langue du document
+            </label>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;transition:all 0.2s">
+                <input type="radio" name="word-lang" value="both" checked style="accent-color:#059669;width:18px;height:18px">
+                <span style="font-size:14px"><strong>🇫🇷 + 🇬🇧 Bilingue</strong> – Français et anglais côte à côte</span>
+              </label>
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;transition:all 0.2s">
+                <input type="radio" name="word-lang" value="fr" style="accent-color:#059669;width:18px;height:18px">
+                <span style="font-size:14px"><strong>🇫🇷 Français</strong> uniquement</span>
+              </label>
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;transition:all 0.2s">
+                <input type="radio" name="word-lang" value="en" style="accent-color:#059669;width:18px;height:18px">
+                <span style="font-size:14px"><strong>🇬🇧 English</strong> only</span>
+              </label>
+            </div>
+          </div>
+
+          <div style="margin-bottom:20px">
+            <label style="display:block;font-weight:600;margin-bottom:8px;color:#334155">
+              👥 Public cible
+            </label>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;transition:all 0.2s">
+                <input type="radio" name="word-audience" value="all" checked style="accent-color:#059669;width:18px;height:18px">
+                <span style="font-size:14px"><strong>📋 Tous les modèles</strong> – Toutes les catégories</span>
+              </label>
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;transition:all 0.2s">
+                <input type="radio" name="word-audience" value="conseillers" style="accent-color:#059669;width:18px;height:18px">
+                <span style="font-size:14px"><strong>👥 Conseillers</strong> – Modèles pour les conseillers</span>
+              </label>
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;transition:all 0.2s">
+                <input type="radio" name="word-audience" value="management" style="accent-color:#059669;width:18px;height:18px">
+                <span style="font-size:14px"><strong>🔐 Gestion</strong> – Modèles réservés aux gestionnaires</span>
+              </label>
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;transition:all 0.2s">
+                <input type="radio" name="word-audience" value="equipe_admin" style="accent-color:#059669;width:18px;height:18px">
+                <span style="font-size:14px"><strong>👔 Équipe Admin</strong> – Modèles pour l'équipe administrative</span>
+              </label>
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;transition:all 0.2s">
+                <input type="radio" name="word-audience" value="relations_fournisseurs" style="accent-color:#059669;width:18px;height:18px">
+                <span style="font-size:14px"><strong>🤝 Relations fournisseurs</strong> – Modèles pour les fournisseurs externes</span>
+              </label>
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;transition:all 0.2s">
+                <input type="radio" name="word-audience" value="cap" style="accent-color:#059669;width:18px;height:18px">
+                <span style="font-size:14px"><strong>🎓 CAP</strong> – Modèles pour le Centre d'appui professionnel</span>
+              </label>
+            </div>
+          </div>
+
+          <div style="padding:12px;background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;margin-bottom:8px">
+            <p style="margin:0;color:#0369a1;font-size:13px;line-height:1.6">
+              <strong>💡 Contenu :</strong> Le document inclut une page de garde, une table des matières, 
+              puis tous les gabarits organisés par catégorie (un par page) avec l'objet et le corps du message 
+              prêts à copier-coller.
+            </p>
+          </div>
+        </div>
+        <div class="modal-footer" style="border-top:1px solid #e2e8f0;padding:16px 20px;display:flex;gap:12px;justify-content:flex-end">
+          <button class="btn" onclick="document.getElementById('modal-word-export').style.display='none'">Annuler</button>
+          <button class="btn primary" id="btn-generate-word" style="display:flex;align-items:center;gap:8px">
+            <span>📄 Générer le document</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Help Modal -->
+    <div id="modal-help" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1001;align-items:center;justify-content:center;overflow:auto;padding:20px">
+      <div class="modal-panel" style="max-width:900px;margin:auto">
+        <div class="modal-header">
+          <strong>📚 Guide d'utilisation – Console d'administration ECHO</strong>
+          <button onclick="document.getElementById('modal-help').style.display='none'" class="modal-close">×</button>
+        </div>
+        <div class="modal-body" style="max-height:70vh;overflow:auto">
+          
+          <section style="margin-bottom:24px">
+            <h3 style="color:#0f172a;font-size:16px;font-weight:700;margin:0 0 12px">🚀 Prise en main rapide</h3>
+            <ol style="margin:0;padding-left:20px;color:#334155;line-height:1.7">
+              <li><strong>Sélectionner un modèle</strong> dans la colonne de gauche ou créer un nouveau avec le bouton "Ajouter un modèle"</li>
+              <li><strong>Modifier les champs</strong> : ID, catégories (FR/EN), titres, descriptions, objets et corps</li>
+              <li><strong>Utiliser le formatage riche</strong> : sélectionner le texte dans les champs Corps pour activer la barre d'outils (gras, italique, couleurs, etc.)</li>
+              <li><strong>Ajouter des variables</strong> : taper <code>&lt;&lt;nom_variable&gt;&gt;</code> directement dans le texte – elles seront détectées automatiquement</li>
+              <li><strong>Enregistrer localement</strong> : les modifications sont sauvegardées automatiquement comme brouillon dans votre navigateur</li>
+              <li><strong>Publier sur GitHub</strong> : cliquer "Publier sur GitHub" pour déployer les changements en production</li>
+            </ol>
+          </section>
+
+          <section style="margin-bottom:24px;padding:16px;background:#f0fbfb;border:1px solid #bfe7e3;border-radius:10px">
+            <h3 style="color:#145a64;font-size:16px;font-weight:700;margin:0 0 12px">✨ Formatage riche du texte</h3>
+            <p style="margin:0 0 12px;color:#334155;line-height:1.6">Les champs <strong>Corps (FR)</strong> et <strong>Corps (EN)</strong> supportent le formatage HTML complet.</p>
+            <ul style="margin:0;padding-left:20px;color:#334155;line-height:1.7">
+              <li><strong>Sélectionner du texte</strong> pour afficher la barre d'outils flottante</li>
+              <li><strong>Formatage de base</strong> : gras, italique, souligné, barré</li>
+              <li><strong>Titres</strong> : H1, H2, H3 pour structurer le contenu</li>
+              <li><strong>Listes</strong> : listes à puces ou numérotées</li>
+              <li><strong>Couleurs</strong> : 
+                <ul style="margin-top:4px">
+                  <li>Cliquer sur le swatch de couleur pour ouvrir le menu déroulant</li>
+                  <li>Choisir parmi 8 couleurs prédéfinies ou utiliser l'input personnalisé</li>
+                  <li>Applicable pour la couleur du texte et le surlignage</li>
+                </ul>
+              </li>
+              <li><strong>Variables préservées</strong> : les <code>&lt;&lt;variables&gt;&gt;</code> restent fonctionnelles même avec formatage</li>
+            </ul>
+            <p style="margin:12px 0 0;color:#0e7490;font-size:13px"><strong>Important :</strong> Le formatage est stocké en HTML dans le JSON et s'affiche automatiquement dans l'application web principale.</p>
+          </section>
+
+          <section style="margin-bottom:24px">
+            <h3 style="color:#0f172a;font-size:16px;font-weight:700;margin:0 0 12px">📝 Variables dynamiques</h3>
+            <ul style="margin:0;padding-left:20px;color:#334155;line-height:1.7">
+              <li><strong>Syntaxe</strong> : <code>&lt;&lt;nom_variable&gt;&gt;</code> (ex: <code>&lt;&lt;nom_client&gt;&gt;</code>, <code>&lt;&lt;numero_dossier&gt;&gt;</code>)</li>
+              <li><strong>Détection automatique</strong> : les variables sont extraites des champs Objet et Corps</li>
+              <li><strong>Noms conseillés</strong> : lettres minuscules, chiffres et underscores uniquement (ex: <code>date_echeance</code>)</li>
+              <li><strong>Section Variables</strong> : 
+                <ul style="margin-top:4px">
+                  <li>Affiche toutes les variables détectées</li>
+                  <li>Permet d'ajouter des valeurs d'exemple (FR et EN)</li>
+                  <li>Bouton "Sync variables" pour forcer la mise à jour de la liste</li>
+                </ul>
+              </li>
+              <li><strong>Bilingue</strong> : chaque variable peut avoir des exemples différents en français et en anglais</li>
+            </ul>
+          </section>
+
+          <section style="margin-bottom:24px">
+            <h3 style="color:#0f172a;font-size:16px;font-weight:700;margin:0 0 12px">💾 Gestion des données</h3>
+            <div style="display:grid;gap:12px">
+              <div style="border:1px solid var(--border);border-radius:8px;padding:12px;background:#fafafa">
+                <strong style="color:#334155">Importer</strong>
+                <p style="margin:6px 0 0;color:#64748b;font-size:14px;line-height:1.6">
+                  • Formats acceptés : JSON ou Excel (.xlsx)<br>
+                  • Télécharger le modèle XLSX vide pour voir la structure attendue<br>
+                  • L'import remplace le brouillon actuel (attention aux modifications non publiées)
+                </p>
+              </div>
+              <div style="border:1px solid var(--border);border-radius:8px;padding:12px;background:#fafafa">
+                <strong style="color:#334155">Exporter Excel</strong>
+                <p style="margin:6px 0 0;color:#64748b;font-size:14px;line-height:1.6">
+                  • Génère un fichier .xlsx contenant tous les modèles<br>
+                  • Utile pour backup, révision hors-ligne ou collaboration<br>
+                  • Peut être réimporté après modifications
+                </p>
+              </div>
+              <div style="border:1px solid var(--border);border-radius:8px;padding:12px;background:#fafafa">
+                <strong style="color:#334155">Télécharger JSON</strong>
+                <p style="margin:6px 0 0;color:#64748b;font-size:14px;line-height:1.6">
+                  • Télécharge le fichier JSON complet avec tous les modèles<br>
+                  • Format utilisé par l'application web et GitHub<br>
+                  • Inclut le timestamp de dernière mise à jour
+                </p>
+              </div>
+              <div style="border:1px solid var(--border);border-radius:8px;padding:12px;background:#fafafa">
+                <strong style="color:#334155">⟳ Recharger</strong>
+                <p style="margin:6px 0 0;color:#64748b;font-size:14px;line-height:1.6">
+                  • Récupère la version publiée sur GitHub<br>
+                  • Écrase le brouillon local – toutes modifications non publiées seront perdues
+                </p>
+              </div>
+              <div style="border:1px solid var(--border);border-radius:8px;padding:12px;background:#e0f2fe">
+                <strong style="color:#0369a1">🚀 Publier sur GitHub</strong>
+                <p style="margin:6px 0 0;color:#0c4a6e;font-size:14px;line-height:1.6">
+                  • Déploie les modifications sur GitHub et met à jour l'app web<br>
+                  • Met à jour automatiquement le timestamp de publication<br>
+                  • Les utilisateurs de l'app web voient les changements immédiatement après rechargement
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <section style="margin-bottom:24px">
+            <h3 style="color:#0f172a;font-size:16px;font-weight:700;margin:0 0 12px">🎨 Catégories et organisation</h3>
+            <ul style="margin:0;padding-left:20px;color:#334155;line-height:1.7">
+              <li><strong>Catégories bilingues</strong> : chaque modèle doit avoir une catégorie FR et EN (peuvent être identiques ou traduites)</li>
+              <li><strong>Sélection rapide</strong> : les dropdowns affichent les catégories existantes pour cohérence</li>
+              <li><strong>Nouvelles catégories</strong> : laisser le dropdown sur "-- Nouvelle catégorie --" et taper dans le champ texte</li>
+              <li><strong>Couleurs des catégories</strong> : 
+                <ul style="margin-top:4px">
+                  <li>Bouton "Catégories" pour définir une couleur par catégorie</li>
+                  <li>Affichage visuel dans la liste de modèles pour identification rapide</li>
+                </ul>
+              </li>
+              <li><strong>Nettoyer catégories</strong> : supprime les catégories non utilisées de la liste globale</li>
+            </ul>
+          </section>
+
+          <section style="margin-bottom:24px">
+            <h3 style="color:#0f172a;font-size:16px;font-weight:700;margin:0 0 12px">🔐 Sécurité et accès</h3>
+            <ul style="margin:0;padding-left:20px;color:#334155;line-height:1.7">
+              <li><strong>Authentification requise</strong> : mot de passe demandé à l'ouverture de la console</li>
+              <li><strong>Session persistante</strong> : restez connecté tant que vous ne vous déconnectez pas manuellement</li>
+              <li><strong>Accès depuis l'app principale</strong> : bouton Admin discret en bas à gauche (visible pour tous, protégé par mot de passe)</li>
+              <li><strong>Brouillon local</strong> : toutes les modifications sont sauvegardées dans le navigateur (localStorage)</li>
+              <li><strong>Synchronisation locale</strong> : vos changements apparaissent dans l'app principale en quelques secondes (sans publier)</li>
+              <li><strong>Publication GitHub</strong> : pour partager vos modifications avec tous les utilisateurs</li>
+              <li><strong>Indicateur de statut</strong> : badge "À jour" ou "Non publié" indique si vos changements sont publiés</li>
+            </ul>
+          </section>
+
+          <section style="margin-bottom:24px;padding:16px;background:#fef2f2;border:1px solid #fecaca;border-radius:10px">
+            <h3 style="color:#991b1b;font-size:16px;font-weight:700;margin:0 0 12px">⚠️ Bonnes pratiques</h3>
+            <ul style="margin:0;padding-left:20px;color:#7f1d1d;line-height:1.7">
+              <li><strong>Publier régulièrement</strong> pour éviter de perdre du travail en cas de fermeture accidentelle</li>
+              <li><strong>Tester dans l'app web</strong> après publication pour vérifier le rendu des formatages</li>
+              <li><strong>Utiliser des ID uniques</strong> : lettres, chiffres et underscores, pas d'espaces ni caractères spéciaux</li>
+              <li><strong>Nommer clairement les variables</strong> pour que les utilisateurs comprennent leur fonction</li>
+              <li><strong>Exporter en Excel</strong> avant modifications majeures comme backup de sécurité</li>
+              <li><strong>Éviter de recharger depuis GitHub</strong> si vous avez des modifications non publiées</li>
+              <li><strong>Confirmer avant suppression</strong> : un modal demande confirmation avec le nom du modèle – action irréversible</li>
+            </ul>
+          </section>
+
+          <section style="margin-bottom:12px">
+            <h3 style="color:#0f172a;font-size:16px;font-weight:700;margin:0 0 12px">🐛 Dépannage</h3>
+            <div style="display:grid;gap:10px">
+              <details style="border:1px solid var(--border);border-radius:8px;padding:12px;background:#fff">
+                <summary style="cursor:pointer;font-weight:700;color:#334155">Les variables ne s'affichent pas correctement</summary>
+                <p style="margin:8px 0 0;color:#64748b;font-size:14px;line-height:1.6">
+                  • Cliquer sur "Sync variables" pour forcer la détection<br>
+                  • Vérifier la syntaxe : <code>&lt;&lt;nom_variable&gt;&gt;</code> avec deux chevrons de chaque côté<br>
+                  • Pas d'espaces à l'intérieur des chevrons
+                </p>
+              </details>
+              <details style="border:1px solid var(--border);border-radius:8px;padding:12px;background:#fff">
+                <summary style="cursor:pointer;font-weight:700;color:#334155">Le formatage ne s'affiche pas dans l'app web</summary>
+                <p style="margin:8px 0 0;color:#64748b;font-size:14px;line-height:1.6">
+                  • S'assurer d'avoir publié sur GitHub (les brouillons locaux ne sont pas visibles publiquement)<br>
+                  • Les utilisateurs doivent rafraîchir la page pour voir les nouveaux changements<br>
+                  • Le cache du navigateur est automatiquement ignoré lors du chargement des templates
+                </p>
+              </details>
+              <details style="border:1px solid var(--border);border-radius:8px;padding:12px;background:#fff">
+                <summary style="cursor:pointer;font-weight:700;color:#334155">Erreur lors de la publication GitHub</summary>
+                <p style="margin:8px 0 0;color:#64748b;font-size:14px;line-height:1.6">
+                  • Vérifier votre connexion internet<br>
+                  • Réessayer après quelques instants<br>
+                  • En cas d'échec répété, utiliser "Télécharger JSON" pour sauvegarder vos modifications localement
+                </p>
+              </details>
+              <details style="border:1px solid var(--border);border-radius:8px;padding:12px;background:#fff">
+                <summary style="cursor:pointer;font-weight:700;color:#334155">Mes modifications ont disparu</summary>
+                <p style="margin:8px 0 0;color:#64748b;font-size:14px;line-height:1.6">
+                  • Vérifier si quelqu'un a publié sur GitHub ou cliqué sur "⟳ Recharger" (écrase le brouillon local)<br>
+                  • Les brouillons sont liés au navigateur – changer d'ordinateur ou de navigateur recharge depuis GitHub<br>
+                  • Toujours publier sur GitHub pour sauvegarder définitivement
+                </p>
+              </details>
+            </div>
+          </section>
+
+        </div>
+        <div class="modal-footer">
+          <button class="btn primary" onclick="document.getElementById('modal-help').style.display='none'">Fermer</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="modal-delete">
+      <div class="delete-modal-panel">
+        <div class="delete-modal-icon">🗑️</div>
+        <div class="delete-modal-title">Supprimer ce modèle ?</div>
+        <div class="delete-modal-desc">Cette action est irréversible. Le modèle sera définitivement supprimé.</div>
+        <div class="delete-modal-name" id="delete-template-name">—</div>
+        <div class="delete-modal-actions">
+          <button class="btn" id="btn-cancel-delete">Annuler</button>
+          <button class="btn danger" id="btn-confirm-delete">Supprimer</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Save Indicator -->
+    <div id="save-indicator" class="save-indicator">
+      <span class="dot"></span>
+      <span class="save-text">Sauvegardé</span>
+    </div>
+
+    <div class="frame">
+      <aside class="panel">
+        <div class="head"><strong>Modèles</strong><button class="btn" id="btn-new">Ajouter un modèle</button></div>
+        <div class="body">
+          <div class="search"><input id="search" placeholder="Rechercher…" /></div>
+          <div id="list" class="list"></div>
+        </div>
+      </aside>
+
+      <main class="panel">
+        <div class="head"><strong id="hdr">Éditeur</strong>
+          <div class="toolbar">
+            <button class="btn" id="btn-skeleton" title="Préremplir le corps selon la catégorie sélectionnée">🏗️ Squelette</button>
+            <button class="btn info" id="btn-duplicate" title="Dupliquer ce modèle">📋 Dupliquer</button>
+            <button class="btn danger" id="btn-delete">🗑️ Supprimer</button>
+          </div>
+        </div>
+        <div class="body" id="editor">
+          <div class="row">
+            <div class="field"><label>ID</label><input id="tpl-id" placeholder="ex: welcome_email" title="Identifiant unique (lettres, chiffres, underscore)" /></div>
+            <div class="field">
+              <label>Modes (utilisateurs)</label>
+              <div id="tpl-utilisateur" style="display:flex;flex-wrap:wrap;gap:8px;padding:8px 0">
+                <label style="display:flex;align-items:center;gap:4px;cursor:pointer;font-size:13px">
+                  <input type="checkbox" value="conseillers" style="accent-color:#059669"> 👥 Conseillers
+                </label>
+                <label style="display:flex;align-items:center;gap:4px;cursor:pointer;font-size:13px">
+                  <input type="checkbox" value="gestion" style="accent-color:#d97706"> 🔐 Gestion
+                </label>
+                <label style="display:flex;align-items:center;gap:4px;cursor:pointer;font-size:13px">
+                  <input type="checkbox" value="equipe_admin" style="accent-color:#2563eb"> 👔 Équipe Admin
+                </label>
+                <label style="display:flex;align-items:center;gap:4px;cursor:pointer;font-size:13px">
+                  <input type="checkbox" value="relations_fournisseurs" style="accent-color:#9333ea"> 🤝 Fournisseurs
+                </label>
+                <label style="display:flex;align-items:center;gap:4px;cursor:pointer;font-size:13px">
+                  <input type="checkbox" value="cap" style="accent-color:#0d9488"> 🎓 CAP
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="field">
+              <label>Type de modèle</label>
+              <select id="tpl-type" title="Type de modèle" style="padding:8px;border-radius:6px;border:1px solid #ccc;font-size:14px">
+                <option value="email">📧 Courriel</option>
+                <option value="blurb">📝 Texte court (blurb)</option>
+                <option value="prompt">🤖 Prompt</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="field">
+              <label>Catégorie (FR)</label>
+              <select id="tpl-cat-fr-select" title="Sélectionner une catégorie existante">
+                <option value="">-- Nouvelle catégorie --</option>
+              </select>
+              <input id="tpl-cat-fr" placeholder="ex: Service client" title="Catégorie en français" style="margin-top:6px" />
+            </div>
+            <div class="field">
+              <label>Category (EN)</label>
+              <select id="tpl-cat-en-select" title="Select an existing category">
+                <option value="">-- New category --</option>
+              </select>
+              <input id="tpl-cat-en" placeholder="ex: Customer Care" title="Category in English" style="margin-top:6px" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="field"><label>Titre (FR)</label><input id="tpl-title-fr" placeholder="ex: Bienvenue – Nouveau client" title="Titre en français" /></div>
+            <div class="field"><label>Titre (EN)</label><input id="tpl-title-en" placeholder="ex: Welcome – New customer" title="Title in English" /></div>
+          </div>
+          <div class="row">
+            <div class="field"><label>Description (FR)</label><input id="tpl-desc-fr" placeholder="ex: Courriel de bienvenue pour un nouveau client" title="Description en français" /></div>
+            <div class="field"><label>Description (EN)</label><input id="tpl-desc-en" placeholder="ex: Welcome email for a new customer" title="Description in English" /></div>
+          </div>
+          <div class="row">
+            <div class="field"><label>Objet (FR)</label><input id="tpl-subj-fr" placeholder="ex: Bienvenue chez ECHO !" title="Objet en français" /></div>
+            <div class="field"><label>Objet (EN)</label><input id="tpl-subj-en" placeholder="ex: Welcome to ECHO!" title="Subject in English" /></div>
+          </div>
+          <div class="row">
+            <div class="field">
+              <label>Corps (FR)</label>
+              <div id="tpl-body-fr" class="rich-text-editor" data-placeholder="Bonjour <<nom_client>>,&#10;&#10;Merci pour votre confiance…"></div>
+            </div>
+            <div class="field">
+              <label>Corps (EN)</label>
+              <div id="tpl-body-en" class="rich-text-editor" data-placeholder="Hello <<customer_name>>,&#10;&#10;Thank you for your trust…"></div>
+            </div>
+          </div>
+          <div class="field">
+            <label>Variables détectées (automatique)</label>
+            <button class="btn" id="btn-sync-vars" title="Synchroniser la liste des variables avec le texte">Sync variables</button>
+            <button class="btn" id="btn-add-missing" title="Ajouter toutes les variables du corps à la bibliothèque si elles n'existent pas encore">➕ Ajouter manquantes</button>
+            <div id="vars" class="chips"></div>
+            <div id="vars-editor" class="vars-editor"></div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Word Export dependencies -->
+    <script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
+    <script src="https://unpkg.com/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+    <script src="../assets/word-export.js"></script>
+    <script src="../assets/rich-text-toolbar.js"></script>
+    <script src="../assets/admin-simple.js"></script>
+    <!-- Badge timestamp is managed by admin-simple.js for consistency with loaded data -->
+    </div><!-- end #admin-content -->
+  </body>
+  </html>

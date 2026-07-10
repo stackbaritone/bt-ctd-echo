@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aide — Console simple</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon-e.svg" />
+    <meta name="robots" content="noindex, nofollow" />
+    <style>
+      :root { --border:#e2e8f0; --muted:#64748b; --ink:#0f172a; --teal:#059669; }
+      *{box-sizing:border-box}
+      body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:#f8fafc;color:var(--ink)}
+      header{position:sticky;top:0;display:flex;align-items:center;gap:8px;padding:10px;border-bottom:1px solid var(--border);background:#fff}
+      .title{font-weight:800}
+      .spacer{flex:1}
+      .btn{border:1px solid var(--border);background:#fff;padding:8px 12px;border-radius:10px;font-weight:700;cursor:pointer}
+      .btn.primary{background:var(--teal);border-color:var(--teal);color:#fff}
+      main{padding:16px;max-width:900px;margin:0 auto}
+      .chip{display:inline-block;background:#ecfeff;color:#0e7490;border:1px solid #bae6fd;padding:2px 8px;border-radius:999px;font-size:12px;font-weight:700}
+      h2{margin:10px 0}
+      h3{margin:10px 0}
+      .card{background:#fff;border:1px solid var(--border);border-radius:12px;box-shadow:0 6px 30px rgba(2,6,23,.06);padding:14px}
+      code{background:#f1f5f9;border:1px solid var(--border);border-radius:6px;padding:0 4px}
+      ol{margin:0 0 12px 18px}
+      ul{margin:0 0 0 18px}
+      footer{padding:12px;color:var(--muted);text-align:center}
+      @media (max-width: 700px){ main{padding:12px} }
+      /* new utility classes */
+      .mb12{margin-bottom:12px}
+      .para{margin-top:6px}
+      .note{font-size:12px;color:var(--muted);margin:0}
+      .focus-btn{margin-left:6px;padding:2px 8px;font-size:11px;border:1px solid var(--border);background:#fff;border-radius:8px;cursor:pointer}
+      .focus-btn:hover{background:#f1f5f9}
+      .form-grid{display:grid;gap:16px}
+      .two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+      .fld-label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:4px}
+      .req{color:#dc2626}
+      .fld-input{width:100%;border:1px solid var(--border);padding:8px 10px;border-radius:8px;font:inherit}
+      .fld-textarea{width:100%;border:1px solid var(--border);padding:8px 10px;border-radius:8px;font:inherit;min-height:100px;resize:vertical}
+      .fld-textarea.short{min-height:80px}
+      .hint{font-size:11px;color:var(--muted);margin-top:2px}
+      .lang-hdr{margin:8px 0 0;padding-top:8px;border-top:1px solid var(--border)}
+      .submit-notice{display:none;padding:12px;border-radius:8px;margin-bottom:16px;font-size:14px;font-weight:600}
+      .hidden{display:none}
+      .mt16{margin-top:16px}
+      .actions{display:flex;gap:8px;justify-content:flex-end;padding-top:8px;border-top:1px solid var(--border)}
+      .lead{color:var(--muted);font-size:14px;margin:0 0 16px}
+      /* highlight style injected in parent may exist; keeping a local variant */
+      .ea-highlight-pulse{outline:3px solid #0ea5e9!important;animation:eaPulse 1.2s linear infinite;border-radius:8px}
+      @keyframes eaPulse{0%,100%{outline-color:#0ea5e9}50%{outline-color:#fbbf24}}
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="title">Aide — Gérer les modèles (mode simple)</div>
+      <div class="spacer"></div>
+      <button class="btn" onclick="window.close()">Fermer</button>
+    </header>
+    <main>
+      <div class="card mb12">
+        <div class="chip">Info</div>
+        <div class="para">Vos modifications sont sauvegardées en <strong>brouillon local</strong> (dans votre navigateur). Elles apparaissent automatiquement dans l'app principale en quelques secondes. Cliquez « 🚀 Publier » pour les partager avec tous les utilisateurs.</div>
+      </div>
+
+      <section class="card mb12">
+        <h3>1. Modifier un modèle existant</h3>
+        <ol>
+          <li><strong>Sélection</strong> — Dans la colonne de gauche, cliquez sur la tuile du modèle. <button type="button" class="focus-btn" data-target="list">Voir</button></li>
+          <li><strong>Identifiant</strong> — Le champ <em>ID</em> identifie le modèle de façon unique (lettres, chiffres, underscore). <button type="button" class="focus-btn" data-target="tpl-id">ID</button></li>
+          <li><strong>Catégories</strong> — Choisissez une catégorie existante dans les menus déroulants ou tapez une nouvelle dans les champs texte. Les catégories apparaissent dans l'app principale pour filtrer les modèles. <button type="button" class="focus-btn" data-target="tpl-cat-fr-select">Catégorie</button></li>
+          <li><strong>Titre et Description</strong> — Complétez en français et en anglais. Le titre apparaît dans la liste des modèles, la description donne le contexte d'utilisation. <button type="button" class="focus-btn" data-target="tpl-title-fr">Titre FR</button></li>
+          <li><strong>Objet et Corps</strong> — Rédigez l'objet de l'email et son corps dans les deux langues. <button type="button" class="focus-btn" data-target="tpl-body-fr">Corps FR</button></li>
+          <li><strong>Variables (placeholders)</strong> — Insérez des variables avec <code>&lt;&lt;NomVariable&gt;&gt;</code> dans l'Objet/Corps. Exemples: <code>&lt;&lt;ClientName&gt;&gt;</code>, <code>&lt;&lt;ProjectNumber&gt;&gt;</code>, <code>&lt;&lt;NewDeadline&gt;&gt;</code>. N'ajoutez PAS de suffixe _FR ou _EN dans le modèle (le système gère ça automatiquement).</li>
+          <li><strong>Sync variables</strong> — Après avoir modifié le texte, cliquez « Sync variables » pour mettre à jour la liste détectée. <button type="button" class="focus-btn" data-target="btn-sync-vars">Sync</button></li>
+          <li><strong>Descriptions des variables</strong> — En bas de l'éditeur, complétez les descriptions FR/EN et valeurs par défaut pour chaque variable détectée. Cela aide les utilisateurs à comprendre quoi remplir.</li>
+          <li><strong>Sauvegarde</strong> — Les changements sont enregistrés automatiquement en brouillon local. Pour publier définitivement, cliquez <strong>« 🚀 Publier »</strong> ou <strong>« Télécharger JSON »</strong> pour sauvegarder localement. <button type="button" class="focus-btn" data-target="btn-gimme-github">Publier</button></li>
+        </ol>
+      </section>
+
+      <section class="card mb12">
+        <h3>2. Supprimer un modèle</h3>
+        <ol>
+          <li><strong>Sélection</strong> — Cliquez sur le modèle dans la liste de gauche. <button type="button" class="focus-btn" data-target="list">Voir</button></li>
+          <li><strong>Action</strong> — Cliquez le bouton « Supprimer » en haut à droite de l'éditeur. <button type="button" class="focus-btn" data-target="btn-delete">Supprimer</button></li>
+          <li>Une confirmation apparaît - validez pour supprimer définitivement du brouillon.</li>
+          <li>Le modèle disparaît immédiatement de la liste.</li>
+          <li><strong>Important:</strong> La suppression ne touche que votre brouillon local. Pour que le modèle disparaisse aussi de l'app principale, vous devez cliquer <strong>« Publier sur GitHub »</strong>.</li>
+          <li>Si vous supprimez par erreur, cliquez « Réinitialiser » pour restaurer la version officielle (avant vos modifications).</li>
+        </ol>
+        <p class="note"><strong>Astuce:</strong> Si vous supprimez le dernier modèle d'une catégorie, pensez à cliquer « Nettoyer catégories » pour retirer la catégorie vide des menus.</p>
+      </section>
+
+      <section class="card mb12">
+        <h3>3. Ajouter un nouveau modèle</h3>
+        <ol>
+          <li><strong>Création</strong> — Dans la colonne de gauche (« Modèles »), cliquez « Ajouter un modèle ». <button type="button" class="focus-btn" data-target="btn-new">Ajouter un modèle</button></li>
+          <li><strong>ID</strong> — Saisissez un identifiant simple (lettres, chiffres, underscore). Exemple: <code>welcome_client</code>.</li>
+          <li><strong>Complétez</strong> les champs FR et EN (Titre, Description, Objet, Corps). <button type="button" class="focus-btn" data-target="tpl-id">ID</button></li>
+          <li><strong>Placeholders</strong> — Insérez les variables nécessaires: <code>&lt;&lt;ClientName&gt;&gt;</code>, <code>&lt;&lt;ProjectNumber&gt;&gt;</code>, etc. Elles sont détectées automatiquement.</li>
+          <li><strong>Vérifiez</strong> l’orthographe, accents, cohérence FR/EN.</li>
+          <li><strong>Publiez</strong> via « <strong>Publier</strong> » → <em>Télécharger JSON</em> pour transmettre le nouveau modèle, ou utilisez « <strong>Exporter Excel</strong> » si vous préparez plusieurs ajouts.</li>
+        </ol>
+        <p class="note">Besoin d’aide pour décrire les variables ? Ajoutez leur nom puis revenez plus tard compléter les descriptions.</p>
+      </section>
+
+      <section class="card mb12">
+        <h3>4. Travailler avec Excel (import/export)</h3>
+        
+        <h4>📤 Exporter vers Excel</h4>
+        <ol>
+          <li>Cliquez « <strong>Exporter Excel</strong> » pour télécharger tous vos modèles actuels. <button type="button" class="focus-btn" data-target="btn-export-xlsx">Exporter Excel</button></li>
+          <li>Le fichier .xlsx contient un seul onglet « Templates » avec toutes les colonnes nécessaires.</li>
+          <li>Format des colonnes: <code>ID</code>, <code>CATEGORY_EN</code>, <code>CATEGORY_FR</code>, <code>DESCRIPTION_EN</code>, <code>DESCRIPTION_FR</code>, <code>TITLE_EN</code>, <code>TITLE_FR</code>, <code>TEMPLATE_EN</code>, <code>TEMPLATE_FR</code>, <code>VARIABLES_DESCRIPTION_EN</code>, <code>VARIABLES_DESCRIPTION_FR</code></li>
+          <li><strong>Important:</strong> Dans l'Excel exporté, les variables ont des suffixes <code>_EN</code> et <code>_FR</code> (ex: <code>&lt;&lt;ClientName_EN&gt;&gt;</code>). C'est normal pour le format d'échange Excel.</li>
+        </ol>
+
+        <h4>📥 Importer depuis Excel</h4>
+        <ol>
+          <li>Cliquez « <strong>Importer</strong> » et sélectionnez votre fichier .xlsx. <button type="button" class="focus-btn" data-target="btn-import">Importer</button></li>
+          <li>Le système détecte automatiquement s'il s'agit d'un fichier Excel ou JSON.</li>
+          <li>Une boîte de dialogue apparaît: 
+            <ul style="margin-top:4px">
+              <li><strong>✓ OUI (Fusionner)</strong> — Ajoute les nouveaux modèles sans toucher aux existants (recommandé)</li>
+              <li><strong>✗ NON (Remplacer)</strong> — Supprime TOUT et remplace par le contenu du fichier (attention!)</li>
+            </ul>
+          </li>
+          <li>Après l'import, vérifiez les modèles dans la liste de gauche.</li>
+          <li>Les variables sont automatiquement extraites et ajoutées à la bibliothèque.</li>
+          <li>N'oubliez pas de publier après vérification!</li>
+        </ol>
+
+        <h4>📋 Télécharger un modèle Excel vierge</h4>
+        <p>Cliquez « <strong>Modèle XLSX</strong> » pour obtenir un fichier exemple avec les bonnes colonnes et un modèle de démonstration. <button type="button" class="focus-btn" data-target="btn-dl-template-xlsx">Modèle XLSX</button></p>
+
+        <p class="note"><strong>Astuce Excel:</strong> Vous pouvez modifier plusieurs modèles à la fois dans Excel, puis les réimporter en mode Fusionner. C'est pratique pour des corrections en lot ou l'ajout massif de nouveaux modèles.</p>
+      </section>
+
+      <section class="card mb12">
+        <h3>5. Publication et sauvegarde</h3>
+        
+        <h4>💾 Sauvegarde automatique (brouillon local)</h4>
+        <p>Tous vos changements sont automatiquement enregistrés dans le <strong>localStorage</strong> de votre navigateur. C'est un brouillon qui persiste entre les sessions, mais:</p>
+        <ul>
+          <li>⚠️ Il n'est PAS partagé avec d'autres utilisateurs ou appareils</li>
+          <li>⚠️ Il peut être perdu si vous videz le cache du navigateur</li>
+          <li>✅ Il vous permet de travailler progressivement sans perdre vos modifications</li>
+        </ul>
+
+        <h4>📤 Télécharger JSON</h4>
+        <p>Cliquez « <strong>Télécharger JSON</strong> » pour sauvegarder votre brouillon complet sur votre ordinateur. <button type="button" class="focus-btn" data-target="btn-export-download">Télécharger JSON</button></p>
+        <ul>
+          <li>Génère un fichier <code>complete_email_templates.json</code></li>
+          <li>Contient tous les modèles, variables, catégories et métadonnées</li>
+          <li>Peut être réimporté plus tard avec « Importer »</li>
+          <li>Utile pour faire une copie de backup</li>
+        </ul>
+
+        <h4>🚀 Publier sur GitHub</h4>
+        <p>Cliquez « <strong>🚀 Publier</strong> » pour envoyer vos changements directement dans le dépôt GitHub et mettre à jour l'application principale. <button type="button" class="focus-btn" data-target="btn-gimme-github">Publier</button></p>
+        
+        <p><strong>Ce qui se passe lors de la publication :</strong></p>
+        <ul>
+          <li>Le fichier <code>complete_email_templates.json</code> est mis à jour sur GitHub</li>
+          <li>L'application principale se synchronise automatiquement avec la nouvelle version</li>
+          <li>Tous les utilisateurs voient les changements immédiatement après rechargement</li>
+          <li>L'indicateur de statut passe à « À jour »</li>
+        </ul>
+
+        <p class="note"><strong>Bonne pratique :</strong> Vos modifications apparaissent dans l'app principale en quelques secondes (synchronisation locale). Publiez sur GitHub quand vous êtes satisfait pour les partager avec tous les utilisateurs.</p>
+      </section>
+
+      <section class="card mb12">
+        <h3>6. Gérer les catégories</h3>
+        
+        <h4>🎨 Couleurs des catégories</h4>
+        <p>Cliquez « <strong>Catégories</strong> » pour ouvrir le gestionnaire de couleurs. <button type="button" class="focus-btn" data-target="btn-category-colors">Catégories</button></p>
+        <ul>
+          <li>Chaque catégorie a une couleur par défaut qui apparaît dans l'app principale</li>
+          <li>Vous pouvez personnaliser les couleurs pour mieux les différencier</li>
+          <li>Un aperçu montre le rendu dans l'application</li>
+          <li>Cliquez « Enregistrer » pour appliquer les changements</li>
+        </ul>
+
+        <h4>🧹 Nettoyer les catégories inutilisées</h4>
+        <p>Cliquez « <strong>Nettoyer catégories</strong> » pour supprimer les catégories qui n'ont plus aucun modèle associé. <button type="button" class="focus-btn" data-target="btn-clean-categories">Nettoyer catégories</button></p>
+        <ul>
+          <li>Le système trouve automatiquement les catégories orphelines</li>
+          <li>Une confirmation liste les catégories qui seront supprimées</li>
+          <li>Les catégories disparaissent des menus déroulants et de l'app principale</li>
+          <li>N'oubliez pas de publier après le nettoyage!</li>
+        </ul>
+      </section>
+
+      <section class="card mb12">
+        <h3>7. Types et modes des modèles</h3>
+
+        <h4>📧 🤖 📝 Type de modèle</h4>
+        <p>Le menu déroulant <strong>Type de modèle</strong> définit la nature du contenu. <button type="button" class="focus-btn" data-target="tpl-type">Type</button></p>
+        <ul>
+          <li><strong>📧 Courriel</strong> (valeur par défaut) — Modèle de courriel complet avec un objet et un corps. Apparaît dans l'app principale avec le champ Objet actif.</li>
+          <li><strong>📝 Texte court (blurb)</strong> — Fragment de texte réutilisable (signature, clause, explication courte). L'objet n'est pas affiché dans l'app principale.</li>
+          <li><strong>🤖 Prompt</strong> — Instruction pour un assistant IA (Copilot, ChatGPT, etc.). L'objet n'est pas utilisé ; le corps contient le prompt.</li>
+        </ul>
+        <p class="note">Le type est visible dans l'app principale par un badge coloré sur la tuile du modèle. Seuls les types <em>blurb</em> et <em>prompt</em> affichent ce badge (les courriels n'ont pas de badge de type).</p>
+
+        <h4>👥 Modes (utilisateurs)</h4>
+        <p>Les cases à cocher <strong>Modes</strong> définissent quels groupes d'utilisateurs voient ce modèle dans l'app principale. <button type="button" class="focus-btn" data-target="tpl-utilisateur">Modes</button></p>
+        <ul>
+          <li><strong>👥 Conseillers</strong> (teal) — Rôle par défaut. Visible par tous les conseillers de traduction.</li>
+          <li><strong>🔐 Gestion</strong> (ambre) — Réservé aux gestionnaires. Accessible via le code <em>gestion</em> dans l'app principale.</li>
+          <li><strong>👔 Équipe Admin</strong> (bleu) — Pour l'équipe administrative. Accessible via le code <em>equipe_admin</em>.</li>
+          <li><strong>🤝 Fournisseurs</strong> (violet) — Pour les relations avec les fournisseurs. Accessible via le code <em>relations_fournisseurs</em>.</li>
+        </ul>
+        <p class="note">Si aucune case n'est cochée, le modèle est automatiquement attribué au mode <em>conseillers</em>. Vous pouvez cocher plusieurs modes simultanément pour rendre un modèle visible à plusieurs groupes.</p>
+      </section>
+
+      <section class="card mb12">
+        <h3>8. Outils de rédaction</h3>
+
+        <h4>🏗️ Bouton Squelette</h4>
+        <p>Cliquez <strong>🏗️ Squelette</strong> pour préremplir automatiquement les corps FR et EN selon la catégorie du modèle. <button type="button" class="focus-btn" data-target="btn-skeleton">Squelette</button></p>
+        <ul>
+          <li>Le squelette est un brouillon bilingue avec des <code>&lt;&lt;variables&gt;&gt;</code> déjà intégrés — il suffit de remplacer les crochets <code>[ ]</code> par votre contenu réel.</li>
+          <li>Si le corps est déjà rempli, une confirmation apparaît avant d'écraser.</li>
+          <li>Squelettes disponibles pour 8 catégories : devis et approbations, suivis et annulations, documents et mise en forme, délais et livraison, clarifications et instructions, sécurité et droits d'auteur, insatisfaisant, fin d'année financière.</li>
+          <li>Si aucun squelette n'est défini pour la catégorie sélectionnée, un message vous en informe.</li>
+        </ul>
+
+        <h4>📋 Bouton Dupliquer</h4>
+        <p>Cliquez <strong>📋 Dupliquer</strong> pour créer une copie exacte du modèle sélectionné. <button type="button" class="focus-btn" data-target="btn-duplicate">Dupliquer</button></p>
+        <ul>
+          <li>Un nouvel ID est généré automatiquement (<code>id_copie</code>, <code>id_copie_1</code>, etc.).</li>
+          <li>Les titres FR/EN reçoivent le suffixe « (copie) » / « (copy) ».</li>
+          <li>Vous êtes automatiquement redirigé vers le nouveau modèle pour l'éditer.</li>
+          <li>Pratique pour créer une variante d'un modèle existant sans recommencer à zéro.</li>
+        </ul>
+
+        <h4>➕ Bouton Ajouter manquantes</h4>
+        <p>Cliquez <strong>➕ Ajouter manquantes</strong> pour enregistrer automatiquement dans la bibliothèque toutes les variables utilisées dans ce modèle qui n'y sont pas encore. <button type="button" class="focus-btn" data-target="btn-add-missing">Ajouter manquantes</button></p>
+        <ul>
+          <li>Le système détecte tous les <code>&lt;&lt;placeholders&gt;&gt;</code> dans l'Objet et le Corps (FR et EN).</li>
+          <li>Les variables déjà présentes dans la bibliothèque globale ne sont pas modifiées.</li>
+          <li>Les nouvelles variables sont ajoutées avec des descriptions vides — complétez-les ensuite dans la section Variables en bas de l'éditeur.</li>
+          <li>Un message indique combien de variables ont été ajoutées (ou « Aucune variable à ajouter » si tout est déjà enregistré).</li>
+        </ul>
+      </section>
+
+      <section class="card mb12">
+        <h3>9. Exporter en Word</h3>
+        <p>Cliquez <strong>📄 Exporter Word</strong> dans le menu Import / Export pour générer un document Word professionnel contenant tous vos gabarits. <button type="button" class="focus-btn" data-target="btn-export-word">Exporter Word</button></p>
+
+        <h4>Option 1 — Langue</h4>
+        <ul>
+          <li><strong>🇫🇷 + 🇬🇧 Bilingue</strong> (par défaut) — Français et anglais côte à côte dans chaque section.</li>
+          <li><strong>🇫🇷 Français</strong> — Corps et objet en français seulement.</li>
+          <li><strong>🇬🇧 English</strong> — Body and subject in English only.</li>
+        </ul>
+
+        <h4>Option 2 — Public cible</h4>
+        <ul>
+          <li><strong>📋 Tous les modèles</strong> (par défaut) — Toutes catégories et tous modes confondus.</li>
+          <li><strong>👥 Conseillers</strong> — Modèles attribués au mode Conseillers.</li>
+          <li><strong>🔐 Gestion</strong> — Modèles réservés aux gestionnaires.</li>
+          <li><strong>👔 Équipe Admin</strong> — Modèles pour l'équipe administrative.</li>
+          <li><strong>🤝 Relations fournisseurs</strong> — Modèles pour les fournisseurs externes.</li>
+        </ul>
+
+        <h4>Contenu du document généré</h4>
+        <ul>
+          <li>Page de garde avec le nombre de modèles, de catégories et la date de génération.</li>
+          <li>Table des matières avec liens cliquables vers chaque modèle.</li>
+          <li>Modèles organisés par catégorie (un par page) avec l'objet et le corps prêts à copier-coller.</li>
+          <li>Les variables <code>&lt;&lt;placeholders&gt;&gt;</code> sont surlignées en jaune dans le document.</li>
+          <li>Index alphabétique des mots-clés en annexe.</li>
+        </ul>
+        <p class="note">Le fichier généré s'appelle <code>CTD_Catalogue_Modeles_[langue]_[date].docx</code>. Il est téléchargé directement dans votre dossier Téléchargements.</p>
+      </section>
+
+      <section class="card">
+        <h3>❓ Questions fréquentes (FAQ)</h3>
+
+        <p><strong>Q: J'ai ajouté un modèle hier mais il n'apparaît pas aujourd'hui. Pourquoi?</strong></p>
+        <p>R: Vous avez probablement oublié de cliquer « Publier sur GitHub » ou « Télécharger JSON ». Les changements restent en brouillon local (localStorage) jusqu'à publication. Si vous avez vidé le cache du navigateur ou changé d'appareil, le brouillon est perdu.</p>
+
+        <p><strong>Q: Mes variables n'apparaissent pas dans la liste en bas.</strong></p>
+        <p>R: Cliquez le bouton « Sync variables » après avoir modifié le texte. Le système détecte automatiquement tous les <code>&lt;&lt;placeholders&gt;&gt;</code> dans l'Objet et le Corps.</p>
+
+        <p><strong>Q: Dois-je mettre _FR et _EN dans mes variables?</strong></p>
+        <p>R: <strong>NON!</strong> Dans la console admin, utilisez seulement <code>&lt;&lt;ClientName&gt;&gt;</code>, <code>&lt;&lt;ProjectNumber&gt;&gt;</code>, etc. Les suffixes _FR/_EN sont ajoutés automatiquement lors de l'export Excel. Ne les ajoutez jamais manuellement dans vos modèles!</p>
+
+        <p><strong>Q: J'ai un ID en doublon lors de l'import Excel.</strong></p>
+        <p>R: Le système ajoute automatiquement un suffixe numérique (ex: <code>welcome_email_1</code>) pour éviter les conflits. Renommez l'ID après import si nécessaire.</p>
+
+        <p><strong>Q: Comment supprimer une catégorie qui apparaît encore dans le menu?</strong></p>
+        <p>R: Supprimez d'abord tous les modèles de cette catégorie, puis cliquez « Nettoyer catégories ». Ensuite, publiez sur GitHub pour que le changement soit visible dans l'app principale.</p>
+
+        <p><strong>Q: Que fait le bouton "Réinitialiser"?</strong></p>
+        <p>R: Il efface votre brouillon local (localStorage) et recharge la version officielle depuis le fichier JSON. <strong>Attention:</strong> Tous vos changements non publiés seront perdus! Utilisez-le seulement si vous voulez recommencer à zéro.</p>
+
+        <p><strong>Q: Puis-je travailler à plusieurs sur les modèles?</strong></p>
+        <p>R: Oui, mais attention aux conflits! Chaque personne travaille sur son propre brouillon local. Lorsque quelqu'un publie sur GitHub, les autres doivent cliquer « ⟳ Recharger » pour récupérer la dernière version. Coordonnez-vous pour éviter d'écraser les changements des autres!</p>
+
+        <p><strong>Q: Comment savoir si mes changements sont publiés?</strong></p>
+        <p>R: L'indicateur de statut en haut de la page affiche « À jour » (vert) si votre brouillon correspond à la version publiée, ou « Non publié » (orange) si vous avez des modifications locales non publiées.</p>
+
+        <p><strong>Q: Combien de temps sont conservés les changements en brouillon local?</strong></p>
+        <p>R: Indéfiniment, tant que vous ne videz pas le cache du navigateur. Mais pour la sécurité, exportez régulièrement un JSON de backup ou publiez sur GitHub.</p>
+
+        <p><strong>Q: Quelle est la différence entre les types Courriel, Blurb et Prompt?</strong></p>
+        <p>R: <strong>Courriel</strong> est le type standard avec un objet et un corps. <strong>Blurb</strong> est un texte court réutilisable (signature, clause, note) qui n'a pas d'objet. <strong>Prompt</strong> est une instruction pour un assistant IA ; seul le corps est utilisé. Dans l'app principale, les blurbs et prompts affichent un badge coloré sur leur tuile pour les distinguer des courriels.</p>
+
+        <p><strong>Q: Comment fonctionne le contrôle des modes (conseillers, gestion, etc.)?</strong></p>
+        <p>R: Par défaut, un modèle est visible par tous les Conseillers. En cochant d'autres modes, vous le rendez aussi visible aux groupes correspondants. Les utilisateurs de l'app principale doivent entrer le code du mode (ex: « gestion ») dans le champ prévu pour voir les modèles restreints. Un modèle peut appartenir à plusieurs modes simultanément.</p>
+
+        <p><strong>Q: Le bouton Squelette ne fait rien. Pourquoi?</strong></p>
+        <p>R: Le bouton Squelette n'est actif que si la catégorie du modèle correspond à l'une des 8 catégories prédéfinies (devis, suivis, documents, délais, clarifications, sécurité, insatisfaisant, fin d'année financière). Pour les autres catégories, aucun squelette n'est disponible et un message vous en informe. Assurez-vous d'avoir sélectionné un modèle avec une catégorie reconnue.</p>
+      </section>
+
+
+    </main>
+    <footer>Astuce : vous pouvez garder cette fenêtre ouverte pendant que vous travaillez.</footer>
+    <script>
+      // Focus the window, hint for accessibility
+      window.focus?.();
+
+      // Highlight guidance linking to parent admin window
+      function highlightTarget(id){
+        const parent = window.opener?.document;
+        if(!parent) return;
+        const el = parent.getElementById(id);
+        if(!el) return;
+        // Inject style if missing
+        if(!parent.getElementById('ea-highlight-style')){
+          const st = parent.createElement('style');
+          st.id='ea-highlight-style';
+          st.textContent='.ea-highlight-pulse{outline:3px solid #0ea5e9!important;animation:eaPulse 1.2s linear infinite;border-radius:8px}@keyframes eaPulse{0%,100%{outline-color:#0ea5e9}50%{outline-color:#fbbf24}}';
+          parent.head.appendChild(st);
+        }
+        el.scrollIntoView({behavior:'smooth',block:'center'});
+        el.classList.add('ea-highlight-pulse');
+        el.focus?.();
+        setTimeout(()=>el.classList.remove('ea-highlight-pulse'),3000);
+      }
+      document.querySelectorAll('.focus-btn').forEach(btn=>{
+        btn.addEventListener('click',()=>highlightTarget(btn.dataset.target));
+      });
+    </script>
+  </body>
+  </html>
