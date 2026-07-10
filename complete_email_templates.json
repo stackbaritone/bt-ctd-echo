@@ -55,7 +55,7 @@
         "en": "Security and copyright"
       }
     },
-    "updatedAt": "2026-07-10T13:59:43.962Z",
+    "updatedAt": "2026-07-10T14:05:08.473Z",
     "categoryColors": {
       "s": "#c7ffd2"
     }
@@ -900,6 +900,7 @@
       },
       "variables": [],
       "utilisateur": [
+        "conseillers",
         "cap"
       ],
       "category_fr": "Tranches",
