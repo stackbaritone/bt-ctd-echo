@@ -1,17 +1,19 @@
 {
   "metadata": {
     "version": "1.0",
-    "totalTemplates": 32,
+    "totalTemplates": 46,
     "languages": [
       "fr",
       "en"
     ],
     "categories": [
+      "billing",
       "clarifications_and_client_instructions",
       "deadlines_and_delivery",
       "documents_and_formatting",
       "fin_d_annee_financiere",
       "follow_ups_and_cancellations",
+      "internal",
       "quotes_and_approvals",
       "security_and_copyright",
       "tranches",
@@ -53,9 +55,17 @@
       "tranches": {
         "fr": "Tranches",
         "en": "Security and copyright"
+      },
+      "billing": {
+        "fr": "Facturation",
+        "en": "Billing"
+      },
+      "internal": {
+        "fr": "Interne",
+        "en": "Internal"
       }
     },
-    "updatedAt": "2026-07-10T14:05:08.473Z",
+    "updatedAt": "2026-07-10T14:31:12.631Z",
     "categoryColors": {
       "s": "#c7ffd2"
     }
@@ -905,6 +915,406 @@
       ],
       "category_fr": "Tranches",
       "category_en": "Slices"
+    },
+    {
+      "id": "ctd031",
+      "category": "clarifications_and_client_instructions",
+      "category_fr": "Précisions et instructions client",
+      "category_en": "Clarifications and client instructions",
+      "title": {
+        "fr": "Distinction entre traduction standard et ultraspécialisée",
+        "en": "Distinction between standard and ultra-specialized translation"
+      },
+      "description": {
+        "fr": "Explication de la distinction entre traduction standard et traduction ultraspécialisée",
+        "en": "Explanation of the distinction between standard and ultra-specialized translation"
+      },
+      "subject": {
+        "fr": "Distinction entre traduction standard et traduction ultraspécialisée",
+        "en": "Standard vs. ultra-specialized translation"
+      },
+      "body": {
+        "fr": "<p>Bonjour &lt;&lt;ClientName_FR&gt;&gt;,</p><p>Afin d’assurer une compréhension commune du service requis, voici la distinction entre une traduction standard et une traduction ultraspécialisée :</p><p><strong>Traduction standard</strong><br>Textes de portée générale ou administratifs qui visent à transmettre un message clair et fidèle sans nécessiter d’expertise technique approfondie dans un domaine précis.</p><p><strong>Traduction ultraspécialisée</strong></p><p>S’applique aux textes à forte technicité (juridique pointu, médical, scientifique, financier, réglementaire complexe, etc.).</p><p>Elle requiert :</p><ul><li>une expertise approfondie du domaine;</li><li>une maîtrise de la terminologie spécialisée;</li><li>parfois une vérification documentaire additionnelle.</li></ul><p>Ce type de mandat mobilise des ressources ayant des connaissances dans un domaine particulier. En raison de cette complexité, ce type de traduction implique généralement un traitement plus long.</p><p>Selon la nature de votre document, nous pourrons confirmer la catégorie applicable et ajuster le traitement en conséquence.</p><p>N’hésitez pas à communiquer avec nous pour toute question.</p><p>Cordialement,</p>",
+        "en": "<p>Dear &lt;&lt;ClientName_EN&gt;&gt;,</p><p>To ensure alignment on the level of service required, please find below the distinction between standard and ultra-specialized translation:</p><p><strong>Standard Translation</strong><br>Suitable for general-purpose or administrative texts that aim to convey a clear and accurate message without requiring advanced subject-matter expertise.</p><p><strong>Ultra-Specialized Translation</strong></p><p>Applies to highly technical texts (advanced legal, medical, scientific, financial, complex regulatory content, etc.).</p><p>It requires:</p><ul><li>in-depth subject-matter expertise;</li><li>mastery of specialized terminology;</li><li>strong contextual interpretation skills;</li><li>and, where necessary, additional documentary or standards-based verification.</li></ul><p>This level of service requires resources with knowledge in a specific field. Due to this complexity, this type of translation generally requires a longer processing time.</p><p>Once we review your document, we can confirm the appropriate category and proceed accordingly.</p><p>Should you have any questions, please contact us.</p><p>Kind regards,</p>"
+      },
+      "variables": [
+        "clientname"
+      ],
+      "utilisateur": [
+        "conseillers"
+      ]
+    },
+    {
+      "id": "ctd032",
+      "category": "quotes_and_approvals",
+      "category_fr": "Devis et approbations",
+      "category_en": "Quotes and approvals",
+      "title": {
+        "fr": "Instructions pour l'approbation d'un devis dans GCLingua",
+        "en": "Instructions for approving a quote in GCLingua"
+      },
+      "description": {
+        "fr": "Marche à suivre pour approuver un devis (tarif régulier et urgent) dans GCLingua",
+        "en": "Steps to approve a quote (regular and rush rate) in GCLingua"
+      },
+      "subject": {
+        "fr": "Projet <<ProjectNumber_FR>> – Approbation du devis requise",
+        "en": "Project <<ProjectNumber_EN>> – Quote approval required"
+      },
+      "body": {
+        "fr": "<p>Bonjour,</p><p>Vous trouverez ci-joint deux devis : l’un au tarif régulier et l’autre au tarif urgent. Veuillez approuver votre devis dès que possible afin que le Bureau de la traduction puisse commencer le travail et confirmer la date de livraison.</p><p>Pour approuver une demande de devis :</p><ol><li>Dans votre tableau de bord, sous la liste des tâches à faire, sélectionnez <em>Approuver le devis</em>.</li><li>Dans la liste des projets, sélectionnez le projet pour lequel vous souhaitez approuver un devis.</li><li>Cliquez sur la flèche pour développer le menu <em>Devis</em> (à droite).</li><li>Téléchargez le devis (bouton de téléchargement).</li><li>Cliquez sur le bouton d’acceptation (coche verte) pour accepter le devis.</li></ol><p>N’hésitez pas à communiquer avec nous pour toute question.</p><p>Cordialement,</p>",
+        "en": "<p>Hello,</p><p>You will find enclosed two quotes: one for the regular rate and the other for the rush rate. Please approve your quote as soon as possible, in order for the Translation Bureau to begin the work and confirm the delivery date.</p><p>To approve a quotation request:</p><ol><li>In your Dashboard, under the To Do List, select <em>Approve Quote</em>.</li><li>In the Project List, select the project for which you want to approve a quote.</li><li>Click the arrow to expand the Quotes menu (on the right).</li><li>Download the quote (download button).</li><li>Click the acceptance button (green checkmark) to accept the quote.</li></ol><p>Should you have any questions, please contact us.</p><p>Kind regards,</p>"
+      },
+      "variables": [
+        "project_number"
+      ],
+      "utilisateur": [
+        "conseillers"
+      ]
+    },
+    {
+      "id": "ctd033",
+      "category": "quotes_and_approvals",
+      "category_fr": "Devis et approbations",
+      "category_en": "Quotes and approvals",
+      "title": {
+        "fr": "Réponse à une demande de devis par courriel",
+        "en": "Response to a quote request sent by email"
+      },
+      "description": {
+        "fr": "Redirection du client vers GCLingua pour toute demande de devis, incluant la marche à suivre pour créer un profil",
+        "en": "Redirecting the client to GCLingua for quote requests, including the steps to create a profile"
+      },
+      "subject": {
+        "fr": "Demande de devis – Marche à suivre dans GCLingua",
+        "en": "Quote request – How to proceed in GCLingua"
+      },
+      "body": {
+        "fr": "<p>Bonjour,</p><p>Nous ne pouvons plus vous fournir de devis par courriel, car il existe une option de devis dans GCLingua.</p><p><strong>Comment demander un devis dans GCLingua</strong></p><ol><li>Accédez au système GCLingua à l’aide du lien suivant : <a href=\"https://gc-lingua.canada.ca/login.jsp?forcedLang=fr\">MultiTrans TMS</a>.</li><li>Soumettez votre demande et joignez vos documents.</li><li>Si vous avez besoin d’un devis avant le traitement, cochez la case <em>Devis requis</em> dans la section <em>Informations sur le projet</em>.</li></ol><p>Un conseiller à la clientèle évaluera la demande et préparera un devis pour votre approbation directement dans GCLingua.</p><p><strong>Vous n’avez pas encore accès à GCLingua?</strong></p><p>Si vous n’avez pas de profil GCLingua, veuillez fournir les renseignements suivants par courriel au Service des relations avec la clientèle à l’adresse suivante : <a href=\"mailto:bureaudelatraduction.translationbureau@tpsgc-pwgsc.gc.ca\">bureaudelatraduction.translationbureau@tpsgc-pwgsc.gc.ca</a> afin qu’un compte puisse être créé pour vous :</p><ol><li>Nom de famille</li><li>Prénom</li><li>Langue de correspondance</li><li>Numéro de téléphone au travail</li><li>Adresse courriel au travail</li><li>Numéro d’unité opérationnelle du client, s’il est connu</li></ol><p>Si vous ne connaissez pas le numéro de l’unité opérationnelle, mais qu’un collègue de votre section possède déjà un compte GCLingua, veuillez indiquer son nom. Cela nous permettra de reproduire l’accès à votre profil.</p><p>Dans le cas contraire, veuillez fournir les renseignements suivants afin que les Relations avec la clientèle puissent repérer ou créer le compte du client, au besoin :</p><ul><li>Nom officiel anglais et français de la direction générale</li><li>Nom officiel anglais et français de la section</li></ul><p><strong>Absence d’accès à GCLingua</strong></p><p>Si vous ne pouvez pas accéder à GCLingua, nous pouvons exceptionnellement produire un devis à votre intention. Veuillez alors communiquer avec nous par courriel en expliquant votre situation.</p><p>Merci et n’hésitez pas à communiquer avec nous pour toute autre question.</p><p>Cordialement,</p>",
+        "en": "<p>Hello,</p><p>We can no longer provide you with a quote by email, as a quoting option is available in GCLingua.</p><p><strong>How to request a quote in GCLingua</strong></p><ol><li>Access the GCLingua system using the following link: <a href=\"https://gc-lingua.canada.ca/login.jsp?forcedLang=fr\">MultiTrans TMS</a>.</li><li>Submit your request and attach your documents.</li><li>If you require a quote before processing, check the <em>Quote required</em> box in the Project Information section.</li></ol><p>A client advisor will then evaluate the request and prepare a quote for your approval directly in GCLingua.</p><p><strong>Don’t have access to GCLingua yet?</strong></p><p>If you do not have a GCLingua profile, please send the following information by email to Client Relations Services at: <a href=\"mailto:bureaudelatraduction.translationbureau@tpsgc-pwgsc.gc.ca\">bureaudelatraduction.translationbureau@tpsgc-pwgsc.gc.ca</a> so an account can be created for you:</p><ol><li>Last name</li><li>First name</li><li>Language of correspondence</li><li>Work phone number</li><li>Work email address</li><li>Client business unit number, if known</li></ol><p>If you do not have the business unit number, but a colleague in your section already has a GCLingua account, please provide their name. This will allow us to replicate the access for your profile.</p><p>Otherwise, please provide the following information so Client Relations can locate or create the client account, if required:</p><ul><li>Official English and French name of the Branch</li><li>Official English and French name of the Section</li></ul><p><strong>No access to GCLingua</strong></p><p>If you are unable to access GCLingua, we can exceptionally prepare a quote for you. Please contact us by email and explain your situation.</p><p>Thank you, and feel free to contact us if you have any other questions.</p><p>Sincerely,</p>"
+      },
+      "variables": [],
+      "utilisateur": [
+        "conseillers"
+      ]
+    },
+    {
+      "id": "ctd034",
+      "category": "clarifications_and_client_instructions",
+      "category_fr": "Précisions et instructions client",
+      "category_en": "Clarifications and client instructions",
+      "title": {
+        "fr": "Projet <<ProjectNumber_FR>> – Notes du présentateur et texte non modifiable dans les images",
+        "en": "Project <<ProjectNumber_EN>> – Speaker notes and non-editable text in images"
+      },
+      "description": {
+        "fr": "Présentations PowerPoint – confirmation requise pour la traduction des notes du présentateur et du texte non modifiable dans les images",
+        "en": "PowerPoint presentations – translating notes and images"
+      },
+      "subject": {
+        "fr": "Projet <<ProjectNumber_FR>> – Notes du présentateur et images",
+        "en": "Project <<ProjectNumber_EN>> – Speaker notes and images"
+      },
+      "body": {
+        "fr": "<p>Bonjour,</p><p>Nous accusons réception du projet &lt;&lt;ProjectNumber_FR&gt;&gt;.</p><p>Votre document PowerPoint contient des notes ainsi que du texte non modifiable dans les images sur les diapositives &lt;&lt;SlideNumbers_FR&gt;&gt;.</p><p>Pourriez-vous confirmer si vous souhaitez que nous traduisions :</p><ol><li>les notes du présentateur;</li><li>le texte non modifiable dans les images?</li></ol><p>Nous vous serions reconnaissants de bien vouloir nous confirmer vos instructions afin que nous puissions procéder au traitement de votre projet.</p><p>Pour toute question ou tout renseignement complémentaire, n’hésitez pas à communiquer avec nous.</p><p>Bien cordialement,</p>",
+        "en": "<p>Hello,</p><p>We have received Project &lt;&lt;ProjectNumber_EN&gt;&gt;.</p><p>Your PowerPoint presentation contains speaker notes and non-editable text in images on slides &lt;&lt;SlideNumbers_EN&gt;&gt;.</p><p>Could you confirm if you would like us to translate:</p><ol><li>the speaker notes;</li><li>the non-editable text in the images?</li></ol><p>Please note that we are waiting for your confirmation prior to processing your request.</p><p>Please feel free to contact us if you have any questions or need more information.</p><p>Best regards,</p>"
+      },
+      "variables": [
+        "project_number",
+        "slide_numbers"
+      ],
+      "utilisateur": [
+        "conseillers"
+      ]
+    },
+    {
+      "id": "ctd035",
+      "category": "deadlines_and_delivery",
+      "category_fr": "Délais et livraisons",
+      "category_en": "Deadlines and delivery",
+      "title": {
+        "fr": "Projet <<ProjectNumber_FR>> – Confirmation du respect du délai demandé",
+        "en": "Project <<ProjectNumber_EN>> – Confirmation of requested deadline"
+      },
+      "description": {
+        "fr": "Confirmation au client que le délai de livraison demandé sera respecté",
+        "en": "Confirming to the client that the requested delivery deadline will be met"
+      },
+      "subject": {
+        "fr": "Projet <<ProjectNumber_FR>> – Confirmation du délai",
+        "en": "Project <<ProjectNumber_EN>> – Deadline confirmation"
+      },
+      "body": {
+        "fr": "<p>Bonjour,</p><p>Nous accusons réception de votre projet &lt;&lt;ProjectNumber_FR&gt;&gt;.</p><p>Nous confirmons que nous serons en mesure de livrer le projet dans le délai demandé.</p><p>Pour toute question ou tout renseignement complémentaire, n’hésitez pas à communiquer avec nous.</p><p>Cordialement,</p>",
+        "en": "<p>Hello,</p><p>We acknowledge receipt of your project &lt;&lt;ProjectNumber_EN&gt;&gt;.</p><p>We confirm that we will be able to deliver your project for the requested deadline.</p><p>Please feel free to contact us if you have any questions or need more information.</p><p>Best regards,</p>"
+      },
+      "variables": [
+        "project_number"
+      ],
+      "utilisateur": [
+        "conseillers"
+      ]
+    },
+    {
+      "id": "ctd036",
+      "category": "quotes_and_approvals",
+      "category_fr": "Devis et approbations",
+      "category_en": "Quotes and approvals",
+      "title": {
+        "fr": "Projet <<ProjectNumber_FR>> – Réponse à une insatisfaction quant au devis",
+        "en": "Project <<ProjectNumber_EN>> – Response to dissatisfaction with the quote"
+      },
+      "description": {
+        "fr": "Explication du montant du devis et suggestion de fournir une version antérieure traduite pour réduire le coût",
+        "en": "Explaining the quote amount and suggesting a previously translated version to reduce cost"
+      },
+      "subject": {
+        "fr": "Projet <<ProjectNumber_FR>> – Précisions sur le devis",
+        "en": "Project <<ProjectNumber_EN>> – Quote clarification"
+      },
+      "body": {
+        "fr": "<p>Bonjour,</p><p>Merci pour votre message concernant le devis transmis dans le cadre du projet &lt;&lt;ProjectNumber_FR&gt;&gt;.</p><p>Nous comprenons vos préoccupations.</p><p>À titre de précision, ce montant reflète le temps et les efforts requis pour traduire le document, en fonction notamment de sa longueur, de son niveau de complexité et du soin nécessaire pour assurer une traduction exacte et de qualité.</p><p>Si vous disposez d’une version antérieure du document qui a déjà été traduite, le fait de nous la fournir pourrait permettre de réduire le coût. Une version précédente permet aux traducteurs de réutiliser le contenu existant, ce qui évite de retraduire les phrases inchangées.</p><p>Nous vous invitons à nous indiquer comment vous souhaitez procéder.</p><p>N’hésitez pas à communiquer avec nous si vous avez des questions ou si vous souhaitez obtenir des renseignements supplémentaires.</p><p>Cordialement,</p>",
+        "en": "<p>Hello,</p><p>Thank you for your message regarding the quote provided in project &lt;&lt;ProjectNumber_EN&gt;&gt;.</p><p>We understand your concerns.</p><p>For clarification, this amount reflects the time and effort required to translate the document, taking into account in particular its length, its level of complexity, and the care necessary to ensure an accurate, high-quality translation.</p><p>If you have a previous version of the document that has already been translated, providing it to us could help reduce the cost. A previous version allows translators to reuse existing content, thereby avoiding the need to retranslate unchanged sentences.</p><p>Please advise how you wish to proceed.</p><p>Please do not hesitate to contact us if you have any questions or if you would like additional information.</p><p>Kind regards,</p>"
+      },
+      "variables": [
+        "project_number"
+      ],
+      "utilisateur": [
+        "conseillers"
+      ]
+    },
+    {
+      "id": "ctd037",
+      "category": "clarifications_and_client_instructions",
+      "category_fr": "Interne",
+      "category_en": "Internal",
+      "title": {
+        "fr": "Demande de réactivation d'un profil client (CCC)",
+        "en": "Request to reactivate a client profile (CCC)"
+      },
+      "description": {
+        "fr": "Demande interne au Centre de contact avec la clientèle pour réactiver un profil client existant",
+        "en": "Internal request to the Client Contact Centre to reactivate an existing client profile"
+      },
+      "subject": {
+        "fr": "Profil client à réactiver : <<ClientName_FR>>",
+        "en": "Reactivation of client profile <<ClientName_EN>>"
+      },
+      "body": {
+        "fr": "<p>Bonjour,</p><p>Pourriez-vous s’il vous plaît réactiver le profil client de &lt;&lt;ClientName_FR&gt;&gt;?</p><p>Si vous avez des questions, n’hésitez pas à communiquer avec moi.</p><p>Cordialement,</p>",
+        "en": "<p>Hello,</p><p>Could you please reactivate the client profile for &lt;&lt;ClientName_EN&gt;&gt;?</p><p>If you have any questions, please do not hesitate to contact me.</p><p>Kind regards,</p>"
+      },
+      "variables": [
+        "clientname"
+      ],
+      "utilisateur": [
+        "conseillers"
+      ]
+    },
+    {
+      "id": "ctd038",
+      "category": "clarifications_and_client_instructions",
+      "category_fr": "Précisions et instructions client",
+      "category_en": "Clarifications and client instructions",
+      "title": {
+        "fr": "Demande de création d'un profil client (CCC)",
+        "en": "Request to create a client profile (CCC)"
+      },
+      "description": {
+        "fr": "Demande interne au Centre de contact avec la clientèle pour créer un nouveau profil client",
+        "en": "Internal request to the Client Contact Centre to create a new client profile"
+      },
+      "subject": {
+        "fr": "Création d'un profil client",
+        "en": "Client profile creation"
+      },
+      "body": {
+        "fr": "<p>Bonjour,</p><p>Pourriez-vous s’il vous plaît créer un profil client pour :</p><ol><li>Nom de famille : &lt;&lt;ClientLastName_FR&gt;&gt;</li><li>Prénom : &lt;&lt;ClientFirstName_FR&gt;&gt;</li><li>Langue de correspondance : &lt;&lt;CorrespondenceLanguage_FR&gt;&gt;</li><li>Numéro de téléphone au travail : &lt;&lt;WorkPhone_FR&gt;&gt;</li><li>Adresse courriel au travail : &lt;&lt;WorkEmail_FR&gt;&gt;</li><li>Numéro d’unité opérationnelle du client, s’il est connu : &lt;&lt;BusinessUnitNumber_FR&gt;&gt;</li></ol><p>Si vous avez des questions, n’hésitez pas à communiquer avec moi.</p><p>Cordialement,</p>",
+        "en": "<p>Hello,</p><p>Could you please create a client profile for:</p><ol><li>Last name: &lt;&lt;ClientLastName_EN&gt;&gt;</li><li>First name: &lt;&lt;ClientFirstName_EN&gt;&gt;</li><li>Language of correspondence: &lt;&lt;CorrespondenceLanguage_EN&gt;&gt;</li><li>Work phone number: &lt;&lt;WorkPhone_EN&gt;&gt;</li><li>Work email address: &lt;&lt;WorkEmail_EN&gt;&gt;</li><li>Client business unit number, if known: &lt;&lt;BusinessUnitNumber_EN&gt;&gt;</li></ol><p>If you have any questions, please do not hesitate to contact me.</p><p>Kind regards,</p>"
+      },
+      "variables": [
+        "client_last_name",
+        "client_first_name",
+        "correspondence_language",
+        "work_phone",
+        "work_email",
+        "business_unit_number"
+      ],
+      "utilisateur": [
+        "conseillers"
+      ]
+    },
+    {
+      "id": "ctd039",
+      "category": "billing",
+      "category_fr": "Facturation",
+      "category_en": "Billing",
+      "title": {
+        "fr": "Projet <<ProjectNumber_FR>> – Avis des frais d'éditique préapprouvés",
+        "en": "Project <<ProjectNumber_EN>> – Desktop publishing fee notice (pre-approved)"
+      },
+      "description": {
+        "fr": "Avis informant le client des frais d'éditique déjà acceptés, applicables à la conversion et au formatage d'un PDF",
+        "en": "Notice informing the client of the already-accepted desktop publishing fees for PDF conversion and formatting"
+      },
+      "subject": {
+        "fr": "Projet <<ProjectNumber_FR>> – Frais d'éditique",
+        "en": "Project <<ProjectNumber_EN>> – Desktop publishing fees"
+      },
+      "body": {
+        "fr": "<p>Bonjour,</p><p>Nous accusons réception de votre projet &lt;&lt;ProjectNumber_FR&gt;&gt;.</p><p>Étant donné que vous avez soumis un document PDF et que vous avez déjà accepté les frais de conversion et de formatage, nous souhaitons vous informer que ce service est facturé à &lt;&lt;DPRate_FR&gt;&gt; $/h et que le temps de traitement est estimé à &lt;&lt;DPHours_FR&gt;&gt; heures.</p><p>N’hésitez pas à communiquer avec nous si vous avez des questions ou si vous avez besoin de plus de renseignements.</p><p>Cordialement,</p>",
+        "en": "<p>Hello,</p><p>We acknowledge receipt of your project &lt;&lt;ProjectNumber_EN&gt;&gt;.</p><p>Since you submitted a PDF document and have already accepted the conversion and formatting fees, we would like to inform you that this administrative service is billed at $&lt;&lt;DPRate_EN&gt;&gt;/hour, and the processing time is estimated at &lt;&lt;DPHours_EN&gt;&gt; hours.</p><p>Please do not hesitate to contact us if you have any questions or if you would like additional information.</p><p>Kind regards,</p>"
+      },
+      "variables": [
+        "project_number",
+        "dprate",
+        "dphours"
+      ],
+      "utilisateur": [
+        "conseillers"
+      ]
+    },
+    {
+      "id": "ctd040",
+      "category": "internal",
+      "category_fr": "Interne",
+      "category_en": "Internal",
+      "title": {
+        "fr": "Projet <<ProjectNumber_FR>> – Exportation de la demande vers une autre équipe",
+        "en": "Project <<ProjectNumber_EN>> – Exporting the request to another team"
+      },
+      "description": {
+        "fr": "Confirmation qu'un projet de traduction ou de révision EN-FR a été transféré vers une autre équipe et attente de prise en charge",
+        "en": "Confirming that an EN-FR translation or revision project has been transferred to another team and awaiting acceptance"
+      },
+      "subject": {
+        "fr": "Projet <<ProjectNumber_FR>> – Confirmation de la prise en charge",
+        "en": "Project <<ProjectNumber_EN>> – Confirmation of acceptance"
+      },
+      "body": {
+        "fr": "<p>Bonjour,</p><p>Vous trouverez ci-dessous la confirmation que le projet cité plus haut est pour une traduction ou une révision de l’anglais vers le français. Le projet se trouve maintenant dans votre panier. Veuillez confirmer la prise en charge.</p><p>N’hésitez pas à communiquer avec nous si vous avez des questions ou si vous avez besoin de plus de renseignements.</p><p>Cordialement,</p>",
+        "en": "<p>Hello,</p><p>You will find below the confirmation that the project mentioned above is for a translation or revision from EN to FR. The project is now in your basket. Please confirm that the request has been accepted by your team.</p><p>Please do not hesitate to contact us if you have any questions or if you would like additional information.</p><p>Kind regards,</p>"
+      },
+      "variables": [
+        "project_number"
+      ],
+      "utilisateur": [
+        "conseillers"
+      ]
+    },
+    {
+      "id": "ctd041",
+      "category": "internal",
+      "category_fr": "Interne",
+      "category_en": "Internal",
+      "title": {
+        "fr": "Projet <<ProjectNumber_FR>> – Partage pour révision unilingue",
+        "en": "Project <<ProjectNumber_EN>> – Sharing for unilingual editing"
+      },
+      "description": {
+        "fr": "Partage d'une demande avec une autre équipe pour la révision unilingue du texte anglais ou français, avec négociation possible du délai",
+        "en": "Sharing a request with another team for unilingual editing of the English or French text, with possible renegotiation of the deadline"
+      },
+      "subject": {
+        "fr": "Projet <<ProjectNumber_FR>> – Révision unilingue à attribuer",
+        "en": "Project <<ProjectNumber_EN>> – Unilingual editing to be assigned"
+      },
+      "body": {
+        "fr": "<p>Bonjour,</p><p>Nous avons la demande &lt;&lt;ProjectNumber_FR&gt;&gt; à partager avec vous pour la révision du texte anglais/français. Le projet est prêt pour l’attribution. SVP nous aviser de votre meilleur délai et nous renégocierons le délai de livraison final au besoin.</p><p>N’hésitez pas à communiquer avec nous si vous avez des questions ou si vous avez besoin de plus de renseignements.</p><p>Merci,</p>",
+        "en": "<p>Hello,</p><p>We have request &lt;&lt;ProjectNumber_EN&gt;&gt; to share with you for the editing of the English/French text. The project is ready to be assigned. Please let us know your best turnaround time, and we will renegotiate the final delivery deadline if needed.</p><p>If you have any questions or need further information, please feel free to contact us.</p><p>Thank you,</p>"
+      },
+      "variables": [
+        "project_number"
+      ],
+      "utilisateur": [
+        "conseillers"
+      ]
+    },
+    {
+      "id": "ctd042",
+      "category": "quotes_and_approvals",
+      "category_fr": "Devis et approbations",
+      "category_en": "Quotes and approvals",
+      "title": {
+        "fr": "Projet <<ProjectNumber_FR>> – Devis révisé (reclassement en traduction ultraspécialisée)",
+        "en": "Project <<ProjectNumber_EN>> – Revised quote (reclassified as ultra-specialized translation)"
+      },
+      "description": {
+        "fr": "Devis initial émis pour une traduction standard, révisé à la suite d'une évaluation déterminant qu'il s'agit d'une traduction ultraspécialisée",
+        "en": "Initial standard-translation quote revised following an assessment determining the text qualifies as ultra-specialized translation"
+      },
+      "subject": {
+        "fr": "Projet <<ProjectNumber_FR>> – Devis révisé à approuver",
+        "en": "Project <<ProjectNumber_EN>> – Revised quote for approval"
+      },
+      "body": {
+        "fr": "<p>Bonjour,</p><p>Un devis pour une traduction standard vous a initialement été transmis. Toutefois, à la suite d’une évaluation approfondie du document par nos spécialistes du domaine, nous avons déterminé que le texte relève d’une traduction spécialisée.</p><p>Vous trouverez donc ci-joint le devis révisé, ajusté en fonction de la complexité et des exigences particulières du document. Approuvez-vous ce nouveau devis?</p><p>N’hésitez pas à communiquer avec nous si vous avez des questions ou si vous avez besoin de plus de renseignements.</p><p>Cordialement,</p>",
+        "en": "<p>Hello,</p><p>A quote for a standard translation was initially sent to you. However, following a thorough evaluation of the document by our subject-matter specialists, we have determined that the text qualifies as a specialized translation.</p><p>You will therefore find attached the revised quote, adjusted to reflect the document’s complexity and specific requirements. Do you approve this new quote?</p><p>Please do not hesitate to contact us if you have any questions or if you need further information.</p><p>Kind regards,</p>"
+      },
+      "variables": [
+        "project_number"
+      ],
+      "utilisateur": [
+        "conseillers"
+      ]
+    },
+    {
+      "id": "ctd043",
+      "category": "billing",
+      "category_fr": "Facturation",
+      "category_en": "Billing",
+      "title": {
+        "fr": "Projet <<ProjectNumber_FR>> – Avis d'un crédit appliqué",
+        "en": "Project <<ProjectNumber_EN>> – Notice of applied credit"
+      },
+      "description": {
+        "fr": "Avis informant le client qu'un crédit a été appliqué à un projet pour corriger un écart constaté",
+        "en": "Notice informing the client that a credit has been applied to a project to address an identified discrepancy"
+      },
+      "subject": {
+        "fr": "Projet <<ProjectNumber_FR>> – Avis de crédit",
+        "en": "Project <<ProjectNumber_EN>> – Credit notice"
+      },
+      "body": {
+        "fr": "<p>Bonjour,</p><p>Nous souhaitons vous informer qu’un crédit de &lt;&lt;CreditAmount_FR&gt;&gt; $ a été appliqué au projet &lt;&lt;ProjectNumber_FR&gt;&gt; afin de corriger l’écart constaté dans le projet &lt;&lt;RelatedProjectNumber_FR&gt;&gt;.</p><p>Nous vous prions de nous excuser pour cette situation et pour tout inconvénient qu’elle a pu occasionner.</p><p>N’hésitez pas à communiquer avec nous si vous avez des questions ou si vous avez besoin de plus de renseignements.</p><p>Cordialement,</p>",
+        "en": "<p>Hello,</p><p>We would like to inform you that a credit of $&lt;&lt;CreditAmount_EN&gt;&gt; has been applied to project &lt;&lt;ProjectNumber_EN&gt;&gt; to address the discrepancy identified in project &lt;&lt;RelatedProjectNumber_EN&gt;&gt;.</p><p>We apologize for this situation and for any inconvenience it may have caused.</p><p>Please do not hesitate to contact us if you have any questions or if you would like additional information.</p><p>Kind regards,</p>"
+      },
+      "variables": [
+        "project_number",
+        "credit_amount",
+        "related_project_number"
+      ],
+      "utilisateur": [
+        "conseillers"
+      ]
+    },
+    {
+      "id": "ctd044",
+      "category": "billing",
+      "category_fr": "Facturation",
+      "category_en": "Billing",
+      "title": {
+        "fr": "Projet <<ProjectNumber_FR>> – Gains d'efficacité retournés au client",
+        "en": "Project <<ProjectNumber_EN>> – Efficiency gains returned to the client"
+      },
+      "description": {
+        "fr": "Avis informant le client que des gains d'efficacité (répétitions internes, documents de référence) ont été pris en compte dans le coût du projet",
+        "en": "Notice informing the client that efficiency gains (internal repetitions, reference documents) have been factored into the project cost"
+      },
+      "subject": {
+        "fr": "Projet <<ProjectNumber_FR>> – Gains d'efficacité",
+        "en": "Project <<ProjectNumber_EN>> – Efficiency gains"
+      },
+      "body": {
+        "fr": "<p>Bonjour,</p><p>Nous souhaitons vous informer que, dans le cadre du projet &lt;&lt;ProjectNumber_FR&gt;&gt;, des gains d’efficacité ont été réalisés et pris en compte dans le coût du projet.</p><p>Ces gains découlent notamment des éléments suivants :</p><ul><li>Répétitions internes : certaines parties du document se répétaient, ce qui a permis d’éviter de retraduire des segments identiques.</li><li>Documents de référence fournis : les documents de référence ont permis de réutiliser du contenu existant et d’assurer une meilleure cohérence terminologique, tout en optimisant le temps de traitement.</li></ul><p>Ces éléments ont contribué à réduire l’effort global requis pour la traduction et sont pris en compte dans le coût du projet.</p><p>N’hésitez pas à communiquer avec nous si vous avez des questions ou si vous souhaitez obtenir de plus amples renseignements.</p><p>Cordialement,</p>",
+        "en": "<p>Hello,</p><p>We would like to inform you that, as part of project &lt;&lt;ProjectNumber_EN&gt;&gt;, efficiency gains have been achieved and factored into the project cost.</p><p>These gains result notably from the following elements:</p><ul><li>Internal repetitions: certain parts of the document were repeated, which made it possible to avoid retranslating identical segments.</li><li>Reference documents provided: the reference documents made it possible to reuse existing content and ensure better terminological consistency, while optimizing processing time.</li></ul><p>These elements helped reduce the overall effort required for the translation and are reflected in the project cost.</p><p>Please do not hesitate to contact us if you have any questions or if you would like more information.</p><p>Kind regards,</p>"
+      },
+      "variables": [
+        "project_number"
+      ],
+      "utilisateur": [
+        "conseillers"
+      ]
     }
   ],
   "variables": {
@@ -1303,6 +1713,105 @@
         "fr": "",
         "en": ""
       }
+    },
+    "slide_numbers": {
+      "description": {
+        "en": "Slide number(s) affected",
+        "fr": "Numéro(s) des diapositives concernées"
+      },
+      "example": {
+        "en": "4, 7",
+        "fr": "4, 7"
+      },
+      "format": "text"
+    },
+    "client_last_name": {
+      "description": {
+        "en": "Client's last name",
+        "fr": "Nom de famille du client"
+      },
+      "example": {
+        "en": "Smith",
+        "fr": "Tremblay"
+      },
+      "format": "text"
+    },
+    "client_first_name": {
+      "description": {
+        "en": "Client's first name",
+        "fr": "Prénom du client"
+      },
+      "example": {
+        "en": "John",
+        "fr": "Marie"
+      },
+      "format": "text"
+    },
+    "correspondence_language": {
+      "description": {
+        "en": "Client's language of correspondence",
+        "fr": "Langue de correspondance du client"
+      },
+      "example": {
+        "en": "English",
+        "fr": "Français"
+      },
+      "format": "text"
+    },
+    "work_phone": {
+      "description": {
+        "en": "Client's work phone number",
+        "fr": "Numéro de téléphone au travail du client"
+      },
+      "example": {
+        "en": "613-555-0100",
+        "fr": "613-555-0100"
+      },
+      "format": "text"
+    },
+    "work_email": {
+      "description": {
+        "en": "Client's work email address",
+        "fr": "Adresse courriel au travail du client"
+      },
+      "example": {
+        "en": "jane.doe@example.gc.ca",
+        "fr": "jane.doe@example.gc.ca"
+      },
+      "format": "text"
+    },
+    "business_unit_number": {
+      "description": {
+        "en": "Client's business unit number, if known",
+        "fr": "Numéro d’unité opérationnelle du client, s’il est connu"
+      },
+      "example": {
+        "en": "12345",
+        "fr": "12345"
+      },
+      "format": "text"
+    },
+    "credit_amount": {
+      "description": {
+        "en": "Credit amount applied, in dollars",
+        "fr": "Montant du crédit appliqué, en dollars"
+      },
+      "example": {
+        "en": "150",
+        "fr": "150"
+      },
+      "format": "number"
+    },
+    "related_project_number": {
+      "description": {
+        "en": "Number of the project where the discrepancy originated",
+        "fr": "Numéro du projet où l'écart a été constaté"
+      },
+      "example": {
+        "en": "123-4567-002",
+        "fr": "123-4567-002"
+      },
+      "format": "text"
     }
   }
 }
