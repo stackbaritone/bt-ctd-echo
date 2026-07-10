@@ -8,10 +8,8 @@
     ],
     "categories": [
       "clarifications_and_client_instructions",
-      "d",
       "deadlines_and_delivery",
       "documents_and_formatting",
-      "documents_et_formats",
       "fin_d_annee_financiere",
       "follow_ups_and_cancellations",
       "quotes_and_approvals",
@@ -50,14 +48,6 @@
       "fin_d_annee_financiere": {
         "fr": "Fin d’année financière",
         "en": "Fiscal Year end"
-      },
-      "documents_et_formats": {
-        "fr": "Documents et formats",
-        "en": "Documents and formatting"
-      },
-      "d": {
-        "fr": "Précisions et instructions client",
-        "en": "Clarifications and client instructions"
       }
     },
     "updatedAt": "2026-07-10T12:26:33.107Z",
@@ -883,7 +873,7 @@
     {
       "id": "ctd033",
       "type": "email",
-      "category": "documents_et_formats",
+      "category": "documents_and_formatting",
       "title": {
         "fr": "Changement au standard de conversion PDF",
         "en": "Change to PDF conversion standards"
@@ -912,7 +902,7 @@
     {
       "id": "ctd034",
       "type": "email",
-      "category": "d",
+      "category": "clarifications_and_client_instructions",
       "title": {
         "fr": "CISR - Courriel d'avis au client - Décision SI ultra spécialisé",
         "en": "IRB - Email to advise client of ultra specialized SI decision"
