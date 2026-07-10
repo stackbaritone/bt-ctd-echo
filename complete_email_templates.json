@@ -1,7 +1,7 @@
 {
   "metadata": {
     "version": "1.0",
-    "totalTemplates": 46,
+    "totalTemplates": 75,
     "languages": [
       "fr",
       "en"
@@ -65,7 +65,7 @@
         "en": "Internal"
       }
     },
-    "updatedAt": "2026-07-10T14:31:12.631Z",
+    "updatedAt": "2026-07-10T20:42:35.385Z",
     "categoryColors": {
       "s": "#c7ffd2"
     }
@@ -1086,8 +1086,8 @@
     {
       "id": "ctd037",
       "category": "clarifications_and_client_instructions",
-      "category_fr": "Interne",
-      "category_en": "Internal",
+      "category_fr": "Précisions et instructions client",
+      "category_en": "Clarifications and client instructions",
       "title": {
         "fr": "Demande de réactivation d'un profil client (CCC)",
         "en": "Request to reactivate a client profile (CCC)"
@@ -1314,6 +1314,908 @@
       ],
       "utilisateur": [
         "conseillers"
+      ]
+    },
+    {
+      "id": "ctd045",
+      "category": "clarifications_and_client_instructions",
+      "category_fr": "Précisions et instructions client",
+      "category_en": "Clarifications and client instructions",
+      "title": {
+        "fr": "Projet <<ProjectNumber_FR>> – Préférences en matière de rédaction inclusive",
+        "en": "Project <<ProjectNumber_EN>> – Inclusive writing preferences"
+      },
+      "description": {
+        "fr": "Demande au client de préciser ses préférences en matière de rédaction inclusive avant le traitement de la traduction française",
+        "en": "Asking the client to specify their inclusive writing preferences before processing the French translation"
+      },
+      "subject": {
+        "fr": "Projet <<ProjectNumber_FR>> – Préférences en matière de rédaction inclusive",
+        "en": "Project <<ProjectNumber_EN>> – Inclusive writing preferences"
+      },
+      "body": {
+        "fr": "<p>Bonjour,</p><p>Nous accusons réception de votre projet &lt;&lt;ProjectNumber_FR&gt;&gt;.</p><p>Avant de procéder à la traduction, pourriez-vous nous indiquer vos préférences en matière de rédaction inclusive pour la version française? Par exemple :</p><ul><li>Doublets abrégés (ex. : les employé(e)s);</li><li>Doublets complets (ex. : les employées et les employés);</li><li>Formulations neutres (ex. : le personnel);</li><li>Genre masculin utilisé comme genre neutre, avec ou sans note explicative;</li><li>Autre convention propre à votre organisation, le cas échéant.</li></ul><p>Si votre organisation dispose d’un guide de rédaction inclusive ou d’une politique interne à ce sujet, n’hésitez pas à nous le transmettre.</p><p>Cette information nous permettra de veiller à ce que la traduction soit conforme à vos attentes.</p><p>N’hésitez pas à communiquer avec nous si vous avez des questions ou si vous avez besoin de plus de renseignements.</p><p>Cordialement,</p>",
+        "en": "<p>Hello,</p><p>We acknowledge receipt of your project &lt;&lt;ProjectNumber_EN&gt;&gt;.</p><p>Before proceeding with the translation, could you please let us know your preferences regarding inclusive writing for the French version? For example:</p><ul><li>Abbreviated doublets (e.g., les employé(e)s);</li><li>Full doublets (e.g., les employées et les employés);</li><li>Neutral wording (e.g., le personnel);</li><li>Masculine form used as a neutral form, with or without an explanatory note;</li><li>Another convention specific to your organization, if applicable.</li></ul><p>If your organization has an inclusive writing guide or an internal policy on this matter, please feel free to share it with us.</p><p>This information will help us ensure the translation aligns with your expectations.</p><p>Please do not hesitate to contact us if you have any questions or if you need further information.</p><p>Kind regards,</p>"
+      },
+      "variables": [
+        "project_number"
+      ],
+      "utilisateur": [
+        "conseillers"
+      ]
+    },
+    {
+      "id": "ctd046",
+      "category": "unsatisfactory",
+      "category_fr": "Fournisseurs externes - Qualité insatisfaisante",
+      "category_en": "External Providers - unsatisfactory quality",
+      "title": {
+        "fr": "Avis de prestation insatisfaisante (qualité) – ancien AMA – sans déduction",
+        "en": "Notice of Unsatisfactory Performance (Quality) – Former SA – No fee deduction"
+      },
+      "description": {
+        "fr": "Avis de prestation insatisfaisante pour un contrat sous l'ancien AMA (art. A4.7), sans déduction de frais",
+        "en": "Notice of unsatisfactory performance for a contract under the former SA (Article A4.7), with no fee deduction"
+      },
+      "subject": {
+        "fr": "Avis de prestation insatisfaisante (qualité) – texte n° <<ProjectNumber_FR>> (contrat n° <<ContractNumber_FR>>)",
+        "en": "Notice of Unsatisfactory Performance (Quality) – Translation Request No. <<ProjectNumber_EN>> (Contract No. <<ContractNumber_EN>>)"
+      },
+      "body": {
+        "fr": "<p>Bonjour,</p><p>En vertu de l’article A4.7 de l’énoncé des travaux du contrat n<sup>o</sup> &lt;&lt;ContractNumber_FR&gt;&gt;, vous êtes tenu de fournir les travaux de traduction conformément aux normes de qualité pour la traduction en langues officielles.</p><p>Par la présente, le Canada vous informe que le texte n<sup>o</sup> &lt;&lt;ProjectNumber_FR&gt;&gt; a été jugé insatisfaisant. Comme stipulé à l’article 4, <em>Prestations insatisfaisantes relatives à la qualité et au respect des délais</em> de votre arrangement en matière d’approvisionnement (révision de l’AMA en vigueur le 1<sup>er</sup> septembre 2020), les avis de prestations insatisfaisantes ont une incidence sur l’indice de qualité et peuvent entraîner la résiliation d’un contrat pour manquement et la suspension de l’AMA du fournisseur.</p><p>Veuillez prendre note qu’aucuns honoraires ne seront défalqués de la facture présentée pour la demande précitée, même si le contrat prévoit que le Canada peut déduire des frais de votre facture afin de le dédommager du coût additionnel lié à la production d’une traduction livrable.</p><p>Si vous n’êtes pas d’accord avec le présent courriel, et que vous désirez contester l’avis de prestation insatisfaisante, veuillez faire parvenir vos observations par écrit selon les modalités décrites à l’article 5, <em>Mécanisme de contestation</em> de votre AMA (révision de l’AMA en vigueur le 1 septembre 2022), pour fins de réexamen.</p><p>Veuillez prendre note que cette évaluation insatisfaisante sera versée à votre dossier.</p><p>Merci.</p>",
+        "en": "<p>Hello,</p><p>Under Article A4.7 of the Statement of Work for contract No. &lt;&lt;ContractNumber_EN&gt;&gt;, you are obliged to provide translation work that meets the quality standards for official languages translation.</p><p>Canada hereby advises you that translation request No. &lt;&lt;ProjectNumber_EN&gt;&gt; was deemed to be unsatisfactory. As stated in Article 4, <em>Unsatisfactory Performance with Respect to Quality and Timeliness</em>, of your supply arrangement (SA revision effective September 1, 2020), notices of unsatisfactory performance affect the quality indicator and may result in termination of the contract for default and suspension of the supply arrangement.</p><p>Please note that no fees will be deducted from the invoice submitted for the aforementioned translation request, even though the contract states that Canada may deduct costs from your invoice in order to compensate Canada for the additional costs relating to the production of a deliverable translation.</p><p>If you disagree with this email and wish to challenge the notice of unsatisfactory performance, please send your comments in writing, as described in Article 5, <em>Challenge Mechanism</em>, of your supply arrangement (SA revision effective September 1, 2020), for reconsideration.</p><p>Please note that this unsatisfactory evaluation will be placed on your file.</p><p>Thank you.</p>"
+      },
+      "variables": [
+        "project_number",
+        "contract_number"
+      ],
+      "utilisateur": [
+        "gestion",
+        "relations_fournisseurs"
+      ]
+    },
+    {
+      "id": "ctd047",
+      "category": "unsatisfactory",
+      "category_fr": "Fournisseurs externes - Qualité insatisfaisante",
+      "category_en": "External Providers - unsatisfactory quality",
+      "title": {
+        "fr": "Avis de prestation insatisfaisante (qualité) – ancien AMA – avec déduction",
+        "en": "Notice of Unsatisfactory Performance (Quality) – Former SA – Fee deduction"
+      },
+      "description": {
+        "fr": "Avis de prestation insatisfaisante pour un contrat sous l'ancien AMA (art. A4.7), avec déduction de frais de la facture",
+        "en": "Notice of unsatisfactory performance for a contract under the former SA (Article A4.7), with fee deduction from the invoice"
+      },
+      "subject": {
+        "fr": "Avis de prestation insatisfaisante (qualité) – texte n° <<ProjectNumber_FR>> (contrat n° <<ContractNumber_FR>>)",
+        "en": "Notice of Unsatisfactory Performance (Quality) – Translation Request No. <<ProjectNumber_EN>> (Contract No. <<ContractNumber_EN>>)"
+      },
+      "body": {
+        "fr": "<p>Bonjour,</p><p>En vertu de l’article A4.7 de l’énoncé des travaux du contrat n<sup>o</sup> &lt;&lt;ContractNumber_FR&gt;&gt;, vous êtes tenu de fournir les travaux de traduction conformément aux normes de qualité pour la traduction en langues officielles.</p><p>Par la présente, le Canada vous informe que le texte n<sup>o</sup> &lt;&lt;ProjectNumber_FR&gt;&gt; a été jugé insatisfaisant. Comme stipulé à l’article 4, <em>Prestations insatisfaisantes relatives à la qualité et au respect des délais</em> de votre arrangement en matière d’approvisionnement (révision de l’AMA en vigueur le 1<sup>er</sup> septembre 2020), les avis de prestations insatisfaisantes ont une incidence sur l’indice de qualité et peuvent entraîner la résiliation d’un contrat pour manquement et la suspension de l’AMA du fournisseur.</p><p>Veuillez prendre note que le Canada déduira des frais de &lt;&lt;DeductionFeeAmount_FR&gt;&gt; $ (taxes non comprises) de votre facture afin de le dédommager du coût additionnel lié à la production d’une traduction livrable (voir article 13 du contrat pour plus d’information).</p><p>Si vous n’êtes pas d’accord avec le présent courriel, et que vous désirez contester l’avis de prestation insatisfaisante, veuillez faire parvenir vos observations par écrit selon les modalités décrites à l’article 5, <em>Mécanisme de contestation</em> de votre AMA (révision de l’AMA en vigueur le 1 septembre 2022), pour fins de réexamen.</p><p>Veuillez prendre note que cette évaluation insatisfaisante sera versée à votre dossier.</p><p>Merci.</p>",
+        "en": "<p>Hello,</p><p>Under Article A4.7 of the Statement of Work for contract No. &lt;&lt;ContractNumber_EN&gt;&gt;, you are obliged to provide translation work that meets the quality standards for official languages translation.</p><p>Canada hereby advises you that translation request No. &lt;&lt;ProjectNumber_EN&gt;&gt; was deemed to be unsatisfactory. As stated in Article 4, <em>Unsatisfactory Performance with Respect to Quality and Timeliness</em>, of your supply arrangement (SA revision effective September 1, 2020), notices of unsatisfactory performance affect the quality indicator and may result in termination of the contract for default and suspension of the supply arrangement.</p><p>Please note that Canada will deduct a fee of $&lt;&lt;DeductionFeeAmount_EN&gt;&gt; (excluding taxes) from your invoice in order to compensate Canada for the additional costs relating to the production of a deliverable translation (see clause 13 of your contract for more information).</p><p>If you disagree with this email and wish to challenge the notice of unsatisfactory performance, please send your comments in writing, as described in Article 5, <em>Challenge Mechanism</em>, of your supply arrangement (SA revision effective September 1, 2020), for reconsideration.</p><p>Please note that this unsatisfactory evaluation will be placed on your file.</p><p>Thank you.</p>"
+      },
+      "variables": [
+        "project_number",
+        "contract_number",
+        "deduction_fee_amount"
+      ],
+      "utilisateur": [
+        "gestion",
+        "relations_fournisseurs"
+      ]
+    },
+    {
+      "id": "ctd048",
+      "category": "unsatisfactory",
+      "category_fr": "Fournisseurs externes - Qualité insatisfaisante",
+      "category_en": "External Providers - unsatisfactory quality",
+      "title": {
+        "fr": "Avis de prestation insatisfaisante (qualité) – ancien AMA – avec déduction – aucun paiement",
+        "en": "Notice of Unsatisfactory Performance (Quality) – Former SA – Fee deduction – No payment"
+      },
+      "description": {
+        "fr": "Avis de prestation insatisfaisante pour un contrat sous l'ancien AMA, lorsque le montant des frais dépasse le montant de la facture (aucun paiement émis)",
+        "en": "Notice of unsatisfactory performance under the former SA, when the fee amount exceeds the invoice amount (no payment issued)"
+      },
+      "subject": {
+        "fr": "Avis de prestation insatisfaisante (qualité) – texte n° <<ProjectNumber_FR>> (contrat n° <<ContractNumber_FR>>)",
+        "en": "Notice of Unsatisfactory Performance (Quality) – Translation Request No. <<ProjectNumber_EN>> (Contract No. <<ContractNumber_EN>>)"
+      },
+      "body": {
+        "fr": "<p>Bonjour,</p><p>En vertu de l’article A4.7 de l’énoncé des travaux du contrat n<sup>o</sup> &lt;&lt;ContractNumber_FR&gt;&gt;, vous êtes tenu de fournir les travaux de traduction conformément aux normes de qualité pour la traduction en langues officielles.</p><p>Par la présente, le Canada vous informe que le texte n<sup>o</sup> &lt;&lt;ProjectNumber_FR&gt;&gt; a été jugé insatisfaisant. Comme stipulé à l’article 4, <em>Prestations insatisfaisantes relatives à la qualité et au respect des délais</em> de votre arrangement en matière d’approvisionnement (révision de l’AMA en vigueur le 1<sup>er</sup> septembre 2020), les avis de prestations insatisfaisantes ont une incidence sur l’indice de qualité et peuvent entraîner la résiliation d’un contrat pour manquement et la suspension de l’AMA du fournisseur.</p><p>Veuillez prendre note que le Canada déduira des frais de &lt;&lt;DeductionFeeAmount_FR&gt;&gt; $ (taxes non comprises) de votre facture afin de le dédommager du coût additionnel lié à la production d’une traduction livrable (voir article 13 du contrat pour plus d’information). Comme le montant encouru par le Canada est supérieur au montant de la facture, il n’y aura aucun paiement émis pour les travaux livrés.</p><p>Si vous n’êtes pas d’accord avec le présent courriel, et que vous désirez contester l’avis de prestation insatisfaisante, veuillez faire parvenir vos observations par écrit selon les modalités décrites à l’article 5, <em>Mécanisme de contestation</em> de votre AMA (révision de l’AMA en vigueur le 1 septembre 2022), pour fins de réexamen.</p><p>Veuillez prendre note que cette évaluation insatisfaisante sera versée à votre dossier.</p><p>Merci.</p>",
+        "en": "<p>Hello,</p><p>Under Article A4.7 of the Statement of Work for contract No. &lt;&lt;ContractNumber_EN&gt;&gt;, you are obliged to provide translation work that meets the quality standards for official languages translation.</p><p>Canada hereby advises you that translation request No. &lt;&lt;ProjectNumber_EN&gt;&gt; was deemed to be unsatisfactory. As stated in Article 4, <em>Unsatisfactory Performance with Respect to Quality and Timeliness</em>, of your supply arrangement (SA revision effective September 1, 2020), notices of unsatisfactory performance affect the quality indicator and may result in termination of the contract for default and suspension of the supply arrangement.</p><p>Please note that Canada will deduct a fee of $&lt;&lt;DeductionFeeAmount_EN&gt;&gt; (excluding taxes) from your invoice in order to compensate Canada for the additional costs relating to the production of a deliverable translation (see clause 13 of your contract for more information). As the amount incurred by Canada exceeds the invoice amount, no payment will be issued for the work delivered.</p><p>If you disagree with this email and wish to challenge the notice of unsatisfactory performance, please send your comments in writing, as described in Article 5, <em>Challenge Mechanism</em>, of your supply arrangement (SA revision effective September 1, 2020), for reconsideration.</p><p>Please note that this unsatisfactory evaluation will be placed on your file.</p><p>Thank you.</p>"
+      },
+      "variables": [
+        "project_number",
+        "contract_number",
+        "deduction_fee_amount"
+      ],
+      "utilisateur": [
+        "gestion",
+        "relations_fournisseurs"
+      ]
+    },
+    {
+      "id": "ctd049",
+      "category": "unsatisfactory",
+      "category_fr": "Fournisseurs externes - Qualité insatisfaisante",
+      "category_en": "External Providers - unsatisfactory quality",
+      "title": {
+        "fr": "Avis de prestation insatisfaisante (qualité) – nouvel AMA (1.20.1) – sans déduction",
+        "en": "Notice of Unsatisfactory Performance (Quality) – New SA (1.20.1) – No fee deduction"
+      },
+      "description": {
+        "fr": "Avis de prestation insatisfaisante pour un contrat sous le nouvel AMA (art. A6/1.20.1), sans déduction de frais",
+        "en": "Notice of unsatisfactory performance for a contract under the new SA (Article A6/1.20.1), with no fee deduction"
+      },
+      "subject": {
+        "fr": "Avis de prestation insatisfaisante (qualité) – texte n° <<ProjectNumber_FR>> (contrat n° <<ContractNumber_FR>>)",
+        "en": "Notice of Unsatisfactory Performance (Quality) – Translation Request No. <<ProjectNumber_EN>> (Contract No. <<ContractNumber_EN>>)"
+      },
+      "body": {
+        "fr": "<p>Bonjour,</p><p>En vertu de l’article A6 de l’énoncé des travaux du contrat n<sup>o</sup> &lt;&lt;ContractNumber_FR&gt;&gt;, vous êtes tenu de fournir les travaux de traduction conformément aux normes de qualité et respect des délais pour la traduction en langues officielles.</p><p>Par la présente, le Canada vous informe que le texte n<sup>o</sup> &lt;&lt;ProjectNumber_FR&gt;&gt; a été jugé insatisfaisant. Comme stipulé à l’article 1.20.1 <em>Avis de prestations insatisfaisantes</em> du contrat, les avis de prestations insatisfaisantes ont une incidence sur l’indice de qualité et peuvent entraîner la résiliation d’un contrat pour manquement et la suspension de l’AMA du fournisseur, en partie ou en entier.</p><p>Veuillez prendre note qu’aucuns honoraires ne seront défalqués de la facture présentée pour la demande précitée, même si le contrat prévoit que le Canada peut déduire des frais de votre facture afin de le dédommager du coût additionnel lié à la production d’une traduction livrable.</p><p>Si vous n’êtes pas d’accord avec le présent courriel, et que vous désirez contester l’avis de prestation insatisfaisante, veuillez faire parvenir vos observations par écrit selon les modalités décrites à l’article 1.20.3 Mécanisme de contestation suite à un avis de prestation insatisfaisante de votre contrat, pour fins de réexamen.</p><p>Veuillez prendre note que cette évaluation insatisfaisante sera versée à votre dossier.</p><p>Merci.</p>",
+        "en": "<p>Hello,</p><p>Under Article A6 of the Statement of Work for contract No. &lt;&lt;ContractNumber_EN&gt;&gt;, you are obliged to provide translation work that meets the quality and timeliness standards for official languages translation.</p><p>Canada hereby advises you that translation request No. &lt;&lt;ProjectNumber_EN&gt;&gt; was deemed to be unsatisfactory. As stated in clause 1.20.1, Notice of Unsatisfactory Performance, of your contract, notices of unsatisfactory performance affect the quality indicator and may result in termination of the contract for default and suspension of the supply arrangement in whole or in part.</p><p>Please note that no fees will be deducted from the invoice submitted for the aforementioned translation request, even though the contract states that Canada may deduct costs from your invoice in order to compensate Canada for the additional costs relating to the production of a deliverable translation.</p><p>If you disagree with this email and wish to challenge the notice of unsatisfactory performance, please send your comments in writing, as described in clause 1.20.3, Challenge Mechanism Following a Notice of Unsatisfactory Performance, of your contract, for reconsideration.</p><p>Please note that this unsatisfactory evaluation will be placed on your file.</p><p>Thank you.</p>"
+      },
+      "variables": [
+        "project_number",
+        "contract_number"
+      ],
+      "utilisateur": [
+        "gestion",
+        "relations_fournisseurs"
+      ]
+    },
+    {
+      "id": "ctd050",
+      "category": "unsatisfactory",
+      "category_fr": "Fournisseurs externes - Qualité insatisfaisante",
+      "category_en": "External Providers - unsatisfactory quality",
+      "title": {
+        "fr": "Avis de prestation insatisfaisante (qualité) – nouvel AMA (1.20.1) – avec déduction",
+        "en": "Notice of Unsatisfactory Performance (Quality) – New SA (1.20.1) – Fee deduction"
+      },
+      "description": {
+        "fr": "Avis de prestation insatisfaisante pour un contrat sous le nouvel AMA (art. A6/1.20.1), avec déduction de frais de la facture",
+        "en": "Notice of unsatisfactory performance for a contract under the new SA (Article A6/1.20.1), with fee deduction from the invoice"
+      },
+      "subject": {
+        "fr": "Avis de prestation insatisfaisante (qualité) – texte n° <<ProjectNumber_FR>> (contrat n° <<ContractNumber_FR>>)",
+        "en": "Notice of Unsatisfactory Performance (Quality) – Translation Request No. <<ProjectNumber_EN>> (Contract No. <<ContractNumber_EN>>)"
+      },
+      "body": {
+        "fr": "<p>Bonjour,</p><p>En vertu de l’article A6 de l’énoncé des travaux du contrat n<sup>o</sup> &lt;&lt;ContractNumber_FR&gt;&gt;, vous êtes tenu de fournir les travaux de traduction conformément aux normes de qualité et respect des délais pour la traduction en langues officielles.</p><p>Par la présente, le Canada vous informe que le texte n<sup>o</sup> &lt;&lt;ProjectNumber_FR&gt;&gt; a été jugé insatisfaisant. Comme stipulé à l’article 1.20.1 <em>Avis de prestations insatisfaisantes</em> du contrat, les avis de prestations insatisfaisantes ont une incidence sur l’indice de qualité et peuvent entraîner la résiliation d’un contrat pour manquement et la suspension de l’AMA du fournisseur, en partie ou en entier.</p><p>Veuillez prendre note que le Canada déduira des frais de &lt;&lt;DeductionFeeAmount_FR&gt;&gt; $ (taxes non comprises) de votre facture afin de le dédommager du coût additionnel lié à la production d’une traduction livrable (voir article 1.21 du contrat pour plus d’information).</p><p>Si vous n’êtes pas d’accord avec le présent courriel, et que vous désirez contester l’avis de prestation insatisfaisante, veuillez faire parvenir vos observations par écrit selon les modalités décrites à l’article 1.20.3 Mécanisme de contestation suite à un avis de prestation insatisfaisante de votre contrat, pour fins de réexamen.</p><p>Veuillez prendre note que cette évaluation insatisfaisante sera versée à votre dossier.</p><p>Merci.</p>",
+        "en": "<p>Hello,</p><p>Under Article A6 of the Statement of Work for contract No. &lt;&lt;ContractNumber_EN&gt;&gt;, you are obliged to provide translation work that meets the quality and timeliness standards for official languages translation.</p><p>Canada hereby advises you that translation request No. &lt;&lt;ProjectNumber_EN&gt;&gt; was deemed to be unsatisfactory. As stated in clause 1.20.1, Notice of Unsatisfactory Performance, of your contract, notices of unsatisfactory performance affect the quality indicator and may result in termination of the contract for default and suspension of the supply arrangement in whole or in part.</p><p>Please note that Canada will deduct a fee of $&lt;&lt;DeductionFeeAmount_EN&gt;&gt; (excluding taxes) from your invoice in order to compensate Canada for the additional costs relating to the production of a deliverable translation (see clause 1.21 of your contract for more information).</p><p>If you disagree with this email and wish to challenge the notice of unsatisfactory performance, please send your comments in writing, as described in clause 1.20.3, Challenge Mechanism Following a Notice of Unsatisfactory Performance, of your contract, for reconsideration.</p><p>Please note that this unsatisfactory evaluation will be placed on your file.</p><p>Thank you.</p>"
+      },
+      "variables": [
+        "project_number",
+        "contract_number",
+        "deduction_fee_amount"
+      ],
+      "utilisateur": [
+        "gestion",
+        "relations_fournisseurs"
+      ]
+    },
+    {
+      "id": "ctd051",
+      "category": "unsatisfactory",
+      "category_fr": "Fournisseurs externes - Qualité insatisfaisante",
+      "category_en": "External Providers - unsatisfactory quality",
+      "title": {
+        "fr": "Avis de prestation insatisfaisante (qualité) – nouvel AMA (1.20.1) – avec déduction – aucun paiement",
+        "en": "Notice of Unsatisfactory Performance (Quality) – New SA (1.20.1) – Fee deduction – No payment"
+      },
+      "description": {
+        "fr": "Avis de prestation insatisfaisante pour un contrat sous le nouvel AMA, lorsque le montant des frais dépasse le montant de la facture (aucun paiement émis)",
+        "en": "Notice of unsatisfactory performance under the new SA, when the fee amount exceeds the invoice amount (no payment issued)"
+      },
+      "subject": {
+        "fr": "Avis de prestation insatisfaisante (qualité) – texte n° <<ProjectNumber_FR>> (contrat n° <<ContractNumber_FR>>)",
+        "en": "Notice of Unsatisfactory Performance (Quality) – Translation Request No. <<ProjectNumber_EN>> (Contract No. <<ContractNumber_EN>>)"
+      },
+      "body": {
+        "fr": "<p>Bonjour,</p><p>En vertu de l’article A6 de l’énoncé des travaux du contrat n<sup>o</sup> &lt;&lt;ContractNumber_FR&gt;&gt;, vous êtes tenu de fournir les travaux de traduction conformément aux normes de qualité et respect des délais pour la traduction en langues officielles.</p><p>Par la présente, le Canada vous informe que le texte n<sup>o</sup> &lt;&lt;ProjectNumber_FR&gt;&gt; a été jugé insatisfaisant. Comme stipulé à l’article 1.20.1 <em>Avis de prestations insatisfaisantes</em> du contrat, les avis de prestations insatisfaisantes ont une incidence sur l’indice de qualité et peuvent entraîner la résiliation d’un contrat pour manquement et la suspension de l’AMA du fournisseur, en partie ou en entier.</p><p>Veuillez prendre note que le Canada déduira des frais de &lt;&lt;DeductionFeeAmount_FR&gt;&gt; $ (taxes non comprises) de votre facture afin de le dédommager du coût additionnel lié à la production d’une traduction livrable (voir article 1.21 du contrat pour plus d’information). Comme le montant encouru par le Canada est supérieur au montant de la facture, il n’y aura aucun paiement émis pour les travaux livrés.</p><p>Si vous n’êtes pas d’accord avec le présent courriel, et que vous désirez contester l’avis de prestation insatisfaisante, veuillez faire parvenir vos observations par écrit selon les modalités décrites à l’article 1.20.3 Mécanisme de contestation suite à un avis de prestation insatisfaisante de votre contrat, pour fins de réexamen.</p><p>Veuillez prendre note que cette évaluation insatisfaisante sera versée à votre dossier.</p><p>Merci.</p>",
+        "en": "<p>Hello,</p><p>Under Article A6 of the Statement of Work for contract No. &lt;&lt;ContractNumber_EN&gt;&gt;, you are obliged to provide translation work that meets the quality and timeliness standards for official languages translation.</p><p>Canada hereby advises you that translation request No. &lt;&lt;ProjectNumber_EN&gt;&gt; was deemed to be unsatisfactory. As stated in clause 1.20.1, Notice of Unsatisfactory Performance, of your contract, notices of unsatisfactory performance affect the quality indicator and may result in termination of the contract for default and suspension of the supply arrangement in whole or in part.</p><p>Please note that Canada will deduct a fee of $&lt;&lt;DeductionFeeAmount_EN&gt;&gt; (excluding taxes) from your invoice in order to compensate Canada for the additional costs relating to the production of a deliverable translation (see clause 1.21 of your contract for more information). As the amount incurred by Canada exceeds the invoice amount, no payment will be issued for the work delivered.</p><p>If you disagree with this email and wish to challenge the notice of unsatisfactory performance, please send your comments in writing, as described in clause 1.20.3, Challenge Mechanism Following a Notice of Unsatisfactory Performance, of your contract, for reconsideration.</p><p>Please note that this unsatisfactory evaluation will be placed on your file.</p><p>Thank you.</p>"
+      },
+      "variables": [
+        "project_number",
+        "contract_number",
+        "deduction_fee_amount"
+      ],
+      "utilisateur": [
+        "gestion",
+        "relations_fournisseurs"
+      ]
+    },
+    {
+      "id": "ctd052",
+      "category": "unsatisfactory",
+      "category_fr": "Fournisseurs externes - Qualité insatisfaisante",
+      "category_en": "External Providers - unsatisfactory quality",
+      "title": {
+        "fr": "Avertissement (qualité insatisfaisante, période de familiarisation) – dommages et intérêts – contrats pré-2022",
+        "en": "Warning (Unsatisfactory Quality, Familiarization Period) – Damages and Interest – Pre-2022 contracts"
+      },
+      "description": {
+        "fr": "Avertissement pour qualité insatisfaisante durant une période de familiarisation, avec dommages-intérêts, pour un contrat attribué avant le 1er avril 2022 (art. A4.7)",
+        "en": "Warning for unsatisfactory quality during a familiarization period, with liquidated damages, for a contract awarded before April 1, 2022 (Article A4.7)"
+      },
+      "subject": {
+        "fr": "Avertissement (qualité insatisfaisante durant une période de familiarisation) – texte n° <<ProjectNumber_FR>> (contrat n° <<ContractNumber_FR>>) | dommages et intérêts",
+        "en": "Warning (Unsatisfactory Quality During a Familiarization Period) – Translation Request No. <<ProjectNumber_EN>> (Contract No. <<ContractNumber_EN>>) | Damages and Interest"
+      },
+      "body": {
+        "fr": "<p>Bonjour,</p><p>En vertu de l’article A4.7 de l’énoncé des travaux du contrat n<sup>o</sup> &lt;&lt;ContractNumber_FR&gt;&gt;, vous êtes tenu de fournir les travaux de traduction conformément aux normes de qualité pour la traduction en langues officielles.</p><p>Le contrôle de la qualité du document n<sup>o</sup> &lt;&lt;ProjectNumber_FR&gt;&gt; a révélé que les travaux n’ont pas été exécutés de manière satisfaisante et conforme aux normes de qualité. Lorsqu’une traduction ne répond pas aux normes de qualité attendues durant une période de familiarisation, le Bureau transmet un avertissement. Les avertissements n’ont pas d’incidence sur l’indice de qualité de l’entrepreneur et n’entraînent pas la résiliation d’un contrat, ni la suspension de l’AMA en partie ou en entier.</p><p>Par contre, puisque le Canada a dû &lt;&lt;CorrectiveAction_FR&gt;&gt; les travaux non satisfaisants, et conformément à l’article &lt;&lt;DamagesArticleNumber_FR&gt;&gt; <em>Dommages et intérêts</em> du contrat, l’entrepreneur devra verser au Canada des dommages-intérêts en fonction du taux horaire de 81 $ multiplié par &lt;&lt;DamagesHours_FR&gt;&gt; heures pour &lt;&lt;CorrectiveAction_FR&gt;&gt; les travaux, pour un total de &lt;&lt;DamagesTotalAmount_FR&gt;&gt; $. Le Canada déduira ce montant de la facture.</p><p>Merci.</p>",
+        "en": "<p>Hello,</p><p>Under Article A4.7 of the Statement of Work for contract No. &lt;&lt;ContractNumber_EN&gt;&gt;, you are obliged to provide translation work that meets the quality standards for official languages translation.</p><p>The quality control of translation request No. &lt;&lt;ProjectNumber_EN&gt;&gt; showed that the work was not satisfactorily completed in accordance with quality standards. When a translation does not meet the expected quality standards during a familiarization period, the Bureau will issue a warning. Warnings have no impact on the contractor's quality indicators and do not result in the termination of the contract or the suspension of the supply arrangement in whole or in part.</p><p>However, because Canada had to have the unsatisfactory work &lt;&lt;CorrectiveAction_EN&gt;&gt;, and pursuant to Article &lt;&lt;DamagesArticleNumber_EN&gt;&gt; <em>Damages and Interest</em> of the contract, the contractor will be required to pay Canada liquidated damages at the rate of $81.00 per hour multiplied by &lt;&lt;DamagesHours_EN&gt;&gt; hours to have the work &lt;&lt;CorrectiveAction_EN&gt;&gt;, for a total of $&lt;&lt;DamagesTotalAmount_EN&gt;&gt;. Canada will deduct that amount from the invoice.</p><p>Thank you.</p>"
+      },
+      "variables": [
+        "project_number",
+        "contract_number",
+        "corrective_action",
+        "damages_article_number",
+        "damages_hours",
+        "damages_total_amount"
+      ],
+      "utilisateur": [
+        "gestion",
+        "relations_fournisseurs"
+      ]
+    },
+    {
+      "id": "ctd053",
+      "category": "unsatisfactory",
+      "category_fr": "Fournisseurs externes - Qualité insatisfaisante",
+      "category_en": "External Providers - unsatisfactory quality",
+      "title": {
+        "fr": "Avertissement (qualité insatisfaisante, période de familiarisation) – dommages et intérêts – contrats post-2022",
+        "en": "Warning (Unsatisfactory Quality, Familiarization Period) – Damages and Interest – Post-2022 contracts"
+      },
+      "description": {
+        "fr": "Avertissement pour qualité insatisfaisante durant une période de familiarisation, avec dommages-intérêts, pour un contrat attribué après le 1er avril 2022 (art. A6)",
+        "en": "Warning for unsatisfactory quality during a familiarization period, with liquidated damages, for a contract awarded after April 1, 2022 (Article A6)"
+      },
+      "subject": {
+        "fr": "Avertissement (qualité insatisfaisante durant une période de familiarisation) – texte n° <<ProjectNumber_FR>> (contrat n° <<ContractNumber_FR>>) | dommages et intérêts",
+        "en": "Warning (Unsatisfactory Quality During a Familiarization Period) – Translation Request No. <<ProjectNumber_EN>> (Contract No. <<ContractNumber_EN>>) | Damages and Interest"
+      },
+      "body": {
+        "fr": "<p>Bonjour,</p><p>En vertu de l’article A6 de l’énoncé des travaux du contrat n<sup>o</sup> &lt;&lt;ContractNumber_FR&gt;&gt;, vous êtes tenu de fournir les travaux de traduction conformément aux normes de qualité et respect des délais pour la traduction en langues officielles.</p><p>Le contrôle de la qualité du document n<sup>o</sup> &lt;&lt;ProjectNumber_FR&gt;&gt; a révélé que les travaux n’ont pas été exécutés de manière satisfaisante et conforme aux normes de qualité. Lorsqu’une traduction ne répond pas aux normes de qualité attendues durant une période de familiarisation, le Bureau transmet un avertissement. Les avertissements n’ont pas d’incidence sur l’indice de qualité de l’entrepreneur et n’entraînent pas la résiliation d’un contrat, ni la suspension de l’AMA en partie ou en entier.</p><p>Par contre, puisque le Canada a dû &lt;&lt;CorrectiveAction_FR&gt;&gt; les travaux non satisfaisants, et conformément à l’article &lt;&lt;DamagesArticleNumber_FR&gt;&gt; <em>Dommages et intérêts</em> du contrat, l’entrepreneur devra verser au Canada des dommages-intérêts en fonction du taux horaire de 81 $ multiplié par &lt;&lt;DamagesHours_FR&gt;&gt; heures pour &lt;&lt;CorrectiveAction_FR&gt;&gt; les travaux, pour un total de &lt;&lt;DamagesTotalAmount_FR&gt;&gt; $. Le Canada déduira ce montant de la facture.</p><p>Merci.</p>",
+        "en": "<p>Hello,</p><p>Under Article A6 of the Statement of Work for contract No. &lt;&lt;ContractNumber_EN&gt;&gt;, you are obliged to provide translation work that meets the quality and timeliness standards for official languages translation.</p><p>The quality control of translation request No. &lt;&lt;ProjectNumber_EN&gt;&gt; showed that the work was not satisfactorily completed in accordance with quality standards. When a translation does not meet the expected quality standards during a familiarization period, the Bureau will issue a warning. Warnings have no impact on the contractor's quality indicators and do not result in the termination of the contract or the suspension of the supply arrangement in whole or in part.</p><p>However, because Canada had to have the unsatisfactory work &lt;&lt;CorrectiveAction_EN&gt;&gt;, and pursuant to Article &lt;&lt;DamagesArticleNumber_EN&gt;&gt; <em>Damages and Interest</em> of the contract, the contractor will be required to pay Canada liquidated damages at the rate of $81.00 per hour multiplied by &lt;&lt;DamagesHours_EN&gt;&gt; hours to have the work &lt;&lt;CorrectiveAction_EN&gt;&gt;, for a total of $&lt;&lt;DamagesTotalAmount_EN&gt;&gt;. Canada will deduct that amount from the invoice.</p><p>Thank you.</p>"
+      },
+      "variables": [
+        "project_number",
+        "contract_number",
+        "corrective_action",
+        "damages_article_number",
+        "damages_hours",
+        "damages_total_amount"
+      ],
+      "utilisateur": [
+        "gestion",
+        "relations_fournisseurs"
+      ]
+    },
+    {
+      "id": "ctd054",
+      "category": "unsatisfactory",
+      "category_fr": "Fournisseurs externes - Qualité insatisfaisante",
+      "category_en": "External Providers - unsatisfactory quality",
+      "title": {
+        "fr": "Avis – Intention de résilier le contrat – contrats pré-2022 – sans déduction",
+        "en": "Notice – Intent to Terminate Contract – Pre-2022 contracts – No fee deduction"
+      },
+      "description": {
+        "fr": "Avis informant le fournisseur de l'intention du Canada de résilier le contrat pour manquement, sans déduction de frais",
+        "en": "Notice informing the supplier of Canada's intent to terminate the contract for default, with no fee deduction"
+      },
+      "subject": {
+        "fr": "Avis | Intention de résilier le contrat <<ContractNumber_FR>> (ou EP745-XXXXXX/XXX/ZF)",
+        "en": "Notice | Intent to Terminate Contract <<ContractNumber_EN>> (or EP745-XXXXXX/XXX/ZF)"
+      },
+      "body": {
+        "fr": "<p>Bonjour,</p><p>En vertu des dispositions de votre contrat &lt;&lt;ContractNumber_FR&gt;&gt; (LSO-X-XXXXX-XX ou EP745-XXXXXX/XXX/ZF) et des conditions générales qui le régissent, le Canada vous informe que le texte n<sup>o</sup> &lt;&lt;ProjectNumber_FR&gt;&gt; a été jugé insatisfaisant et que ceci consiste en un manquement à l’une de vos obligations prévues au contrat.</p><p>Veuillez prendre note qu’aucuns honoraires ne seront défalqués de la facture présentée pour la demande précitée, même si le contrat prévoit que le Canada peut déduire des frais de votre facture afin de le dédommager du coût additionnel lié à la production d’une traduction livrable.</p><p>Par ailleurs, conformément à l’article 29 des conditions générales 2035 de votre contrat, le Canada peut résilier le contrat pour manquement si l’entrepreneur manque à l’une de ses obligations prévues au contrat et suspendre l’arrangement en matière d’approvisionnement (AMA) conformément à l’article 9 des conditions générales 2020 de votre AMA.</p><p>Après consultation avec la haute gestion, le Bureau de la traduction ne souhaite pas poursuivre avec ce contrat. Le Bureau de la traduction demande donc à la Direction générale des approvisionnements de Services publics et approvisionnements Canada (ou le Centre d’approvisionnement du Bureau de la traduction) de résilier votre contrat aujourd’hui.</p><p>Si vous n’êtes pas d’accord avec le présent courriel, et que vous désirez contester l’avis de prestation insatisfaisante, veuillez faire parvenir vos observations par écrit selon les modalités décrites à l’article 5, <em>Mécanisme de contestation</em> de votre AMA (révision de l’AMA en vigueur le 1<sup>er</sup> septembre 2020), pour fins de réexamen.</p><p>Merci.</p>",
+        "en": "<p>Hello,</p><p>Under the provisions of your contract &lt;&lt;ContractNumber_EN&gt;&gt; (LSO-X-XXXXX-XX or EP745-XXXXXX/XXX/ZF) and the general conditions governing it, Canada informs you that text No. &lt;&lt;ProjectNumber_EN&gt;&gt; has been deemed unsatisfactory and that this consists a breach of one of your obligations under the contract.</p><p>Please note that no fees will be deducted from the invoice submitted for the aforementioned request even though the contract states that Canada may deduct costs from your invoice in order to compensate Canada for the additional costs relating to the production of a deliverable translation.</p><p>As per article 29 of the 2035 General Conditions of your contract, Canada may terminate for default the Contract when the Contractor is in default in carrying out any of its obligations under the Contract and suspend the Supply Arrangement (SA) as per article 9 of the 2020 General Conditions of your SA.</p><p>After consultation with higher management, the Translation Bureau does not wish to pursue with this contract. The Translation Bureau is asking the Acquisition Branch, Public Services and Procurement Canada (PSPC) (or the Translation Bureau Procurement Centre) to terminate your contract today.</p><p>If you do not agree with this email, and wish to dispute the notice of unsatisfactory performance, please send your comments in writing, as described in Article 5, <em>Challenge Mechanism</em> of your SA (SA revision effective September 1, 2020), for reconsideration.</p><p>Thank you.</p>"
+      },
+      "variables": [
+        "project_number",
+        "contract_number"
+      ],
+      "utilisateur": [
+        "gestion",
+        "relations_fournisseurs"
+      ]
+    },
+    {
+      "id": "ctd055",
+      "category": "unsatisfactory",
+      "category_fr": "Fournisseurs externes - Qualité insatisfaisante",
+      "category_en": "External Providers - unsatisfactory quality",
+      "title": {
+        "fr": "Avis – Intention de résilier le contrat – contrats pré-2022 – avec déduction",
+        "en": "Notice – Intent to Terminate Contract – Pre-2022 contracts – Fee deduction"
+      },
+      "description": {
+        "fr": "Avis informant le fournisseur de l'intention du Canada de résilier le contrat pour manquement, avec déduction de frais de la facture",
+        "en": "Notice informing the supplier of Canada's intent to terminate the contract for default, with fee deduction from the invoice"
+      },
+      "subject": {
+        "fr": "Avis | Intention de résilier le contrat <<ContractNumber_FR>> (ou EP745-XXXXXX/XXX/ZF)",
+        "en": "Notice | Intent to Terminate Contract <<ContractNumber_EN>> (or EP745-XXXXXX/XXX/ZF)"
+      },
+      "body": {
+        "fr": "<p>Bonjour,</p><p>En vertu des dispositions de votre contrat &lt;&lt;ContractNumber_FR&gt;&gt; (LSO-X-XXXXX-XX ou EP745-XXXXXX/XXX/ZF) et des conditions générales qui le régissent, le Canada vous informe que le texte n<sup>o</sup> &lt;&lt;ProjectNumber_FR&gt;&gt; a été jugé insatisfaisant et que ceci consiste en un manquement à l’une de vos obligations prévues au contrat.</p><p>Veuillez prendre note que le Canada déduira des frais de &lt;&lt;DeductionFeeAmount_FR&gt;&gt; $ (taxes non comprises) de votre facture afin de le dédommager du coût additionnel lié à la production d’une traduction livrable (voir article X.X (insérer le numéro d’article pour les dommages selon le contrat) du contrat pour plus d’information).</p><ul><li>Ancienne AMA : l’article <strong>13. Dommages et intérêts</strong></li><li>Nouvelle AMA : l’article <strong>21. Dommages et intérêts</strong></li></ul><p>Par ailleurs, conformément à l’article 29 des conditions générales 2035 de votre contrat, le Canada peut résilier le contrat pour manquement si l’entrepreneur manque à l’une de ses obligations prévues au contrat et suspendre l’arrangement en matière d’approvisionnement (AMA) conformément à l’article 9 des conditions générales 2020 de votre AMA.</p><p>Après consultation avec la haute gestion, le Bureau de la traduction ne souhaite pas poursuivre avec ce contrat. Le Bureau de la traduction demande donc à la Direction générale des approvisionnements de Services publics et approvisionnements Canada (ou le Centre d’approvisionnement du Bureau de la traduction) de résilier votre contrat aujourd’hui.</p><p>Si vous n’êtes pas d’accord avec le présent courriel, et que vous désirez contester l’avis de prestation insatisfaisante, veuillez faire parvenir vos observations par écrit selon les modalités décrites à l’article 5, <em>Mécanisme de contestation</em> de votre AMA (révision de l’AMA en vigueur le 1<sup>er</sup> septembre 2020), pour fins de réexamen.</p><p>Merci.</p>",
+        "en": "<p>Hello,</p><p>Under the provisions of your contract &lt;&lt;ContractNumber_EN&gt;&gt; (LSO-X-XXXXX-XX or EP745-XXXXXX/XXX/ZF) and the general conditions governing it, Canada informs you that text No. &lt;&lt;ProjectNumber_EN&gt;&gt; has been deemed unsatisfactory and that this consists a breach of one of your obligations under the contract.</p><p>Please note that Canada will deduct a fee of $&lt;&lt;DeductionFeeAmount_EN&gt;&gt; (excluding taxes) from your invoice in order to compensate Canada for the additional costs relating to the production of a deliverable translation (see Article X.X (insert article number for damages as per contract) of the contract for more information).</p><ul><li>Ancienne AMA : l’article <strong>13. Dommages et intérêts</strong></li><li>Nouvelle AMA : l’article <strong>21. Dommages et intérêts</strong></li></ul><p>As per article 29 of the 2035 General Conditions of your contract, Canada may terminate for default the Contract when the Contractor is in default in carrying out any of its obligations under the Contract and suspend the Supply Arrangement (SA) as per article 9 of the 2020 General Conditions of your SA.</p><p>After consultation with higher management, the Translation Bureau does not wish to pursue with this contract. The Translation Bureau is asking the Acquisition Branch, Public Services and Procurement Canada (PSPC) (or the Translation Bureau Procurement Centre) to terminate your contract today.</p><p>If you do not agree with this email, and wish to dispute the notice of unsatisfactory performance, please send your comments in writing, as described in Article 5, <em>Challenge Mechanism</em> of your SA (SA revision effective September 1, 2020), for reconsideration.</p><p>Thank you.</p>"
+      },
+      "variables": [
+        "project_number",
+        "contract_number",
+        "deduction_fee_amount"
+      ],
+      "utilisateur": [
+        "gestion",
+        "relations_fournisseurs"
+      ]
+    },
+    {
+      "id": "ctd056",
+      "category": "unsatisfactory",
+      "category_fr": "Fournisseurs externes - Qualité insatisfaisante",
+      "category_en": "External Providers - unsatisfactory quality",
+      "title": {
+        "fr": "Avis – Intention de résilier le contrat – contrats post-2022 – sans déduction",
+        "en": "Notice – Intent to Terminate Contract – Post-2022 contracts – No fee deduction"
+      },
+      "description": {
+        "fr": "Avis informant le fournisseur de l'intention du Canada de résilier le contrat pour manquement (ratio annuel de 5 % dépassé), sans déduction de frais",
+        "en": "Notice informing the supplier of Canada's intent to terminate the contract for default (annual 5% ratio exceeded), with no fee deduction"
+      },
+      "subject": {
+        "fr": "Avis | Intention de résilier le contrat <<ContractNumber_FR>> (ou EP745-XXXXXX/XXX/ZF)",
+        "en": "Notice | Intent to Terminate Contract <<ContractNumber_EN>> (or EP745-XXXXXX/XXX/ZF)"
+      },
+      "body": {
+        "fr": "<p>Bonjour,</p><p>En vertu des dispositions de votre contrat &lt;&lt;ContractNumber_FR&gt;&gt; (LSO-X-XXXXX-XX ou EP745-XXXXXX/XXX/ZF) et des conditions générales qui le régissent, le Canada vous informe que le texte n<sup>o</sup> &lt;&lt;ProjectNumber_FR&gt;&gt; a été jugé insatisfaisant et que ceci consiste en un manquement à l’une de vos obligations prévues au contrat.</p><p>Veuillez prendre note qu’aucuns honoraires ne seront défalqués de la facture présentée pour la demande précitée, même si le contrat prévoit que le Canada peut déduire des frais de votre facture afin de le dédommager du coût additionnel lié à la production d’une traduction livrable.</p><p>Par ailleurs, le Canada vous avise qu’il y a maintenant &lt;&lt;UnsatisfactoryTextCount_FR&gt;&gt; textes qui ont été jugés insatisfaisants pour ce contrat représentant plus de 5 % du volume que nous vous avons confié à ce jour.</p><p>Tel qu’indiqué à l’article 20.1 <em>Avis de prestation insatisfaisante</em> du contrat, le Canada peut résilier le contrat pour manquement à la troisième évaluation insatisfaisante et si le pourcentage de mots insatisfaisants dépasse le ratio annuel de 5 %. De plus, lorsqu’un contrat est résilié pour manquement, le Canada peut suspendre en partie ou en entier l’Arrangement en matière d’approvisionnement (AMA) du fournisseur pour une période déterminée conformément à l’article 6.12.1 <em>Suspensions pour prestations insatisfaisantes</em> de l’AMA.</p><p>Après consultation avec la haute gestion, le Bureau de la traduction ne souhaite pas poursuivre avec ce contrat. Le Bureau de la traduction demande donc à la Direction générale des approvisionnements de Services publics et approvisionnements Canada (ou le Centre d’approvisionnement du Bureau de la traduction) de résilier votre contrat aujourd’hui.</p><p>Si vous n’êtes pas d’accord avec le présent courriel, et que vous désirez contester l’avis de prestation insatisfaisante, veuillez faire parvenir vos observations par écrit selon les modalités décrites à l’article 20.3 <em>Mécanisme de contestation suite à un avis de prestation insatisfaisante</em> de votre contrat, pour fins de réexamen.</p><p>Merci.</p>",
+        "en": "<p>Hello,</p><p>Under the provisions of your contract &lt;&lt;ContractNumber_EN&gt;&gt; (LSO-X-XXXXX-XX or EP745-XXXXXX/XXX/ZF) and the general conditions governing it, Canada informs you that text No. &lt;&lt;ProjectNumber_EN&gt;&gt; has been deemed unsatisfactory and that this consists a breach of one of your obligations under the contract.</p><p>Please note that no fees will be deducted from the invoice submitted for the aforementioned request even though the contract states that Canada may deduct costs from your invoice in order to compensate Canada for the additional costs relating to the production of a deliverable translation.</p><p>In addition, Canada advises you that there are now &lt;&lt;UnsatisfactoryTextCount_EN&gt;&gt; unsatisfactory evaluations for this contract representing more than 5% of the volume we have sent you this contract period.</p><p>As per Article 20.1 <em>Notice of Unsatisfactory Performance</em> of the contract, Canada may terminate the contract for default on the third unsatisfactory evaluation and if the percentage of unsatisfactory words exceeds the annual ratio of 5%. In addition, when a contract is terminated for default, Canada may suspend the supplier's supply arrangement (SA) in whole or in part for a specified period as indicated at Article 6.12.1 <em>Suspensions for Unsatisfactory Performance</em>, of the SA.</p><p>After consultation with higher management, the Translation Bureau does not wish to pursue with this contract. The Translation Bureau is asking the Acquisition Branch, Public Services and Procurement Canada (PSPC) (or the Translation Bureau Procurement Centre) to terminate your contract today.</p><p>If you do not agree with this email, and wish to dispute the notice of unsatisfactory performance, please send your comments in writing, as described in Article 20.3 <em>Challenge mechanism following a notice of unsatisfactory performance</em> of the contract, for reconsideration.</p><p>Thank you.</p>"
+      },
+      "variables": [
+        "project_number",
+        "contract_number",
+        "unsatisfactory_text_count"
+      ],
+      "utilisateur": [
+        "gestion",
+        "relations_fournisseurs"
+      ]
+    },
+    {
+      "id": "ctd057",
+      "category": "unsatisfactory",
+      "category_fr": "Fournisseurs externes - Qualité insatisfaisante",
+      "category_en": "External Providers - unsatisfactory quality",
+      "title": {
+        "fr": "Avis – Intention de résilier le contrat – contrats post-2022 – avec déduction",
+        "en": "Notice – Intent to Terminate Contract – Post-2022 contracts – Fee deduction"
+      },
+      "description": {
+        "fr": "Avis informant le fournisseur de l'intention du Canada de résilier le contrat pour manquement (ratio annuel de 5 % dépassé), avec déduction de frais de la facture",
+        "en": "Notice informing the supplier of Canada's intent to terminate the contract for default (annual 5% ratio exceeded), with fee deduction from the invoice"
+      },
+      "subject": {
+        "fr": "Avis | Intention de résilier le contrat <<ContractNumber_FR>> (ou EP745-XXXXXX/XXX/ZF)",
+        "en": "Notice | Intent to Terminate Contract <<ContractNumber_EN>> (or EP745-XXXXXX/XXX/ZF)"
+      },
+      "body": {
+        "fr": "<p>Bonjour,</p><p>En vertu des dispositions de votre contrat &lt;&lt;ContractNumber_FR&gt;&gt; (LSO-X-XXXXX-XX ou EP745-XXXXXX/XXX/ZF) et des conditions générales qui le régissent, le Canada vous informe que le texte n<sup>o</sup> &lt;&lt;ProjectNumber_FR&gt;&gt; a été jugé insatisfaisant et que ceci consiste en un manquement à l’une de vos obligations prévues au contrat.</p><p>Veuillez prendre note que le Canada déduira des frais de &lt;&lt;DeductionFeeAmount_FR&gt;&gt; $ (taxes non comprises) de votre facture afin de le dédommager du coût additionnel lié à la production d’une traduction livrable (voir article X.X (insérer le numéro d’article pour les dommages selon le contrat) du contrat pour plus d’information).</p><ul><li>Ancienne AMA : l’article <strong>13. Dommages et intérêts</strong></li><li>Nouvelle AMA : l’article <strong>21. Dommages et intérêts</strong></li></ul><p>Par ailleurs, le Canada vous avise qu’il y a maintenant &lt;&lt;UnsatisfactoryTextCount_FR&gt;&gt; textes qui ont été jugés insatisfaisants pour ce contrat représentant plus de 5 % du volume que nous vous avons confié à ce jour.</p><p>Tel qu’indiqué à l’article 20.1 <em>Avis de prestation insatisfaisante</em> du contrat, le Canada peut résilier le contrat pour manquement à la troisième évaluation insatisfaisante et si le pourcentage de mots insatisfaisants dépasse le ratio annuel de 5 %. De plus, lorsqu’un contrat est résilié pour manquement, le Canada peut suspendre en partie ou en entier l’Arrangement en matière d’approvisionnement (AMA) du fournisseur pour une période déterminée conformément à l’article 6.12.1 <em>Suspensions pour prestations insatisfaisantes</em> de l’AMA.</p><p>Après consultation avec la haute gestion, le Bureau de la traduction ne souhaite pas poursuivre avec ce contrat. Le Bureau de la traduction demande donc à la Direction générale des approvisionnements de Services publics et approvisionnements Canada (ou le Centre d’approvisionnement du Bureau de la traduction) de résilier votre contrat aujourd’hui.</p><p>Si vous n’êtes pas d’accord avec le présent courriel, et que vous désirez contester l’avis de prestation insatisfaisante, veuillez faire parvenir vos observations par écrit selon les modalités décrites à l’article 20.3 <em>Mécanisme de contestation suite à un avis de prestation insatisfaisante</em> de votre contrat, pour fins de réexamen.</p><p>Merci.</p>",
+        "en": "<p>Hello,</p><p>Under the provisions of your contract &lt;&lt;ContractNumber_EN&gt;&gt; (LSO-X-XXXXX-XX or EP745-XXXXXX/XXX/ZF) and the general conditions governing it, Canada informs you that text No. &lt;&lt;ProjectNumber_EN&gt;&gt; has been deemed unsatisfactory and that this consists a breach of one of your obligations under the contract.</p><p>Please note that Canada will deduct a fee of $&lt;&lt;DeductionFeeAmount_EN&gt;&gt; (excluding taxes) from your invoice in order to compensate Canada for the additional costs relating to the production of a deliverable translation (see Article X.X (insert article number for damages as per contract) of the contract for more information).</p><ul><li>Ancienne AMA : l’article <strong>13. Dommages et intérêts</strong></li><li>Nouvelle AMA : l’article <strong>21. Dommages et intérêts</strong></li></ul><p>In addition, Canada advises you that there are now &lt;&lt;UnsatisfactoryTextCount_EN&gt;&gt; unsatisfactory evaluations for this contract representing more than 5% of the volume we have sent you this contract period.</p><p>As per Article 20.1 <em>Notice of Unsatisfactory Performance</em> of the contract, Canada may terminate the contract for default on the third unsatisfactory evaluation and if the percentage of unsatisfactory words exceeds the annual ratio of 5%. In addition, when a contract is terminated for default, Canada may suspend the supplier's supply arrangement (SA) in whole or in part for a specified period as indicated at Article 6.12.1 <em>Suspensions for Unsatisfactory Performance</em>, of the SA.</p><p>After consultation with higher management, the Translation Bureau does not wish to pursue with this contract. The Translation Bureau is asking the Acquisition Branch, Public Services and Procurement Canada (PSPC) (or the Translation Bureau Procurement Centre) to terminate your contract today.</p><p>If you do not agree with this email, and wish to dispute the notice of unsatisfactory performance, please send your comments in writing, as described in Article 20.3 <em>Challenge mechanism following a notice of unsatisfactory performance</em> of the contract, for reconsideration.</p><p>Thank you.</p>"
+      },
+      "variables": [
+        "project_number",
+        "contract_number",
+        "deduction_fee_amount",
+        "unsatisfactory_text_count"
+      ],
+      "utilisateur": [
+        "gestion",
+        "relations_fournisseurs"
+      ]
+    },
+    {
+      "id": "ctd058",
+      "category": "unsatisfactory",
+      "category_fr": "Fournisseurs externes - Qualité insatisfaisante",
+      "category_en": "External Providers - unsatisfactory quality",
+      "title": {
+        "fr": "Avis d'avertissement (qualité) – contrats pré-2022",
+        "en": "Notice of Warning (Quality) – Pre-2022 contracts"
+      },
+      "description": {
+        "fr": "Avertissement pour des corrections apportées lors du contrôle de la qualité, sans évaluation insatisfaisante versée au dossier",
+        "en": "Warning for corrections made during quality control, with no unsatisfactory evaluation placed on file"
+      },
+      "subject": {
+        "fr": "Avis d'avertissement (qualité) – texte n° <<ProjectNumber_FR>> (contrat n° <<ContractNumber_FR>>)",
+        "en": "Notice of Warning (Quality) – Translation Request No. <<ProjectNumber_EN>> (Contract No. <<ContractNumber_EN>>)"
+      },
+      "body": {
+        "fr": "<p>Bonjour,</p><p>Nous avons procédé au contrôle de la qualité de la traduction n<sup>o</sup> &lt;&lt;ProjectNumber_FR&gt;&gt;. Le texte était bien traduit dans son ensemble, mais nous avons tout de même dû y apporter des corrections.</p><p>Dans le cadre de cette demande, aucune évaluation insatisfaisante ne sera versée au dossier, mais nous tenons à vous faire part des commentaires ci-joint, pour l’avenir.</p><p>Nos interventions visent simplement à remettre au client des textes conformes aux normes de qualité énoncées dans votre contrat (voir article A7 de l’Énoncé des travaux).</p><p>Nous vous remercions de votre collaboration habituelle et, le cas échéant, vous invitons à nous adresser vos questions.</p>",
+        "en": "<p>Hello,</p><p>This is to advise you that translation request No. &lt;&lt;ProjectNumber_EN&gt;&gt; has undergone quality control. The text was well done overall, but we did have to make some corrections.</p><p>Please note that no unsatisfactory evaluation for this request will be placed on your file, but we would like to provide you with the attached comments for future reference.</p><p>The purpose of quality control is simply to ensure that our clients receive translations that meet the quality standards set out in your contract (see Article A7 of the Statement of Work).</p><p>Thank you for your continued cooperation. Please contact us if you have any questions.</p>"
+      },
+      "variables": [
+        "project_number",
+        "contract_number"
+      ],
+      "utilisateur": [
+        "gestion",
+        "relations_fournisseurs"
+      ]
+    },
+    {
+      "id": "ctd059",
+      "category": "unsatisfactory",
+      "category_fr": "Fournisseurs externes - Qualité insatisfaisante",
+      "category_en": "External Providers - unsatisfactory quality",
+      "title": {
+        "fr": "Avis d'avertissement (qualité) – contrats post-2022",
+        "en": "Notice of Warning (Quality) – Post-2022 contracts"
+      },
+      "description": {
+        "fr": "Avertissement pour des corrections apportées lors du contrôle de la qualité, sans évaluation insatisfaisante versée au dossier",
+        "en": "Warning for corrections made during quality control, with no unsatisfactory evaluation placed on file"
+      },
+      "subject": {
+        "fr": "Avis d'avertissement (qualité) – texte n° <<ProjectNumber_FR>> (contrat n° <<ContractNumber_FR>>)",
+        "en": "Notice of Warning (Quality) – Translation Request No. <<ProjectNumber_EN>> (Contract No. <<ContractNumber_EN>>)"
+      },
+      "body": {
+        "fr": "<p>Bonjour,</p><p>Nous avons procédé au contrôle de la qualité de la traduction n<sup>o</sup> &lt;&lt;ProjectNumber_FR&gt;&gt;. Le texte était bien traduit dans son ensemble, mais nous avons tout de même dû y apporter des corrections.</p><p>Dans le cadre de cette demande, aucune évaluation insatisfaisante ne sera versée au dossier, mais nous tenons à vous faire part des commentaires ci-joint, pour l’avenir.</p><p>Nos interventions visent simplement à remettre au client des textes conformes aux normes de qualité et respect des délais pour la traduction en langues officielles énoncées dans votre contrat (voir article A6 de l’Énoncé des travaux).</p><p>Nous vous remercions de votre collaboration habituelle et, le cas échéant, vous invitons à nous adresser vos questions.</p>",
+        "en": "<p>Hello,</p><p>This is to advise you that translation request No. &lt;&lt;ProjectNumber_EN&gt;&gt; has undergone quality control. The text was well done overall, but we did have to make some corrections.</p><p>Please note that no unsatisfactory evaluation for this request will be placed on your file, but we would like to provide you with the attached comments for future reference.</p><p>The purpose of quality control is simply to ensure that our clients receive translations that meet the quality and timeliness standards for official languages translation that are set out in your contract (see Article A6 of the Statement of Work).</p><p>Thank you for your continued cooperation. Please contact us if you have any questions.</p>"
+      },
+      "variables": [
+        "project_number",
+        "contract_number"
+      ],
+      "utilisateur": [
+        "gestion",
+        "relations_fournisseurs"
+      ]
+    },
+    {
+      "id": "ctd060",
+      "category": "unsatisfactory",
+      "category_fr": "Fournisseurs externes - Qualité insatisfaisante",
+      "category_en": "External Providers - unsatisfactory quality",
+      "title": {
+        "fr": "Avis de prestation insatisfaisante (qualité) – non-paiement – contrats pré-2022",
+        "en": "Notice of Unsatisfactory Performance (Quality) – No Payment – Pre-2022 contracts"
+      },
+      "description": {
+        "fr": "Avis informant le fournisseur que le Canada rejette le document livré et ne paiera aucune facture, en raison d'une qualité non conforme",
+        "en": "Notice informing the supplier that Canada rejects the delivered document and will not pay any invoice, due to non-compliant quality"
+      },
+      "subject": {
+        "fr": "Avis de prestation insatisfaisante (qualité) – texte n° <<ProjectNumber_FR>> (contrat n° <<ContractNumber_FR>>) | non-paiement",
+        "en": "Notice of Unsatisfactory Performance (Quality) – Translation Request No. <<ProjectNumber_EN>> (Contract No. <<ContractNumber_EN>>) | No Payment"
+      },
+      "body": {
+        "fr": "<p>Bonjour,</p><p>En vertu de l’article A4.7 de l’énoncé des travaux du contrat n<sup>o</sup> &lt;&lt;ContractNumber_FR&gt;&gt; (ou EP745-XXXXXX/XXX/ZF), vous êtes tenu de fournir les travaux de traduction conformément aux normes de qualité pour la traduction en langues officielles.</p><p>Le contrôle de la qualité du document n<sup>o</sup> &lt;&lt;ProjectNumber_FR&gt;&gt; a révélé que les travaux n’ont pas été exécutés de manière satisfaisante et conforme aux normes de qualité. <mark>Malgré les commentaires qui vous ont été fournis ainsi que la demande de rectification envoyée le &lt;&lt;FeedbackDate_FR&gt;&gt;, la qualité du texte demeure insatisfaisante et non conforme aux normes de qualité. <em>(à retirer si non applicable)</em></mark></p><p>Puisque vous n’avez pas respecté les obligations prévues au contrat, et conformément aux conditions générales 2035 du contrat, le Canada n’accepte pas le document n<sup>o</sup> &lt;&lt;ProjectNumber_FR&gt;&gt; et ne paiera aucune facture afférente à cette traduction. Vous trouverez ci-après la rétroaction du réviseur ainsi que le document n<sup>o</sup> &lt;&lt;ProjectNumber_FR&gt;&gt; que vous nous avez remis le &lt;&lt;DeliveryDate_FR&gt;&gt;.</p><p>Si vous n’êtes pas d’accord avec le présent courriel, et que vous désirez contester l’avis de prestation insatisfaisante, veuillez faire parvenir vos observations par écrit selon les modalités décrites à l’article 5, <em>Mécanisme de contestation</em> de votre arrangement en matière d’approvisionnement (révision de l’AMA en vigueur le 1 septembre 2020), pour fins de réexamen.</p><p>Veuillez prendre note que cette évaluation insatisfaisante sera versée à votre dossier. Comme stipulé à l’article 4, <em>Prestations insatisfaisantes relatives à la qualité et au respect des délais</em> de votre arrangement en matière d’approvisionnement (révision de l’AMA en vigueur le 1<sup>er</sup> septembre 2020), les avis de prestations insatisfaisantes ont une incidence sur l’indice de qualité et peuvent entraîner la résiliation d’un contrat et la suspension de l’AMA du fournisseur, en partie ou en entier.</p><p>Merci.</p>",
+        "en": "<p>Hello,</p><p>Under Article A4.7 of the Statement of Work for contract No. &lt;&lt;ContractNumber_EN&gt;&gt; (or EP745-XXXXXX/XXX/ZF), you are obliged to provide translation work that meets the quality standards for official languages translation.</p><p>The quality control of translation request No. &lt;&lt;ProjectNumber_EN&gt;&gt; showed that the work was not satisfactorily completed in accordance with quality standards. <mark>Despite the comments provided to you and the rectification request sent on &lt;&lt;FeedbackDate_EN&gt;&gt;, the quality of the text is still unsatisfactory and does not meet standards. <em>(remove if not applicable)</em></mark></p><p>Since you did not meet the obligations set out in your contract, and in accordance with General Conditions 2035 of your contract, Canada does not accept translation request No. &lt;&lt;ProjectNumber_EN&gt;&gt; and will not pay any invoice relating to this translation. Attached please find feedback from the reviser as well as translation request No. &lt;&lt;ProjectNumber_EN&gt;&gt;, which you submitted to us on &lt;&lt;DeliveryDate_EN&gt;&gt;.</p><p>If you disagree with this email and wish to challenge the notice of unsatisfactory performance, please send your comments in writing, as described in Article 5, <em>Challenge Mechanism</em>, of your supply arrangement (SA revision effective September 1, 2020), for reconsideration.</p><p>Please note that this unsatisfactory evaluation will be placed on your file. As stated in Article 4, <em>Unsatisfactory Performance with Respect to Quality and Timeliness</em>, of your supply arrangement (SA revision effective September 1, 2020), notices of unsatisfactory performance affect the quality indicator and may result in termination of the contract and suspension of the supply arrangement in whole or in part.</p><p>Thank you.</p>"
+      },
+      "variables": [
+        "project_number",
+        "contract_number",
+        "feedback_date",
+        "delivery_date"
+      ],
+      "utilisateur": [
+        "gestion",
+        "relations_fournisseurs"
+      ]
+    },
+    {
+      "id": "ctd061",
+      "category": "unsatisfactory",
+      "category_fr": "Fournisseurs externes - Qualité insatisfaisante",
+      "category_en": "External Providers - unsatisfactory quality",
+      "title": {
+        "fr": "Avis de prestation insatisfaisante (qualité) – non-paiement – contrats post-2022",
+        "en": "Notice of Unsatisfactory Performance (Quality) – No Payment – Post-2022 contracts"
+      },
+      "description": {
+        "fr": "Avis informant le fournisseur que le Canada rejette le document livré et ne paiera aucune facture, en raison d'une qualité non conforme",
+        "en": "Notice informing the supplier that Canada rejects the delivered document and will not pay any invoice, due to non-compliant quality"
+      },
+      "subject": {
+        "fr": "Avis de prestation insatisfaisante (qualité) – texte n° <<ProjectNumber_FR>> (contrat n° <<ContractNumber_FR>>) | non-paiement",
+        "en": "Notice of Unsatisfactory Performance (Quality) – Translation Request No. <<ProjectNumber_EN>> (Contract No. <<ContractNumber_EN>>) | No Payment"
+      },
+      "body": {
+        "fr": "<p>Bonjour,</p><p>En vertu de l’article A6 de l’énoncé des travaux du contrat n<sup>o</sup> &lt;&lt;ContractNumber_FR&gt;&gt; (ou EP745-XXXXXX/XXX/ZF), vous êtes tenu de fournir les travaux de traduction conformément aux normes de qualité et respect des délais pour la traduction en langues officielles.</p><p>Le contrôle de la qualité du document n<sup>o</sup> &lt;&lt;ProjectNumber_FR&gt;&gt; a révélé que les travaux n’ont pas été exécutés de manière satisfaisante et conforme aux normes de qualité. <mark>Malgré les commentaires qui vous ont été fournis ainsi que la demande de rectification envoyée le &lt;&lt;FeedbackDate_FR&gt;&gt;, la qualité du texte demeure insatisfaisante et non conforme aux normes de qualité. <em>(à retirer si non applicable)</em></mark></p><p>Puisque vous n’avez pas respecté les obligations prévues au contrat, et conformément aux conditions générales 2035 du contrat, le Canada n’accepte pas le document n<sup>o</sup> &lt;&lt;ProjectNumber_FR&gt;&gt; et ne paiera aucune facture afférente à cette traduction. Vous trouverez ci-après la rétroaction du réviseur ainsi que le document n<sup>o</sup> &lt;&lt;ProjectNumber_FR&gt;&gt; que vous nous avez remis le &lt;&lt;DeliveryDate_FR&gt;&gt;.</p><p>Si vous n’êtes pas d’accord avec le présent courriel, et que vous désirez contester l’avis de prestation insatisfaisante, veuillez faire parvenir vos observations par écrit selon les modalités décrites à l’article 20.3 <em>Mécanisme de contestation suite à un avis de prestation insatisfaisante</em> de votre contrat, pour fins de réexamen.</p><p>Veuillez prendre note que cette évaluation insatisfaisante sera versée à votre dossier. Comme stipulé à l’article 20.1 <em>Avis de prestations insatisfaisantes</em> du contrat, les avis de prestations insatisfaisantes ont une incidence sur l’indice de qualité et peuvent entraîner la résiliation d’un contrat et la suspension de l’AMA du fournisseur, en partie ou en entier.</p><p>Merci.</p>",
+        "en": "<p>Hello,</p><p>Under Article A6 of the Statement of Work for contract No. &lt;&lt;ContractNumber_EN&gt;&gt; (or EP745-XXXXXX/XXX/ZF), you are obliged to provide translation work that meets the quality and timeliness standards for official languages translation.</p><p>The quality control of translation request No. &lt;&lt;ProjectNumber_EN&gt;&gt; showed that the work was not satisfactorily completed in accordance with quality standards. <mark>Despite the comments provided to you and the rectification request sent on &lt;&lt;FeedbackDate_EN&gt;&gt;, the quality of the text is still unsatisfactory and does not meet standards. <em>(remove if not applicable)</em></mark></p><p>Since you did not meet the obligations set out in your contract, and in accordance with General Conditions 2035 of your contract, Canada does not accept translation request No. &lt;&lt;ProjectNumber_EN&gt;&gt; and will not pay any invoice relating to this translation. Attached please find feedback from the reviser as well as translation request No. &lt;&lt;ProjectNumber_EN&gt;&gt;, which you submitted to us on &lt;&lt;DeliveryDate_EN&gt;&gt;.</p><p>If you disagree with this email and wish to challenge the notice of unsatisfactory performance, please send your comments in writing, as described in clause 20.3, <em>Challenge Mechanism Following a Notice of Unsatisfactory Performance</em>, of your contract, for reconsideration.</p><p>Please note that this unsatisfactory evaluation will be placed on your file. As stated in clause 20.1, <em>Notice of Unsatisfactory Performance</em>, of your contract, notices of unsatisfactory performance affect the quality indicator and may result in termination of the contract and suspension of the supply arrangement in whole or in part.</p><p>Thank you.</p>"
+      },
+      "variables": [
+        "project_number",
+        "contract_number",
+        "feedback_date",
+        "delivery_date"
+      ],
+      "utilisateur": [
+        "gestion",
+        "relations_fournisseurs"
+      ]
+    },
+    {
+      "id": "ctd062",
+      "category": "unsatisfactory",
+      "category_fr": "Fournisseurs externes - Qualité insatisfaisante",
+      "category_en": "External Providers - unsatisfactory quality",
+      "title": {
+        "fr": "Avis de prestation insatisfaisante (qualité) – reprise des travaux – contrats pré-2022",
+        "en": "Notice of Unsatisfactory Performance (Quality) – Request to Redo Work – Pre-2022 contracts"
+      },
+      "description": {
+        "fr": "Avis exigeant que le fournisseur reprenne les travaux jugés insatisfaisants, avec nouvelle échéance",
+        "en": "Notice requiring the supplier to redo work deemed unsatisfactory, with a new deadline"
+      },
+      "subject": {
+        "fr": "Avis de prestation insatisfaisante (qualité) – reprise des travaux – texte n° <<ProjectNumber_FR>> (contrat n° <<ContractNumber_FR>>)",
+        "en": "Notice of Unsatisfactory Performance (Quality) – Request to Redo Work – Translation Request No. <<ProjectNumber_EN>> (Contract No. <<ContractNumber_EN>>)"
+      },
+      "body": {
+        "fr": "<p>Bonjour,</p><p>En vertu de l’article A4.7 de l’énoncé des travaux du contrat n<sup>o</sup> &lt;&lt;ContractNumber_FR&gt;&gt; (ou EP745-XXXXXX/XXX/ZF), vous êtes tenu de fournir les travaux de traduction conformément aux normes de qualité pour la traduction en langues officielles.</p><p>Par la présente, le Canada vous informe que le texte n<sup>o</sup> &lt;&lt;ProjectNumber_FR&gt;&gt; a été jugé insatisfaisant. Comme stipulé à l’article 4, <em>Prestations insatisfaisantes relatives à la qualité et au respect des délais</em> de votre arrangement en matière d’approvisionnement (révision de l’AMA en vigueur le 1 septembre 2020), les avis de prestations insatisfaisantes ont une incidence sur l’indice de qualité et peuvent entraîner la résiliation d’un contrat pour manquement et la suspension de l’AMA du fournisseur.</p><p>Comme stipulé à l’article 11 des conditions générales 2035 du contrat, le Canada exige que vous repreniez les travaux insatisfaisants. Vous trouverez ci-joint une nouvelle autorisation de tâches pour les travaux à reprendre. Veuillez nous faire parvenir les travaux complétés au plus tard le &lt;&lt;ReworkDeadline_FR&gt;&gt;. Si vous refuser de reprendre le travail, vous serez en manquement à vos obligations contractuelles et le Canada pourrait résilier votre contrat et suspendre le domaine du contrat pour une période déterminée.</p><p>Si vous n’êtes pas d’accord avec le présent courriel, et que vous désirez contester l’avis de prestation insatisfaisante, veuillez faire parvenir vos observations par écrit selon les modalités décrites à l’article 5, <em>Mécanisme de contestation</em> de votre AMA (révision de l’AMA en vigueur le 1 septembre 2020), pour fins de réexamen.</p><p>Veuillez prendre note que cette évaluation insatisfaisante sera versée à votre dossier.</p><p>Merci.</p>",
+        "en": "<p>Hello,</p><p>Under Article A4.7 of the Statement of Work for contract No &lt;&lt;ContractNumber_EN&gt;&gt; (or EP745-XXXXXX/XXX/ZF), you are obliged to provide translation work that meets the quality standards for official languages translation.</p><p>Canada hereby advises you that translation request No. &lt;&lt;ProjectNumber_EN&gt;&gt; was deemed to be unsatisfactory. As stated in Article 4, <em>Unsatisfactory Performance with Respect to Quality and Timeliness</em>, of your supply arrangement (SA revision effective September 1, 2020), notices of unsatisfactory performance affect the quality indicator and may result in termination of the contract for default and suspension of the supply arrangement.</p><p>As set out in section 11 of General Conditions 2035 of your contract, Canada requires you to redo the unsatisfactory work. Attached is a new task authorization for the work to be redone. Please submit the completed work by &lt;&lt;ReworkDeadline_EN&gt;&gt;. If you refuse to redo the work, you will be in default of your contractual obligations and Canada may terminate the contract and suspend the field of the contract for a specified period.</p><p>If you disagree with this email and wish to challenge the notice of unsatisfactory performance, please send your comments in writing, as described in Article 5, <em>Challenge Mechanism</em>, of your supply arrangement (SA revision effective September 1, 2020), for reconsideration.</p><p>Please note that this unsatisfactory evaluation will be placed on your file.</p><p>Thank you.</p>"
+      },
+      "variables": [
+        "project_number",
+        "contract_number",
+        "rework_deadline"
+      ],
+      "utilisateur": [
+        "gestion",
+        "relations_fournisseurs"
+      ]
+    },
+    {
+      "id": "ctd063",
+      "category": "unsatisfactory",
+      "category_fr": "Fournisseurs externes - Qualité insatisfaisante",
+      "category_en": "External Providers - unsatisfactory quality",
+      "title": {
+        "fr": "Avis de prestation insatisfaisante (qualité) – reprise des travaux – contrats post-2022",
+        "en": "Notice of Unsatisfactory Performance (Quality) – Request to Redo Work – Post-2022 contracts"
+      },
+      "description": {
+        "fr": "Avis exigeant que le fournisseur reprenne les travaux jugés insatisfaisants, avec nouvelle échéance",
+        "en": "Notice requiring the supplier to redo work deemed unsatisfactory, with a new deadline"
+      },
+      "subject": {
+        "fr": "Avis de prestation insatisfaisante (qualité) – reprise des travaux – texte n° <<ProjectNumber_FR>> (contrat n° <<ContractNumber_FR>>)",
+        "en": "Notice of Unsatisfactory Performance (Quality) – Request to Redo Work – Translation Request No. <<ProjectNumber_EN>> (Contract No. <<ContractNumber_EN>>)"
+      },
+      "body": {
+        "fr": "<p>Bonjour,</p><p>En vertu de l’article A6 de l’énoncé des travaux du contrat n<sup>o</sup> &lt;&lt;ContractNumber_FR&gt;&gt; (ou EP745-XXXXXX/XXX/ZF), vous êtes tenu de fournir les travaux de traduction conformément aux normes de qualité et respect des délais pour la traduction en langues officielles.</p><p>Par la présente, le Canada vous informe que le texte n<sup>o</sup> &lt;&lt;ProjectNumber_FR&gt;&gt; a été jugé insatisfaisant. Comme stipulé à l’article 20.1 <em>Avis de prestations insatisfaisantes</em> du contrat, les avis de prestations insatisfaisantes ont une incidence sur l’indice de qualité et peuvent entraîner la résiliation d’un contrat pour manquement et la suspension de l’AMA du fournisseur, en partie ou en entier.</p><p>Comme stipulé à l’article 20.2 <em>Reprise des travaux</em>, le Canada exige que vous repreniez les travaux insatisfaisants. Vous trouverez ci-joint une nouvelle autorisation de tâches pour les travaux à reprendre. Veuillez nous faire parvenir les travaux complétés au plus tard le &lt;&lt;ReworkDeadline_FR&gt;&gt;. Si vous refuser de reprendre le travail, vous serez en manquement à vos obligations contractuelles et le Canada pourrait résilier votre contrat et suspendre le domaine du contrat pour une période déterminée.</p><p>Si vous n’êtes pas d’accord avec le présent courriel, et que vous désirez contester l’avis de prestation insatisfaisante, veuillez faire parvenir vos observations par écrit selon les modalités décrites à l’article 20.3 <em>Mécanisme de contestation suite à un avis de prestation insatisfaisante</em> de votre contrat, pour fins de réexamen.</p><p>Veuillez prendre note que cette évaluation insatisfaisante sera versée à votre dossier.</p><p>Merci.</p>",
+        "en": "<p>Hello,</p><p>Under Article A6 of the Statement of Work for contract No. &lt;&lt;ContractNumber_EN&gt;&gt; (or EP745-XXXXXX/XXX/ZF), you are obliged to provide translation work that meets the quality and timeliness standards for official languages translation.</p><p>Canada hereby advises you that translation request No. &lt;&lt;ProjectNumber_EN&gt;&gt; was deemed to be unsatisfactory. As stated in clause 20.1, <em>Notice of Unsatisfactory Performance</em>, of your contract, notices of unsatisfactory performance affect the quality indicator and may result in termination of the contract for default and suspension of the supply arrangement in whole or in part.</p><p>As set out in clause 20.2, <em>Redoing the Work</em>, Canada requires you to redo the unsatisfactory work. Attached is a new task authorization for the work to be redone. Please submit the completed work by &lt;&lt;ReworkDeadline_EN&gt;&gt;. If you refuse to redo the work, you will be in default of your contractual obligations and Canada may terminate the contract and suspend the field of the contract for a specified period.</p><p>If you disagree with this email and wish to challenge the notice of unsatisfactory performance, please send your comments in writing, as described in clause 20.3, <em>Challenge Mechanism Following a Notice of Unsatisfactory Performance</em>, of your contract, for reconsideration.</p><p>Please note that this unsatisfactory evaluation will be placed on your file.</p><p>Thank you.</p>"
+      },
+      "variables": [
+        "project_number",
+        "contract_number",
+        "rework_deadline"
+      ],
+      "utilisateur": [
+        "gestion",
+        "relations_fournisseurs"
+      ]
+    },
+    {
+      "id": "ctd064",
+      "category": "unsatisfactory",
+      "category_fr": "Fournisseurs externes - Qualité insatisfaisante",
+      "category_en": "External Providers - unsatisfactory quality",
+      "title": {
+        "fr": "Avis de prestation insatisfaisante (qualité) – reprise toujours insatisfaisante – contrats pré-2022 – sans déduction",
+        "en": "Notice of Unsatisfactory Performance (Quality) – Redone Work Still Unsatisfactory – Pre-2022 contracts – No fee deduction"
+      },
+      "description": {
+        "fr": "Avis informant le fournisseur que la reprise des travaux demeure insatisfaisante, sans déduction de frais",
+        "en": "Notice informing the supplier that the redone work remains unsatisfactory, with no fee deduction"
+      },
+      "subject": {
+        "fr": "Avis de prestation insatisfaisante (qualité) – Reprise des travaux – texte n° <<ProjectNumber_FR>> (contrat n° <<ContractNumber_FR>>)",
+        "en": "Notice of Unsatisfactory Performance (Quality) – Redone Work – Translation Request No. <<ProjectNumber_EN>> (Contract No. <<ContractNumber_EN>>)"
+      },
+      "body": {
+        "fr": "<p>Bonjour,</p><p>Par la présente, le Canada vous informe que la reprise du texte n<sup>o</sup> &lt;&lt;ProjectNumber_FR&gt;&gt; demeure insatisfaisante et non conforme aux normes de qualité et respect des délais pour la traduction en langues officielles décrites à l’article A4.7 de l’énoncé des travaux du contrat n<sup>o</sup> &lt;&lt;ContractNumber_FR&gt;&gt; (ou EP745-XXXXXX/XXX/ZF). Vous trouverez ci-après la rétroaction du réviseur ainsi que le document n<sup>o</sup> &lt;&lt;ProjectNumber_FR&gt;&gt; que vous nous avez remis le &lt;&lt;DeliveryDate_FR&gt;&gt;.</p><p>Comme stipulé à l’article 4, <em>Prestations insatisfaisantes relatives à la qualité et au respect des délais</em> de votre arrangement en matière d’approvisionnement (révision de l’AMA en vigueur le 1<sup>er</sup> septembre 2020), les avis de prestations insatisfaisantes ont une incidence sur l’indice de qualité et peuvent entraîner la résiliation d’un contrat et la suspension de l’AMA du fournisseur, en partie ou en entier.</p><p>Veuillez prendre note qu’aucuns honoraires ne seront défalqués de la facture présentée pour la demande précitée, même si le contrat prévoit que le Canada peut déduire des frais de votre facture afin de le dédommager du coût additionnel lié à la production d’une traduction livrable.</p><p>Si vous n’êtes pas d’accord avec le présent courriel, et que vous désirez contester l’avis de prestation insatisfaisante, veuillez faire parvenir vos observations par écrit selon les modalités décrites à l’article 5, <em>Mécanisme de contestation</em> de votre AMA (révision de l’AMA en vigueur le 1<sup>er</sup> septembre 2020), pour fins de réexamen.</p><p>Veuillez prendre note que cette évaluation insatisfaisante sera versée à votre dossier de fournisseur.</p><p>Merci.</p>",
+        "en": "<p>Hello,</p><p>Canada hereby advises you that the redone work for translation request No. &lt;&lt;ProjectNumber_EN&gt;&gt; is still unsatisfactory and does not meet the quality and timeliness standards for official languages translation that are set out in Article A4.7 of the Statement of Work for contract No. &lt;&lt;ContractNumber_EN&gt;&gt; (or EP745-XXXXXX/XXX/ZF). Attached please find feedback from the reviser as well as translation request No. &lt;&lt;ProjectNumber_EN&gt;&gt;, which you submitted to us on &lt;&lt;DeliveryDate_EN&gt;&gt;.</p><p>As stated in Article 4, <em>Unsatisfactory Performance with Respect to Quality and Timeliness</em>, of your supply arrangement (SA revision effective September 1, 2020), notices of unsatisfactory performance affect the quality indicator and may result in termination of the contract and suspension of the supply arrangement in whole or in part.</p><p>Please note that no fees will be deducted from the invoice submitted for the aforementioned translation request, even though the contract states that Canada may deduct costs from your invoice in order to compensate Canada for the additional costs relating to the production of a deliverable translation.</p><p>If you disagree with this email and wish to challenge the notice of unsatisfactory performance, please send your comments in writing, as described in Article 5, <em>Challenge Mechanism</em>, of your supply arrangement (SA revision effective September 1, 2020), for reconsideration.</p><p>Please note that this unsatisfactory evaluation will be placed on your file.</p><p>Thank you.</p>"
+      },
+      "variables": [
+        "project_number",
+        "contract_number",
+        "delivery_date"
+      ],
+      "utilisateur": [
+        "gestion",
+        "relations_fournisseurs"
+      ]
+    },
+    {
+      "id": "ctd065",
+      "category": "unsatisfactory",
+      "category_fr": "Fournisseurs externes - Qualité insatisfaisante",
+      "category_en": "External Providers - unsatisfactory quality",
+      "title": {
+        "fr": "Avis de prestation insatisfaisante (qualité) – reprise toujours insatisfaisante – contrats pré-2022 – avec déduction",
+        "en": "Notice of Unsatisfactory Performance (Quality) – Redone Work Still Unsatisfactory – Pre-2022 contracts – Fee deduction"
+      },
+      "description": {
+        "fr": "Avis informant le fournisseur que la reprise des travaux demeure insatisfaisante, avec déduction de frais de la facture",
+        "en": "Notice informing the supplier that the redone work remains unsatisfactory, with fee deduction from the invoice"
+      },
+      "subject": {
+        "fr": "Avis de prestation insatisfaisante (qualité) – Reprise des travaux – texte n° <<ProjectNumber_FR>> (contrat n° <<ContractNumber_FR>>)",
+        "en": "Notice of Unsatisfactory Performance (Quality) – Redone Work – Translation Request No. <<ProjectNumber_EN>> (Contract No. <<ContractNumber_EN>>)"
+      },
+      "body": {
+        "fr": "<p>Bonjour,</p><p>Par la présente, le Canada vous informe que la reprise du texte n<sup>o</sup> &lt;&lt;ProjectNumber_FR&gt;&gt; demeure insatisfaisante et non conforme aux normes de qualité et respect des délais pour la traduction en langues officielles décrites à l’article A4.7 de l’énoncé des travaux du contrat n<sup>o</sup> &lt;&lt;ContractNumber_FR&gt;&gt; (ou EP745-XXXXXX/XXX/ZF). Vous trouverez ci-après la rétroaction du réviseur ainsi que le document n<sup>o</sup> &lt;&lt;ProjectNumber_FR&gt;&gt; que vous nous avez remis le &lt;&lt;DeliveryDate_FR&gt;&gt;.</p><p>Comme stipulé à l’article 4, <em>Prestations insatisfaisantes relatives à la qualité et au respect des délais</em> de votre arrangement en matière d’approvisionnement (révision de l’AMA en vigueur le 1<sup>er</sup> septembre 2020), les avis de prestations insatisfaisantes ont une incidence sur l’indice de qualité et peuvent entraîner la résiliation d’un contrat et la suspension de l’AMA du fournisseur, en partie ou en entier.</p><p>Veuillez prendre note que le Canada déduira des frais de &lt;&lt;DeductionFeeAmount_FR&gt;&gt; $ (taxes non comprises) de votre facture afin de le dédommager du coût additionnel lié à la production d’une traduction livrable (voir article X.X (insérer le numéro d’article pour les dommages selon le contrat) du contrat pour plus d’information).</p><ul><li>Ancienne AMA : l’article <strong>13. Dommages et intérêts</strong></li><li>Nouvelle AMA : l’article <strong>2.21. Dommages et intérêts</strong></li></ul><p>Si vous n’êtes pas d’accord avec le présent courriel, et que vous désirez contester l’avis de prestation insatisfaisante, veuillez faire parvenir vos observations par écrit selon les modalités décrites à l’article 5, <em>Mécanisme de contestation</em> de votre AMA (révision de l’AMA en vigueur le 1<sup>er</sup> septembre 2020), pour fins de réexamen.</p><p>Veuillez prendre note que cette évaluation insatisfaisante sera versée à votre dossier de fournisseur.</p><p>Merci.</p>",
+        "en": "<p>Hello,</p><p>Canada hereby advises you that the redone work for translation request No. &lt;&lt;ProjectNumber_EN&gt;&gt; is still unsatisfactory and does not meet the quality and timeliness standards for official languages translation that are set out in Article A4.7 of the Statement of Work for contract No. &lt;&lt;ContractNumber_EN&gt;&gt; (or EP745-XXXXXX/XXX/ZF). Attached please find feedback from the reviser as well as translation request No. &lt;&lt;ProjectNumber_EN&gt;&gt;, which you submitted to us on &lt;&lt;DeliveryDate_EN&gt;&gt;.</p><p>As stated in Article 4, <em>Unsatisfactory Performance with Respect to Quality and Timeliness</em>, of your supply arrangement (SA revision effective September 1, 2020), notices of unsatisfactory performance affect the quality indicator and may result in termination of the contract and suspension of the supply arrangement in whole or in part.</p><p>Please note that Canada will deduct a fee of $&lt;&lt;DeductionFeeAmount_EN&gt;&gt; (excluding taxes) from your invoice in order to compensate Canada for the additional costs relating to the production of a deliverable translation (see clause X.X (insert clause number for damages as per contract) of your contract for more information).</p><ul><li>Ancienne AMA : l’article <strong>13. Dommages et intérêts</strong></li><li>Nouvelle AMA : l’article <strong>2.21. Dommages et intérêts</strong></li></ul><p>If you disagree with this email and wish to challenge the notice of unsatisfactory performance, please send your comments in writing, as described in Article 5, <em>Challenge Mechanism</em>, of your supply arrangement (SA revision effective September 1, 2020), for reconsideration.</p><p>Please note that this unsatisfactory evaluation will be placed on your file.</p><p>Thank you.</p>"
+      },
+      "variables": [
+        "project_number",
+        "contract_number",
+        "delivery_date",
+        "deduction_fee_amount"
+      ],
+      "utilisateur": [
+        "gestion",
+        "relations_fournisseurs"
+      ]
+    },
+    {
+      "id": "ctd066",
+      "category": "unsatisfactory",
+      "category_fr": "Fournisseurs externes - Qualité insatisfaisante",
+      "category_en": "External Providers - unsatisfactory quality",
+      "title": {
+        "fr": "Avis de prestation insatisfaisante (qualité) – reprise toujours insatisfaisante – contrats post-2022 – sans déduction",
+        "en": "Notice of Unsatisfactory Performance (Quality) – Redone Work Still Unsatisfactory – Post-2022 contracts – No fee deduction"
+      },
+      "description": {
+        "fr": "Avis informant le fournisseur que la reprise des travaux demeure insatisfaisante, sans déduction de frais",
+        "en": "Notice informing the supplier that the redone work remains unsatisfactory, with no fee deduction"
+      },
+      "subject": {
+        "fr": "Avis de prestation insatisfaisante (qualité) – Reprise des travaux – texte n° <<ProjectNumber_FR>> (contrat n° <<ContractNumber_FR>>)",
+        "en": "Notice of Unsatisfactory Performance (Quality) – Redone Work – Translation Request No. <<ProjectNumber_EN>> (Contract No. <<ContractNumber_EN>>)"
+      },
+      "body": {
+        "fr": "<p>Bonjour,</p><p>Par la présente, le Canada vous informe que la reprise du texte n<sup>o</sup> &lt;&lt;ProjectNumber_FR&gt;&gt; demeure insatisfaisante et non conforme aux normes de qualité et respect des délais pour la traduction en langues officielles décrites à l’article A6 de l’énoncé des travaux du contrat n<sup>o</sup> &lt;&lt;ContractNumber_FR&gt;&gt; (ou EP745-XXXXXX/XXX/ZF). Vous trouverez ci-après la rétroaction du réviseur ainsi que le document n<sup>o</sup> &lt;&lt;ProjectNumber_FR&gt;&gt; que vous nous avez remis le &lt;&lt;DeliveryDate_FR&gt;&gt;.</p><p>Comme stipulé à l’article 20.1 <em>Avis de prestations insatisfaisantes</em> du contrat, les avis de prestations insatisfaisantes ont une incidence sur l’indice de qualité et peuvent entraîner la résiliation d’un contrat et la suspension de l’AMA du fournisseur, en partie ou en entier.</p><p>Veuillez prendre note qu’aucuns honoraires ne seront défalqués de la facture présentée pour la demande précitée, même si le contrat prévoit que le Canada peut déduire des frais de votre facture afin de le dédommager du coût additionnel lié à la production d’une traduction livrable.</p><p>Si vous n’êtes pas d’accord avec le présent courriel, et que vous désirez contester l’avis de prestation insatisfaisante, veuillez faire parvenir vos observations par écrit selon les modalités décrites à l’article 20.3 <em>Mécanisme de contestation suite à un avis de prestation insatisfaisante</em> de votre contrat, pour fins de réexamen.</p><p>Veuillez prendre note que cette évaluation insatisfaisante sera versée à votre dossier de fournisseur.</p><p>Merci.</p>",
+        "en": "<p>Hello,</p><p>Canada hereby advises you that the redone work for translation request No. &lt;&lt;ProjectNumber_EN&gt;&gt; is still unsatisfactory and does not meet the quality and timeliness standards for official languages translation that are set out in Article A6 of the Statement of Work for contract No. &lt;&lt;ContractNumber_EN&gt;&gt; (or EP745-XXXXXX/XXX/ZF). Attached please find feedback from the reviser as well as translation request No. &lt;&lt;ProjectNumber_EN&gt;&gt;, which you submitted to us on &lt;&lt;DeliveryDate_EN&gt;&gt;.</p><p>As stated in clause 20.1, <em>Notice of Unsatisfactory Performance</em>, of your contract, notices of unsatisfactory performance affect the quality indicator and may result in termination of the contract and suspension of the supply arrangement in whole or in part.</p><p>Please note that no fees will be deducted from the invoice submitted for the aforementioned translation request, even though the contract states that Canada may deduct costs from your invoice in order to compensate Canada for the additional costs relating to the production of a deliverable translation.</p><p>If you disagree with this email and wish to challenge the notice of unsatisfactory performance, please send your comments in writing, as described in clause 20.3, <em>Challenge Mechanism Following a Notice of Unsatisfactory Performance</em>, of your contract, for reconsideration.</p><p>Please note that this unsatisfactory evaluation will be placed on your file.</p><p>Thank you.</p>"
+      },
+      "variables": [
+        "project_number",
+        "contract_number",
+        "delivery_date"
+      ],
+      "utilisateur": [
+        "gestion",
+        "relations_fournisseurs"
+      ]
+    },
+    {
+      "id": "ctd067",
+      "category": "unsatisfactory",
+      "category_fr": "Fournisseurs externes - Qualité insatisfaisante",
+      "category_en": "External Providers - unsatisfactory quality",
+      "title": {
+        "fr": "Avis de prestation insatisfaisante (qualité) – reprise toujours insatisfaisante – contrats post-2022 – avec déduction",
+        "en": "Notice of Unsatisfactory Performance (Quality) – Redone Work Still Unsatisfactory – Post-2022 contracts – Fee deduction"
+      },
+      "description": {
+        "fr": "Avis informant le fournisseur que la reprise des travaux demeure insatisfaisante, avec déduction de frais de la facture",
+        "en": "Notice informing the supplier that the redone work remains unsatisfactory, with fee deduction from the invoice"
+      },
+      "subject": {
+        "fr": "Avis de prestation insatisfaisante (qualité) – Reprise des travaux – texte n° <<ProjectNumber_FR>> (contrat n° <<ContractNumber_FR>>)",
+        "en": "Notice of Unsatisfactory Performance (Quality) – Redone Work – Translation Request No. <<ProjectNumber_EN>> (Contract No. <<ContractNumber_EN>>)"
+      },
+      "body": {
+        "fr": "<p>Bonjour,</p><p>Par la présente, le Canada vous informe que la reprise du texte n<sup>o</sup> &lt;&lt;ProjectNumber_FR&gt;&gt; demeure insatisfaisante et non conforme aux normes de qualité et respect des délais pour la traduction en langues officielles décrites à l’article A6 de l’énoncé des travaux du contrat n<sup>o</sup> &lt;&lt;ContractNumber_FR&gt;&gt; (ou EP745-XXXXXX/XXX/ZF). Vous trouverez ci-après la rétroaction du réviseur ainsi que le document n<sup>o</sup> &lt;&lt;ProjectNumber_FR&gt;&gt; que vous nous avez remis le &lt;&lt;DeliveryDate_FR&gt;&gt;.</p><p>Comme stipulé à l’article 20.1 <em>Avis de prestations insatisfaisantes</em> du contrat, les avis de prestations insatisfaisantes ont une incidence sur l’indice de qualité et peuvent entraîner la résiliation d’un contrat et la suspension de l’AMA du fournisseur, en partie ou en entier.</p><p>Veuillez prendre note que le Canada déduira des frais de &lt;&lt;DeductionFeeAmount_FR&gt;&gt; $ (taxes non comprises) de votre facture afin de le dédommager du coût additionnel lié à la production d’une traduction livrable (voir article X.X (insérer le numéro d’article pour les dommages selon le contrat) du contrat pour plus d’information).</p><ul><li>Ancienne AMA : l’article <strong>13. Dommages et intérêts</strong></li><li>Nouvelle AMA : l’article <strong>2.21. Dommages et intérêts</strong></li></ul><p>Si vous n’êtes pas d’accord avec le présent courriel, et que vous désirez contester l’avis de prestation insatisfaisante, veuillez faire parvenir vos observations par écrit selon les modalités décrites à l’article 20.3 <em>Mécanisme de contestation suite à un avis de prestation insatisfaisante</em> de votre contrat, pour fins de réexamen.</p><p>Veuillez prendre note que cette évaluation insatisfaisante sera versée à votre dossier de fournisseur.</p><p>Merci.</p>",
+        "en": "<p>Hello,</p><p>Canada hereby advises you that the redone work for translation request No. &lt;&lt;ProjectNumber_EN&gt;&gt; is still unsatisfactory and does not meet the quality and timeliness standards for official languages translation that are set out in Article A6 of the Statement of Work for contract No. &lt;&lt;ContractNumber_EN&gt;&gt; (or EP745-XXXXXX/XXX/ZF). Attached please find feedback from the reviser as well as translation request No. &lt;&lt;ProjectNumber_EN&gt;&gt;, which you submitted to us on &lt;&lt;DeliveryDate_EN&gt;&gt;.</p><p>As stated in clause 20.1, <em>Notice of Unsatisfactory Performance</em>, of your contract, notices of unsatisfactory performance affect the quality indicator and may result in termination of the contract and suspension of the supply arrangement in whole or in part.</p><p>Please note that Canada will deduct a fee of $&lt;&lt;DeductionFeeAmount_EN&gt;&gt; (excluding taxes) from your invoice in order to compensate Canada for the additional costs relating to the production of a deliverable translation (see clause X.X (insert clause number for damages as per contract) of your contract for more information).</p><ul><li>Ancienne AMA : l’article <strong>13. Dommages et intérêts</strong></li><li>Nouvelle AMA : l’article <strong>2.21. Dommages et intérêts</strong></li></ul><p>If you disagree with this email and wish to challenge the notice of unsatisfactory performance, please send your comments in writing, as described in clause 20.3, <em>Challenge Mechanism Following a Notice of Unsatisfactory Performance</em>, of your contract, for reconsideration.</p><p>Please note that this unsatisfactory evaluation will be placed on your file.</p><p>Thank you.</p>"
+      },
+      "variables": [
+        "project_number",
+        "contract_number",
+        "delivery_date",
+        "deduction_fee_amount"
+      ],
+      "utilisateur": [
+        "gestion",
+        "relations_fournisseurs"
+      ]
+    },
+    {
+      "id": "ctd068",
+      "category": "unsatisfactory",
+      "category_fr": "Fournisseurs externes - Qualité insatisfaisante",
+      "category_en": "External Providers - unsatisfactory quality",
+      "title": {
+        "fr": "Avis de prestation insatisfaisante (respect des délais) – contrats pré-2022",
+        "en": "Notice of Unsatisfactory Performance (Timeliness) – Pre-2022 contracts"
+      },
+      "description": {
+        "fr": "Avis de prestation insatisfaisante pour non-respect du délai de livraison, avec évaluation versée au dossier",
+        "en": "Notice of unsatisfactory performance for missing the delivery deadline, with an evaluation placed on file"
+      },
+      "subject": {
+        "fr": "Avis de prestation insatisfaisante (respect des délais) – texte n° <<ProjectNumber_FR>> (contrat n° <<ContractNumber_FR>>)",
+        "en": "Notice of Unsatisfactory Performance (Timeliness) – Translation Request No. <<ProjectNumber_EN>> (Contract No. <<ContractNumber_EN>>)"
+      },
+      "body": {
+        "fr": "<p>Bonjour,</p><p>En vertu de l’article A4.7 de l’énoncé des travaux du contrat n<sup>o</sup> &lt;&lt;ContractNumber_FR&gt;&gt; (ou EP745-XXXXXX/XXX/ZF), vous êtes tenu de fournir les travaux de traduction conformément aux normes de qualité pour la traduction en langues officielles.</p><p>Par la présente, le Canada vous informe que la demande n<sup>o</sup> &lt;&lt;ProjectNumber_FR&gt;&gt; nous est parvenue le &lt;&lt;ReceivedDateTime_FR&gt;&gt;, alors qu’elle était demandée pour le &lt;&lt;RequestedDateTime_FR&gt;&gt;. Une évaluation insatisfaisante sera donc versée à votre dossier de fournisseur à l’égard de ce travail.</p><p>Comme stipulé à l’article 4, <em>Prestations insatisfaisantes relatives à la qualité et au respect des délais</em> de votre arrangement en matière d’approvisionnement (révision de l’AMA en vigueur le 1<sup>er</sup> septembre 2020), les avis de prestations insatisfaisantes ont une incidence sur l’indice de qualité et peuvent entraîner la résiliation d’un contrat et la suspension de l’AMA du fournisseur, en partie ou en entier.</p><p>Si vous n’êtes pas d’accord avec le présent courriel, et que vous désirez contester l’avis de prestation insatisfaisante, veuillez faire parvenir vos observations par écrit selon les modalités décrites à l’article 5, <em>Mécanisme de contestation</em> de votre AMA (révision de l’AMA en vigueur le 1<sup>er</sup> septembre 2022), pour fins de réexamen.</p><p>Merci.</p>",
+        "en": "<p>Hello,</p><p>Under Article A4.7 of the Statement of Work for contract No. &lt;&lt;ContractNumber_EN&gt;&gt; (or EP745-XXXXXX/XXX/ZF), you are obliged to provide translation work that meets the quality standards for official languages translation.</p><p>Canada hereby advises you that translation request No. &lt;&lt;ProjectNumber_EN&gt;&gt; was received on &lt;&lt;ReceivedDateTime_EN&gt;&gt;, whereas it was requested for &lt;&lt;RequestedDateTime_EN&gt;&gt;. An unsatisfactory evaluation for this request will therefore be placed on your file.</p><p>As stated in Article 4, <em>Unsatisfactory Performance with Respect to Quality and Timeliness</em>, of your supply arrangement (SA revision effective September 1, 2020), notices of unsatisfactory performance affect the quality indicator and may result in termination of the contract and suspension of the supply arrangement in whole or in part.</p><p>If you disagree with this email and wish to challenge the notice of unsatisfactory performance, please send your comments in writing, as described in Article 5, <em>Challenge Mechanism</em>, of your supply arrangement (SA revision effective September 1, 2020), for reconsideration.</p><p>Thank you.</p>"
+      },
+      "variables": [
+        "project_number",
+        "contract_number",
+        "requested_date_time",
+        "received_date_time"
+      ],
+      "utilisateur": [
+        "gestion",
+        "relations_fournisseurs"
+      ]
+    },
+    {
+      "id": "ctd069",
+      "category": "unsatisfactory",
+      "category_fr": "Fournisseurs externes - Qualité insatisfaisante",
+      "category_en": "External Providers - unsatisfactory quality",
+      "title": {
+        "fr": "Avis de prestation insatisfaisante (respect des délais) – contrats post-2022",
+        "en": "Notice of Unsatisfactory Performance (Timeliness) – Post-2022 contracts"
+      },
+      "description": {
+        "fr": "Avis de prestation insatisfaisante pour non-respect du délai de livraison, avec évaluation versée au dossier",
+        "en": "Notice of unsatisfactory performance for missing the delivery deadline, with an evaluation placed on file"
+      },
+      "subject": {
+        "fr": "Avis de prestation insatisfaisante (respect des délais) – texte n° <<ProjectNumber_FR>> (contrat n° <<ContractNumber_FR>>)",
+        "en": "Notice of Unsatisfactory Performance (Timeliness) – Translation Request No. <<ProjectNumber_EN>> (Contract No. <<ContractNumber_EN>>)"
+      },
+      "body": {
+        "fr": "<p>Bonjour,</p><p>En vertu de l’article A6 de l’énoncé des travaux du contrat n<sup>o</sup> &lt;&lt;ContractNumber_FR&gt;&gt; (ou EP745-XXXXXX/XXX/ZF), vous êtes tenu de fournir les travaux de traduction conformément aux normes de qualité et respect des délais pour la traduction en langues officielles.</p><p>Par la présente, le Canada vous informe que la demande n<sup>o</sup> &lt;&lt;ProjectNumber_FR&gt;&gt; nous est parvenue le &lt;&lt;ReceivedDateTime_FR&gt;&gt;, alors qu’elle était demandée pour le &lt;&lt;RequestedDateTime_FR&gt;&gt;. Une évaluation insatisfaisante sera donc versée à votre dossier de fournisseur à l’égard de ce travail.</p><p>Comme stipulé à l’article 20.1 <em>Avis de prestations insatisfaisantes</em> du contrat, les avis de prestations insatisfaisantes ont une incidence sur l’indice de qualité et peuvent entraîner la résiliation d’un contrat et la suspension de l’AMA du fournisseur, en partie ou en entier.</p><p>Si vous n’êtes pas d’accord avec le présent courriel, et que vous désirez contester l’avis de prestation insatisfaisante, veuillez faire parvenir vos observations par écrit selon les modalités décrites à l’article 20.3 <em>Mécanisme de contestation suite à un avis de prestation insatisfaisante</em> de votre contrat, pour fins de réexamen.</p><p>Merci.</p>",
+        "en": "<p>Hello,</p><p>Under Article A6 of the Statement of Work for contract No. &lt;&lt;ContractNumber_EN&gt;&gt; (or EP745-XXXXXX/XXX/ZF), you are obliged to provide translation work that meets the quality and timeliness standards for official languages translation.</p><p>Canada hereby advises you that translation request No. &lt;&lt;ProjectNumber_EN&gt;&gt; was received on &lt;&lt;ReceivedDateTime_EN&gt;&gt;, whereas it was requested for &lt;&lt;RequestedDateTime_EN&gt;&gt;. An unsatisfactory evaluation for this request will therefore be placed on your file.</p><p>As stated in clause 20.1, <em>Notice of Unsatisfactory Performance</em>, of your contract, notices of unsatisfactory performance affect the quality indicator and may result in termination of the contract and suspension of the supply arrangement in whole or in part.</p><p>If you disagree with this email and wish to challenge the notice of unsatisfactory performance, please send your comments in writing, as described in clause 20.3, <em>Challenge Mechanism Following a Notice of Unsatisfactory Performance</em>, for reconsideration.</p><p>Thank you.</p>"
+      },
+      "variables": [
+        "project_number",
+        "contract_number",
+        "requested_date_time",
+        "received_date_time"
+      ],
+      "utilisateur": [
+        "gestion",
+        "relations_fournisseurs"
+      ]
+    },
+    {
+      "id": "ctd070",
+      "category": "unsatisfactory",
+      "category_fr": "Fournisseurs externes - Qualité insatisfaisante",
+      "category_en": "External Providers - unsatisfactory quality",
+      "title": {
+        "fr": "Avis | Refus de travail – contrats pré-2022",
+        "en": "Notice | Refusal of Work – Pre-2022 contracts"
+      },
+      "description": {
+        "fr": "Avis informant le fournisseur qu'un refus de travail constitue un manquement pouvant entraîner la résiliation du contrat",
+        "en": "Notice informing the supplier that a refusal of work constitutes a default that may result in contract termination"
+      },
+      "subject": {
+        "fr": "Avis | Refus de travail – contrat <<ContractNumber_FR>> (ou EP745-XXXXXX/XXX/ZF)",
+        "en": "Notice | Refusal of Work – Contract No. <<ContractNumber_EN>> (or EP745-XXXXXX/XXX/ZF)"
+      },
+      "body": {
+        "fr": "<p>Bonjour,</p><p>Nous avons été informés que vous avez refusé du travail &lt;&lt;RefusalDetails_FR&gt;&gt; (voir le ou les courriels ci-joint).</p><p>Par la présente, le Canada vous avise qu’un refus de travail constitue un manquement à l’une de vos obligations prévues au contrat &lt;&lt;ContractNumber_FR&gt;&gt;.</p><p>Conformément à l’article 29 des conditions générales 2035 de votre contrat, le Canada peut résilier le contrat pour manquement si l’entrepreneur manque à l’une de ses obligations prévues au contrat et suspendre l’arrangement en matière d’approvisionnement (AMA) conformément à l’article 09 des conditions générales 2020 de votre AMA.</p><mark><p>Après consultation avec la haute gestion, le Bureau de la traduction ne souhaite pas poursuivre avec ce contrat. Le Bureau de la traduction demande donc à la Direction générale des approvisionnements de Services publics et approvisionnements Canada (ou le Centre d’approvisionnement du Bureau de la traduction) de résilier votre contrat aujourd’hui. <em>(à retirer si non applicable)</em></p></mark><p>Merci.</p>",
+        "en": "<p>Hello,</p><p>We have been informed that you refused work &lt;&lt;RefusalDetails_EN&gt;&gt; (see attached email or emails).</p><p>Canada hereby advises you that a refusal of work constitutes a default of one of your obligations under contract No. &lt;&lt;ContractNumber_EN&gt;&gt;.</p><p>According to section 29 of General Conditions 2035 of your contract, Canada may terminate a contract for default when the contractor is in default in carrying out any of its obligations under the contract. In addition, according to section 09 of General Conditions 2020 of your supply arrangement (SA), Canada may suspend your SA.</p><mark><p>After consultation with senior management, the Translation Bureau does not wish to continue with this contract. The Translation Bureau is therefore asking Acquisitions Branch, Public Services and Procurement Canada (PSPC), (or the Translation Bureau Procurement Centre) to terminate your contract today. <em>(remove if not applicable)</em></p></mark><p>Thank you.</p>"
+      },
+      "variables": [
+        "contract_number",
+        "refusal_details"
+      ],
+      "utilisateur": [
+        "gestion",
+        "relations_fournisseurs"
+      ]
+    },
+    {
+      "id": "ctd071",
+      "category": "unsatisfactory",
+      "category_fr": "Fournisseurs externes - Qualité insatisfaisante",
+      "category_en": "External Providers - unsatisfactory quality",
+      "title": {
+        "fr": "Avis | Refus de travail – contrats post-2022",
+        "en": "Notice | Refusal of Work – Post-2022 contracts"
+      },
+      "description": {
+        "fr": "Avis informant le fournisseur qu'un refus de travail constitue un manquement pouvant entraîner la résiliation du contrat et la suspension de l'AMA",
+        "en": "Notice informing the supplier that a refusal of work constitutes a default that may result in contract termination and SA suspension"
+      },
+      "subject": {
+        "fr": "Avis | Refus de travail – contrat <<ContractNumber_FR>> (ou EP745-XXXXXX/XXX/ZF)",
+        "en": "Notice | Refusal of Work – Contract No. <<ContractNumber_EN>> (or EP745-XXXXXX/XXX/ZF)"
+      },
+      "body": {
+        "fr": "<p>Bonjour,</p><p>Nous avons été informés que vous avez refusé du travail &lt;&lt;RefusalDetails_FR&gt;&gt; (voir le ou les courriels ci-joint).</p><p>Par la présente, le Canada vous avise qu’un refus de travail constitue un manquement à l’une de vos obligations prévues au contrat &lt;&lt;ContractNumber_FR&gt;&gt;.</p><p>Conformément à l’article 29 des conditions générales 2035 de votre contrat, le Canada peut résilier votre contrat pour manquement. De plus, selon l’article 09 des conditions générales 2020 de votre arrangement en matière d’approvisionnement (AMA), le Canada peut suspendre votre AMA, en partie ou en entier, pour une période déterminée conformément à l’article 13 <em>Suspensions pour refus de travail</em> de votre AMA.</p><mark><p>Après consultation avec la haute gestion, le Bureau de la traduction ne souhaite pas poursuivre avec ce contrat. Le Bureau de la traduction demande donc à la Direction générale des approvisionnements de Services publics et approvisionnements Canada (ou le Centre d’approvisionnement du Bureau de la traduction) de résilier votre contrat aujourd’hui. <em>(à retirer si non applicable)</em></p></mark><p>Merci.</p>",
+        "en": "<p>Hello,</p><p>We have been informed that you refused work &lt;&lt;RefusalDetails_EN&gt;&gt; (see attached email or emails).</p><p>Canada hereby advises you that a refusal of work constitutes a default of one of your obligations under contract No. &lt;&lt;ContractNumber_EN&gt;&gt;.</p><p>According to section 29 of General Conditions 2035 of your contract, Canada may terminate your contract for default. In addition, according to section 09 of General Conditions 2020 of your supply arrangement (SA), Canada may suspend your SA, in whole or in part, for a specified period as indicated in Article 13, <em>Suspensions for Refusal of Work</em>, of your SA.</p><mark><p>After consultation with senior management, the Translation Bureau does not wish to continue with this contract. The Translation Bureau is therefore asking Acquisitions Branch, Public Services and Procurement Canada (PSPC), (or the Translation Bureau Procurement Centre) to terminate your contract today. <em>(remove if not applicable)</em></p></mark><p>Thank you.</p>"
+      },
+      "variables": [
+        "contract_number",
+        "refusal_details"
+      ],
+      "utilisateur": [
+        "gestion",
+        "relations_fournisseurs"
+      ]
+    },
+    {
+      "id": "ctd072",
+      "category": "unsatisfactory",
+      "category_fr": "Fournisseurs externes - Qualité insatisfaisante",
+      "category_en": "External Providers - unsatisfactory quality",
+      "title": {
+        "fr": "Ordre d'arrêt des travaux",
+        "en": "Stop Work Order"
+      },
+      "description": {
+        "fr": "Ordre formel exigeant l'arrêt immédiat de tous les travaux relatifs au contrat, suite à la résiliation pour manquement",
+        "en": "Formal order requiring the immediate cessation of all work under the contract, following termination for default"
+      },
+      "subject": {
+        "fr": "Ordre d'arrêt des travaux | Contrat n° <<ContractNumber_FR>> ou EP745-XXXXXX/XXX/ZF",
+        "en": "Stop Work Order | Contract No. <<ContractNumber_EN>> or EP745-XXXXXX/XXX/ZF"
+      },
+      "body": {
+        "fr": "<p>Bonjour,</p><p>Par la présente et suite à l’Avis (ci-joint) envoyé le &lt;&lt;NoticeDate_FR&gt;&gt;, nous vous informons que le Canada procédera à la résiliation de votre contrat pour manquement ainsi qu’à la suspension du domaine du contrat pour une période de trois (3) mois consécutifs en vertu de l’article 29 des conditions générales 2035 du contrat et de l’article 9 des conditions générales 2020 de l’arrangement en matière d’approvisionnement.</p><p>Prière de considérer la présente correspondance comme étant un <strong>Ordre d’arrêt des travaux</strong>. Nous vous prions de cesser <strong>immédiatement</strong> tous les travaux relatifs au contrat susmentionné, y compris ceux de vos sous-traitants, et de ne plus engager de frais additionnels. Veuillez effectuer la livraison de tous les travaux que vous avez toujours en main dans le cadre du contrat, que ceux-ci soient terminés ou non, et nous transmettre une facture pour le travail accompli.</p><p>Si vous souhaitez obtenir de plus amples informations, veuillez communiquer avec la soussignée.</p><p>Cordialement,</p>",
+        "en": "<p>Hello,</p><p>Further to the notice (attached) sent on &lt;&lt;NoticeDate_EN&gt;&gt;, we hereby inform you that Canada will terminate your contract for default and suspend the field of the contract for a period of three (3) consecutive months pursuant to section 29 of General Conditions 2035 of your contract and section 9 of General Conditions 2020 of your supply arrangement.</p><p>Please consider this correspondence a <strong>Stop Work Order</strong>. You are requested to <strong>immediately</strong> cease all work relating to the above-mentioned contract, including any work by your subcontractors, and to not incur any additional costs. Please deliver all work that you still have on hand under this contract, whether completed or not, and invoice us for the work that has been completed.</p><p>If you would like more information, please contact the undersigned.</p><p>Regards,</p>"
+      },
+      "variables": [
+        "contract_number",
+        "notice_date"
+      ],
+      "utilisateur": [
+        "gestion",
+        "relations_fournisseurs"
+      ]
+    },
+    {
+      "id": "ctd073",
+      "category": "unsatisfactory",
+      "category_fr": "Fournisseurs externes - Qualité insatisfaisante",
+      "category_en": "External Providers - unsatisfactory quality",
+      "title": {
+        "fr": "Avis d'avertissement (retard)",
+        "en": "Notice of Warning (Late Delivery)"
+      },
+      "description": {
+        "fr": "Avertissement pour un retard de livraison, sans évaluation insatisfaisante versée au dossier",
+        "en": "Warning for a late delivery, with no unsatisfactory evaluation placed on file"
+      },
+      "subject": {
+        "fr": "Avis d'avertissement (retard) – texte n° <<ProjectNumber_FR>> (contrat n° <<ContractNumber_FR>>)",
+        "en": "Notice of Warning (Late Delivery) – Translation Request No. <<ProjectNumber_EN>> (Contract No. <<ContractNumber_EN>>)"
+      },
+      "body": {
+        "fr": "<p>Bonjour,</p><p>Nous désirons par la présente vous aviser que le texte n<sup>o</sup> &lt;&lt;ProjectNumber_FR&gt;&gt; nous est parvenu le &lt;&lt;ReceivedDateTime_FR&gt;&gt;, alors qu’il était demandé pour le &lt;&lt;RequestedDateTime_FR&gt;&gt;.</p><p>Ceci est un avertissement seulement. Aucune évaluation insatisfaisante ne sera donc versée à votre dossier de fournisseur à l’égard de ce travail.</p><p>Nous vous rappelons que les textes doivent être livrés dans les délais prescrits, en version finale et prête à utiliser et que tout retard non justifiable constitue un manquement à vos obligations contractuelles et peut entraîner la résiliation du contrat et la suspension, en partie ou en entier, de l’arrangement en matière d’approvisionnement.</p><p>Merci.</p>",
+        "en": "<p>Hello,</p><p>We hereby wish to inform you that translation request No. &lt;&lt;ProjectNumber_EN&gt;&gt; was received on &lt;&lt;ReceivedDateTime_EN&gt;&gt;, whereas it was requested for &lt;&lt;RequestedDateTime_EN&gt;&gt;.</p><p>This is a warning only. Please note that no unsatisfactory evaluation for this request will be placed on your file.</p><p>We would like to remind you that all texts must be delivered on time, in final form and ready for use. In addition, any delay deemed not excusable constitutes a default of your contractual obligations and may result in termination of the contract and suspension of the supply arrangement in whole or in part.</p><p>Thank you.</p>"
+      },
+      "variables": [
+        "project_number",
+        "contract_number",
+        "requested_date_time",
+        "received_date_time"
+      ],
+      "utilisateur": [
+        "gestion",
+        "relations_fournisseurs"
       ]
     }
   ],
@@ -1810,6 +2712,149 @@
       "example": {
         "en": "123-4567-002",
         "fr": "123-4567-002"
+      },
+      "format": "text"
+    },
+    "deduction_fee_amount": {
+      "description": {
+        "en": "Fee deducted from the invoice, excluding taxes",
+        "fr": "Montant des frais déduits de la facture, taxes non comprises"
+      },
+      "example": {
+        "en": "450.00",
+        "fr": "450,00"
+      },
+      "format": "number"
+    },
+    "corrective_action": {
+      "description": {
+        "en": "Action taken on the unsatisfactory work (corrected or replaced)",
+        "fr": "Action posée sur les travaux non satisfaisants (modifier ou remplacer)"
+      },
+      "example": {
+        "en": "corrected",
+        "fr": "modifier"
+      },
+      "format": "text"
+    },
+    "damages_article_number": {
+      "description": {
+        "en": "Contract article number for Damages and Interest",
+        "fr": "Numéro de l'article du contrat sur les dommages et intérêts"
+      },
+      "example": {
+        "en": "9.2",
+        "fr": "9.2"
+      },
+      "format": "text"
+    },
+    "damages_hours": {
+      "description": {
+        "en": "Number of hours required to correct or replace the work",
+        "fr": "Nombre d'heures requises pour modifier ou remplacer les travaux"
+      },
+      "example": {
+        "en": "3",
+        "fr": "3"
+      },
+      "format": "number"
+    },
+    "damages_total_amount": {
+      "description": {
+        "en": "Total liquidated damages amount ($81/hour × hours)",
+        "fr": "Montant total des dommages-intérêts (81 $/heure × nombre d'heures)"
+      },
+      "example": {
+        "en": "243.00",
+        "fr": "243,00"
+      },
+      "format": "number"
+    },
+    "unsatisfactory_text_count": {
+      "description": {
+        "en": "Number of texts deemed unsatisfactory for this contract",
+        "fr": "Nombre de textes jugés insatisfaisants pour ce contrat"
+      },
+      "example": {
+        "en": "3",
+        "fr": "3"
+      },
+      "format": "number"
+    },
+    "feedback_date": {
+      "description": {
+        "en": "Date the rectification request/feedback was sent (omit sentence if not applicable)",
+        "fr": "Date d'envoi de la demande de rectification/rétroaction (retirer la phrase si non applicable)"
+      },
+      "example": {
+        "en": "March 3, 2026",
+        "fr": "3 mars 2026"
+      },
+      "format": "text"
+    },
+    "delivery_date": {
+      "description": {
+        "en": "Date the supplier submitted the rejected document",
+        "fr": "Date à laquelle le fournisseur a remis le document rejeté"
+      },
+      "example": {
+        "en": "March 10, 2026",
+        "fr": "10 mars 2026"
+      },
+      "format": "text"
+    },
+    "rework_deadline": {
+      "description": {
+        "en": "Date and time by which the redone work must be submitted",
+        "fr": "Date et heure limites pour la remise des travaux repris"
+      },
+      "example": {
+        "en": "March 15, 2026, 5:00 p.m.",
+        "fr": "15 mars 2026, 17 h"
+      },
+      "format": "text"
+    },
+    "requested_date_time": {
+      "description": {
+        "en": "Date and time the delivery was requested for",
+        "fr": "Date et heure à laquelle la livraison était demandée"
+      },
+      "example": {
+        "en": "March 10, 2026, 5:00 p.m.",
+        "fr": "10 mars 2026, 17 h"
+      },
+      "format": "text"
+    },
+    "received_date_time": {
+      "description": {
+        "en": "Date and time the delivery was actually received",
+        "fr": "Date et heure à laquelle la livraison a réellement été reçue"
+      },
+      "example": {
+        "en": "March 11, 2026, 9:00 a.m.",
+        "fr": "11 mars 2026, 9 h"
+      },
+      "format": "text"
+    },
+    "refusal_details": {
+      "description": {
+        "en": "How/when the refusal occurred (e.g., a specific date, or 'on numerous occasions')",
+        "fr": "Précision sur le refus (ex. une date précise, ou 'à maintes reprises')"
+      },
+      "example": {
+        "en": "on March 3, 2026",
+        "fr": "le 3 mars 2026"
+      },
+      "format": "text"
+    },
+    "notice_date": {
+      "description": {
+        "en": "Date the prior notice was sent",
+        "fr": "Date d'envoi de l'avis précédent"
+      },
+      "example": {
+        "en": "March 1, 2026",
+        "fr": "1er mars 2026"
       },
       "format": "text"
     }
